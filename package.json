@@ -3,18 +3,24 @@
   "version": "0.0.0",
   "description": "Wormbase article submission and review system",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "https://gitlab.coko.foundation/micropubs/wormbase"
   },
-  "keywords": [
-    "pubsweet",
-    "micropubs",
-    "wormbase"
-  ],
+  "keywords": ["pubsweet", "micropubs", "wormbase"],
   "author": "Yannis Barlas",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "pubsweet": "^2.2.4",
+    "pubsweet-client": "^2.5.5",
+    "pubsweet-component-login": "^1.1.2",
+    "pubsweet-component-password-reset-backend": "^1.0.4",
+    "pubsweet-component-password-reset-frontend": "^1.0.17",
+    "pubsweet-component-signup": "^1.0.17",
+    "pubsweet-server": "^7.1.0"
+  },
+  "scripts": {
+    "server": "pubsweet server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
 }
