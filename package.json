@@ -2,12 +2,15 @@
   "name": "wormbase",
   "version": "0.0.0",
   "description": "Wormbase article submission and review system",
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://gitlab.coko.foundation/micropubs/wormbase"
   },
-  "keywords": ["pubsweet", "micropubs", "wormbase"],
+  "keywords": [
+    "pubsweet",
+    "micropubs",
+    "wormbase"
+  ],
   "author": "Yannis Barlas",
   "license": "MIT",
   "dependencies": {
@@ -23,5 +26,17 @@
     "server": "pubsweet server",
     "setupdb": "pubsweet setupdb",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "compression-webpack-plugin": "^1.1.11",
+    "copy-webpack-plugin": "^4.5.1",
+    "react-hot-loader": "^4.2.0",
+    "string-replace-loader": "^2.1.1"
   }
 }

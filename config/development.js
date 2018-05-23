@@ -6,6 +6,8 @@ module.exports = {
       user: 'dev',
       password: 'pass',
     },
+    host: 'http://localhost',
+    port: 3000,
   },
   dbManager: {
     username: 'admin',
