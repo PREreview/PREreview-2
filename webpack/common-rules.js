@@ -1,4 +1,4 @@
-const path = require('path')
+// const path = require('path')
 const config = require('config')
 const babelIncludes = require('./babel-includes')
 
@@ -65,12 +65,6 @@ module.exports = [
       {
         loader: 'css-loader',
       },
-      {
-        loader: 'sass-loader',
-        options: {
-          includePaths: [path.join(__dirname, '..', 'node_modules')],
-        },
-      },
     ],
   },
   {
@@ -86,12 +80,6 @@ module.exports = [
           modules: true,
           importLoaders: 1,
           localIdentName: '[name]_[local]-[hash:base64:8]',
-        },
-      },
-      {
-        loader: 'sass-loader',
-        options: {
-          includePaths: [path.join(__dirname, '..', 'node_modules')],
         },
       },
     ],
