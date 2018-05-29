@@ -1,6 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
-//const ThemePlugin = require('pubsweet-theme-plugin')
+// const ThemePlugin = require('pubsweet-theme-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin')
 const fs = require('fs-extra')
@@ -44,7 +44,7 @@ module.exports = [
         joi: 'joi-browser',
         config: clientConfigPath,
       },
-      //plugins: [new ThemePlugin(config['pubsweet-client'].theme)],
+      // plugins: [new ThemePlugin(config['pubsweet-client'].theme)],
       extensions: ['.js', '.jsx', '.json', '.scss'],
       enforceExtension: false,
     },
