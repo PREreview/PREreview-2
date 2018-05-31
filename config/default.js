@@ -22,6 +22,7 @@ module.exports = {
     baseUrl: deferConfig(
       cfg => `${cfg['pubsweet-server'].host}:${cfg['pubsweet-server'].port}`,
     ),
+    enableExperimentalGraphql: true,
     uploads: 'uploads',
   },
   validations: path.join(__dirname, 'validations'),
