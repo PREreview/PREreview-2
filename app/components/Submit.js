@@ -1,11 +1,5 @@
 import React from 'react'
 
-import Page from './Page'
-
-const Submit = () => (
-  <Page>
-    <h1>Submit!</h1>
-  </Page>
-)
+const Submit = () => <h1>Submit!</h1>
 
 export default Submit

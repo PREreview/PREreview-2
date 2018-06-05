@@ -1,8 +1,8 @@
 import styled from 'styled-components'
-import { th } from '@pubsweet/ui'
+import { th } from '@pubsweet/ui-toolkit'
 
 const Page = styled.div`
-  flex-grow: 1;
+  flex: 1;
   font-family: ${th('fontInterface')};
   padding: ${th('gridUnit')} 15px;
   overflow-y: auto;
