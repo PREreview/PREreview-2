@@ -7,6 +7,8 @@ import { Action, AppBar } from '@pubsweet/ui'
 
 import CURRENT_USER from '../queries/currentUser'
 
+// TODO -- use classname on appbar in ui
+
 const NavigationBar = ({ data: { currentUser }, location, history }) => {
   const navLinks = [
     <Action active={location.pathname.match(/dashboard/g)} to="/dashboard">

@@ -1,5 +1,32 @@
 import React from 'react'
 
-const Dashboard = () => <h1>The Dashboard!</h1>
+const Dashboard = () => (
+  <div>
+    <h1>The Dashboard!</h1>
+    <h1>The Dashboard!</h1>
+    <h1>The Dashboard!</h1>
+
+    <h1>The Dashboard!</h1>
+    <h1>The Dashboard!</h1>
+    <h1>The Dashboard!</h1>
+    <h1>The Dashboard!</h1>
+    <h1>The Dashboard!</h1>
+    <h1>The Dashboard!</h1>
+    <h1>The Dashboard!</h1>
+    <h1>The Dashboard!</h1>
+    <h1>The Dashboard!</h1>
+    <h1>The Dashboard!</h1>
+    <h1>The Dashboard!</h1>
+    <h1>The Dashboard!</h1>
+    <h1>The Dashboard!</h1>
+    <h1>The Dashboard!</h1>
+    <h1>The Dashboard!</h1>
+    <h1>The Dashboard!</h1>
+    <h1>The Dashboard!</h1>
+    <h1>The Dashboard!</h1>
+    <h1>The Dashboard!</h1>
+    <h1>The Dashboard!</h1>
+  </div>
+)
 
 export default Dashboard
