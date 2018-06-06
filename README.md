@@ -16,6 +16,8 @@ This is the repo for the Micropublications.org project
 |Conventional Commits   | &#x2714;      |            |#11
 |Unit Tests Scripts     |               |            |#7
 |e2e Test Scripts       |               |            |#6
+|Set up Dashboard       |               |            |#16
+|Set up Form Submission         |       |            |#17
 |Decide on Form Lib     |               |            |#18
 |Granttome API extension        |       |            |#20
 |Amigo API extension    |               |            |#21
