@@ -6,10 +6,12 @@ import { Redirect, withRouter } from 'react-router-dom'
 
 import CURRENT_USER from '../queries/currentUser'
 
+import Loading from './Loading'
+
 const Private = ({ children, location }) => (
   <Query query={CURRENT_USER}>
     {({ loading }) => {
-      if (loading) return 'Loading...'
+      if (loading) return <Loading />
 
       if (!localStorage.getItem('token')) {
         const { pathname, search = '' } = location
