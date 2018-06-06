@@ -14,6 +14,6 @@ This is the repo for the Micropublications.org project
 |Linting                | &#x2714;      |            |#8
 |Linting on Commit      | &#x2714;      |            |#24
 |Conventional Commits   | &#x2714;      |            |#11
-|Unit Tests Scripts     | &#x2714;      |            |#7
-|e2e Test Scripts       | &#x2714;      |            |#6
+|Unit Tests Scripts     |     |            |#7
+|e2e Test Scripts       |     |            |#6
 
