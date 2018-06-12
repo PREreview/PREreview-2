@@ -11,12 +11,13 @@
     "micropubs",
     "wormbase"
   ],
+  "workspaces": [],
   "author": "Yannis Barlas",
   "license": "MIT",
   "dependencies": {
     "@pubsweet/coko-theme": "^1.0.1",
     "@pubsweet/ui": "^4.1.3",
-    "@pubsweet/ui-toolkit": "0.0.0",
+    "@pubsweet/ui-toolkit": "1.0.0",
     "app-module-path": "^2.2.0",
     "babel-preset-es2015-native-modules": "^6.9.4",
     "babel-preset-minify": "^0.4.3",
@@ -52,6 +53,7 @@
     "webpack-hot-middleware": "^2.22.2"
   },
   "scripts": {
+    "precommit": "lint-staged",
     "server": "pubsweet server",
     "setupdb": "pubsweet setupdb",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -77,6 +79,8 @@
     "eslint-plugin-react": "^7.8.2",
     "eslint-plugin-standard": "^3.1.0",
     "file-loader": "^1.1.11",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.2.0",
     "prettier": "^1.13.2",
     "string-replace-loader": "^2.1.1",
     "style-loader": "^0.21.0",
