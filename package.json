@@ -52,13 +52,6 @@
     "webpack": "^3.11.0",
     "webpack-hot-middleware": "^2.22.2"
   },
-  "scripts": {
-    "commitmsg": "commitlint -E GIT_PARAMS",
-    "precommit": "lint-staged",
-    "server": "pubsweet server",
-    "setupdb": "pubsweet setupdb",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "devDependencies": {
     "@commitlint/cli": "^7.0.0",
     "@commitlint/config-conventional": "^7.0.1",
@@ -70,7 +63,9 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "commitizen": "^2.10.1",
     "css-loader": "^0.28.11",
+    "cz-conventional-changelog": "^2.1.0",
     "eslint": "^4.19.1",
     "eslint-config-pubsweet": "^0.0.6",
     "eslint-plugin-import": "^2.12.0",
@@ -92,5 +87,13 @@
     "stylelint-config-styled-components": "^0.1.1",
     "stylelint-processor-styled-components": "^1.3.1",
     "url-loader": "^1.0.1"
+  },
+  "scripts": {
+    "commitmsg": "commitlint -E GIT_PARAMS",
+    "cz": "git-cz",
+    "precommit": "lint-staged",
+    "server": "pubsweet server",
+    "setupdb": "pubsweet setupdb",
+    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
