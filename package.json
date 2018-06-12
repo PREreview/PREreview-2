@@ -53,12 +53,15 @@
     "webpack-hot-middleware": "^2.22.2"
   },
   "scripts": {
+    "commitmsg": "commitlint -E GIT_PARAMS",
     "precommit": "lint-staged",
     "server": "pubsweet server",
     "setupdb": "pubsweet setupdb",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^7.0.0",
+    "@commitlint/config-conventional": "^7.0.1",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
     "babel-loader": "^7.1.4",
