@@ -11,6 +11,7 @@
     "micropubs",
     "wormbase"
   ],
+  "workspaces": [],
   "author": "Yannis Barlas",
   "license": "MIT",
   "dependencies": {
@@ -52,6 +53,7 @@
     "webpack-hot-middleware": "^2.22.2"
   },
   "scripts": {
+    "precommit": "lint-staged",
     "server": "pubsweet server",
     "setupdb": "pubsweet setupdb",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -77,6 +79,8 @@
     "eslint-plugin-react": "^7.8.2",
     "eslint-plugin-standard": "^3.1.0",
     "file-loader": "^1.1.11",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.2.0",
     "prettier": "^1.13.2",
     "string-replace-loader": "^2.1.1",
     "style-loader": "^0.21.0",
