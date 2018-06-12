@@ -95,5 +95,10 @@
     "server": "pubsweet server",
     "setupdb": "pubsweet setupdb",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   }
 }
