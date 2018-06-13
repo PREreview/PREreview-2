@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Submit matches fully rendered snapshot 1`] = `
+<Submit>
+  <Component>
+    <styled.div>
+      <div
+        className="sc-bwzfXH bUmMuQ"
+      >
+        <styled.div>
+          <div
+            className="sc-bdVaJa eIRyzi"
+          />
+        </styled.div>
+      </div>
+    </styled.div>
+  </Component>
+</Submit>
+`;
