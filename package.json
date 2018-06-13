@@ -78,6 +78,7 @@
     "eslint-plugin-standard": "^3.1.0",
     "file-loader": "^1.1.11",
     "husky": "^0.14.3",
+    "jest": "^23.1.0",
     "lint-staged": "^7.2.0",
     "prettier": "^1.13.2",
     "standard-version": "^4.4.0",
@@ -96,7 +97,7 @@
     "release": "standard-version",
     "server": "pubsweet server",
     "setupdb": "pubsweet setupdb",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "config": {
     "commitizen": {
