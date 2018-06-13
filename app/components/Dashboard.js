@@ -25,7 +25,6 @@ const Dashboard = () => (
     <h1>The Dashboard!</h1>
     <h1>The Dashboard!</h1>
     <h1>The Dashboard!</h1>
-    <h1>The Dashboard!</h1>
   </div>
 )
 

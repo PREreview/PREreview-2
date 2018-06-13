@@ -1,3 +1,5 @@
+/* eslint-disable sort-keys */
+
 const path = require('path')
 const webpack = require('webpack')
 // const ThemePlugin = require('pubsweet-theme-plugin')
