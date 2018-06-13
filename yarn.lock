@@ -320,10 +320,11 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.0.tgz#50c1e2260ac0ed9439a181de3725a0168d59c48a"
 
-"@pubsweet/coko-theme@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@pubsweet/coko-theme/-/coko-theme-1.0.1.tgz#1c783205a6571c85e05bb6ab8816e18c12170e2a"
+"@pubsweet/coko-theme@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@pubsweet/coko-theme/-/coko-theme-2.0.0.tgz#f23ae8b5fed12f3bce83767190144d76180fc1b7"
   dependencies:
+    "@pubsweet/ui-toolkit" "^1.0.0"
     cokourier-prime-sans "git+https://gitlab.coko.foundation/julientaq/cokourier-sans-prime.git"
     styled-components "^3.2.5"
     typeface-fira-sans-condensed "^0.0.54"
@@ -350,7 +351,7 @@
     joi "^13.1.0"
     lodash "^4.17.4"
 
-"@pubsweet/ui-toolkit@1.0.0":
+"@pubsweet/ui-toolkit@1.0.0", "@pubsweet/ui-toolkit@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@pubsweet/ui-toolkit/-/ui-toolkit-1.0.0.tgz#df05b54e7bbfabcb10c7afc2991752e1087d2298"
   dependencies:
@@ -368,6 +369,29 @@
     enzyme-adapter-react-16 "^1.1.1"
     invariant "^2.2.3"
     lodash "^4.17.4"
+    prop-types "^15.5.10"
+    react "^16.2.0"
+    react-dom "^16.2.0"
+    react-feather "^1.0.8"
+    react-redux "^5.0.2"
+    react-router-dom "^4.2.2"
+    react-tag-autocomplete "^5.5.0"
+    recompose "^0.26.0"
+    redux "^3.6.0"
+    redux-form "^7.0.3"
+    styled-components "^3.2.5"
+
+"@pubsweet/ui@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@pubsweet/ui/-/ui-5.0.0.tgz#3e8765fafa1d73fb9081074f4ed58d4e559f2437"
+  dependencies:
+    babel-jest "^21.2.0"
+    classnames "^2.2.5"
+    enzyme "^3.2.0"
+    enzyme-adapter-react-16 "^1.1.1"
+    invariant "^2.2.3"
+    lodash "^4.17.4"
+    moment "^2.22.1"
     prop-types "^15.5.10"
     react "^16.2.0"
     react-dom "^16.2.0"
@@ -6820,6 +6844,10 @@ moment@2.x.x, moment@^2.18.1:
   version "2.22.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.1.tgz#529a2e9bf973f259c9643d237fda84de3a26e8ad"
 
+moment@^2.22.1:
+  version "2.22.2"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
+
 morgan@^1.8.2:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/morgan/-/morgan-1.9.0.tgz#d01fa6c65859b76fcf31b3cb53a3821a311d8051"
@@ -8139,11 +8167,11 @@ public-encrypt@^4.0.0:
     parse-asn1 "^5.0.0"
     randombytes "^2.0.1"
 
-pubsweet-client@^2.5.5:
-  version "2.5.5"
-  resolved "https://registry.yarnpkg.com/pubsweet-client/-/pubsweet-client-2.5.5.tgz#53235a55c2e806d22e572a12cf53da769c0adba2"
+pubsweet-client@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/pubsweet-client/-/pubsweet-client-3.0.0.tgz#f67d26485138863c3a841960a4cd7ba955cb6db2"
   dependencies:
-    "@pubsweet/ui" "^4.1.3"
+    "@pubsweet/ui-toolkit" "^1.0.0"
     apollo-client-preset "^1.0.8"
     apollo-link "^1.2.1"
     apollo-link-context "^1.0.5"
@@ -8191,11 +8219,12 @@ pubsweet-component-password-reset-backend@^1.0.4:
     moment "^2.18.1"
     nodemailer "^4.0.1"
 
-pubsweet-component-password-reset-frontend@^1.0.17:
-  version "1.0.17"
-  resolved "https://registry.yarnpkg.com/pubsweet-component-password-reset-frontend/-/pubsweet-component-password-reset-frontend-1.0.17.tgz#1bf0381740acf2fd6643248a822fdf56bc995a64"
+pubsweet-component-password-reset-frontend@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/pubsweet-component-password-reset-frontend/-/pubsweet-component-password-reset-frontend-2.0.0.tgz#5f3a78eb11b7fa43357993fc2c15e1829eca1cbc"
   dependencies:
     "@pubsweet/ui" "^4.1.3"
+    "@pubsweet/ui-toolkit" "^1.0.0"
     prop-types "^15.5.10"
     query-string "^5.0.0"
     react-router "^4.2.0"
