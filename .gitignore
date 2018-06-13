@@ -1,5 +1,6 @@
 _build
 config/local*
+coverage
 node_modules
 uploads
 
