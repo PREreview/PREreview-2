@@ -1,10 +1,10 @@
 _build
 config/local*
+config/*.env
 coverage
 node_modules
 uploads
 
-.env*
 npm-debug.log
 package-lock.json
 yarn-error.log
