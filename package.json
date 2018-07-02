@@ -16,8 +16,8 @@
   "license": "MIT",
   "dependencies": {
     "@pubsweet/coko-theme": "^2.0.0",
-    "@pubsweet/ui": "^5.0.0",
-    "@pubsweet/ui-toolkit": "1.0.0",
+    "@pubsweet/ui": "^7.0.0",
+    "@pubsweet/ui-toolkit": "1.1.2",
     "app-module-path": "^2.2.0",
     "babel-preset-es2015-native-modules": "^6.9.4",
     "babel-preset-minify": "^0.4.3",
