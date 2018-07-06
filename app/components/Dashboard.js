@@ -1,31 +1,27 @@
+/* eslint-disable react/prop-types */
+
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 
-const Dashboard = () => (
+import { Button } from '@pubsweet/ui'
+
+const SubmitButton = ({ history }) => {
+  const onClick = () => {
+    // TO DO -- create new article
+    history.push('/submit')
+  }
+
+  return (
+    <Button onClick={onClick} primary>
+      New Submission
+    </Button>
+  )
+}
+
+const Dashboard = ({ history }) => (
   <div>
-    <h1>The Dashboard!</h1>
-    <h1>The Dashboard!</h1>
-    <h1>The Dashboard!</h1>
-
-    <h1>The Dashboard!</h1>
-    <h1>The Dashboard!</h1>
-    <h1>The Dashboard!</h1>
-    <h1>The Dashboard!</h1>
-    <h1>The Dashboard!</h1>
-    <h1>The Dashboard!</h1>
-    <h1>The Dashboard!</h1>
-    <h1>The Dashboard!</h1>
-    <h1>The Dashboard!</h1>
-    <h1>The Dashboard!</h1>
-    <h1>The Dashboard!</h1>
-    <h1>The Dashboard!</h1>
-    <h1>The Dashboard!</h1>
-    <h1>The Dashboard!</h1>
-    <h1>The Dashboard!</h1>
-    <h1>The Dashboard!</h1>
-    <h1>The Dashboard!</h1>
-    <h1>The Dashboard!</h1>
-    <h1>The Dashboard!</h1>
+    <SubmitButton history={history} />
   </div>
 )
 
-export default Dashboard
+export default withRouter(Dashboard)

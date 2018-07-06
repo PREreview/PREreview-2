@@ -1,6 +1,6 @@
 /* eslint-disable sort-keys */
 
-// const path = require('path')
+const path = require('path')
 const config = require('config')
 const babelIncludes = require('./babel-includes')
 
@@ -14,12 +14,23 @@ const resolve = (type, entry) => {
 const resolvePreset = entry => resolve('preset', entry)
 const resolvePlugin = entry => resolve('plugin', entry)
 
+/* eslint-disable import/no-dynamic-require, global-require */
 const clientComponents = config.pubsweet.components.filter(name => {
   // eslint-disable-next-line global-require, import/no-dynamic-require
-  const component = require(name)
+  // console.log(name)
+  // const component = require(name)
+  let component
+  try {
+    component = require(name)
+  } catch (error) {
+    component = require(path.join(__dirname, '..', name))
+  }
+  // console.log('pass')
+
   // Backwards compatibility - old name was 'frontend', new name is 'client'
   return component.client || component.frontend
 })
+/* eslint-enable import/no-dynamic-require, global-require */
 
 module.exports = [
   {
