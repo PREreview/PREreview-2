@@ -5,6 +5,9 @@ import { withRouter } from 'react-router-dom'
 
 import { Button } from '@pubsweet/ui'
 
+import AutoComplete from './formElements/AutoComplete'
+import { getWBPerson } from '../fetch/WBApi'
+
 const SubmitButton = ({ history }) => {
   const onClick = () => {
     // TO DO -- create new article
@@ -12,9 +15,12 @@ const SubmitButton = ({ history }) => {
   }
 
   return (
-    <Button onClick={onClick} primary>
-      New Submission
-    </Button>
+    <React.Fragment>
+      <AutoComplete fetchData={getWBPerson} placeholder="hahahaha" />
+      <Button onClick={onClick} primary>
+        New Submission
+      </Button>
+    </React.Fragment>
   )
 }
 

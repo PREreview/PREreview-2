@@ -402,6 +402,7 @@ class AutoComp extends React.Component {
 
 const TextField = props => {
   const { autoComplete, inline, label } = props
+  // console.log(props)
   // const touchedThis = get(touched, name)
   // const error = get(errors, name)
   // console.log(props)
