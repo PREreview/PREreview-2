@@ -52,7 +52,6 @@ const options = {
 
 const SubmissionForm = props => {
   const { values } = props
-  // console.log(values.geneExpression.detectionMethod)
 
   return (
     <Form>
@@ -68,22 +67,17 @@ const SubmissionForm = props => {
 
       <TextField
         autoComplete
-        // error={get(props.errors, 'author.name')}
-        // handleChange={props.handleChange}
         label="Name"
         name="author.name"
         placeholder="Please type in your name"
-        // touched={get(props.touched, 'author.name')}
         value={get(values, 'author.name')}
         {...props}
       />
 
       <TextField
-        // error={get(props.errors, 'author.email')}
         label="Email address"
         name="author.email"
         placeholder="this is the email"
-        // touched={get(props.touched, 'author.email')}
         value={get(values, 'author.email')}
         {...props}
       />
