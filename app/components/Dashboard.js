@@ -16,7 +16,7 @@ const SubmitButton = ({ history }) => {
 
   return (
     <React.Fragment>
-      <AutoComplete fetchData={getWBPerson} placeholder="hahahaha" />
+      <AutoComplete fetchData={getWBPerson} placeholder="booya" />
       <Button onClick={onClick} primary>
         New Submission
       </Button>

@@ -1,7 +1,10 @@
+/* eslint-disable react/prop-types */
+
 import React from 'react'
 import styled from 'styled-components'
 import Autosuggest from 'react-autosuggest'
 import PropTypes from 'prop-types'
+import { omit } from 'lodash'
 
 import { th } from '@pubsweet/ui-toolkit'
 
@@ -46,7 +49,9 @@ const Wrapper = styled.div`
 
 const defaultGetSuggestionValue = suggestion => suggestion.value
 const defaultRenderSuggestion = suggestion => <span>{suggestion.label}</span>
-const defaultRenderInputComponent = props => <TextField {...props} />
+const defaultRenderInputComponent = inputProps => (
+  <TextField {...inputProps} innerRefProp={inputProps.ref} ref={null} />
+)
 
 class AutoComplete extends React.Component {
   constructor(props) {
@@ -60,9 +65,8 @@ class AutoComplete extends React.Component {
   }
 
   onChange = (event, { newValue, method }) => {
-    this.setState({
-      value: newValue,
-    })
+    if (this.props.onChange) this.props.onChange(event)
+    this.setState({ value: newValue })
   }
 
   onSuggestionsFetchRequested = async ({ value }) => {
@@ -91,20 +95,31 @@ class AutoComplete extends React.Component {
     })
   }
 
+  onSuggestionSelected = (event, options) => {
+    const { name, onSuggestionSelected, setFieldValue } = this.props
+
+    if (onSuggestionSelected) onSuggestionSelected(event, options)
+    // formik specific -- cannot stay here if this moves to ui lib
+    if (setFieldValue) setFieldValue(name, options.suggestionValue)
+  }
+
   render() {
     const {
       getSuggestionValue,
-      placeholder,
+      onChange,
       renderInputComponent,
       renderSuggestion,
       ...rest
     } = this.props
     const { value, suggestions } = this.state
 
+    // find a better way?
+    const otherProps = omit(this.props, ['onChange', 'value'])
+
     const inputProps = {
-      onChange: this.props.onChange || this.onChange,
-      placeholder,
+      onChange: this.onChange,
       value,
+      ...otherProps,
     }
 
     return (
@@ -113,6 +128,7 @@ class AutoComplete extends React.Component {
           getSuggestionValue={getSuggestionValue}
           inputProps={inputProps}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          onSuggestionSelected={this.onSuggestionSelected}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
           renderInputComponent={renderInputComponent}
           renderSuggestion={renderSuggestion}

@@ -4,6 +4,7 @@ import React from 'react'
 import { Form } from 'formik'
 import { get } from 'lodash'
 
+import AutoComplete from './formElements/AutoComplete'
 import Checkbox from './formElements/Checkbox'
 import Dropdown from './formElements/Dropdown'
 import Image from './formElements/Image'
@@ -12,6 +13,7 @@ import Radio from './formElements/Radio'
 import TextField from './formElements/TextField'
 import TextEditor from './formElements/TextEditor'
 import TextFieldGroup from './formElements/TextFieldGroup'
+import { getWBPerson } from '../fetch/WBApi'
 
 const options = {
   dataType: [
@@ -54,6 +56,16 @@ const SubmissionForm = props => {
 
   return (
     <Form>
+      <AutoComplete
+        fetchData={getWBPerson}
+        label="Name"
+        name="author.name"
+        onChange={props.handleChange}
+        placeholder="Please type in your name"
+        value={get(values, 'author.name')}
+        {...props}
+      />
+
       <TextField
         autoComplete
         // error={get(props.errors, 'author.name')}
