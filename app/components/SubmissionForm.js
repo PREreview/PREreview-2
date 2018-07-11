@@ -13,7 +13,17 @@ import Radio from './formElements/Radio'
 import TextField from './formElements/TextField'
 import TextEditor from './formElements/TextEditor'
 import TextFieldGroup from './formElements/TextFieldGroup'
-import { getWBPerson, getWBLaboratory, getWBSpecies } from '../fetch/WBApi'
+import {
+  getWBPerson,
+  getWBLaboratory,
+  getWBSpecies,
+  getWBGene,
+  getTransgene,
+  getReporter,
+  getBackboneVector,
+  getFusionType,
+  getIntegrationMethod,
+} from '../fetch/WBApi'
 
 const options = {
   dataType: [
@@ -123,9 +133,11 @@ const SubmissionForm = props => {
         {...props}
       />
 
-      <TextField
+      <AutoComplete
+        fetchData={getWBPerson}
         label="Suggested Reviewer"
         name="suggestedReviewer"
+        onChange={props.handleChange}
         placeholder="this is the suggestedReviewer"
         value={get(values, 'suggestedReviewer')}
         {...props}
@@ -150,9 +162,11 @@ const SubmissionForm = props => {
         {...props}
       />
 
-      <TextField
+      <AutoComplete
+        fetchData={getWBGene}
         label="Expression pattern for gene"
         name="geneExpression.expressionPattern"
+        onChange={props.handleChange}
         placeholder="Please type in expression pattern for the gene"
         value={get(values, 'geneExpression.expressionPattern')}
         {...props}
@@ -197,6 +211,7 @@ const SubmissionForm = props => {
 
       {values.geneExpression.detectionMethod === 'existingTransgene' && (
         <TextFieldGroup
+          data={getTransgene}
           handleChange={props.handleChange}
           label="Transgene Used"
           maxItems={10}
@@ -233,33 +248,41 @@ const SubmissionForm = props => {
             {...props}
           />
 
-          <TextField
+          <AutoComplete
+            fetchData={getWBGene}
             label="3' UTR"
             name="geneExpression.utr"
+            onChange={props.handleChange}
             placeholder="Please type in 3' UTR"
             value={get(values, 'geneExpression.utr')}
             {...props}
           />
 
-          <TextField
+          <AutoComplete
+            fetchData={getReporter}
             label="Reporter"
             name="geneExpression.reporter"
+            onChange={props.handleChange}
             placeholder="Please type in reporter"
             value={get(values, 'geneExpression.reporter')}
             {...props}
           />
 
-          <TextField
+          <AutoComplete
+            fetchData={getBackboneVector}
             label="Backbone Vector"
             name="geneExpression.backboneVector"
+            onChange={props.handleChange}
             placeholder="Please type in Backbone Vector"
             value={get(values, 'geneExpression.backboneVector')}
             {...props}
           />
 
-          <TextField
+          <AutoComplete
+            fetchData={getFusionType}
             label="Fusion Type"
             name="geneExpression.fusionType"
+            onChange={props.handleChange}
             placeholder="Please type in fusion type"
             value={get(values, 'geneExpression.fusionType')}
             {...props}
@@ -305,9 +328,11 @@ const SubmissionForm = props => {
             {...props}
           />
 
-          <TextField
+          <AutoComplete
+            fetchData={getIntegrationMethod}
             label="Integrated by"
             name="geneExpression.integratedBy"
+            onChange={props.handleChange}
             placeholder="Please type in Integrated by"
             value={get(values, 'geneExpression.integratedBy')}
             {...props}

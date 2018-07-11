@@ -95,6 +95,14 @@ const WbApi = app => {
   app.get('/api/wb/fusiontype', (req, res) => {
     makeRequest('fusion', 'wbFusionId', req, res)
   })
+
+  app.get('/api/wb/integrationmethod', (req, res) => {
+    makeRequest('integrationmethod', 'wbIntegrationMethodId', req, res)
+  })
+
+  app.get('/api/wb/gene', (req, res) => {
+    makeRequest('gene', 'wbGeneId', req, res)
+  })
 }
 
 module.exports = WbApi
