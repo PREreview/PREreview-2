@@ -13,8 +13,10 @@ import TextField from './TextField'
 const Wrapper = styled.div`
   div[role='combobox'] {
     position: relative;
+    margin-bottom: calc(${th('gridUnit')} * 3);
 
-    div.react-autosuggest__input--open {
+    /* div.react-autosuggest__input--open { */
+    div.react-autosuggest__input {
       margin-bottom: 0;
     }
 
@@ -23,6 +25,7 @@ const Wrapper = styled.div`
       position: absolute;
       /* transition: all 0.2s ease-in; */
       width: 400px;
+      z-index: 1;
 
       &.react-autosuggest__suggestions-container--open {
         border: 1px dashed ${th('colorBorder')};
