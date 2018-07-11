@@ -4,27 +4,27 @@ import React from 'react'
 import styled from 'styled-components'
 import { get, omit, set } from 'lodash'
 import { v4 as uuid } from 'uuid'
-// import { Field } from 'formik'
 
 import { Button } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
 
-import TextField from './TextField'
+// import { getWBPerson } from '../../fetch/WBApi'
+import AutoComplete from './AutoComplete'
 
 const Field = props => {
-  const { handleChange, name, value } = props
-  // console.log(name)
+  const { data, handleChange, name, value } = props
   const passProps = omit(props, ['label'])
+
   return (
-    <TextField
-      handleChange={handleChange}
+    <AutoComplete
+      fetchData={data}
       name={name}
+      onChange={handleChange}
       placeholder=""
       value={value}
       {...passProps}
     />
   )
-  // return null
 }
 
 // TO DO -- extract Labels from TextField

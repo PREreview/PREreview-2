@@ -1,43 +1,99 @@
-// import request from 'request'
 const request = require('request')
-const _ = require('lodash')
 
-const WbApi = app => {
-  app.get('/api/wb/users', (req, res, next) => {
-    const url = `http://tazendra.caltech.edu/~azurebrd/cgi-bin/forms/datatype_objects.cgi?action=autocompleteXHR&objectType=person&userValue=${
-      req.query.search
-    }`
+const baseUrl =
+  'http://tazendra.caltech.edu/~azurebrd/cgi-bin/forms/datatype_objects.cgi'
 
-    request(url, (error, response, body) => {
+const makeQuery = (objectType, search) => ({
+  action: 'autocompleteXHR',
+  objectType,
+  userValue: search,
+})
+
+const makeRequest = (objectType, typeIdentifier, req, res) => {
+  request(
+    {
+      qs: makeQuery(objectType, req.query.search),
+      url: baseUrl,
+    },
+    (error, response, body) => {
       // eslint-disable-next-line no-console
       if (error) return console.log(error)
 
-      const entries = response.body.split('\n')
+      // return callback(body)
 
-      const cleanEntries = _
-        .remove(entries.map(entry => entry.split(' ( ')), item => {
-          if (item.length !== 2) return false
-          return true
-        })
-        .map(el => {
-          const wbId = el[1].replace(')', '').trim()
-          return [el[0], wbId]
-        })
+      // console.log(body)
+      // console.log(cleanData(body, typeIdentifier))
 
-      const people = cleanEntries
-        .map(entry => ({
-          label: entry[0],
-          value: entry[0],
-          wbPerson: entry[1].slice(8),
-        }))
-        .slice(0, 8)
+      return res.send({ values: cleanData(body, typeIdentifier) })
+    },
+  )
+}
 
-      const data = {
-        values: people,
+const cleanData = (data, typeIdentifier) =>
+  data
+    .split('\n')
+    .map(entry =>
+      entry
+        .trim()
+        .slice(0, -1)
+        .replace('(', '.')
+        .split('.')
+        .map(item => item.trim()),
+    )
+    .filter(entry => entry.length === 2)
+    .slice(0, 8)
+    .map(item => {
+      const formattedItem = {
+        label: item[0],
+        value: item[0],
       }
-
-      return res.send(data)
+      formattedItem[typeIdentifier] = item[1] // eslint-disable-line
+      return formattedItem
     })
+
+const WbApi = app => {
+  app.get('/api/wb/person', (req, res) => {
+    makeRequest('person', 'wbPersonId', req, res)
+  })
+
+  app.get('/api/wb/laboratory', (req, res) => {
+    makeRequest('laboratory', 'wbLabId', req, res)
+  })
+
+  app.get('/api/wb/species', (req, res) => {
+    makeRequest('species', 'wbSpeciesId', req, res)
+  })
+
+  app.get('/api/wb/transgene', (req, res) => {
+    makeRequest('transgene', 'wbTransgeneId', req, res)
+  })
+
+  app.get('/api/wb/reporter', (req, res) => {
+    makeRequest('reporter', 'wbReporterId', req, res)
+  })
+
+  app.get('/api/wb/wbbt', (req, res) => {
+    makeRequest('wbbt', 'wbWbbtId', req, res)
+  })
+
+  app.get('/api/wb/wbls', (req, res) => {
+    makeRequest('wbls', 'wbWblsId', req, res)
+  })
+
+  app.get('/api/wb/gocc', (req, res) => {
+    makeRequest('gocc', 'wbGoccId', req, res)
+  })
+
+  app.get('/api/wb/variation', (req, res) => {
+    makeRequest('variation', 'wbVariationId', req, res)
+  })
+
+  app.get('/api/wb/backbonevector', (req, res) => {
+    makeRequest('backbonevector', 'wbBackboneVectorId', req, res)
+  })
+
+  app.get('/api/wb/fusiontype', (req, res) => {
+    makeRequest('fusion', 'wbFusionId', req, res)
   })
 }
 

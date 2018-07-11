@@ -13,7 +13,7 @@ import Radio from './formElements/Radio'
 import TextField from './formElements/TextField'
 import TextEditor from './formElements/TextEditor'
 import TextFieldGroup from './formElements/TextFieldGroup'
-import { getWBPerson } from '../fetch/WBApi'
+import { getWBPerson, getWBLaboratory, getWBSpecies } from '../fetch/WBApi'
 
 const options = {
   dataType: [
@@ -66,15 +66,6 @@ const SubmissionForm = props => {
       />
 
       <TextField
-        autoComplete
-        label="Name"
-        name="author.name"
-        placeholder="Please type in your name"
-        value={get(values, 'author.name')}
-        {...props}
-      />
-
-      <TextField
         label="Email address"
         name="author.email"
         placeholder="this is the email"
@@ -83,6 +74,7 @@ const SubmissionForm = props => {
       />
 
       <TextFieldGroup
+        data={getWBPerson}
         handleChange={props.handleChange}
         label="Co-Authors"
         name="coAuthors"
@@ -90,10 +82,12 @@ const SubmissionForm = props => {
         {...props}
       />
 
-      <TextField
+      <AutoComplete
+        fetchData={getWBLaboratory}
         label="Laboratory"
         name="laboratory"
-        placeholder="this is the laboratory"
+        onChange={props.handleChange}
+        placeholder="Please type in the laboratory"
         value={get(values, 'laboratory')}
         {...props}
       />
@@ -146,10 +140,12 @@ const SubmissionForm = props => {
 
       <Dropdown label="Choose a datatype" options={options.dataType} />
 
-      <TextField
+      <AutoComplete
+        fetchData={getWBSpecies}
         label="Species"
         name="geneExpression.species"
-        placeholder="Please type in your gene expression"
+        onChange={props.handleChange}
+        placeholder="Please type in the species"
         value={get(values, 'geneExpression.species')}
         {...props}
       />
