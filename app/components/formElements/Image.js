@@ -87,9 +87,9 @@ const Wrapper = styled.div`
   margin-bottom: calc(${th('gridUnit')} * 2);
 `
 
-const Image = ({ label }) => (
+const Image = ({ label, required }) => (
   <Wrapper>
-    {label && <Label>{label}</Label>}
+    {label && <Label>{`${label}${required && ' *'}`}</Label>}
     <StyledDropArea />
   </Wrapper>
 )

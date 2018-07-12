@@ -3,7 +3,8 @@ import { v4 as uuid } from 'uuid'
 export default {
   author: {
     email: 'johndoe@example',
-    name: 'John Doe',
+    // name: 'John Doe',
+    name: '',
     WBPerson: '',
   },
   coAuthors: [
@@ -28,8 +29,10 @@ export default {
   ],
   geneExpression: {
     // detectionMethod: 'antibody',
+    // detectionMethod: 'genomeEditing',
     // detectionMethod: 'inSituHybridization',
     detectionMethod: 'newTransgene',
+    // detectionMethod: 'existingTransgene',
     dnaSequence: [],
     transgeneUsed: [
       {

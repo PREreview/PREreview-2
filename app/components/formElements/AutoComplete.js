@@ -47,6 +47,10 @@ const Wrapper = styled.div`
         }
       }
     }
+
+    div[role='alert'] {
+      margin-bottom: 0;
+    }
   }
 `
 
@@ -66,6 +70,12 @@ class AutoComplete extends React.Component {
       value: props.value,
     }
   }
+
+  // onBlur = e => {
+  //   console.log('here')
+  //   const { setTouched } = this.props
+  //   if (setTouched) setTouched()
+  // }
 
   onChange = (event, { newValue, method }) => {
     if (this.props.onChange) this.props.onChange(event)
@@ -100,8 +110,10 @@ class AutoComplete extends React.Component {
 
   onSuggestionSelected = (event, options) => {
     const { name, onSuggestionSelected, setFieldValue } = this.props
+    // console.log(this.props)
 
-    if (onSuggestionSelected) onSuggestionSelected(event, options)
+    if (onSuggestionSelected)
+      onSuggestionSelected(event, options, setFieldValue)
     // formik specific -- cannot stay here if this moves to ui lib
     if (setFieldValue) setFieldValue(name, options.suggestionValue)
   }
@@ -110,16 +122,21 @@ class AutoComplete extends React.Component {
     const {
       getSuggestionValue,
       onChange,
+      onSuggestionSelected,
       renderInputComponent,
       renderSuggestion,
       ...rest
     } = this.props
     const { value, suggestions } = this.state
+    // console.log(this.props)
 
     // find a better way?
-    const otherProps = omit(this.props, ['onChange', 'value'])
+    const otherProps = omit(this.props, ['onChange', 'onBlur', 'value'])
+    // console.log(otherProps)
 
     const inputProps = {
+      // onBlur: this.onBlur,
+      onBlur: this.props.handleBlur,
       onChange: this.onChange,
       value,
       ...otherProps,
@@ -130,6 +147,7 @@ class AutoComplete extends React.Component {
         <Autosuggest
           getSuggestionValue={getSuggestionValue}
           inputProps={inputProps}
+          // onBlur={this.onBlur}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
           onSuggestionSelected={this.onSuggestionSelected}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}

@@ -37,14 +37,14 @@ const Wrapper = styled.div`
 `
 
 const Radio = props => {
-  const { label, name, options, setFieldValue, values } = props
+  const { label, name, options, required, setFieldValue, values } = props
 
   const value = get(values, name)
   const onChange = newValue => setFieldValue(name, newValue)
 
   return (
     <Wrapper>
-      {label && <Label>{label}</Label>}
+      {label && <Label>{`${label}${required ? ' *' : ''}`}</Label>}
       <RadioGroup
         onChange={onChange}
         options={options}

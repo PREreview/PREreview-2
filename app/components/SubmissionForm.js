@@ -60,8 +60,24 @@ const options = {
   ],
 }
 
+const authorSuggestionSelected = (event, authorOptions, setFieldValue) => {
+  // const { name, onSuggestionSelected, setValues } = this.props
+
+  // if (onSuggestionSelected) onSuggestionSelected(event, authorOptions)
+  // formik specific -- cannot stay here if this moves to ui lib
+  // if (setFieldValue) setFieldValue(name, authorOptions.suggestionValue)
+  // if (setValues) setValues({
+  //   'author.name':
+  // })
+  // console.log(authorOptions)
+  // console.log(setFieldValue)
+  setFieldValue('author.wbPersonId', authorOptions.suggestion.wbPersonId)
+}
+
 const SubmissionForm = props => {
   const { values } = props
+  // console.log(values)
+  // console.log(props.errors)
 
   return (
     <Form>
@@ -70,7 +86,9 @@ const SubmissionForm = props => {
         label="Name"
         name="author.name"
         onChange={props.handleChange}
+        onSuggestionSelected={authorSuggestionSelected}
         placeholder="Please type in your name"
+        required
         value={get(values, 'author.name')}
         {...props}
       />
@@ -79,6 +97,7 @@ const SubmissionForm = props => {
         label="Email address"
         name="author.email"
         placeholder="this is the email"
+        required
         value={get(values, 'author.email')}
         {...props}
       />
@@ -98,6 +117,7 @@ const SubmissionForm = props => {
         name="laboratory"
         onChange={props.handleChange}
         placeholder="Please type in the laboratory"
+        required
         value={get(values, 'laboratory')}
         {...props}
       />
@@ -106,21 +126,24 @@ const SubmissionForm = props => {
         label="Funding"
         name="funding"
         placeholder="this is the funding"
+        required
         value={get(values, 'funding')}
         {...props}
       />
 
-      <Image label="Image" />
+      <Image label="Image" required />
 
       <TextEditor
         label="Pattern description"
         placeholder="Provide a description for the pattern"
+        required
       />
 
       <TextField
         label="Title"
         name="title"
         placeholder="this is the title"
+        required
         value={get(values, 'title')}
         {...props}
       />
@@ -143,7 +166,16 @@ const SubmissionForm = props => {
         {...props}
       />
 
-      <Checkbox label="Disclaimer" text="I agree to the terms of publication" />
+      <Checkbox
+        checked={get(values, 'disclaimerChecked')}
+        label="Disclaimer"
+        name="disclaimerChecked"
+        onChange={props.handleChange}
+        required
+        text="I agree to the terms of publication"
+        value={get(values, 'disclaimerChecked')}
+        {...props}
+      />
 
       <TextEditor
         label="Comments"
@@ -158,6 +190,7 @@ const SubmissionForm = props => {
         name="geneExpression.species"
         onChange={props.handleChange}
         placeholder="Please type in the species"
+        required
         value={get(values, 'geneExpression.species')}
         {...props}
       />
@@ -168,6 +201,7 @@ const SubmissionForm = props => {
         name="geneExpression.expressionPattern"
         onChange={props.handleChange}
         placeholder="Please type in expression pattern for the gene"
+        required
         value={get(values, 'geneExpression.expressionPattern')}
         {...props}
       />
@@ -176,14 +210,16 @@ const SubmissionForm = props => {
         label="Choose a detection method"
         name="geneExpression.detectionMethod"
         options={options.detectionMethod}
+        required
         {...props}
       />
 
       {values.geneExpression.detectionMethod === 'antibody' && (
         <TextField
           label="Antibody used"
-          name="geneExpression.detectionMethod.antibodyUsed"
+          name="geneExpression.antibodyUsed"
           placeholder="Please type in antibody used"
+          required
           value={get(values, 'geneExpression.antibodyUsed')}
           {...props}
         />
@@ -192,8 +228,9 @@ const SubmissionForm = props => {
       {values.geneExpression.detectionMethod === 'inSituHybridization' && (
         <TextField
           label="In-Situ details"
-          name="geneExpression.detectionMethod.inSituDetails"
+          name="geneExpression.inSituDetails"
           placeholder="Please type in in-situ details"
+          required
           value={get(values, 'geneExpression.inSituDetails')}
           {...props}
         />
@@ -202,7 +239,7 @@ const SubmissionForm = props => {
       {values.geneExpression.detectionMethod === 'genomeEditing' && (
         <TextField
           label="Variation"
-          name="geneExpression.detectionMethod.variation"
+          name="geneExpression.variation"
           placeholder="Please type in variation"
           value={get(values, 'geneExpression.variation')}
           {...props}
@@ -217,6 +254,7 @@ const SubmissionForm = props => {
           maxItems={10}
           name="geneExpression.transgeneUsed"
           placeholder="Type a transgene"
+          required
           {...props}
         />
       )}
@@ -227,6 +265,7 @@ const SubmissionForm = props => {
             label="Genotype"
             name="geneExpression.genotype"
             placeholder="Please type in genotype"
+            required
             value={get(values, 'geneExpression.genotype')}
             {...props}
           />
@@ -235,6 +274,7 @@ const SubmissionForm = props => {
             label="Construction Details"
             name="geneExpression.constructionDetails"
             placeholder="Please type in construction details"
+            required
             value={get(values, 'geneExpression.constructionDetails')}
             {...props}
           />
@@ -245,6 +285,7 @@ const SubmissionForm = props => {
             maxItems={10}
             name="geneExpression.dnaSequence"
             placeholder="Type a DNA sequence"
+            required
             {...props}
           />
 
@@ -264,6 +305,7 @@ const SubmissionForm = props => {
             name="geneExpression.reporter"
             onChange={props.handleChange}
             placeholder="Please type in reporter"
+            required
             value={get(values, 'geneExpression.reporter')}
             {...props}
           />
@@ -284,6 +326,7 @@ const SubmissionForm = props => {
             name="geneExpression.fusionType"
             onChange={props.handleChange}
             placeholder="Please type in fusion type"
+            required
             value={get(values, 'geneExpression.fusionType')}
             {...props}
           />
@@ -292,6 +335,7 @@ const SubmissionForm = props => {
             label="Transgene Name"
             name="geneExpression.transgeneName"
             placeholder="Please type in Transgene Name"
+            required
             value={get(values, 'geneExpression.transgeneName')}
             {...props}
           />

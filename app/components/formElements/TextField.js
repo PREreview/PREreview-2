@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components'
 import { get } from 'lodash'
 
 import { TextField as UiTextField } from '@pubsweet/ui'
-import { th } from '@pubsweet/ui-toolkit'
+import { fadeIn, th } from '@pubsweet/ui-toolkit'
 
 const StyledTextField = styled(UiTextField)`
   line-height: ${th('lineHeightBase')};
@@ -17,8 +17,11 @@ const StyledTextField = styled(UiTextField)`
   }
 `
 
-const Error = styled.div`
+const Error = styled.div.attrs({
+  role: 'alert',
+})`
   align-self: flex-end;
+  animation: ${fadeIn} 0.2s;
   color: ${th('colorError')};
   font-size: ${th('fontSizeBaseSmall')};
   line-height: ${th('lineHeightBaseSmall')};
@@ -49,6 +52,7 @@ const Field = ({
   inline,
   label,
   name,
+  required,
   touched,
   value,
   ...props
@@ -56,7 +60,11 @@ const Field = ({
   const error = get(props.errors, name)
   const touchedThis = get(touched, name)
 
+  // console.log(handleBlur)
+  // console.log(props)
+
   const showError = () => {
+    // console.log(name, touched)
     if (touchedThis && error) return true
     if (!touchedThis && value && error) return true
     return false
@@ -67,10 +75,12 @@ const Field = ({
     return 'default'
   }
 
+  const fieldLabel = label && `${label}${required ? ' *' : ''}`
+
   return (
     <FieldWithError>
       <StyledTextField
-        label={inline ? null : label}
+        label={inline ? null : fieldLabel}
         name={name}
         onBlur={handleBlur}
         onChange={handleChange}

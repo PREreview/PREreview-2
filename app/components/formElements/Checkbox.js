@@ -34,13 +34,47 @@ const Wrapper = styled.div`
   }
 `
 
+const BoxWithError = styled.div`
+  display: flex;
+  justify-content: column;
+`
+
+const Error = styled.div`
+  align-self: flex-end;
+  color: ${th('colorError')};
+  font-size: ${th('fontSizeBaseSmall')};
+  margin-left: ${th('gridUnit')};
+`
+
 const Checkbox = props => {
-  const { label, text } = props
+  const {
+    checked,
+    errors,
+    label,
+    name,
+    onBlur,
+    onChange,
+    required,
+    value,
+    text,
+  } = props
+  const error = typeof value !== 'undefined' && errors[name]
 
   return (
     <Wrapper>
-      {label && <Label>{label}</Label>}
-      <Check label={text} />
+      {label && <Label>{`${label}${required && ' *'}`}</Label>}
+
+      <BoxWithError>
+        <Check
+          checked={checked}
+          label={text}
+          name={name}
+          onBlur={onBlur}
+          onChange={onChange}
+          value={value}
+        />
+        {error && <Error>{error}</Error>}
+      </BoxWithError>
     </Wrapper>
   )
 }

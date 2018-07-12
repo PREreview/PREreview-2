@@ -28,12 +28,12 @@ const Wrapper = styled.div`
 `
 
 const TextEditor = props => {
-  const { label, placeholder } = props
+  const { label, placeholder, required } = props
   const value = ''
 
   return (
     <Wrapper>
-      {label && <Label>{label}</Label>}
+      {label && <Label>{`${label}${required ? ' *' : ''}`}</Label>}
       <Editor placeholder={placeholder} value={value} />
     </Wrapper>
   )

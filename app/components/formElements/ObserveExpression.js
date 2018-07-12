@@ -84,13 +84,13 @@ const Inputs = () => (
   </React.Fragment>
 )
 
-const Wrapper = styled.div
+// const Wrapper = styled.div``
 
 const ObserveExpression = () => (
-  <Wrapper>
+  <div>
     <h4>When and where did you observe expression?</h4>
     <Inputs />
-  </Wrapper>
+  </div>
 )
 
 export default ObserveExpression
