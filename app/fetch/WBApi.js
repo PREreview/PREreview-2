@@ -1,10 +1,16 @@
 import config from 'config'
 
 const { baseUrl } = config['pubsweet-client']
-const apiUrl = `${baseUrl}api/wb`
+const apiUrl = `${baseUrl}/api/wb`
 
 const makeCall = async (endpoint, value) => {
   const url = `${apiUrl}/${endpoint}?search=${value}`
+  return fetch(url)
+}
+
+const validate = async (endpoint, payload) => {
+  const { id, search } = payload
+  const url = `${apiUrl}/validate/${endpoint}?search=${search}&id=${id}&`
   return fetch(url)
 }
 
@@ -22,6 +28,8 @@ const getWBls = value => makeCall('wbls', value)
 const getWBPerson = value => makeCall('person', value)
 const getWBSpecies = value => makeCall('species', value)
 
+const validateWBPerson = value => validate('wb-person', value)
+
 export {
   getBackboneVector,
   getFusionType,
@@ -36,4 +44,5 @@ export {
   getWBls,
   getWBPerson,
   getWBSpecies,
+  validateWBPerson,
 }

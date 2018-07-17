@@ -1,9 +1,16 @@
+const { deferConfig } = require('config/defer')
+
 module.exports = {
   dbManager: {
     admin: true,
     email: 'admin@admin.com',
     password: 'adminadmin',
     username: 'admin',
+  },
+  'pubsweet-client': {
+    baseUrl: deferConfig(
+      cfg => `http://localhost:${cfg['pubsweet-server'].port}`,
+    ),
   },
   'pubsweet-server': {
     db: {

@@ -131,7 +131,7 @@ class AutoComplete extends React.Component {
     // console.log(this.props)
 
     // find a better way?
-    const otherProps = omit(this.props, ['onChange', 'onBlur', 'value'])
+    const otherProps = omit(this.props, ['data', 'onChange', 'onBlur', 'value'])
     // console.log(otherProps)
 
     const inputProps = {

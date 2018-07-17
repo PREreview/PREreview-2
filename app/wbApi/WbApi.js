@@ -3,31 +3,47 @@ const request = require('request')
 const baseUrl =
   'http://tazendra.caltech.edu/~azurebrd/cgi-bin/forms/datatype_objects.cgi'
 
-const makeQuery = (objectType, search) => ({
+const makeQuery = (objectType, query) => ({
   action: 'autocompleteXHR',
   objectType,
-  userValue: search,
+  userValue: query.search,
 })
+
+// const makeValidateQuery = (objectType, query) => ({
+//   action: 'asyncValidValue',
+//   objectType,
+//   userValue: encodeURI(`${query.search} ( ${query.id} ) `),
+// })
 
 const makeRequest = (objectType, typeIdentifier, req, res) => {
   request(
     {
-      qs: makeQuery(objectType, req.query.search),
+      qs: makeQuery(objectType, req.query),
       url: baseUrl,
     },
     (error, response, body) => {
       // eslint-disable-next-line no-console
       if (error) return console.log(error)
-
-      // return callback(body)
-
-      // console.log(body)
-      // console.log(cleanData(body, typeIdentifier))
-
       return res.send({ values: cleanData(body, typeIdentifier) })
     },
   )
 }
+
+// const makeValidateRequest = (objectType, req, res) => {
+//   request(
+//     {
+//       qs: makeValidateQuery(objectType, req.query),
+//       url: baseUrl,
+//     },
+//     (error, response, body) => {
+//       if (error) return console.log(error)
+//       // console.log(response)
+//       console.log(body)
+//       const data = body.replace('\n', '') === 'true'
+//       res.send(data)
+//     },
+//   )
+// }
 
 const cleanData = (data, typeIdentifier) =>
   data
@@ -103,6 +119,11 @@ const WbApi = app => {
   app.get('/api/wb/gene', (req, res) => {
     makeRequest('gene', 'wbGeneId', req, res)
   })
+
+  // app.get('/api/wb/validate/wb-person', (req, res) => {
+  //   console.log('this', req.query)
+  //   makeValidateRequest('person', req, res)
+  // })
 }
 
 module.exports = WbApi
