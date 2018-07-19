@@ -2,189 +2,82 @@
 
 import React from 'react'
 import { Form } from 'formik'
-import { get } from 'lodash'
+// import { get } from 'lodash'
+// import { Mutation } from 'react-apollo'
 
-import AutoComplete from './formElements/AutoComplete'
-import Checkbox from './formElements/Checkbox'
-import Dropdown from './formElements/Dropdown'
-import Image from './formElements/Image'
-import ObserveExpression from './formElements/ObserveExpression'
-import Radio from './formElements/Radio'
-import TextField from './formElements/TextField'
-import TextEditor from './formElements/TextEditor'
-import TextFieldGroup from './formElements/TextFieldGroup'
-import {
-  getWBPerson,
-  getWBLaboratory,
-  getWBSpecies,
-  getWBGene,
-  getTransgene,
-  getReporter,
-  getBackboneVector,
-  getFusionType,
-  getIntegrationMethod,
-} from '../fetch/WBApi'
+import { Button } from '@pubsweet/ui'
 
-const options = {
-  dataType: [
-    {
-      label: 'Gene expression results',
-      value: 'geneExpression',
-    },
-  ],
-  detectionMethod: [
-    {
-      label: 'Antibody',
-      value: 'antibody',
-    },
-    {
-      label: 'In-situ Hybridization',
-      value: 'inSituHybridization',
-    },
-    {
-      label: 'Genome Editing',
-      value: 'genomeEditing',
-    },
-    {
-      label: 'Existing Transgene',
-      value: 'existingTransgene',
-    },
-    {
-      label: 'New Transgene',
-      value: 'newTransgene',
-    },
-    {
-      label: 'RT-PCR',
-      value: 'rtPcr',
-    },
-  ],
-}
+// import AutoComplete from './formElements/AutoComplete'
+// import Dropdown from './formElements/Dropdown'
+// import ObserveExpression from './formElements/ObserveExpression'
+// import Radio from './formElements/Radio'
+// import TextField from './formElements/TextField'
+// import TextFieldGroup from './formElements/TextFieldGroup'
 
-const authorSuggestionSelected = (event, authorOptions, setFieldValue) => {
-  // const { name, onSuggestionSelected, setValues } = this.props
+import InitialSubmission from './formElements/InitialSubmission'
 
-  // if (onSuggestionSelected) onSuggestionSelected(event, authorOptions)
-  // formik specific -- cannot stay here if this moves to ui lib
-  // if (setFieldValue) setFieldValue(name, authorOptions.suggestionValue)
-  // if (setValues) setValues({
-  //   'author.name':
-  // })
-  // console.log(authorOptions)
-  // console.log(setFieldValue)
-  setFieldValue('author.wbPersonId', authorOptions.suggestion.wbPersonId)
-}
+// import SUBMIT_MANUSCRIPT from '../mutations/submitManuscript'
+
+// import { formValuesToData } from './formElements/helpers'
+
+// import {
+//   getWBSpecies,
+//   getWBGene,
+//   getTransgene,
+//   getReporter,
+//   getBackboneVector,
+//   getFusionType,
+//   getIntegrationMethod,
+// } from '../fetch/WBApi'
+
+// const options = {
+//   dataType: [
+//     {
+//       label: 'Gene expression results',
+//       value: 'geneExpression',
+//     },
+//   ],
+//   detectionMethod: [
+//     {
+//       label: 'Antibody',
+//       value: 'antibody',
+//     },
+//     {
+//       label: 'In-situ Hybridization',
+//       value: 'inSituHybridization',
+//     },
+//     {
+//       label: 'Genome Editing',
+//       value: 'genomeEditing',
+//     },
+//     {
+//       label: 'Existing Transgene',
+//       value: 'existingTransgene',
+//     },
+//     {
+//       label: 'New Transgene',
+//       value: 'newTransgene',
+//     },
+//     {
+//       label: 'RT-PCR',
+//       value: 'rtPcr',
+//     },
+//   ],
+// }
 
 const SubmissionForm = props => {
   const { values } = props
   // console.log(values)
-  // console.log(props.errors)
+  // console.log(props)
+  // console.log(props.values)
 
   return (
     <Form>
-      <AutoComplete
-        fetchData={getWBPerson}
-        label="Name"
-        name="author.name"
-        onChange={props.handleChange}
-        onSuggestionSelected={authorSuggestionSelected}
-        placeholder="Please type in your name"
-        required
-        value={get(values, 'author.name')}
-        {...props}
-      />
+      <InitialSubmission values={values} {...props} />
 
-      <TextField
-        label="Email address"
-        name="author.email"
-        placeholder="this is the email"
-        required
-        value={get(values, 'author.email')}
-        {...props}
-      />
+      {/* <Dropdown label="Choose a datatype" options={options.dataType} /> */}
 
-      <TextFieldGroup
-        data={getWBPerson}
-        handleChange={props.handleChange}
-        label="Co-Authors"
-        name="coAuthors"
-        placeholder="Please type a co-author's name"
-        {...props}
-      />
-
-      <AutoComplete
-        fetchData={getWBLaboratory}
-        label="Laboratory"
-        name="laboratory"
-        onChange={props.handleChange}
-        placeholder="Please type in the laboratory"
-        required
-        value={get(values, 'laboratory')}
-        {...props}
-      />
-
-      <TextField
-        label="Funding"
-        name="funding"
-        placeholder="this is the funding"
-        required
-        value={get(values, 'funding')}
-        {...props}
-      />
-
-      <Image label="Image" required />
-
-      <TextEditor
-        label="Pattern description"
-        placeholder="Provide a description for the pattern"
-        required
-      />
-
-      <TextField
-        label="Title"
-        name="title"
-        placeholder="this is the title"
-        required
-        value={get(values, 'title')}
-        {...props}
-      />
-
-      <TextField
-        label="Acknowledgements"
-        name="acknowledgements"
-        placeholder="this is the acknowledgements"
-        value={get(values, 'acknowledgements')}
-        {...props}
-      />
-
-      <AutoComplete
-        fetchData={getWBPerson}
-        label="Suggested Reviewer"
-        name="suggestedReviewer"
-        onChange={props.handleChange}
-        placeholder="this is the suggestedReviewer"
-        value={get(values, 'suggestedReviewer')}
-        {...props}
-      />
-
-      <Checkbox
-        checked={get(values, 'disclaimerChecked')}
-        label="Disclaimer"
-        name="disclaimerChecked"
-        onChange={props.handleChange}
-        required
-        text="I agree to the terms of publication"
-        value={get(values, 'disclaimerChecked')}
-        {...props}
-      />
-
-      <TextEditor
-        label="Comments"
-        placeholder="Provide a description for the pattern"
-      />
-
-      <Dropdown label="Choose a datatype" options={options.dataType} />
-
-      <AutoComplete
+      {/* <AutoComplete
         fetchData={getWBSpecies}
         label="Species"
         name="geneExpression.species"
@@ -382,9 +275,21 @@ const SubmissionForm = props => {
             {...props}
           />
         </React.Fragment>
-      )}
+      )} */}
 
-      <ObserveExpression />
+      {/* <ObserveExpression /> */}
+
+      {/* <Mutation mutation={SUBMIT_MANUSCRIPT}> */}
+      {/* {(submitManuscript, response) => ( */}
+      <Button
+        // onClick={() => submitManuscript(formValuesToData(values))}
+        primary
+        type="submit"
+      >
+        Submit
+      </Button>
+      {/* )} */}
+      {/* </Mutation> */}
     </Form>
   )
 }

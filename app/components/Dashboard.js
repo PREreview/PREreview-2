@@ -2,32 +2,53 @@
 
 import React from 'react'
 import { withRouter } from 'react-router-dom'
+import { Query, Mutation } from 'react-apollo'
 
 import { Button } from '@pubsweet/ui'
 
-// import AutoComplete from './formElements/AutoComplete'
-// import { getWBPerson } from '../fetch/WBApi'
+import CREATE_SUBMISSION from '../mutations/createSubmission'
+import { GET_MANUSCRIPTS } from '../queries/manuscripts'
 
-const SubmitButton = ({ history }) => {
+const SubmitButton = props => {
   const onClick = () => {
-    // TO DO -- create new article
-    history.push('/submit')
+    props.createSubmission().then(res => {
+      const { id } = res.data.createSubmission
+      props.history.push(`/submit/${id}`)
+    })
   }
 
   return (
-    <React.Fragment>
-      {/* <AutoComplete fetchData={getWBPerson} placeholder="booya" /> */}
-      <Button onClick={onClick} primary>
-        New Submission
-      </Button>
-    </React.Fragment>
+    <Button onClick={onClick} primary>
+      New Submission
+    </Button>
   )
 }
 
-const Dashboard = ({ history }) => (
-  <div>
-    <SubmitButton history={history} />
-  </div>
-)
+const ManuscriptList = props => {
+  const { manuscripts } = props.data
+  if (!(manuscripts && manuscripts.length)) return null
+
+  return (
+    <div>{manuscripts.map(item => <div key={item.id}>{item.id}</div>)}</div>
+  )
+}
+
+const Dashboard = props => {
+  // console.log(GET_MANUSCRIPTS)
+  const { history } = props
+  return (
+    <div>
+      <Mutation mutation={CREATE_SUBMISSION}>
+        {(createSubmission, more) => (
+          <SubmitButton createSubmission={createSubmission} history={history} />
+        )}
+      </Mutation>
+
+      <Query query={GET_MANUSCRIPTS}>
+        {response => <ManuscriptList {...response} />}
+      </Query>
+    </div>
+  )
+}
 
 export default withRouter(Dashboard)

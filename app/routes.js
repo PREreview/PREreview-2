@@ -27,7 +27,7 @@ const routes = (
         <Page>
           <Switch>
             <Route component={Dashboard} exact path="/dashboard" />
-            <Route component={Submit} exact path="/submit" />
+            <Route component={Submit} exact path="/submit/:id" />
             <Redirect from="/" to="/dashboard" />
           </Switch>
         </Page>

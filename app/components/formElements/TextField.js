@@ -50,6 +50,7 @@ const Field = ({
   handleBlur,
   handleChange,
   inline,
+  isSubmitting,
   label,
   name,
   required,
@@ -64,9 +65,14 @@ const Field = ({
   // console.log(props)
 
   const showError = () => {
-    // console.log(name, touched)
-    if (touchedThis && error) return true
-    if (!touchedThis && value && error) return true
+    // console.log(error)
+    if (!error) return false
+    if (touchedThis) return true
+    if (!touchedThis && value) return true
+    // console.log(name, isSubmitting)
+    // if (isSubmitting) console.log(error)
+    // console.log('pass', isSubmitting)
+    // if (isSubmitting) return true
     return false
   }
 
