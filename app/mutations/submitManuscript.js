@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
 const SUBMIT_MANUSCRIPT = gql`
-  mutation submitManuscript($manuscript: Manuscript!) {
-    updateManuscript {
+  mutation submitManuscript($data: ManuscriptInput!) {
+    updateManuscript(data: $data) {
       id
       authors {
         email

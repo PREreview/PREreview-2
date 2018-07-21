@@ -29,7 +29,13 @@ const ManuscriptList = props => {
   if (!(manuscripts && manuscripts.length)) return null
 
   return (
-    <div>{manuscripts.map(item => <div key={item.id}>{item.id}</div>)}</div>
+    <div>
+      {manuscripts.map(item => (
+        <a href={`/submit/${item.id}`} key={item.id}>
+          <div key={item.id}>{item.id}</div>
+        </a>
+      ))}
+    </div>
   )
 }
 

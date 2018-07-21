@@ -3,6 +3,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Dropzone from 'react-dropzone'
+import { get } from 'lodash'
 
 import { th } from '@pubsweet/ui-toolkit'
 
@@ -10,7 +11,7 @@ import { th } from '@pubsweet/ui-toolkit'
 const Label = styled.label`
   font-size: ${th('fontSizeBaseSmall')};
   line-height: ${th('lineHeightBaseSmall')};
-  display: block;
+  /* display: block; */
 `
 
 const StyledDropzone = styled(Dropzone)`
@@ -43,17 +44,40 @@ class DropArea extends React.Component {
   constructor(props) {
     super(props)
 
-    // TO DO -- wasn't the bind thing fixed?
-    this.handleDrop = this.handleDrop.bind(this)
+    // console.log(props)
+
+    const file = {
+      name: props.values.image.name,
+      preview: `/uploads/${props.values.image.url}`,
+      url: props.values.image.url,
+    }
 
     this.state = {
-      file: props.file,
+      file,
     }
   }
 
-  handleDrop(fileList) {
+  // handleClick = () => {
+  //   const { name, setFieldTouched } = this.props
+  //   setFieldTouched(name, true)
+  // }
+
+  handleDrop = fileList => {
+    const file = fileList[0]
+    const { name, setFieldValue } = this.props
+
+    // console.log(file)
+    // console.log('event', e)
     this.setState({
-      file: fileList[0],
+      file,
+    })
+
+    // console.log(this.props)
+    // this.props.handleChange()
+
+    setFieldValue(name, {
+      file,
+      url: file.preview,
     })
   }
 
@@ -62,14 +86,25 @@ class DropArea extends React.Component {
 
     return (
       <div>
-        <StyledDropzone accept="image/*" onDrop={this.handleDrop} style={{}}>
+        <StyledDropzone
+          accept="image/*"
+          // onClick={this.handleClick}
+          onDrop={this.handleDrop}
+          style={{}}
+        >
           <p>
             Drop an image here {file && 'to replace current'} <br /> or click to
             select
           </p>
         </StyledDropzone>
         {file && <Img alt="" src={file.preview} />}
-        {file && <div>{file.name}</div>}
+        {file && (
+          <div>
+            {/* <a href={file.url}> */}
+            {file.name}
+            {/* </a> */}
+          </div>
+        )}
       </div>
     )
   }
@@ -83,15 +118,33 @@ const StyledDropArea = styled(DropArea)`
   }
 `
 
+const Error = styled.span`
+  color: ${th('colorError')};
+  font-size: ${th('fontSizeBaseSmall')};
+  padding-left: ${th('gridUnit')};
+`
+
 const Wrapper = styled.div`
   margin-bottom: calc(${th('gridUnit')} * 2);
 `
 
-const Image = ({ label, required }) => (
-  <Wrapper>
-    {label && <Label>{`${label}${required && ' *'}`}</Label>}
-    <StyledDropArea />
-  </Wrapper>
-)
+const Image = props => {
+  // console.log(props)
+  const error = get(props.errors, 'image.url')
+  const touched = get(props.touched, 'image')
+  // console.log('img error', error)
+
+  return (
+    <Wrapper>
+      {props.label && (
+        <React.Fragment>
+          <Label>{`${props.label}${props.required && ' *'}`}</Label>
+          {touched && <Error>{error}</Error>}
+        </React.Fragment>
+      )}
+      <StyledDropArea {...props} />
+    </Wrapper>
+  )
+}
 
 export default Image

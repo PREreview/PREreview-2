@@ -9,15 +9,41 @@ import CURRENT_USER from '../queries/currentUser'
 
 // TODO -- use classname on appbar in ui
 
-const NavigationBar = ({ data: { currentUser }, location, history }) => {
-  const navLinks = [
-    <Action active={location.pathname.match(/dashboard/g)} to="/dashboard">
+const navLinks = location => {
+  const isDashboard = location.pathname.match(/dashboard/g)
+  const isSubmit = location.pathname.match(/submit/g)
+
+  // console.log('submit', isSubmit)
+
+  const dashboardLink = (
+    <Action active={isDashboard} to="/dashboard">
       Dashboard
-    </Action>,
-    <Action active={location.pathname.match(/submit/g)} to="/submit">
-      Submit
-    </Action>,
-  ]
+    </Action>
+  )
+
+  const submitLink = (
+    <Action active={isSubmit} to="/submit">
+      Article
+    </Action>
+  )
+
+  const links = [dashboardLink]
+
+  if (isSubmit) links.push(submitLink)
+
+  return links
+}
+
+const NavigationBar = ({ data: { currentUser }, location, history }) => {
+  // const navLinks = [
+  //   <Action active={location.pathname.match(/dashboard/g)} to="/dashboard">
+  //     Dashboard
+  //   </Action>,
+  //   <Action active={location.pathname.match(/submit/g)} to="/submit">
+  //     Submit
+  //   </Action>,
+  // ]
+  const links = navLinks(location)
 
   const onLogoutClick = () => {
     localStorage.removeItem('token')
@@ -27,7 +53,7 @@ const NavigationBar = ({ data: { currentUser }, location, history }) => {
   return (
     <AppBar
       brand="WormBase"
-      navLinkComponents={navLinks}
+      navLinkComponents={links}
       onLogoutClick={onLogoutClick}
       user={currentUser}
     />

@@ -7,11 +7,14 @@ const GET_MANUSCRIPT = gql`
       authors {
         email
         name
+        submittingAuthor
+        wormBaseId
       }
       title
       laboratory
       funding
       image {
+        name
         url
       }
       patternDescription

@@ -28,13 +28,21 @@ const Wrapper = styled.div`
 `
 
 const TextEditor = props => {
-  const { label, placeholder, required } = props
-  const value = ''
+  const { label, name, placeholder, required, setFieldValue, value } = props
+  // const value = ''
+
+  const handleChange = newValue => {
+    setFieldValue(name, newValue)
+  }
 
   return (
     <Wrapper>
       {label && <Label>{`${label}${required ? ' *' : ''}`}</Label>}
-      <Editor placeholder={placeholder} value={value} />
+      <Editor
+        onChange={handleChange}
+        placeholder={placeholder}
+        value={value || ''}
+      />
     </Wrapper>
   )
 }

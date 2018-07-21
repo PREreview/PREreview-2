@@ -8,7 +8,6 @@ import { v4 as uuid } from 'uuid'
 import { Button } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
 
-// import { getWBPerson } from '../../fetch/WBApi'
 import AutoComplete from './AutoComplete'
 
 const Field = props => {

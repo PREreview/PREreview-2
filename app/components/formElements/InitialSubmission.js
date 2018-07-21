@@ -82,12 +82,15 @@ const InitialSubmission = props => {
         {...props}
       />
 
-      <Image label="Image" required />
+      <Image label="Image" name="image" required {...props} />
 
       <TextEditor
         label="Pattern description"
+        name="patternDescription"
         placeholder="Provide a description for the pattern"
         required
+        value={get(values, 'patternDescription')}
+        {...props}
       />
 
       <TextField
@@ -118,19 +121,22 @@ const InitialSubmission = props => {
       />
 
       <Checkbox
-        checked={get(values, 'disclaimerChecked')}
+        checked={get(values, 'disclaimer')}
         label="Disclaimer"
         name="disclaimerChecked"
         onChange={handleChange}
         required
         text="I agree to the terms of publication"
-        value={get(values, 'disclaimerChecked')}
+        value={get(values, 'disclaimer')}
         {...props}
       />
 
       <TextEditor
         label="Comments"
+        name="comments"
         placeholder="Provide a description for the pattern"
+        value={get(values, 'comments')}
+        {...props}
       />
     </React.Fragment>
   )
