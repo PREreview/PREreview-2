@@ -35,6 +35,11 @@ const GET_MANUSCRIPTS = gql`
   query manuscripts {
     manuscripts {
       id
+      status {
+        dataTypeSelected
+        initialSubmission
+        submitted
+      }
       title
     }
   }

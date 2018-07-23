@@ -54,51 +54,70 @@ const Section = props => {
   )
 }
 
+const StatusLabel = styled.span`
+  font-size: ${th('fontSizeHeadingSmall')};
+  text-transform: uppercase;
+`
+
+const Status = props => {
+  const { status } = props
+  let text
+
+  if (!status.initialSubmission) text = 'Not Submitted'
+  if (status.initialSubmission && !status.dataTypeSelected)
+    text = 'Initial Submission ready'
+
+  return <StatusLabel>{text}</StatusLabel>
+}
+
 const SectionItem = props => {
   const { data } = props
   return (
-    <SectionItemWrapper key={data.id}>
-      <SectionItemTitle>{data.title || 'Untitled'}</SectionItemTitle>
-      <ActionGroup>
-        <Action to={`/submit/${data.id}`}>Edit</Action>
-        <Mutation
-          mutation={DELETE_MANUSCRIPT}
-          refetchQueries={[
-            // { query: GET_MANUSCRIPT, variables: { id: data.id } },
-            { query: GET_MANUSCRIPTS },
-          ]}
-          // update={(cache, { data: { deleteManuscript } }) => {
-          //   const { manuscripts } = cache.readQuery({
-          //     query: GET_MANUSCRIPTS,
-          //   })
+    <React.Fragment>
+      <Status status={data.status} />
+      <SectionItemWrapper key={data.id}>
+        <SectionItemTitle>{data.title || 'Untitled'}</SectionItemTitle>
+        <ActionGroup>
+          <Action to={`/submit/${data.id}`}>Edit</Action>
+          <Mutation
+            mutation={DELETE_MANUSCRIPT}
+            refetchQueries={[
+              // { query: GET_MANUSCRIPT, variables: { id: data.id } },
+              { query: GET_MANUSCRIPTS },
+            ]}
+            // update={(cache, { data: { deleteManuscript } }) => {
+            //   const { manuscripts } = cache.readQuery({
+            //     query: GET_MANUSCRIPTS,
+            //   })
 
-          //   // const a = cache.readQuery({
-          //   //   query: GET_MANUSCRIPT,
-          //   //   variables: { id: deleteManuscript },
-          //   // })
+            //   // const a = cache.readQuery({
+            //   //   query: GET_MANUSCRIPT,
+            //   //   variables: { id: deleteManuscript },
+            //   // })
 
-          //   // console.log(a)
+            //   // console.log(a)
 
-          //   const toRemove = manuscripts.find(
-          //     item => item.id === deleteManuscript,
-          //   )
+            //   const toRemove = manuscripts.find(
+            //     item => item.id === deleteManuscript,
+            //   )
 
-          //   cache.writeQuery({
-          //     data: { manuscripts: without(manuscripts, toRemove) },
-          //     query: GET_MANUSCRIPTS,
-          //   })
-          // }}
-        >
-          {deleteManuscript => (
-            <Action
-              onClick={() => deleteManuscript({ variables: { id: data.id } })}
-            >
-              Delete
-            </Action>
-          )}
-        </Mutation>
-      </ActionGroup>
-    </SectionItemWrapper>
+            //   cache.writeQuery({
+            //     data: { manuscripts: without(manuscripts, toRemove) },
+            //     query: GET_MANUSCRIPTS,
+            //   })
+            // }}
+          >
+            {deleteManuscript => (
+              <Action
+                onClick={() => deleteManuscript({ variables: { id: data.id } })}
+              >
+                Delete
+              </Action>
+            )}
+          </Mutation>
+        </ActionGroup>
+      </SectionItemWrapper>
+    </React.Fragment>
   )
 }
 
@@ -138,6 +157,11 @@ const Dashboard = props => {
         }
 
         const items = get(response, 'data.manuscripts')
+        console.log(items)
+
+        // const authoredItems
+        const editorItems =
+          items && items.filter(item => get(item, 'status.initialSubmission'))
 
         return (
           <div>
@@ -165,6 +189,7 @@ const Dashboard = props => {
               )}
             </Mutation>
             <Section items={items} label="My Articles" />
+            <Section items={editorItems} label="Editor Section" />
           </div>
         )
       }}

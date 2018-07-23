@@ -85,7 +85,7 @@ const dataToFormValues = data => {
     values.image = omit(image, '__typename')
   }
   // console.log(image.__typename)
-  console.log(values)
+  // console.log(values)
   // console.log(data.patternDescription, values.patternDescription)
   // console.log('values after data', merge(values, defaultFormValues))
   // return merge(values, defaultFormValues)
