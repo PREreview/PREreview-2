@@ -11,6 +11,7 @@ const GET_MANUSCRIPT = gql`
         wormBaseId
       }
       comments
+      dataType
       disclaimer
       funding
       id

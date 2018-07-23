@@ -66,6 +66,7 @@ const Status = props => {
   if (!status.initialSubmission) text = 'Not Submitted'
   if (status.initialSubmission && !status.dataTypeSelected)
     text = 'Initial Submission ready'
+  if (status.dataTypeSelected) text = 'Datatype selected'
 
   return <StatusLabel>{text}</StatusLabel>
 }
@@ -157,7 +158,7 @@ const Dashboard = props => {
         }
 
         const items = get(response, 'data.manuscripts')
-        console.log(items)
+        // console.log(items)
 
         // const authoredItems
         const editorItems =

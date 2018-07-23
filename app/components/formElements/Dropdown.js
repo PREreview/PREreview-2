@@ -36,8 +36,21 @@ const Error = styled.span`
 `
 
 const Dropdown = props => {
-  const { error, label, options, required, touched, value } = props
+  const {
+    error,
+    label,
+    name,
+    options,
+    required,
+    setFieldValue,
+    touched,
+    value,
+  } = props
+
   // console.log(error)
+  // console.log(props)
+
+  const onChange = newValue => setFieldValue(name, newValue)
 
   return (
     <Wrapper>
@@ -48,7 +61,7 @@ const Dropdown = props => {
           {touched && error && <Error>{error}</Error>}
         </Label>
       )}
-      <Menu options={options} value={value} />
+      <Menu onChange={onChange} options={options} value={value} />
     </Wrapper>
   )
 }

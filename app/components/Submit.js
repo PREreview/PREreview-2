@@ -207,7 +207,18 @@ class Submit extends React.Component {
                         // console.log('image', formValues.image)
                         // console.log('submission', submission)
                         const submit = () => {
-                          set(formValues, 'status.initialSubmission', true)
+                          const initialSubmission = get(
+                            formValues,
+                            'status.initialSubmission',
+                          )
+                          const dataType = get(formValues, 'dataType')
+
+                          if (!initialSubmission)
+                            set(formValues, 'status.initialSubmission', true)
+
+                          if (dataType && dataType.length > 0)
+                            set(formValues, 'status.dataTypeSelected', true)
+
                           const manuscriptInput = formValuesToData(formValues)
                           // console.log(manuscriptInput)
                           // set(manuscriptInput, 'status.initialSubmission', true)

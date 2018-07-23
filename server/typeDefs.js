@@ -11,33 +11,37 @@ const typeDefs = `
   }
 
   type Manuscript {
-    id: ID!
-    authors: [Author]
-    title: String
-    laboratory: String
-    funding: String
-    image: File
-    patternDescription: String
     acknowledgements: String
-    suggestedReviewer: String
-    disclaimer: Boolean
+    authors: [Author]
     comments: String
+    dataType: String
+    disclaimer: Boolean
+    funding: String
+    geneExpression: GeneExpression
+    id: ID!
+    image: File
+    laboratory: String
+    patternDescription: String
     status: Status
+    suggestedReviewer: String
+    title: String
   }
 
   input ManuscriptInput {
-    id: ID!
-    authors: [AuthorInput]
-    title: String
-    laboratory: String
-    funding: String
-    image: FileInput
-    patternDescription: String
     acknowledgements: String
-    suggestedReviewer: String
-    disclaimer: Boolean
+    authors: [AuthorInput]
     comments: String
+    dataType: String
+    disclaimer: Boolean
+    funding: String
+    geneExpression: GeneExpressionInput
+    id: ID!
+    image: FileInput
+    laboratory: String
+    patternDescription: String
     status: StatusInput
+    suggestedReviewer: String
+    title: String
   }
 
   type Status {
@@ -78,6 +82,14 @@ const typeDefs = `
     url: String
     size: String
     type: String
+  }
+
+  type GeneExpression {
+    detectionMethod: String
+  }
+
+  input GeneExpressionInput {
+    detectionMethod: String
   }
 `
 
