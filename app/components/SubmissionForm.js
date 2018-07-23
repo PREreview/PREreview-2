@@ -2,13 +2,13 @@
 
 import React from 'react'
 import { Form } from 'formik'
-// import { get } from 'lodash'
+import { get } from 'lodash'
 // import { Mutation } from 'react-apollo'
 
 import { Button } from '@pubsweet/ui'
 
 // import AutoComplete from './formElements/AutoComplete'
-// import Dropdown from './formElements/Dropdown'
+import Dropdown from './formElements/Dropdown'
 // import ObserveExpression from './formElements/ObserveExpression'
 // import Radio from './formElements/Radio'
 // import TextField from './formElements/TextField'
@@ -30,51 +30,70 @@ import InitialSubmission from './formElements/InitialSubmission'
 //   getIntegrationMethod,
 // } from '../fetch/WBApi'
 
-// const options = {
-//   dataType: [
-//     {
-//       label: 'Gene expression results',
-//       value: 'geneExpression',
-//     },
-//   ],
-//   detectionMethod: [
-//     {
-//       label: 'Antibody',
-//       value: 'antibody',
-//     },
-//     {
-//       label: 'In-situ Hybridization',
-//       value: 'inSituHybridization',
-//     },
-//     {
-//       label: 'Genome Editing',
-//       value: 'genomeEditing',
-//     },
-//     {
-//       label: 'Existing Transgene',
-//       value: 'existingTransgene',
-//     },
-//     {
-//       label: 'New Transgene',
-//       value: 'newTransgene',
-//     },
-//     {
-//       label: 'RT-PCR',
-//       value: 'rtPcr',
-//     },
-//   ],
-// }
+const options = {
+  dataType: [
+    {
+      label: 'Gene expression results',
+      value: 'geneExpression',
+    },
+  ],
+  // detectionMethod: [
+  //   {
+  //     label: 'Antibody',
+  //     value: 'antibody',
+  //   },
+  //   {
+  //     label: 'In-situ Hybridization',
+  //     value: 'inSituHybridization',
+  //   },
+  //   {
+  //     label: 'Genome Editing',
+  //     value: 'genomeEditing',
+  //   },
+  //   {
+  //     label: 'Existing Transgene',
+  //     value: 'existingTransgene',
+  //   },
+  //   {
+  //     label: 'New Transgene',
+  //     value: 'newTransgene',
+  //   },
+  //   {
+  //     label: 'RT-PCR',
+  //     value: 'rtPcr',
+  //   },
+  // ],
+}
 
 const SubmissionForm = props => {
   const { values } = props
   // console.log(values)
+  // console.log(values.coAuthors)
+  // console.log(Array.isArray(values))
   // console.log(props)
-  // console.log(props.values)
+  // console.log(props.errors)
+
+  const {
+    initialSubmission,
+    // submitted,
+  } = values.status
 
   return (
     <Form>
       <InitialSubmission values={values} {...props} />
 
+      {initialSubmission && (
+        <Dropdown
+          error={get(props.errors, 'dataType')}
+          label="Choose a datatype"
+          name="dataType"
+          options={options.dataType}
+          required
+          touched={get(props.touched, 'dataType')}
+          value={get(values, 'dataType')}
+          {...props}
+        />
+      )}
       {/* <Dropdown label="Choose a datatype" options={options.dataType} /> */}
 
       {/* <AutoComplete

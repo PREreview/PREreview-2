@@ -6,6 +6,7 @@ const typeDefs = `
 
   extend type Mutation {
     createSubmission: Manuscript!
+    deleteManuscript(id: ID!): ID!
     updateManuscript(data: ManuscriptInput!): Manuscript!
   }
 
@@ -40,13 +41,15 @@ const typeDefs = `
   }
 
   type Status {
-    submitted: Boolean
+    dataTypeSelected: Boolean
     initialSubmission: Boolean
+    submitted: Boolean
   }
 
   input StatusInput {
-    submitted: Boolean
+    dataTypeSelected: Boolean
     initialSubmission: Boolean
+    submitted: Boolean
   }
 
   type Author {

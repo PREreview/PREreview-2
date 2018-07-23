@@ -3,25 +3,30 @@ import gql from 'graphql-tag'
 const GET_MANUSCRIPT = gql`
   query manuscript($id: ID!) {
     manuscript(id: $id) {
-      id
+      acknowledgements
       authors {
         email
         name
         submittingAuthor
         wormBaseId
       }
-      title
-      laboratory
+      comments
+      disclaimer
       funding
+      id
       image {
         name
         url
       }
+      laboratory
       patternDescription
-      acknowledgements
+      status {
+        dataTypeSelected
+        initialSubmission
+        submitted
+      }
       suggestedReviewer
-      disclaimer
-      comments
+      title
     }
   }
 `

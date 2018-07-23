@@ -3,22 +3,30 @@ import gql from 'graphql-tag'
 const SUBMIT_MANUSCRIPT = gql`
   mutation submitManuscript($data: ManuscriptInput!) {
     updateManuscript(data: $data) {
-      id
+      acknowledgements
       authors {
         email
         name
+        submittingAuthor
+        wormBaseId
       }
-      title
-      laboratory
+      comments
+      disclaimer
       funding
+      id
       image {
+        name
         url
       }
+      laboratory
       patternDescription
-      acknowledgements
+      status {
+        dataTypeSelected
+        initialSubmission
+        submitted
+      }
       suggestedReviewer
-      disclaimer
-      comments
+      title
     }
   }
 `

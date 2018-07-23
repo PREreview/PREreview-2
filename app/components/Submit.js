@@ -4,7 +4,7 @@ import React from 'react'
 import { Formik } from 'formik'
 import { Mutation, Query } from 'react-apollo'
 import { withRouter } from 'react-router-dom'
-import { set } from 'lodash'
+import { get, set } from 'lodash'
 
 // eslint-disable-next-line no-unused-vars
 import validate, { makeSchema } from './formElements/validations'
@@ -51,48 +51,179 @@ class Submit extends React.Component {
     }
     // console.log('render')
 
+    // return (
+    //   <Mutation mutation={UPLOAD_FILE}>
+    //     {// eslint-disable-next-line arrow-body-style
+    //     (uploadFile, uploadResponse) => {
+    //       // console.log(uploadResponse)
+    //       return (
+    //         <Mutation mutation={SUBMIT_MANUSCRIPT}>
+    //           {// eslint-disable-next-line arrow-body-style
+    //           (submitManuscript, mutationResponse) => {
+    //             // const submit = () => {
+
+    //             // }
+
+    //             return (
+    //               <Query query={GET_MANUSCRIPT} variables={{ id }}>
+    //                 {queryResponse => {
+    //                   // console.log(queryResponse)
+    //                   const submission = queryResponse.data.manuscript
+    //                   // const submission = undefined
+    //                   console.log(submission)
+    //                   const values = submission && dataToFormValues(submission)
+
+    //                   if (!values) return null
+    //                   // console.log('v', values)
+    //                   // console.log(values)
+    //                   const validations = makeSchema(values)
+    //                   // console.log(validations)
+
+    //                   const onSubmit = (formValues, formikBag) => {
+    //                     // console.log('do it')
+    //                     // console.log('image', formValues.image)
+    //                     // console.log('submission', submission)
+
+    //                     const submit = () => {
+    //                       const manuscriptInput = formValuesToData(formValues)
+    //                       // console.log(manuscriptInput)
+
+    //                       set(manuscriptInput, 'status.initialSubmission', true)
+    //                       submitManuscript({
+    //                         variables: { data: manuscriptInput },
+    //                       })
+    //                     }
+
+    //                     if (
+    //                       get(formValues, 'image.url') ===
+    //                       get(submission, 'image.url')
+    //                     ) {
+    //                       // console.log('not changed')
+    //                       // eslint-disable-next-line no-param-reassign
+    //                       delete formValues.image
+    //                       submit()
+    //                     } else {
+    //                       uploadFile({
+    //                         variables: { file: formValues.image.file },
+    //                       }).then(res => {
+    //                         // console.log(formValues.image)
+    //                         const imageName = formValues.image.file.name
+    //                         // console.log(formValues)
+
+    //                         // eslint-disable-next-line no-param-reassign
+    //                         formValues.image = {
+    //                           name: imageName,
+    //                           url: res.data.upload.url,
+    //                         }
+    //                         // console.log(formValues)
+    //                         submit()
+    //                         // const manuscriptInput = formValuesToData(formValues)
+    //                         // // console.log(manuscriptInput)
+
+    //                         // set(manuscriptInput, 'status.initialSubmission', true)
+    //                         // submitManuscript({
+    //                         //   variables: { data: manuscriptInput },
+    //                         // })
+    //                       })
+    //                     }
+    //                   }
+
+    //                   return (
+    //                     <div>
+    //                       <h1>Submit your article</h1>
+    //                       <Formik
+    //                         // enableReinitialize
+    //                         initialValues={values}
+    //                         onSubmit={onSubmit}
+    //                         ref={c => (this.form = c)}
+    //                         render={SubmissionForm}
+    //                         // validate={validate}
+    //                         validationSchema={validations}
+    //                         // validationSchema={validate}
+    //                         // values={values}
+    //                       />
+    //                     </div>
+    //                   )
+    //                 }}
+    //               </Query>
+    //             )
+    //           }}
+    //         </Mutation>
+    //       )
+    //     }}
+    //   </Mutation>
+    // )
+
     return (
-      <Mutation mutation={UPLOAD_FILE}>
+      <Query query={GET_MANUSCRIPT} variables={{ id }}>
         {// eslint-disable-next-line arrow-body-style
-        (uploadFile, uploadResponse) => {
-          // console.log(uploadResponse)
+        queryResponse => {
+          // console.log(queryResponse)
           return (
-            <Mutation mutation={SUBMIT_MANUSCRIPT}>
+            <Mutation mutation={UPLOAD_FILE}>
               {// eslint-disable-next-line arrow-body-style
-              (submitManuscript, mutationResponse) => {
-                // const submit = () => {
-
-                // }
-
+              (uploadFile, uploadResponse) => {
+                // console.log(uploadResponse)
                 return (
-                  <Query query={GET_MANUSCRIPT} variables={{ id }}>
-                    {queryResponse => {
+                  <Mutation
+                    mutation={SUBMIT_MANUSCRIPT}
+                    update={(cache, { data: { updateManuscript } }) => {
+                      // console.log('update')
+                      // console.log(cache)
+                      // console.log(updateManuscript)
+
+                      // const { todos } = cache.readQuery({ query: GET_TODOS })
+                      const { manuscript } = cache.readQuery({
+                        query: GET_MANUSCRIPT,
+                        variables: {
+                          id: queryResponse.data.manuscript.id,
+                        },
+                      })
+                      // console.log(manuscript)
+                      cache.writeQuery({
+                        data: { manuscript },
+                        query: GET_MANUSCRIPT,
+                      })
+                    }}
+                  >
+                    {// eslint-disable-next-line arrow-body-style
+                    (submitManuscript, mutationResponse) => {
+                      // const submit = () => {
+                      // }
                       // console.log(queryResponse)
                       const submission = queryResponse.data.manuscript
                       // const submission = undefined
-                      // console.log
+                      // console.log(submission)
                       const values = submission && dataToFormValues(submission)
+
+                      // console.log(values)
                       if (!values) return null
                       // console.log('v', values)
-                      // console.log(values)
                       const validations = makeSchema(values)
                       // console.log(validations)
-
                       const onSubmit = (formValues, formikBag) => {
+                        // console.log('bag', formikBag)
                         // console.log('do it')
                         // console.log('image', formValues.image)
-
+                        // console.log('submission', submission)
                         const submit = () => {
+                          set(formValues, 'status.initialSubmission', true)
                           const manuscriptInput = formValuesToData(formValues)
                           // console.log(manuscriptInput)
-
-                          set(manuscriptInput, 'status.initialSubmission', true)
+                          // set(manuscriptInput, 'status.initialSubmission', true)
                           submitManuscript({
                             variables: { data: manuscriptInput },
                           })
+                          // console.log(
+                          //   'dis',
+                          //   formValues.status.initialSubmission,
+                          // )
+                          formikBag.resetForm(formValues)
                         }
-
-                        if (formValues.image.url === submission.image.url) {
+                        if (
+                          get(formValues, 'image.url') ===
+                          get(submission, 'image.url')
+                        ) {
                           // console.log('not changed')
                           // eslint-disable-next-line no-param-reassign
                           delete formValues.image
@@ -104,7 +235,6 @@ class Submit extends React.Component {
                             // console.log(formValues.image)
                             const imageName = formValues.image.file.name
                             // console.log(formValues)
-
                             // eslint-disable-next-line no-param-reassign
                             formValues.image = {
                               name: imageName,
@@ -114,7 +244,6 @@ class Submit extends React.Component {
                             submit()
                             // const manuscriptInput = formValuesToData(formValues)
                             // // console.log(manuscriptInput)
-
                             // set(manuscriptInput, 'status.initialSubmission', true)
                             // submitManuscript({
                             //   variables: { data: manuscriptInput },
@@ -122,12 +251,11 @@ class Submit extends React.Component {
                           })
                         }
                       }
-
                       return (
                         <div>
                           <h1>Submit your article</h1>
                           <Formik
-                            // enableReinitialize
+                            enableReinitialize
                             initialValues={values}
                             onSubmit={onSubmit}
                             ref={c => (this.form = c)}
@@ -139,14 +267,15 @@ class Submit extends React.Component {
                           />
                         </div>
                       )
+                      // )
                     }}
-                  </Query>
+                  </Mutation>
                 )
               }}
             </Mutation>
           )
         }}
-      </Mutation>
+      </Query>
     )
   }
 }

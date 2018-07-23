@@ -1,5 +1,5 @@
 import * as yup from 'yup'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, merge } from 'lodash'
 // import { each, get, keys, merge, set } from 'lodash'
 // import flatten, { unflatten } from 'flat'
 
@@ -27,6 +27,10 @@ const initial = {
   laboratory: yup.string().required('Laboratory is required'),
   patternDescription: yup.string().required('Pattern description is required'),
   title: yup.string().required('Title is required'),
+}
+
+const selectDataType = {
+  dataType: yup.string().required('Datatype is required'),
 }
 
 const validationSchema = yup.object().shape({
@@ -189,6 +193,16 @@ const validationSchema = yup.object().shape({
 
 export const makeSchema = values => {
   const schema = cloneDeep(initial)
+
+  const { status } = values
+  // console.log(status)
+  if (status.initialSubmission) {
+    // console.log('initial yes')
+    merge(schema, selectDataType)
+  }
+
+  // console.log(schema)
+
   return yup.object().shape(schema)
 }
 

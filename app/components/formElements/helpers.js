@@ -1,9 +1,10 @@
 import { v4 as uuid } from 'uuid'
 
-import {
+import _, {
   cloneDeep,
   find,
-  merge,
+  // merge,
+  mergeWith,
   // pickBy,
   omit,
   omitBy,
@@ -50,10 +51,11 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const dataToFormValues = data => {
+  const defaultValues = cloneDeep(defaultFormValues)
   const values = cloneDeep(data)
   const { authors, image } = data
 
-  // console.log(data)
+  // console.log('data', data)
 
   if (authors) {
     const modAuthors = authors.map(item => {
@@ -63,7 +65,7 @@ const dataToFormValues = data => {
         delete modAuthor.wormBaseId
       }
       modAuthor.id = uuid()
-      return omit(modAuthor, '__typename') // eslint-disable-line no-underscore-dangle
+      return omit(modAuthor, '__typename')
     })
 
     const author = find(modAuthors, entry => entry.submittingAuthor)
@@ -83,16 +85,26 @@ const dataToFormValues = data => {
     values.image = omit(image, '__typename')
   }
   // console.log(image.__typename)
-  // console.log(values)
+  console.log(values)
   // console.log(data.patternDescription, values.patternDescription)
   // console.log('values after data', merge(values, defaultFormValues))
   // return merge(values, defaultFormValues)
-  return merge(defaultFormValues, values)
+  // return merge(defaultFormValues, values)
+
+  return mergeWith(defaultValues, values, (defaultValue, incomingValue) => {
+    // console.log(defaultValue, incomingValue)
+    if (Array.isArray(defaultValue)) {
+      // return defaultValue.concat(incomingValue)
+      // incomingValue = values(incomingValue)
+      return incomingValue === null ? defaultValue : _.values(incomingValue)
+    }
+    return incomingValue === null ? defaultValue : incomingValue
+  })
 }
 
 const formValuesToData = values => {
   const data = cloneDeep(values)
-  const { author, coAuthors } = data
+  const { author, coAuthors, status } = data
 
   data.authors = union([], coAuthors)
   // console.log(data.authors)
@@ -119,8 +131,13 @@ const formValuesToData = values => {
   //   // delete data.coAuthors
   // }
 
+  // eslint-disable-next-line no-underscore-dangle
+  if (status) delete status.__typename
+
   delete data.author
   delete data.coAuthors
+
+  // console.log(data.authors)
 
   // console.log('final', data)
   return data

@@ -19,7 +19,10 @@ const resolvers = {
 
       return manuscript
     },
-
+    async deleteManuscript(_, { id }) {
+      await db.deleteManuscript(id)
+      return id
+    },
     async updateManuscript(_, { data }, ctx) {
       // console.log('heeeeeere')
       // console.log('_', _)

@@ -23,12 +23,32 @@ const Wrapper = styled.div`
   }
 `
 
+const Label = styled.label`
+  font-size: ${th('fontSizeBaseSmall')};
+  line-height: ${th('lineHeightBaseSmall')};
+  /* display: block; */
+`
+
+const Error = styled.span`
+  color: ${th('colorError')};
+  font-size: ${th('fontSizeBaseSmall')};
+  padding-left: ${th('gridUnit')};
+`
+
 const Dropdown = props => {
-  const { label, options } = props
+  const { error, label, options, required, touched, value } = props
+  // console.log(error)
 
   return (
     <Wrapper>
-      <Menu label={label} options={options} />
+      {label && (
+        <Label>
+          {label}
+          {required && ' *'}
+          {touched && error && <Error>{error}</Error>}
+        </Label>
+      )}
+      <Menu options={options} value={value} />
     </Wrapper>
   )
 }

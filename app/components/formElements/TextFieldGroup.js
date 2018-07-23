@@ -77,6 +77,9 @@ class TextFieldGroup extends React.Component {
     let data = get(values, name)
     if (!data || data.length === 0) data = [{ name: '' }]
 
+    // console.log(data)
+    // console.log(data.length > 0)
+
     return (
       <GroupWrapper>
         {label && <Label>{label}</Label>}

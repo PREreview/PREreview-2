@@ -4,6 +4,9 @@ const _ = require('lodash')
 const db = require('pubsweet-server/src/db')
 const Model = require('pubsweet-server/src/models/Model')
 
+const deleteManuscript = id =>
+  db.query('DELETE FROM entities WHERE id = $1', [id])
+
 const manuscriptGqlToDb = (manuscript, owner) => {
   const manuscriptDb = _.cloneDeep(manuscript)
   delete manuscriptDb.id
@@ -54,6 +57,7 @@ const update = async (obj, id) => {
 }
 
 module.exports = {
+  deleteManuscript,
   manuscriptDbToGql,
   manuscriptGqlToDb,
   save,
