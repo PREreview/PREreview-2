@@ -9,7 +9,7 @@ import {
   // without,
 } from 'lodash'
 
-import { Action, ActionGroup, Button } from '@pubsweet/ui'
+import { Action as UIAction, ActionGroup, Button } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
 
 import CREATE_SUBMISSION from '../mutations/createSubmission'
@@ -70,6 +70,10 @@ const Status = props => {
 
   return <StatusLabel>{text}</StatusLabel>
 }
+
+const Action = styled(UIAction)`
+  line-height: unset;
+`
 
 const SectionItem = props => {
   const { data } = props
