@@ -41,6 +41,13 @@ const GroupWrapper = styled.div`
   margin-bottom: calc(${th('gridUnit')} * 2);
 `
 
+const Error = styled.span`
+  color: ${th('colorError')};
+  font-size: ${th('fontSizeBaseSmall')};
+  line-height: ${th('lineHeightBaseSmall')};
+  padding-left: ${th('gridUnit')};
+`
+
 class TextFieldGroup extends React.Component {
   constructor(props) {
     super(props)
@@ -50,9 +57,11 @@ class TextFieldGroup extends React.Component {
   handleAdd() {
     const { maxItems, name, setValues, values } = this.props
     let data = get(values, name)
+    // console.log('data', data)
 
     if (!data) data = []
     if (data.length >= maxItems) return
+    // console.log('pass')
 
     const newItem = {
       id: uuid(),
@@ -60,6 +69,7 @@ class TextFieldGroup extends React.Component {
     }
 
     const newValues = data.push(newItem)
+    // console.log(newValues, data)
     setValues(values, name, newValues)
   }
 
@@ -73,16 +83,31 @@ class TextFieldGroup extends React.Component {
   }
 
   render() {
-    const { handleChange, label, name, placeholder, values } = this.props
+    const {
+      handleChange,
+      label,
+      name,
+      placeholder,
+      required,
+      values,
+    } = this.props
+
     let data = get(values, name)
     if (!data || data.length === 0) data = [{ name: '' }]
 
     // console.log(data)
     // console.log(data.length > 0)
+    const error = get(this.props.errors, name)
+    const touched = get(this.props.touched, name)
 
     return (
       <GroupWrapper>
-        {label && <Label>{label}</Label>}
+        {label && (
+          <Label>
+            {label} {required ? ' *' : ''}{' '}
+            {touched && error && <Error>{error}</Error>}
+          </Label>
+        )}
         {data &&
           data.length > 0 &&
           data.map((item, i) => {

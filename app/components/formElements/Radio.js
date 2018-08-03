@@ -2,7 +2,7 @@
 
 import React from 'react'
 import styled from 'styled-components'
-import { get } from 'lodash'
+import { get, omit } from 'lodash'
 
 import { RadioGroup } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
@@ -36,20 +36,34 @@ const Wrapper = styled.div`
   }
 `
 
+const Error = styled.span`
+  color: ${th('colorError')};
+  font-size: ${th('fontSizeBaseSmall')};
+  line-height: ${th('lineHeightBaseSmall')};
+  padding-left: ${th('gridUnit')};
+`
+
 const Radio = props => {
-  const { label, name, options, required, setFieldValue, values } = props
+  const { error, label, name, options, required, setFieldValue, values } = props
+  // console.log(error)
 
   const value = get(values, name)
   const onChange = newValue => setFieldValue(name, newValue)
 
+  const radioProps = omit(props, 'required')
+
   return (
     <Wrapper>
-      {label && <Label>{`${label}${required ? ' *' : ''}`}</Label>}
+      {label && (
+        <Label>
+          {`${label}${required ? ' *' : ''}`} {error && <Error>{error}</Error>}
+        </Label>
+      )}
       <RadioGroup
         onChange={onChange}
         options={options}
         value={value}
-        {...props}
+        {...radioProps}
       />
     </Wrapper>
   )

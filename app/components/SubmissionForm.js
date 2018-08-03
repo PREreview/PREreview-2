@@ -27,6 +27,7 @@ const SubmissionForm = props => {
   // console.log(Array.isArray(values))
   // console.log(props)
   // console.log(props.errors)
+  // console.log(props.touched)
 
   const {
     initialSubmission,

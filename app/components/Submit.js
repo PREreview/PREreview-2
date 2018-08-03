@@ -197,11 +197,13 @@ class Submit extends React.Component {
                       const values = submission && dataToFormValues(submission)
 
                       // console.log(values)
+                      // console.log(values && values.dataType)
                       if (!values) return null
                       // console.log('v', values)
                       const validations = makeSchema(values)
                       // console.log(validations)
                       const onSubmit = (formValues, formikBag) => {
+                        // console.log(formValues)
                         // console.log('bag', formikBag)
                         // console.log('do it')
                         // console.log('image', formValues.image)
@@ -212,6 +214,7 @@ class Submit extends React.Component {
                             'status.initialSubmission',
                           )
                           const dataType = get(formValues, 'dataType')
+                          // console.log('here', dataType)
 
                           if (!initialSubmission)
                             set(formValues, 'status.initialSubmission', true)

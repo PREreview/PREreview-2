@@ -1,12 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import { v4 as uuid } from 'uuid'
 
 import { th } from '@pubsweet/ui-toolkit'
 
 import TextField from './TextField'
 
-const fields = [
+const rows = [
   {
     label: 'Certainly',
     name: 'certainly',
@@ -25,66 +24,87 @@ const fields = [
   },
 ]
 
-const Row = styled.div`
-  display: flex;
+const Field = styled(TextField)`
   justify-content: flex-start;
+  /* background: pink; */
+  display: flex;
+  /* flex-basis: 450px; */
+  height: calc(${th('gridUnit')} * 4);
+  padding: 0 ${th('gridUnit')};
+  width: unset;
 
   div {
+    /* flex-grow: 1; */
+    /* flex-basis: 300px; */
+
     div {
-      /* border: 1px dashed ${th('colorBorder')}; */
-      width: 500px;
+      width: 100%;
 
-      label {
-        width: 10%;
-      }
-
-      /* input {
-        width: 200px;
-      } */
-    }
-
-    div:not(:last-child) {
-      padding-right: 8px;
-    }
-
-    div:first-child {
-      label {
-        width: 39%;
-      }
-    }
-
-    div:last-child {
-      label {
-        width: 45%;
+      input {
+        width: 100%;
       }
     }
   }
 `
 
-const Inputs = () => (
-  <React.Fragment>
-    {fields.map(field => (
-      // generating id's on each render beats the purpose?
-      <React.Fragment key={uuid()}>
-        <Row>
-          <TextField
-            inline
-            label={`${field.label} expressed in`}
-            placeholder="Ex. Pharynx"
-          />
-          <TextField inline label="During" placeholder="Ex. Embryo Ce" />
-          <TextField
-            inline
-            label="Subcellular localization"
-            placeholder="Ex. Nucleus"
-          />
-        </Row>
-      </React.Fragment>
-    ))}
-  </React.Fragment>
-)
+const Row = styled.div`
+  /* background: orange; */
+  /* border: 1px dashed yellow; */
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  height: 50px;
+  padding: ${th('gridUnit')};
 
-// const Wrapper = styled.div``
+  /* stylelint-disable-next-line no-descending-specificity */
+  div {
+    label {
+      flex-basis: 10%;
+      /* flex-shrink: 0; */
+      flex-grow: 1;
+    }
+  }
+
+  div:first-child {
+    label {
+      /* flex-basis: 150px; */
+      width: 140px;
+    }
+  }
+
+  div:last-child {
+    label {
+      flex-basis: 40%;
+    }
+  }
+`
+
+const Wrapper = styled.div`
+  /* background: blue; */
+  display: flex;
+  flex-direction: column;
+`
+
+const Inputs = () => (
+  <Wrapper>
+    {rows.map(row => (
+      <Row>
+        <Field
+          inline
+          label={`${row.label} expressed in`}
+          placeholder="Ex. Pharynx"
+        />
+        <Field inline label="During" placeholder="Ex. Embryo Ce" />
+        <Field
+          inline
+          label="Subcellular localization"
+          placeholder="Ex. Nucleus"
+        />
+      </Row>
+    ))}
+  </Wrapper>
+)
 
 const ObserveExpression = () => (
   <div>

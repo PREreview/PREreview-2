@@ -11,6 +11,7 @@ const SUBMIT_MANUSCRIPT = gql`
         wormBaseId
       }
       comments
+      dataType
       disclaimer
       funding
       id

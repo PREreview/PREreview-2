@@ -33,6 +33,93 @@ const selectDataType = {
   dataType: yup.string().required('Datatype is required'),
 }
 
+const geneExpression = {
+  geneExpression: yup.object().shape({
+    antibodyUsed: yup.string().when(['detectionMethod'], {
+      is: val => val === 'antibody',
+      then: yup.string().required('Antibody is required'),
+    }),
+    backboneVector: yup.string(),
+    coinjected: yup.string(),
+    constructComments: yup.string(),
+    constructionDetails: yup.string().when(['detectionMethod'], {
+      is: val => val === 'newTransgene',
+      then: yup.string().required('Construction details are required'),
+    }),
+    detectionMethod: yup.string().required('Detection method is required'),
+    dnaSequence: yup
+      .array()
+      .of(
+        yup.object().shape({
+          name: yup.string(),
+        }),
+      )
+      .when(['detectionMethod'], {
+        is: val => val === 'newTransgene',
+        then: yup
+          .array()
+          .of(
+            yup.object().shape({
+              name: yup.string(),
+            }),
+          )
+          .min(1, 'Provide at least one DNA sequence')
+          .max(10)
+          .compact(val => val.name === ''),
+      }),
+    expressionPattern: yup.string().required('Expression pattern is required'),
+    fusionType: yup.string().when(['detectionMethod'], {
+      is: val => val === 'newTransgene',
+      then: yup.string().required('Fusion type is required'),
+    }),
+    genotype: yup.string().when(['detectionMethod'], {
+      is: val => val === 'newTransgene',
+      then: yup.string().required('Genotype is required'),
+    }),
+    injectionConcentration: yup.string(),
+    inSituDetails: yup.string().when(['detectionMethod'], {
+      is: val => val === 'inSituHybridization',
+      then: yup.string().required('In Situ Details are required'),
+    }),
+    integratedBy: yup.string(),
+    reporter: yup.string().when(['detectionMethod'], {
+      is: val => val === 'newTransgene',
+      then: yup.string().required('Reporter is required'),
+    }),
+    species: yup.string().required('Species is required'),
+    strain: yup.string(),
+    transgeneName: yup.string().when(['detectionMethod'], {
+      is: val => val === 'newTransgene',
+      then: yup.string().required('Transgene name is required'),
+    }),
+    transgeneUsed: yup
+      .array()
+      .of(
+        yup.object().shape({
+          name: yup.string(),
+        }),
+      )
+      .when(['detectionMethod'], {
+        is: val => val === 'existingTransgene',
+        then: yup
+          .array()
+          .of(
+            yup.object().shape({
+              name: yup.string(),
+            }),
+          )
+          .min(1, 'Provide at least one transgene')
+          .max(10)
+          .compact(val => val.name === ''),
+      }),
+    utr: yup.string(),
+    variation: yup.string().when(['detectionMethod'], {
+      is: val => val === 'genomeEditing',
+      then: yup.string().required('Variation is required'),
+    }),
+  }),
+}
+
 const validationSchema = yup.object().shape({
   author: yup.object().shape({
     email: yup
@@ -193,12 +280,19 @@ const validationSchema = yup.object().shape({
 
 export const makeSchema = values => {
   const schema = cloneDeep(initial)
+  // console.log(values)
 
   const { status } = values
   // console.log(status)
   if (status.initialSubmission) {
     // console.log('initial yes')
     merge(schema, selectDataType)
+  }
+
+  if (status.dataTypeSelected) {
+    if (values.dataType === 'geneExpression') {
+      merge(schema, geneExpression)
+    }
   }
 
   // console.log(schema)

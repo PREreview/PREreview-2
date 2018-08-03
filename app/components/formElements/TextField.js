@@ -61,8 +61,9 @@ const Field = ({
   const error = get(props.errors, name)
   const touchedThis = get(touched, name)
 
+  // console.log(error, touchedThis)
   // console.log(handleBlur)
-  // console.log(props)
+  // console.log(props.errors)
 
   const showError = () => {
     // console.log(error)
@@ -104,10 +105,10 @@ const FieldWithError = styled.div`
 `
 
 const TextField = props => {
-  const { inline, label } = props
+  const { className, inline, label } = props
 
   return (
-    <Wrapper inline={inline}>
+    <Wrapper className={className} inline={inline}>
       {inline && <Label>{label}</Label>}
       <Field {...props} />
     </Wrapper>

@@ -51,6 +51,8 @@ const options = {
 const GeneExpressionForm = props => {
   const { values } = props
 
+  // console.log(props.errors)
+
   return (
     <React.Fragment>
       <AutoComplete
@@ -76,6 +78,7 @@ const GeneExpressionForm = props => {
       />
 
       <Radio
+        error={get(props.errors, 'geneExpression.detectionMethod')}
         label="Choose a detection method"
         name="geneExpression.detectionMethod"
         options={options.detectionMethod}
