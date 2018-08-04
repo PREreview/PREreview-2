@@ -88,6 +88,7 @@ const Row = styled.div`
 const IconButton = styled(Button)`
   border: none;
   border-radius: 50%;
+  cursor: pointer;
   display: flex;
   height: calc(${th('gridUnit')} * 4);
   justify-content: center;
@@ -95,6 +96,11 @@ const IconButton = styled(Button)`
   min-width: unset;
   padding: 0;
   width: calc(${th('gridUnit')} * 4);
+
+  &:active,
+  &:focus {
+    outline: none;
+  }
 
   span {
     height: calc(${th('gridUnit')} * 3);
