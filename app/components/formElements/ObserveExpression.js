@@ -1,6 +1,11 @@
-import React from 'react'
-import styled from 'styled-components'
+/* eslint-disable react/prop-types */
 
+import React from 'react'
+import styled, { css } from 'styled-components'
+import { cloneDeep, remove } from 'lodash'
+import { v4 as uuid } from 'uuid'
+
+import { Button, Icon } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
 
 import TextField from './TextField'
@@ -80,6 +85,119 @@ const Row = styled.div`
   }
 `
 
+const IconButton = styled(Button)`
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  height: calc(${th('gridUnit')} * 4);
+  justify-content: center;
+  margin: 0 calc(${th('gridUnit')} / 2);
+  min-width: unset;
+  padding: 0;
+  width: calc(${th('gridUnit')} * 4);
+
+  span {
+    height: calc(${th('gridUnit')} * 3);
+    padding: 0;
+  }
+
+  ${props =>
+    props.primary &&
+    css`
+      svg {
+        stroke: ${th('colorTextReverse')};
+      }
+    `};
+
+  ${props =>
+    !props.primary &&
+    css`
+      &:hover {
+        background: ${th('colorFurniture')};
+      }
+    `};
+`
+
+const RowWithControls = props => {
+  const { addItem, dataId, deleteItem, first, label } = props
+
+  return (
+    <React.Fragment>
+      <Row>
+        <Field
+          inline
+          label={`${label} expressed in`}
+          placeholder="Ex. Pharynx"
+        />
+
+        <Field inline label="During" placeholder="Ex. Embryo Ce" />
+
+        <Field
+          inline
+          label="Subcellular localization"
+          placeholder="Ex. Nucleus"
+        />
+
+        {first && (
+          <IconButton onClick={addItem} primary>
+            <Icon>plus</Icon>
+          </IconButton>
+        )}
+
+        {!first && (
+          <IconButton onClick={() => deleteItem(dataId)}>
+            <Icon>minus</Icon>
+          </IconButton>
+        )}
+      </Row>
+    </React.Fragment>
+  )
+}
+
+class RowArray extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      data: props.data || [{ id: uuid() }],
+    }
+  }
+
+  addItem = () => {
+    this.setState({
+      data: this.state.data.concat([{ id: uuid() }]),
+    })
+  }
+
+  deleteItem = id => {
+    const items = cloneDeep(this.state.data)
+    remove(items, item => item.id === id)
+
+    this.setState({
+      data: items,
+    })
+  }
+
+  render() {
+    const { label } = this.props
+    const { data } = this.state
+
+    return (
+      <React.Fragment>
+        {data.map((row, i) => (
+          <RowWithControls
+            addItem={this.addItem}
+            dataId={row.id}
+            deleteItem={this.deleteItem}
+            first={i === 0}
+            key={row.id}
+            label={label}
+          />
+        ))}
+      </React.Fragment>
+    )
+  }
+}
+
 const Wrapper = styled.div`
   /* background: blue; */
   display: flex;
@@ -87,23 +205,7 @@ const Wrapper = styled.div`
 `
 
 const Inputs = () => (
-  <Wrapper>
-    {rows.map(row => (
-      <Row>
-        <Field
-          inline
-          label={`${row.label} expressed in`}
-          placeholder="Ex. Pharynx"
-        />
-        <Field inline label="During" placeholder="Ex. Embryo Ce" />
-        <Field
-          inline
-          label="Subcellular localization"
-          placeholder="Ex. Nucleus"
-        />
-      </Row>
-    ))}
-  </Wrapper>
+  <Wrapper>{rows.map(row => <RowArray label={row.label} />)}</Wrapper>
 )
 
 const ObserveExpression = () => (
