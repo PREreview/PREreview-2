@@ -12,18 +12,22 @@ import TextField from './TextField'
 
 const rows = [
   {
+    key: 'row-array-certainly',
     label: 'Certainly',
     name: 'certainly',
   },
   {
+    key: 'row-array-partially',
     label: 'Partially',
     name: 'partially',
   },
   {
+    key: 'row-array-possibly',
     label: 'Possibly',
     name: 'possibly',
   },
   {
+    key: 'row-array-not',
     label: 'Not',
     name: 'not',
   },
@@ -275,7 +279,7 @@ const Inputs = props => {
           data={value}
           handleBlur={handleBlur}
           handleChange={handleChange}
-          key={uuid()}
+          key={row.key}
           label={row.label}
           name={row.name}
           setFieldValue={setFieldValue}
