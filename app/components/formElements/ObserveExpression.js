@@ -8,7 +8,10 @@ import { v4 as uuid } from 'uuid'
 import { Button, Icon } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
 
-import TextField from './TextField'
+import AutoComplete from './AutoComplete'
+// import TextField from './TextField'
+
+import { getWBbt, getWBls } from '../../fetch/WBApi'
 
 const rows = [
   {
@@ -33,27 +36,31 @@ const rows = [
   },
 ]
 
-const Field = styled(TextField)`
-  justify-content: flex-start;
+const Field = styled(AutoComplete)`
   /* background: pink; */
-  display: flex;
   /* flex-basis: 450px; */
+  justify-content: flex-start;
+  display: flex;
+
   height: calc(${th('gridUnit')} * 4);
   padding: 0 ${th('gridUnit')};
   width: unset;
 
-  div {
-    /* flex-grow: 1; */
-    /* flex-basis: 300px; */
+  /* label {
+    background: pink;
+  } */
 
+  /* div {
     div {
-      width: 100%;
-
-      input {
+      div {
         width: 100%;
+
+        input {
+          width: 100%;
+        }
       }
     }
-  }
+  } */
 `
 
 const Row = styled.div`
@@ -63,28 +70,32 @@ const Row = styled.div`
   justify-content: flex-start;
   flex-direction: row;
   flex-wrap: nowrap;
-  height: 50px;
+  /* height: 50px; */
   padding: ${th('gridUnit')};
 
-  /* stylelint-disable-next-line no-descending-specificity */
-  div {
-    label {
-      flex-basis: 10%;
-      /* flex-shrink: 0; */
-      flex-grow: 1;
-    }
+  div > div[role='combobox'] > div[role='listbox'] {
+    /* background: teal; */
+    left: 63px;
+    width: 190px;
   }
 
-  div:first-child {
+  div:first-child > div[role='combobox'] > div[role='listbox'] {
+    left: 155px;
+  }
+
+  div:last-of-type > div[role='combobox'] > div[role='listbox'] {
+    left: 175px;
+  }
+
+  div:first-child > div > div {
     label {
-      /* flex-basis: 150px; */
       width: 140px;
     }
   }
 
-  div:last-child {
+  div:last-of-type > div > div {
     label {
-      flex-basis: 40%;
+      width: 160px;
     }
   }
 `
@@ -156,52 +167,52 @@ const RowWithControls = props => {
   )
 
   return (
-    <React.Fragment>
-      <Row>
-        <Field
-          handleBlur={handleBlur}
-          handleChange={handleChange}
-          inline
-          label={`${label} expressed in`}
-          name={primaryFieldName}
-          placeholder="Ex. Pharynx"
-          value={values[name].value}
-        />
+    <Row>
+      <Field
+        fetchData={getWBbt}
+        handleBlur={handleBlur}
+        inline
+        label={`${label} expressed in`}
+        name={primaryFieldName}
+        onChange={handleChange}
+        placeholder="Ex. Pharynx"
+        value={values[name].value}
+      />
 
-        <Field
-          handleBlur={handleBlur}
-          handleChange={handleChange}
-          inline
-          label="During"
-          name={duringFieldName}
-          placeholder="Ex. Embryo Ce"
-          value={values.during.value}
-        />
+      <Field
+        fetchData={getWBls}
+        handleBlur={handleBlur}
+        handleChange={handleChange}
+        inline
+        label="During"
+        name={duringFieldName}
+        placeholder="Ex. Embryo Ce"
+        value={values.during.value}
+      />
 
-        <Field
-          handleBlur={handleBlur}
-          handleChange={handleChange}
-          inline
-          label="Subcellular localization"
-          name={subcellFieldName}
-          placeholder="Ex. Nucleus"
-          value={values.subcellularLocalization.value}
-        />
+      <Field
+        handleBlur={handleBlur}
+        handleChange={handleChange}
+        inline
+        label="Subcellular localization"
+        name={subcellFieldName}
+        placeholder="Ex. Nucleus"
+        value={values.subcellularLocalization.value}
+      />
 
-        {first &&
-          !isEmpty && (
-            <IconButton onClick={addItem} primary>
-              <Icon>plus</Icon>
-            </IconButton>
-          )}
-
-        {!first && (
-          <IconButton onClick={() => deleteItem(dataId)}>
-            <Icon>minus</Icon>
+      {first &&
+        !isEmpty && (
+          <IconButton onClick={addItem} primary>
+            <Icon>plus</Icon>
           </IconButton>
         )}
-      </Row>
-    </React.Fragment>
+
+      {!first && (
+        <IconButton onClick={() => deleteItem(dataId)}>
+          <Icon>minus</Icon>
+        </IconButton>
+      )}
+    </Row>
   )
 }
 

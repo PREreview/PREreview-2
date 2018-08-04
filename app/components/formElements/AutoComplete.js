@@ -120,6 +120,7 @@ class AutoComplete extends React.Component {
 
   render() {
     const {
+      className,
       getSuggestionValue,
       onChange,
       onSuggestionSelected,
@@ -143,7 +144,7 @@ class AutoComplete extends React.Component {
     }
 
     return (
-      <Wrapper>
+      <Wrapper className={className}>
         <Autosuggest
           getSuggestionValue={getSuggestionValue}
           inputProps={inputProps}
