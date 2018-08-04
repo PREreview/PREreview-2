@@ -149,6 +149,12 @@ const RowWithControls = props => {
   const subcellFieldName = `${base}.subcellularLocalization.value`
   // console.log(base, values)
 
+  const isEmpty = !(
+    values[name].value ||
+    values.during.value ||
+    values.subcellularLocalization.value
+  )
+
   return (
     <React.Fragment>
       <Row>
@@ -182,11 +188,12 @@ const RowWithControls = props => {
           value={values.subcellularLocalization.value}
         />
 
-        {first && (
-          <IconButton onClick={addItem} primary>
-            <Icon>plus</Icon>
-          </IconButton>
-        )}
+        {first &&
+          !isEmpty && (
+            <IconButton onClick={addItem} primary>
+              <Icon>plus</Icon>
+            </IconButton>
+          )}
 
         {!first && (
           <IconButton onClick={() => deleteItem(dataId)}>
