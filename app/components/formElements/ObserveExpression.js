@@ -2,7 +2,7 @@
 
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { cloneDeep, remove } from 'lodash'
+import { cloneDeep, get, remove } from 'lodash'
 import { v4 as uuid } from 'uuid'
 
 import { Button, Icon } from '@pubsweet/ui'
@@ -119,23 +119,53 @@ const IconButton = styled(Button)`
 `
 
 const RowWithControls = props => {
-  const { addItem, dataId, deleteItem, first, label } = props
+  const {
+    addItem,
+    dataId,
+    deleteItem,
+    first,
+    handleChange,
+    label,
+    name,
+    position,
+    values,
+  } = props
+  // console.log(values, name, values[name])
+
+  const base = `geneExpression.observeExpression[${name}][${position}]`
+  const primaryFieldName = `${base}[${name}].value`
+  const duringFieldName = `${base}.during.value`
+  const subcellFieldName = `${base}.subcellularLocalization.value`
+  // console.log(base, values)
 
   return (
     <React.Fragment>
       <Row>
         <Field
+          handleChange={handleChange}
           inline
           label={`${label} expressed in`}
+          name={primaryFieldName}
           placeholder="Ex. Pharynx"
+          value={values[name].value}
         />
 
-        <Field inline label="During" placeholder="Ex. Embryo Ce" />
+        <Field
+          handleChange={handleChange}
+          inline
+          label="During"
+          name={duringFieldName}
+          placeholder="Ex. Embryo Ce"
+          value={values.during.value}
+        />
 
         <Field
+          handleChange={handleChange}
           inline
           label="Subcellular localization"
+          name={subcellFieldName}
           placeholder="Ex. Nucleus"
+          value={values.subcellularLocalization.value}
         />
 
         {first && (
@@ -154,48 +184,52 @@ const RowWithControls = props => {
   )
 }
 
-class RowArray extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      data: props.data || [{ id: uuid() }],
+const RowArray = props => {
+  const { data, label, handleChange, name, setFieldValue, values } = props
+
+  // console.log('here', data, name)
+  // console.log(data[name])
+
+  const addItem = () => {
+    const vals = cloneDeep(values)
+
+    const toAdd = {
+      during: { id: uuid(), value: '' },
+      id: uuid(),
+      subcellularLocalization: { id: uuid(), value: '' },
     }
+    toAdd[name] = { id: uuid(), value: '' }
+
+    vals[name].push(toAdd)
+    setFieldValue('geneExpression.observeExpression', vals)
   }
 
-  addItem = () => {
-    this.setState({
-      data: this.state.data.concat([{ id: uuid() }]),
-    })
+  const deleteItem = id => {
+    const vals = cloneDeep(values)
+    remove(vals[name], item => item.id === id)
+    setFieldValue('geneExpression.observeExpression', vals)
   }
 
-  deleteItem = id => {
-    const items = cloneDeep(this.state.data)
-    remove(items, item => item.id === id)
-
-    this.setState({
-      data: items,
-    })
-  }
-
-  render() {
-    const { label } = this.props
-    const { data } = this.state
-
-    return (
-      <React.Fragment>
-        {data.map((row, i) => (
+  return (
+    <React.Fragment>
+      {data &&
+        data[name] &&
+        data[name].map((row, i) => (
           <RowWithControls
-            addItem={this.addItem}
+            addItem={addItem}
             dataId={row.id}
-            deleteItem={this.deleteItem}
+            deleteItem={deleteItem}
             first={i === 0}
+            handleChange={handleChange}
             key={row.id}
             label={label}
+            name={name}
+            position={i}
+            values={data[name][i]}
           />
         ))}
-      </React.Fragment>
-    )
-  }
+    </React.Fragment>
+  )
 }
 
 const Wrapper = styled.div`
@@ -204,14 +238,30 @@ const Wrapper = styled.div`
   flex-direction: column;
 `
 
-const Inputs = () => (
-  <Wrapper>{rows.map(row => <RowArray label={row.label} />)}</Wrapper>
-)
+const Inputs = props => {
+  const { handleChange, setFieldValue, value, values } = props
+  // console.log(props)
+  return (
+    <Wrapper>
+      {rows.map(row => (
+        <RowArray
+          data={value}
+          handleChange={handleChange}
+          key={uuid()}
+          label={row.label}
+          name={row.name}
+          setFieldValue={setFieldValue}
+          values={get(values, 'geneExpression.observeExpression')}
+        />
+      ))}
+    </Wrapper>
+  )
+}
 
-const ObserveExpression = () => (
+const ObserveExpression = props => (
   <div>
-    <h4>When and where did you observe expression?</h4>
-    <Inputs />
+    <h4>When and where did you observe expression? *</h4>
+    <Inputs {...props} />
   </div>
 )
 

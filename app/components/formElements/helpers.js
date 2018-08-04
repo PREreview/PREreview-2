@@ -48,6 +48,40 @@ let defaultFormValues = {
     injectionConcentration: '',
     inSituDetails: '',
     integratedBy: '',
+    observeExpression: {
+      certainly: [
+        {
+          certainly: { id: uuid(), value: '' },
+          during: { id: uuid(), value: '' },
+          id: uuid(),
+          subcellularLocalization: { id: uuid(), value: '' },
+        },
+      ],
+      not: [
+        {
+          during: { id: uuid(), value: '' },
+          id: uuid(),
+          not: { id: uuid(), value: '' },
+          subcellularLocalization: { id: uuid(), value: '' },
+        },
+      ],
+      partially: [
+        {
+          during: { id: uuid(), value: '' },
+          id: uuid(),
+          partially: { id: uuid(), value: '' },
+          subcellularLocalization: { id: uuid(), value: '' },
+        },
+      ],
+      possibly: [
+        {
+          during: { id: uuid(), value: '' },
+          id: uuid(),
+          possibly: { id: uuid(), value: '' },
+          subcellularLocalization: { id: uuid(), value: '' },
+        },
+      ],
+    },
     reporter: '',
     species: '',
     strain: '',
@@ -100,6 +134,40 @@ if (process.env.NODE_ENV === 'development') {
       injectionConcentration: '',
       inSituDetails: '',
       integratedBy: '',
+      observeExpression: {
+        certainly: [
+          {
+            certainly: { id: uuid(), value: 'ha' },
+            during: { id: uuid(), value: 'hu' },
+            id: uuid(),
+            subcellularLocalization: { id: uuid(), value: 'hi' },
+          },
+        ],
+        not: [
+          {
+            during: { id: uuid(), value: 'ja' },
+            id: uuid(),
+            not: { id: uuid(), value: 'ju' },
+            subcellularLocalization: { id: uuid(), value: 'ji' },
+          },
+        ],
+        partially: [
+          {
+            during: { id: uuid(), value: 'ka' },
+            id: uuid(),
+            partially: { id: uuid(), value: 'ku' },
+            subcellularLocalization: { id: uuid(), value: 'ki' },
+          },
+        ],
+        possibly: [
+          {
+            during: { id: uuid(), value: 'la' },
+            id: uuid(),
+            possibly: { id: uuid(), value: 'lu' },
+            subcellularLocalization: { id: uuid(), value: 'lee' },
+          },
+        ],
+      },
       reporter: '',
       species: '',
       strain: '',
