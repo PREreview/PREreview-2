@@ -130,6 +130,7 @@ const RowWithControls = props => {
     dataId,
     deleteItem,
     first,
+    handleBlur,
     handleChange,
     label,
     name,
@@ -148,6 +149,7 @@ const RowWithControls = props => {
     <React.Fragment>
       <Row>
         <Field
+          handleBlur={handleBlur}
           handleChange={handleChange}
           inline
           label={`${label} expressed in`}
@@ -157,6 +159,7 @@ const RowWithControls = props => {
         />
 
         <Field
+          handleBlur={handleBlur}
           handleChange={handleChange}
           inline
           label="During"
@@ -166,6 +169,7 @@ const RowWithControls = props => {
         />
 
         <Field
+          handleBlur={handleBlur}
           handleChange={handleChange}
           inline
           label="Subcellular localization"
@@ -191,7 +195,15 @@ const RowWithControls = props => {
 }
 
 const RowArray = props => {
-  const { data, label, handleChange, name, setFieldValue, values } = props
+  const {
+    data,
+    label,
+    handleBlur,
+    handleChange,
+    name,
+    setFieldValue,
+    values,
+  } = props
 
   // console.log('here', data, name)
   // console.log(data[name])
@@ -226,6 +238,7 @@ const RowArray = props => {
             dataId={row.id}
             deleteItem={deleteItem}
             first={i === 0}
+            handleBlur={handleBlur}
             handleChange={handleChange}
             key={row.id}
             label={label}
@@ -244,14 +257,23 @@ const Wrapper = styled.div`
   flex-direction: column;
 `
 
+const Error = styled.span`
+  color: ${th('colorError')};
+  font-size: ${th('fontSizeBaseSmall')};
+  font-weight: normal;
+  line-height: ${th('lineHeightBaseSmall')};
+  padding-left: ${th('gridUnit')};
+`
+
 const Inputs = props => {
-  const { handleChange, setFieldValue, value, values } = props
-  // console.log(props)
+  const { handleBlur, handleChange, setFieldValue, value, values } = props
+
   return (
     <Wrapper>
       {rows.map(row => (
         <RowArray
           data={value}
+          handleBlur={handleBlur}
           handleChange={handleChange}
           key={uuid()}
           label={row.label}
@@ -266,7 +288,10 @@ const Inputs = props => {
 
 const ObserveExpression = props => (
   <div>
-    <h4>When and where did you observe expression? *</h4>
+    <h4>
+      When and where did you observe expression? *
+      {props.error && <Error>{props.error}</Error>}
+    </h4>
     <Inputs {...props} />
   </div>
 )

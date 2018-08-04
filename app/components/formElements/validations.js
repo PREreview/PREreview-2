@@ -1,6 +1,6 @@
 import * as yup from 'yup'
-import { cloneDeep, merge } from 'lodash'
 // import { each, get, keys, merge, set } from 'lodash'
+import { cloneDeep, concat, isString, merge, reduce, values } from 'lodash'
 // import flatten, { unflatten } from 'flat'
 
 // import { validateYupSchema, yupToFormErrors } from 'formik'
@@ -82,6 +82,97 @@ const geneExpression = {
       then: yup.string().required('In Situ Details are required'),
     }),
     integratedBy: yup.string(),
+    observeExpression: yup
+      .object()
+      .shape({
+        certainly: yup.array().of(
+          yup.object().shape({
+            certainly: yup.object().shape({
+              id: yup.string().required(),
+              value: yup.string(),
+            }),
+            during: yup.object().shape({
+              id: yup.string().required(),
+              value: yup.string(),
+            }),
+            id: yup.string(),
+            subcellularLocalization: yup.object().shape({
+              id: yup.string().required(),
+              value: yup.string(),
+            }),
+          }),
+        ),
+        not: yup.array().of(
+          yup.object().shape({
+            during: yup.object().shape({
+              id: yup.string().required(),
+              value: yup.string(),
+            }),
+            id: yup.string(),
+            not: yup.object().shape({
+              id: yup.string().required(),
+              value: yup.string(),
+            }),
+            subcellularLocalization: yup.object().shape({
+              id: yup.string().required(),
+              value: yup.string(),
+            }),
+          }),
+        ),
+        partially: yup.array().of(
+          yup.object().shape({
+            during: yup.object().shape({
+              id: yup.string().required(),
+              value: yup.string(),
+            }),
+            id: yup.string(),
+            partially: yup.object().shape({
+              id: yup.string().required(),
+              value: yup.string(),
+            }),
+            subcellularLocalization: yup.object().shape({
+              id: yup.string().required(),
+              value: yup.string(),
+            }),
+          }),
+        ),
+        possibly: yup.array().of(
+          yup.object().shape({
+            during: yup.object().shape({
+              id: yup.string().required(),
+              value: yup.string(),
+            }),
+            id: yup.string(),
+            possibly: yup.object().shape({
+              id: yup.string().required(),
+              value: yup.string(),
+            }),
+            subcellularLocalization: yup.object().shape({
+              id: yup.string().required(),
+              value: yup.string(),
+            }),
+          }),
+        ),
+      })
+      .test('observe expression test', 'Fill in at least one field', val => {
+        const flatFirstLevel = reduce(values(val), (result, item) =>
+          concat(result, item),
+        )
+
+        let flatValues = []
+
+        flatFirstLevel.forEach(obj => {
+          flatValues = concat(
+            flatValues,
+            values(obj).filter(item => !isString(item)),
+          )
+        })
+
+        return flatValues.find(item => {
+          if (!item.id) return false
+          return item.value && item.value.length > 0
+        })
+      }),
     reporter: yup.string().when(['detectionMethod'], {
       is: val => val === 'newTransgene',
       then: yup.string().required('Reporter is required'),
@@ -278,11 +369,11 @@ const validationSchema = yup.object().shape({
 
 // export default validate
 
-export const makeSchema = values => {
+export const makeSchema = vals => {
   const schema = cloneDeep(initial)
-  // console.log(values)
+  // console.log(vals)
 
-  const { status } = values
+  const { status } = vals
   // console.log(status)
   if (status.initialSubmission) {
     // console.log('initial yes')
@@ -290,7 +381,7 @@ export const makeSchema = values => {
   }
 
   if (status.dataTypeSelected) {
-    if (values.dataType === 'geneExpression') {
+    if (vals.dataType === 'geneExpression') {
       merge(schema, geneExpression)
     }
   }

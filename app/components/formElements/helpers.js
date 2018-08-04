@@ -137,26 +137,26 @@ if (process.env.NODE_ENV === 'development') {
       observeExpression: {
         certainly: [
           {
-            certainly: { id: uuid(), value: 'ha' },
-            during: { id: uuid(), value: 'hu' },
+            certainly: { id: uuid(), value: '' },
+            during: { id: uuid(), value: '' },
             id: uuid(),
-            subcellularLocalization: { id: uuid(), value: 'hi' },
+            subcellularLocalization: { id: uuid(), value: '' },
           },
         ],
         not: [
           {
-            during: { id: uuid(), value: 'ja' },
+            during: { id: uuid(), value: '' },
             id: uuid(),
-            not: { id: uuid(), value: 'ju' },
-            subcellularLocalization: { id: uuid(), value: 'ji' },
+            not: { id: uuid(), value: '' },
+            subcellularLocalization: { id: uuid(), value: '' },
           },
         ],
         partially: [
           {
-            during: { id: uuid(), value: 'ka' },
+            during: { id: uuid(), value: '' },
             id: uuid(),
-            partially: { id: uuid(), value: 'ku' },
-            subcellularLocalization: { id: uuid(), value: 'ki' },
+            partially: { id: uuid(), value: '' },
+            subcellularLocalization: { id: uuid(), value: '' },
           },
         ],
         possibly: [
