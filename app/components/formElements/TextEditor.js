@@ -2,6 +2,7 @@
 
 import React from 'react'
 import styled from 'styled-components'
+// import { get } from 'lodash'
 
 import { th } from '@pubsweet/ui-toolkit'
 import { TextEditor as Editor } from 'xpub-edit'
@@ -27,19 +28,46 @@ const Wrapper = styled.div`
   }
 `
 
+const Error = styled.span`
+  color: ${th('colorError')};
+  font-size: ${th('fontSizeBaseSmall')};
+  line-height: ${th('lineHeightBaseSmall')};
+  padding-left: ${th('gridUnit')};
+`
+
 const TextEditor = props => {
-  const { label, name, placeholder, required, setFieldValue, value } = props
+  const {
+    error,
+    label,
+    name,
+    placeholder,
+    required,
+    setFieldValue,
+    value,
+  } = props
   // const value = ''
 
   const handleChange = newValue => {
     setFieldValue(name, newValue)
   }
 
+  // const handleFocus = e => {
+  //   console.log('focus')
+  // }
+
+  // const touchedThis = get(props.touched, name)
+  // console.log(touchedThis)
+
   return (
     <Wrapper>
-      {label && <Label>{`${label}${required ? ' *' : ''}`}</Label>}
+      {label && (
+        <Label>
+          {`${label}${required ? ' *' : ''}`} {error && <Error>{error}</Error>}
+        </Label>
+      )}
       <Editor
         onChange={handleChange}
+        // onFocus={handleFocus}
         placeholder={placeholder}
         value={value || ''}
       />

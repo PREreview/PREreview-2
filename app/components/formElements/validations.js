@@ -5,6 +5,12 @@ import { cloneDeep, concat, isString, merge, reduce, values } from 'lodash'
 
 // import { validateYupSchema, yupToFormErrors } from 'formik'
 
+const stripHTML = html => {
+  const tmp = document.createElement('DIV')
+  tmp.innerHTML = html
+  return tmp.textContent || tmp.innerText || ''
+}
+
 const initial = {
   author: yup.object().shape({
     email: yup
@@ -19,13 +25,20 @@ const initial = {
       name: yup.string(),
     }),
   ),
+  comments: yup.string(),
   disclaimer: yup.boolean().test('disclaimer', 'Required', val => val),
   funding: yup.string().required('Funding is required'),
   image: yup.object().shape({
     url: yup.string().required('Image is required'),
   }),
   laboratory: yup.string().required('Laboratory is required'),
-  patternDescription: yup.string().required('Pattern description is required'),
+  patternDescription: yup
+    .string()
+    .test(
+      'pattern-description-not-empty',
+      'Pattern description is required',
+      val => stripHTML(val).length > 0,
+    ),
   title: yup.string().required('Title is required'),
 }
 

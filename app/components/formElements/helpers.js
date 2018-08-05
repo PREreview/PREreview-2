@@ -99,7 +99,7 @@ let defaultFormValues = {
   },
   image: {},
   laboratory: '',
-  patternDescription: '',
+  patternDescription: '<p></p>',
   suggestedReviewer: '',
   title: '',
 }
@@ -185,7 +185,8 @@ if (process.env.NODE_ENV === 'development') {
     },
     image: {},
     laboratory: 'lab',
-    patternDescription: '<p>this is it</p>',
+    // patternDescription: '<p>this is it</p>',
+    patternDescription: '<p></p>',
     suggestedReviewer: '',
     title: 'titlez',
   }
@@ -320,9 +321,9 @@ const formValuesToData = values => {
       delete data.geneExpression.observeExpression.__typename
 
       keys(data.geneExpression.observeExpression).forEach(key => {
-        console.log('key', key)
+        // console.log('key', key)
         data.geneExpression.observeExpression[key].forEach(item => {
-          console.log('item', item)
+          // console.log('item', item)
           // eslint-disable-next-line no-underscore-dangle, no-param-reassign
           delete item.__typename
 

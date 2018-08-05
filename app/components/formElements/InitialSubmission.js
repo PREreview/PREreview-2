@@ -85,6 +85,7 @@ const InitialSubmission = props => {
       <Image label="Image" name="image" required {...props} />
 
       <TextEditor
+        error={get(props.errors, 'patternDescription')}
         label="Pattern description"
         name="patternDescription"
         placeholder="Provide a description for the pattern"
@@ -132,6 +133,7 @@ const InitialSubmission = props => {
       />
 
       <TextEditor
+        error={get(props.errors, 'comments')}
         label="Comments"
         name="comments"
         placeholder="Provide a description for the pattern"
