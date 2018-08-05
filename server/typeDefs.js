@@ -153,38 +153,38 @@ const typeDefs = `
   }
 
   type ObserveExpression {
-    certainly: [ObserveExpressionCertainlyEntries]
-    not: [ObserveExpressionNotEntries]
-    partially: [ObserveExpressionPartiallyEntries]
-    possibly: [ObserveExpressionPossiblyEntries]
+    certainly: [ObserveExpressionCertainlyEntry]
+    not: [ObserveExpressionNotEntry]
+    partially: [ObserveExpressionPartiallyEntry]
+    possibly: [ObserveExpressionPossiblyEntry]
   }
 
-  type ObserveExpressionCertainlyEntries {
-    certainly: [ObserveExpressionField]
-    during: [ObserveExpressionField]
+  type ObserveExpressionCertainlyEntry {
+    certainly: ObserveExpressionField
+    during: ObserveExpressionField
     id: ID
-    subcellularLocalization: [ObserveExpressionField]
+    subcellularLocalization: ObserveExpressionField
   }
 
-  type ObserveExpressionPartiallyEntries {
-    partially: [ObserveExpressionField]
-    during: [ObserveExpressionField]
+  type ObserveExpressionPartiallyEntry {
+    partially: ObserveExpressionField
+    during: ObserveExpressionField
     id: ID
-    subcellularLocalization: [ObserveExpressionField]
+    subcellularLocalization: ObserveExpressionField
   }
 
-  type ObserveExpressionPossiblyEntries {
-    possibly: [ObserveExpressionField]
-    during: [ObserveExpressionField]
+  type ObserveExpressionPossiblyEntry {
+    possibly: ObserveExpressionField
+    during: ObserveExpressionField
     id: ID
-    subcellularLocalization: [ObserveExpressionField]
+    subcellularLocalization: ObserveExpressionField
   }
 
-  type ObserveExpressionNotEntries {
-    not: [ObserveExpressionField]
-    during: [ObserveExpressionField]
+  type ObserveExpressionNotEntry {
+    not: ObserveExpressionField
+    during: ObserveExpressionField
     id: ID
-    subcellularLocalization: [ObserveExpressionField]
+    subcellularLocalization: ObserveExpressionField
   }
 
   type ObserveExpressionField {
@@ -193,38 +193,38 @@ const typeDefs = `
   }
 
   input ObserveExpressionInput {
-    certainly: [ObserveExpressionCertainlyEntriesInput]
-    not: [ObserveExpressionNotEntriesInput]
-    partially: [ObserveExpressionPartiallyEntriesInput]
-    possibly: [ObserveExpressionPossiblyEntriesInput]
+    certainly: [ObserveExpressionCertainlyEntryInput]
+    not: [ObserveExpressionNotEntryInput]
+    partially: [ObserveExpressionPartiallyEntryInput]
+    possibly: [ObserveExpressionPossiblyEntryInput]
   }
 
-  input ObserveExpressionCertainlyEntriesInput {
-    certainly: [ObserveExpressionFieldInput]
-    during: [ObserveExpressionFieldInput]
+  input ObserveExpressionCertainlyEntryInput {
+    certainly: ObserveExpressionFieldInput
+    during: ObserveExpressionFieldInput
     id: ID
-    subcellularLocalization: [ObserveExpressionFieldInput]
+    subcellularLocalization: ObserveExpressionFieldInput
   }
 
-  input ObserveExpressionPartiallyEntriesInput {
-    during: [ObserveExpressionFieldInput]
+  input ObserveExpressionPartiallyEntryInput {
+    during: ObserveExpressionFieldInput
     id: ID
-    partially: [ObserveExpressionFieldInput]
-    subcellularLocalization: [ObserveExpressionFieldInput]
+    partially: ObserveExpressionFieldInput
+    subcellularLocalization: ObserveExpressionFieldInput
   }
 
-  input ObserveExpressionPossiblyEntriesInput {
-    during: [ObserveExpressionFieldInput]
+  input ObserveExpressionPossiblyEntryInput {
+    during: ObserveExpressionFieldInput
     id: ID
-    possibly: [ObserveExpressionFieldInput]
-    subcellularLocalization: [ObserveExpressionFieldInput]
+    possibly: ObserveExpressionFieldInput
+    subcellularLocalization: ObserveExpressionFieldInput
   }
 
-  input ObserveExpressionNotEntriesInput {
-    during: [ObserveExpressionFieldInput]
+  input ObserveExpressionNotEntryInput {
+    during: ObserveExpressionFieldInput
     id: ID
-    not: [ObserveExpressionFieldInput]
-    subcellularLocalization: [ObserveExpressionFieldInput]
+    not: ObserveExpressionFieldInput
+    subcellularLocalization: ObserveExpressionFieldInput
   }
 
   input ObserveExpressionFieldInput {

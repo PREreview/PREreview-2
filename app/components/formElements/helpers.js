@@ -2,9 +2,11 @@ import { v4 as uuid } from 'uuid'
 
 import _, {
   cloneDeep,
+  // cloneDeepWith,
   find,
   // merge,
   mergeWith,
+  keys,
   // pickBy,
   omit,
   omitBy,
@@ -230,6 +232,19 @@ const dataToFormValues = data => {
   // return merge(values, defaultFormValues)
   // return merge(defaultFormValues, values)
 
+  // console.log(
+  //   'this',
+  //   mergeWith(defaultValues, values, (defaultValue, incomingValue) => {
+  //     // console.log(defaultValue, incomingValue)
+  //     if (Array.isArray(defaultValue)) {
+  //       // return defaultValue.concat(incomingValue)
+  //       // incomingValue = values(incomingValue)
+  //       return incomingValue === null ? defaultValue : _.values(incomingValue)
+  //     }
+  //     return incomingValue === null ? defaultValue : incomingValue
+  //   }),
+  // )
+
   return mergeWith(defaultValues, values, (defaultValue, incomingValue) => {
     // console.log(defaultValue, incomingValue)
     if (Array.isArray(defaultValue)) {
@@ -243,7 +258,17 @@ const dataToFormValues = data => {
 
 const formValuesToData = values => {
   const data = cloneDeep(values)
+
+  // TODO -- write data cleanup functions (eg. remove __typename)
+  // const data = cloneDeepWith(values, (val, key) => {
+  //   console.log(key, val)
+  //   if (key === '__typename') return false
+  //   return val
+  // })
+
   const { author, coAuthors, status } = data
+
+  // console.log(data)
 
   data.authors = union([], coAuthors)
   // console.log(data.authors)
@@ -275,6 +300,38 @@ const formValuesToData = values => {
 
   delete data.author
   delete data.coAuthors
+
+  if (data.geneExpression) {
+    // eslint-disable-next-line no-underscore-dangle
+    delete data.geneExpression.__typename
+
+    if (data.geneExpression.dnaSequence) {
+      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+      data.geneExpression.dnaSequence.forEach(item => delete item.__typename)
+    }
+
+    if (data.geneExpression.transgeneUsed) {
+      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+      data.geneExpression.transgeneUsed.forEach(item => delete item.__typename)
+    }
+
+    if (data.geneExpression.observeExpression) {
+      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+      delete data.geneExpression.observeExpression.__typename
+
+      keys(data.geneExpression.observeExpression).forEach(key => {
+        console.log('key', key)
+        data.geneExpression.observeExpression[key].forEach(item => {
+          console.log('item', item)
+          // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+          delete item.__typename
+
+          // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+          _.values(item).forEach(entry => delete entry.__typename)
+        })
+      })
+    }
+  }
 
   // console.log(data.authors)
 
