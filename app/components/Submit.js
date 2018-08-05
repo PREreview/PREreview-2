@@ -214,6 +214,10 @@ class Submit extends React.Component {
                             'status.initialSubmission',
                           )
                           const dataType = get(formValues, 'dataType')
+                          const dataTypeSelected = get(
+                            formValues,
+                            'status.dataTypeSelected',
+                          )
                           // console.log('here', dataType)
 
                           if (!initialSubmission)
@@ -221,6 +225,9 @@ class Submit extends React.Component {
 
                           if (dataType && dataType.length > 0)
                             set(formValues, 'status.dataTypeSelected', true)
+
+                          if (dataTypeSelected)
+                            set(formValues, 'status.submitted', true)
 
                           const manuscriptInput = formValuesToData(formValues)
                           // console.log(manuscriptInput)

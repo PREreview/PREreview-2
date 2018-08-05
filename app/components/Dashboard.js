@@ -67,6 +67,7 @@ const Status = props => {
   if (status.initialSubmission && !status.dataTypeSelected)
     text = 'Initial Submission ready'
   if (status.dataTypeSelected) text = 'Datatype selected'
+  if (status.submitted) text = 'Submitted'
 
   return <StatusLabel>{text}</StatusLabel>
 }
