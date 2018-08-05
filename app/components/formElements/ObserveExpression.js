@@ -308,14 +308,19 @@ const Inputs = props => {
   )
 }
 
-const ObserveExpression = props => (
-  <div>
-    <h4>
-      When and where did you observe expression? *
-      {props.error && <Error>{props.error}</Error>}
-    </h4>
-    <Inputs {...props} />
-  </div>
-)
+const ObserveExpression = props => {
+  const { error, name, touched } = props
+  const touchedThis = get(touched, name)
+
+  return (
+    <div>
+      <h4>
+        When and where did you observe expression? *
+        {touchedThis && error && <Error>{error}</Error>}
+      </h4>
+      <Inputs {...props} />
+    </div>
+  )
+}
 
 export default ObserveExpression

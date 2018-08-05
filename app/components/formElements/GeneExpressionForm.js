@@ -259,7 +259,7 @@ const GeneExpressionForm = props => {
       <ObserveExpression
         error={get(props.errors, 'geneExpression.observeExpression')}
         name="geneExpression.observeExpression"
-        touched={get(props.touched, 'geneExpression.observeExpression')}
+        // touched={get(props.touched, 'geneExpression.observeExpression')}
         value={get(values, 'geneExpression.observeExpression')}
         {...props}
       />
