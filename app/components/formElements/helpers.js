@@ -161,10 +161,10 @@ if (process.env.NODE_ENV === 'development') {
         ],
         possibly: [
           {
-            during: { id: uuid(), value: 'la' },
+            during: { id: uuid(), value: '' },
             id: uuid(),
-            possibly: { id: uuid(), value: 'lu' },
-            subcellularLocalization: { id: uuid(), value: 'lee' },
+            possibly: { id: uuid(), value: '' },
+            subcellularLocalization: { id: uuid(), value: '' },
           },
         ],
       },

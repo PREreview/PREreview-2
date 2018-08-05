@@ -182,20 +182,20 @@ const RowWithControls = props => {
       <Field
         fetchData={getWBls}
         handleBlur={handleBlur}
-        handleChange={handleChange}
         inline
         label="During"
         name={duringFieldName}
+        onChange={handleChange}
         placeholder="Ex. Embryo Ce"
         value={values.during.value}
       />
 
       <Field
         handleBlur={handleBlur}
-        handleChange={handleChange}
         inline
         label="Subcellular localization"
         name={subcellFieldName}
+        onChange={handleChange}
         placeholder="Ex. Nucleus"
         value={values.subcellularLocalization.value}
       />
