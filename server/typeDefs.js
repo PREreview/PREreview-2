@@ -85,11 +85,151 @@ const typeDefs = `
   }
 
   type GeneExpression {
+    antibodyUsed: String
+    backboneVector: String
+    coinjected: String
+    constructComments: String
+    constructionDetails: String
     detectionMethod: String
+    dnaSequence: [DNASequence]
+    expressionPattern: String
+    fusionType: String
+    genotype: String
+    injectionConcentration: String
+    inSituDetails: String
+    integratedBy: String
+    observeExpression: ObserveExpression
+    reporter: String
+    species: String
+    strain: String
+    transgeneName: String
+    transgeneUsed: [TransgeneUsed]
+    utr: String
+    variation: String
   }
 
   input GeneExpressionInput {
+    antibodyUsed: String
+    backboneVector: String
+    coinjected: String
+    constructComments: String
+    constructionDetails: String
     detectionMethod: String
+    dnaSequence: [DNASequenceInput]
+    expressionPattern: String
+    fusionType: String
+    genotype: String
+    injectionConcentration: String
+    inSituDetails: String
+    integratedBy: String
+    observeExpression: ObserveExpressionInput
+    reporter: String
+    species: String
+    strain: String
+    transgeneName: String
+    transgeneUsed: [TransgeneUsedInput]
+    utr: String
+    variation: String
+  }
+
+  type TransgeneUsed {
+    id: ID
+    name: String
+  }
+
+  input TransgeneUsedInput {
+    id: ID
+    name: String
+  }
+
+  type DNASequence {
+    id: ID
+    name: String
+  }
+
+  input DNASequenceInput {
+    id: ID
+    name: String
+  }
+
+  type ObserveExpression {
+    certainly: [ObserveExpressionCertainlyEntries]
+    not: [ObserveExpressionNotEntries]
+    partially: [ObserveExpressionPartiallyEntries]
+    possibly: [ObserveExpressionPossiblyEntries]
+  }
+
+  type ObserveExpressionCertainlyEntries {
+    certainly: [ObserveExpressionField]
+    during: [ObserveExpressionField]
+    id: ID
+    subcellularLocalization: [ObserveExpressionField]
+  }
+
+  type ObserveExpressionPartiallyEntries {
+    partially: [ObserveExpressionField]
+    during: [ObserveExpressionField]
+    id: ID
+    subcellularLocalization: [ObserveExpressionField]
+  }
+
+  type ObserveExpressionPossiblyEntries {
+    possibly: [ObserveExpressionField]
+    during: [ObserveExpressionField]
+    id: ID
+    subcellularLocalization: [ObserveExpressionField]
+  }
+
+  type ObserveExpressionNotEntries {
+    not: [ObserveExpressionField]
+    during: [ObserveExpressionField]
+    id: ID
+    subcellularLocalization: [ObserveExpressionField]
+  }
+
+  type ObserveExpressionField {
+    id: ID
+    value: String
+  }
+
+  input ObserveExpressionInput {
+    certainly: [ObserveExpressionCertainlyEntriesInput]
+    not: [ObserveExpressionNotEntriesInput]
+    partially: [ObserveExpressionPartiallyEntriesInput]
+    possibly: [ObserveExpressionPossiblyEntriesInput]
+  }
+
+  input ObserveExpressionCertainlyEntriesInput {
+    certainly: [ObserveExpressionFieldInput]
+    during: [ObserveExpressionFieldInput]
+    id: ID
+    subcellularLocalization: [ObserveExpressionFieldInput]
+  }
+
+  input ObserveExpressionPartiallyEntriesInput {
+    during: [ObserveExpressionFieldInput]
+    id: ID
+    partially: [ObserveExpressionFieldInput]
+    subcellularLocalization: [ObserveExpressionFieldInput]
+  }
+
+  input ObserveExpressionPossiblyEntriesInput {
+    during: [ObserveExpressionFieldInput]
+    id: ID
+    possibly: [ObserveExpressionFieldInput]
+    subcellularLocalization: [ObserveExpressionFieldInput]
+  }
+
+  input ObserveExpressionNotEntriesInput {
+    during: [ObserveExpressionFieldInput]
+    id: ID
+    not: [ObserveExpressionFieldInput]
+    subcellularLocalization: [ObserveExpressionFieldInput]
+  }
+
+  input ObserveExpressionFieldInput {
+    id: ID
+    value: String
   }
 `
 

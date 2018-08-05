@@ -32,7 +32,7 @@ let defaultFormValues = {
   geneExpression: {
     antibodyUsed: '',
     backboneVector: '',
-    conijected: '',
+    coinjected: '',
     constructComments: '',
     constructionDetails: '',
     detectionMethod: '',
@@ -116,19 +116,19 @@ if (process.env.NODE_ENV === 'development') {
     disclaimer: true,
     funding: 'blah',
     geneExpression: {
-      antibodyUsed: '',
+      antibodyUsed: 'an antibody',
       backboneVector: '',
-      conijected: '',
+      coinjected: '',
       constructComments: '',
       constructionDetails: '',
-      detectionMethod: 'newTransgene',
+      detectionMethod: 'antibody',
       dnaSequence: [
         {
           id: uuid(),
           name: '',
         },
       ],
-      expressionPattern: '',
+      expressionPattern: 'some expression',
       fusionType: '',
       genotype: '',
       injectionConcentration: '',
@@ -137,7 +137,7 @@ if (process.env.NODE_ENV === 'development') {
       observeExpression: {
         certainly: [
           {
-            certainly: { id: uuid(), value: '' },
+            certainly: { id: uuid(), value: 'some' },
             during: { id: uuid(), value: '' },
             id: uuid(),
             subcellularLocalization: { id: uuid(), value: '' },
@@ -169,7 +169,7 @@ if (process.env.NODE_ENV === 'development') {
         ],
       },
       reporter: '',
-      species: '',
+      species: 'a species',
       strain: '',
       transgeneName: '',
       transgeneUsed: [

@@ -193,10 +193,10 @@ class Submit extends React.Component {
                       // console.log(queryResponse)
                       const submission = queryResponse.data.manuscript
                       // const submission = undefined
-                      // console.log(submission)
+                      // console.log('submission', submission)
                       const values = submission && dataToFormValues(submission)
 
-                      // console.log(values)
+                      // console.log('values', values)
                       // console.log(values && values.dataType)
                       if (!values) return null
                       // console.log('v', values)
