@@ -124,7 +124,7 @@ const InitialSubmission = props => {
       <Checkbox
         checked={get(values, 'disclaimer')}
         label="Disclaimer"
-        name="disclaimerChecked"
+        name="disclaimer"
         onChange={handleChange}
         required
         text="I agree to the terms of publication"
