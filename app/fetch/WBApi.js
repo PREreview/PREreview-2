@@ -9,8 +9,8 @@ const makeCall = async (endpoint, value) => {
 }
 
 const validate = async (endpoint, payload) => {
-  const { id, search } = payload
-  const url = `${apiUrl}/validate/${endpoint}?search=${search}&id=${id}&`
+  const { name, WBPerson } = payload
+  const url = `${apiUrl}/validate/${endpoint}?search=${name}&id=${WBPerson}&`
   return fetch(url)
 }
 

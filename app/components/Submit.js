@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom'
 import { get, set } from 'lodash'
 
 // eslint-disable-next-line no-unused-vars
-import validate, { makeSchema } from './formElements/validations'
+import makeSchema from './formElements/validations'
 // import fakeData from '../queries/fakeData'
 
 import Loading from './Loading'
@@ -281,9 +281,7 @@ class Submit extends React.Component {
                             onSubmit={onSubmit}
                             ref={c => (this.form = c)}
                             render={SubmissionForm}
-                            // validate={validate}
                             validationSchema={validations}
-                            // validationSchema={validate}
                             // values={values}
                           />
                         </div>

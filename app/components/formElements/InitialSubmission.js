@@ -23,7 +23,7 @@ const authorSuggestionSelected = (event, authorOptions, setFieldValue) => {
   // })
   // console.log(authorOptions)
   // console.log(setFieldValue)
-  setFieldValue('author.wbPersonId', authorOptions.suggestion.wbPersonId)
+  setFieldValue('author.WBPerson', authorOptions.suggestion.WBPerson)
 }
 
 const InitialSubmission = props => {

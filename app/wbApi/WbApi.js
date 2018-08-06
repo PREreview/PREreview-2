@@ -9,11 +9,11 @@ const makeQuery = (objectType, query) => ({
   userValue: query.search,
 })
 
-// const makeValidateQuery = (objectType, query) => ({
-//   action: 'asyncValidValue',
-//   objectType,
-//   userValue: encodeURI(`${query.search} ( ${query.id} ) `),
-// })
+const makeValidateQuery = (objectType, query) => ({
+  action: 'asyncValidValue',
+  objectType,
+  userValue: encodeURI(`${query.search} ( ${query.id} ) `),
+})
 
 const makeRequest = (objectType, typeIdentifier, req, res) => {
   request(
@@ -29,21 +29,20 @@ const makeRequest = (objectType, typeIdentifier, req, res) => {
   )
 }
 
-// const makeValidateRequest = (objectType, req, res) => {
-//   request(
-//     {
-//       qs: makeValidateQuery(objectType, req.query),
-//       url: baseUrl,
-//     },
-//     (error, response, body) => {
-//       if (error) return console.log(error)
-//       // console.log(response)
-//       console.log(body)
-//       const data = body.replace('\n', '') === 'true'
-//       res.send(data)
-//     },
-//   )
-// }
+const makeValidateRequest = (objectType, req, res) => {
+  request(
+    {
+      qs: makeValidateQuery(objectType, req.query),
+      url: baseUrl,
+    },
+    (error, response, body) => {
+      // eslint-disable-next-line no-console
+      if (error) return console.log(error)
+      const result = body.replace('\n', '') === 'true'
+      return res.send({ data: { result } })
+    },
+  )
+}
 
 const cleanData = (data, typeIdentifier) =>
   data
@@ -68,8 +67,12 @@ const cleanData = (data, typeIdentifier) =>
     })
 
 const WbApi = app => {
+  /**
+   * GET ENDPOINTS
+   */
+
   app.get('/api/wb/person', (req, res) => {
-    makeRequest('person', 'wbPersonId', req, res)
+    makeRequest('person', 'WBPerson', req, res)
   })
 
   app.get('/api/wb/laboratory', (req, res) => {
@@ -120,10 +123,13 @@ const WbApi = app => {
     makeRequest('gene', 'wbGeneId', req, res)
   })
 
-  // app.get('/api/wb/validate/wb-person', (req, res) => {
-  //   console.log('this', req.query)
-  //   makeValidateRequest('person', req, res)
-  // })
+  /**
+   * VALIDATION ENDPOINTS
+   */
+
+  app.get('/api/wb/validate/wb-person', (req, res) => {
+    makeValidateRequest('person', req, res)
+  })
 }
 
 module.exports = WbApi

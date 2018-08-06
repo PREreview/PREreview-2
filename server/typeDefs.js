@@ -60,14 +60,14 @@ const typeDefs = `
     email: String
     name: String
     submittingAuthor: Boolean
-    wormBaseId: String
+    WBPerson: String
   }
 
   input AuthorInput {
     email: String
     name: String
     submittingAuthor: Boolean
-    wormBaseId: String
+    WBPerson: String
   }
 
   type File {

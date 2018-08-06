@@ -8,7 +8,7 @@ const GET_MANUSCRIPT = gql`
         email
         name
         submittingAuthor
-        wormBaseId
+        WBPerson
       }
       comments
       dataType

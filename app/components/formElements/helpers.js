@@ -202,10 +202,10 @@ const dataToFormValues = data => {
   if (authors) {
     const modAuthors = authors.map(item => {
       const modAuthor = cloneDeep(item)
-      if (item.wormBaseId) {
-        modAuthor.WBPerson = item.wormBaseId
-        delete modAuthor.wormBaseId
-      }
+      // if (item.wormBaseId) {
+      //   modAuthor.WBPerson = item.wormBaseId
+      //   delete modAuthor.wormBaseId
+      // }
       modAuthor.id = uuid()
       return omit(modAuthor, '__typename')
     })
@@ -280,8 +280,8 @@ const formValuesToData = values => {
   // if (coAuthors)
   data.authors = data.authors.map(item => {
     const modAuthor = cloneDeep(item)
-    modAuthor.wormBaseId = modAuthor.WBPerson
-    delete modAuthor.WBPerson
+    // modAuthor.wormBaseId = modAuthor.WBPerson
+    // delete modAuthor.WBPerson
     delete modAuthor.id
     return modAuthor
   })
