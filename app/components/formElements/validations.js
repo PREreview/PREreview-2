@@ -9,6 +9,23 @@ const stripHTML = html => {
   return tmp.textContent || tmp.innerText || ''
 }
 
+const validateAuthor = {
+  error: 'Must be a registered WormBase Person',
+  // eslint-disable-next-line func-names, prefer-arrow-callback
+  test: function test(val) {
+    if (!val) return true
+    const { WBPerson } = this.parent
+    if (!WBPerson) return false
+
+    return validateWBPerson({ id: WBPerson, search: val })
+      .then(response => response.json())
+      .then(res => {
+        if (!res.data.result) return false
+        return true
+      })
+  },
+}
+
 const initial = {
   author: yup.object().shape({
     email: yup
@@ -18,27 +35,14 @@ const initial = {
     name: yup
       .string()
       .required('Name is required')
-      .test(
-        'is-valid-wb-person',
-        'Must be a registered WormBase Person',
-        // eslint-disable-next-line func-names, prefer-arrow-callback
-        function(val) {
-          const { WBPerson } = this.parent
-          if (!WBPerson) return false
-
-          return validateWBPerson({ name: val, WBPerson })
-            .then(response => response.json())
-            .then(res => {
-              if (!res.data.result) return false
-              return true
-            })
-        },
-      ),
+      .test('is author valid', validateAuthor.error, validateAuthor.test),
     WBPerson: yup.string(),
   }),
   coAuthors: yup.array(
     yup.object().shape({
-      name: yup.string(),
+      name: yup
+        .string()
+        .test('is co-author valid', validateAuthor.error, validateAuthor.test),
     }),
   ),
   comments: yup.string(),

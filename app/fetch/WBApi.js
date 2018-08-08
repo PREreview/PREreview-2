@@ -3,32 +3,44 @@ import config from 'config'
 const { baseUrl } = config['pubsweet-client']
 const apiUrl = `${baseUrl}/api/wb`
 
-const makeCall = async (endpoint, value) => {
+const get = async (endpoint, value) => {
   const url = `${apiUrl}/${endpoint}?search=${value}`
   return fetch(url)
 }
 
 const validate = async (endpoint, payload) => {
-  const { name, WBPerson } = payload
-  const url = `${apiUrl}/validate/${endpoint}?search=${name}&id=${WBPerson}&`
+  const { id, search } = payload
+  const url = `${apiUrl}/validate/${endpoint}?search=${search}&id=${id}&`
   return fetch(url)
 }
 
-const getBackboneVector = value => makeCall('backbonevector', value)
-const getFusionType = value => makeCall('fusiontype', value)
-const getGOcc = value => makeCall('gocc', value)
-const getIntegrationMethod = value => makeCall('integrationmethod', value)
-const getReporter = value => makeCall('reporter', value)
-const getTransgene = value => makeCall('transgene', value)
-const getVariation = value => makeCall('variation', value)
-const getWBGene = value => makeCall('gene', value)
-const getWBbt = value => makeCall('wbbt', value)
-const getWBLaboratory = value => makeCall('laboratory', value)
-const getWBls = value => makeCall('wbls', value)
-const getWBPerson = value => makeCall('person', value)
-const getWBSpecies = value => makeCall('species', value)
+const getBackboneVector = value => get('backbonevector', value)
+const getFusionType = value => get('fusiontype', value)
+const getGOcc = value => get('gocc', value)
+const getIntegrationMethod = value => get('integrationmethod', value)
+const getReporter = value => get('reporter', value)
+const getTransgene = value => get('transgene', value)
+const getVariation = value => get('variation', value)
+const getWBGene = value => get('gene', value)
+const getWBbt = value => get('wbbt', value)
+const getWBLaboratory = value => get('laboratory', value)
+const getWBls = value => get('wbls', value)
+const getWBPerson = value => get('person', value)
+const getWBSpecies = value => get('species', value)
 
-const validateWBPerson = value => validate('wb-person', value)
+const validateBackboneVector = value => validate('backbonevector', value)
+const validateFusionType = value => validate('fusiontype', value)
+const validateGOcc = value => validate('gocc', value)
+const validateIntegrationMethod = value => validate('integrationmethod', value)
+const validateReporter = value => validate('reporter', value)
+const validateTransgene = value => validate('transgene', value)
+const validateVariation = value => validate('variation', value)
+const validateWBGene = value => validate('gene', value)
+const validateWBbt = value => validate('wbbt', value)
+const validateWBLaboratory = value => validate('laboratory', value)
+const validateWBls = value => validate('wbls', value)
+const validateWBPerson = value => validate('person', value)
+const validateWBSpecies = value => validate('species', value)
 
 export {
   getBackboneVector,
@@ -44,5 +56,17 @@ export {
   getWBls,
   getWBPerson,
   getWBSpecies,
+  validateBackboneVector,
+  validateFusionType,
+  validateGOcc,
+  validateIntegrationMethod,
+  validateReporter,
+  validateTransgene,
+  validateVariation,
+  validateWBGene,
+  validateWBbt,
+  validateWBLaboratory,
+  validateWBls,
   validateWBPerson,
+  validateWBSpecies,
 }

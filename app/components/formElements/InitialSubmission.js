@@ -28,11 +28,12 @@ const authorSuggestionSelected = (event, authorOptions, setFieldValue) => {
 
 const InitialSubmission = props => {
   // console.log(props)
-  const { handleChange, values } = props
+  const { errors, handleChange, values } = props
 
   return (
     <React.Fragment>
       <AutoComplete
+        error={get(errors, 'author.name')}
         fetchData={getWBPerson}
         label="Name"
         name="author.name"
@@ -45,6 +46,7 @@ const InitialSubmission = props => {
       />
 
       <TextField
+        error={get(errors, 'author.email')}
         label="Email address"
         name="author.email"
         placeholder="this is the email"
@@ -63,6 +65,7 @@ const InitialSubmission = props => {
       />
 
       <AutoComplete
+        error={get(errors, 'laboratory')}
         fetchData={getWBLaboratory}
         label="Laboratory"
         name="laboratory"
@@ -74,6 +77,7 @@ const InitialSubmission = props => {
       />
 
       <TextField
+        error={get(errors, 'funding')}
         label="Funding"
         name="funding"
         placeholder="this is the funding"
@@ -95,6 +99,7 @@ const InitialSubmission = props => {
       />
 
       <TextField
+        error={get(errors, 'title')}
         label="Title"
         name="title"
         placeholder="this is the title"
@@ -104,6 +109,7 @@ const InitialSubmission = props => {
       />
 
       <TextField
+        error={get(errors, 'acknowledgements')}
         label="Acknowledgements"
         name="acknowledgements"
         placeholder="this is the acknowledgements"

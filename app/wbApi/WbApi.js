@@ -127,8 +127,56 @@ const WbApi = app => {
    * VALIDATION ENDPOINTS
    */
 
-  app.get('/api/wb/validate/wb-person', (req, res) => {
+  app.get('/api/wb/validate/person', (req, res) => {
     makeValidateRequest('person', req, res)
+  })
+
+  app.get('/api/wb/validate/laboratory', (req, res) => {
+    makeValidateRequest('laboratory', req, res)
+  })
+
+  app.get('/api/wb/validate/species', (req, res) => {
+    makeValidateRequest('species', req, res)
+  })
+
+  app.get('/api/wb/validate/transgene', (req, res) => {
+    makeValidateRequest('transgene', req, res)
+  })
+
+  app.get('/api/wb/validate/reporter', (req, res) => {
+    makeValidateRequest('reporter', req, res)
+  })
+
+  app.get('/api/wb/validate/wbbt', (req, res) => {
+    makeValidateRequest('wbbt', req, res)
+  })
+
+  app.get('/api/wb/validate/wbls', (req, res) => {
+    makeValidateRequest('wbls', req, res)
+  })
+
+  app.get('/api/wb/validate/gocc', (req, res) => {
+    makeValidateRequest('gocc', req, res)
+  })
+
+  app.get('/api/wb/validate/variation', (req, res) => {
+    makeValidateRequest('variation', req, res)
+  })
+
+  app.get('/api/wb/validate/backbonevector', (req, res) => {
+    makeValidateRequest('backbonevector', req, res)
+  })
+
+  app.get('/api/wb/validate/fusiontype', (req, res) => {
+    makeValidateRequest('fusion', req, res)
+  })
+
+  app.get('/api/wb/validate/integrationmethod', (req, res) => {
+    makeValidateRequest('integrationmethod', req, res)
+  })
+
+  app.get('/api/wb/validate/gene', (req, res) => {
+    makeValidateRequest('gene', req, res)
   })
 }
 

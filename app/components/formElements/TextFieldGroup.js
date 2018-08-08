@@ -100,12 +100,15 @@ class TextFieldGroup extends React.Component {
     const error = get(this.props.errors, name)
     const touched = get(this.props.touched, name)
 
+    // console.log(error)
+
     return (
       <GroupWrapper>
         {label && (
           <Label>
             {label} {required ? ' *' : ''}{' '}
-            {touched && error && <Error>{error}</Error>}
+            {touched &&
+              error && <Error>{!Array.isArray(error) && error}</Error>}
           </Label>
         )}
         {data &&
@@ -116,10 +119,13 @@ class TextFieldGroup extends React.Component {
             const itemId = data[i].id || uuid()
             // console.log(itemName)
 
+            // console.log('isArray', Array.isArray(this.props.errors[name]))
+
             return (
               <LineWrapper key={itemId}>
                 <Field
                   {...this.props}
+                  error={Array.isArray(error) && error[i] && error[i].name}
                   handleChange={handleChange}
                   name={itemName}
                   placeholder={placeholder}
@@ -134,6 +140,7 @@ class TextFieldGroup extends React.Component {
 
         {(!data || data.length === 0) && (
           <Field
+            error={Array.isArray(error) && error[0] && error[0].name}
             handleChange={handleChange}
             name={`${name}[0].name`}
             value={data[0].name}

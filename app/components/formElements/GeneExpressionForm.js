@@ -49,13 +49,14 @@ const options = {
 }
 
 const GeneExpressionForm = props => {
-  const { values } = props
+  const { errors, values } = props
 
   // console.log(props.errors)
 
   return (
     <React.Fragment>
       <AutoComplete
+        error={get(errors, 'geneExpression.species')}
         fetchData={getWBSpecies}
         label="Species"
         name="geneExpression.species"
@@ -67,6 +68,7 @@ const GeneExpressionForm = props => {
       />
 
       <AutoComplete
+        error={get(errors, 'geneExpression.expressionPattern')}
         fetchData={getWBGene}
         label="Expression pattern for gene"
         name="geneExpression.expressionPattern"
@@ -88,6 +90,7 @@ const GeneExpressionForm = props => {
 
       {values.geneExpression.detectionMethod === 'antibody' && (
         <TextField
+          error={get(errors, 'geneExpression.antibodyUsed')}
           label="Antibody used"
           name="geneExpression.antibodyUsed"
           placeholder="Please type in antibody used"
@@ -99,6 +102,7 @@ const GeneExpressionForm = props => {
 
       {values.geneExpression.detectionMethod === 'inSituHybridization' && (
         <TextField
+          error={get(errors, 'geneExpression.inSituDetails')}
           label="In-Situ details"
           name="geneExpression.inSituDetails"
           placeholder="Please type in in-situ details"
@@ -110,6 +114,7 @@ const GeneExpressionForm = props => {
 
       {values.geneExpression.detectionMethod === 'genomeEditing' && (
         <TextField
+          error={get(errors, 'geneExpression.variation')}
           label="Variation"
           name="geneExpression.variation"
           placeholder="Please type in variation"
@@ -134,6 +139,7 @@ const GeneExpressionForm = props => {
       {values.geneExpression.detectionMethod === 'newTransgene' && (
         <React.Fragment>
           <TextField
+            error={get(errors, 'geneExpression.genoType')}
             label="Genotype"
             name="geneExpression.genotype"
             placeholder="Please type in genotype"
@@ -143,6 +149,7 @@ const GeneExpressionForm = props => {
           />
 
           <TextField
+            error={get(errors, 'geneExpression.constructionDetails')}
             label="Construction Details"
             name="geneExpression.constructionDetails"
             placeholder="Please type in construction details"
@@ -162,6 +169,7 @@ const GeneExpressionForm = props => {
           />
 
           <AutoComplete
+            error={get(errors, 'geneExpression.utr')}
             fetchData={getWBGene}
             label="3' UTR"
             name="geneExpression.utr"
@@ -172,6 +180,7 @@ const GeneExpressionForm = props => {
           />
 
           <AutoComplete
+            error={get(errors, 'geneExpression.reporter')}
             fetchData={getReporter}
             label="Reporter"
             name="geneExpression.reporter"
@@ -183,6 +192,7 @@ const GeneExpressionForm = props => {
           />
 
           <AutoComplete
+            error={get(errors, 'geneExpression.backboneVector')}
             fetchData={getBackboneVector}
             label="Backbone Vector"
             name="geneExpression.backboneVector"
@@ -193,6 +203,7 @@ const GeneExpressionForm = props => {
           />
 
           <AutoComplete
+            error={get(errors, 'geneExpression.fusionType')}
             fetchData={getFusionType}
             label="Fusion Type"
             name="geneExpression.fusionType"
@@ -204,6 +215,7 @@ const GeneExpressionForm = props => {
           />
 
           <TextField
+            error={get(errors, 'geneExpression.transgeneName')}
             label="Transgene Name"
             name="geneExpression.transgeneName"
             placeholder="Please type in Transgene Name"
@@ -213,6 +225,7 @@ const GeneExpressionForm = props => {
           />
 
           <TextField
+            error={get(errors, 'geneExpression.constructComments')}
             label="Construct Comments"
             name="geneExpression.constructComments"
             placeholder="Please type in Construct Comments"
@@ -221,6 +234,7 @@ const GeneExpressionForm = props => {
           />
 
           <TextField
+            error={get(errors, 'geneExpression.strain')}
             label="Strain"
             name="geneExpression.strain"
             placeholder="Please type in Strain"
@@ -229,6 +243,7 @@ const GeneExpressionForm = props => {
           />
 
           <TextField
+            error={get(errors, 'geneExpression.coinjected')}
             label="Coinjected"
             name="geneExpression.coinjected"
             placeholder="Please type in coinjected"
@@ -237,6 +252,7 @@ const GeneExpressionForm = props => {
           />
 
           <TextField
+            error={get(errors, 'geneExpression.injectionConcentration')}
             label="Injection Concentration"
             name="geneExpression.injectionConcentration"
             placeholder="Please type in Injection Concentration"
@@ -245,6 +261,7 @@ const GeneExpressionForm = props => {
           />
 
           <AutoComplete
+            error={get(errors, 'geneExpression.integratedBy')}
             fetchData={getIntegrationMethod}
             label="Integrated by"
             name="geneExpression.integratedBy"

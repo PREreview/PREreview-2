@@ -47,6 +47,7 @@ const Wrapper = styled.div`
 `
 
 const Field = ({
+  error,
   handleBlur,
   handleChange,
   inline,
@@ -58,22 +59,15 @@ const Field = ({
   value,
   ...props
 }) => {
-  const error = get(props.errors, name)
   const touchedThis = get(touched, name)
-
-  // console.log(error, touchedThis)
-  // console.log(handleBlur)
-  // console.log(props.errors)
 
   const showError = () => {
     // console.log(error)
     if (!error) return false
     if (touchedThis) return true
-    if (!touchedThis && value) return true
-    // console.log(name, isSubmitting)
-    // if (isSubmitting) console.log(error)
-    // console.log('pass', isSubmitting)
-    // if (isSubmitting) return true
+
+    // if (!touchedThis && value) return true
+
     return false
   }
 
