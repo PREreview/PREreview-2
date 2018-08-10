@@ -1,7 +1,14 @@
 import * as yup from 'yup'
-import { cloneDeep, concat, isString, merge, reduce, values } from 'lodash'
+import {
+  cloneDeep,
+  // concat,
+  // isString,
+  merge,
+  // reduce,
+  // values,
+} from 'lodash'
 
-import { validateWBPerson } from '../../fetch/WBApi'
+// import { validateWBPerson, validateWBLaboratory } from '../../fetch/WBApi'
 
 const stripHTML = html => {
   const tmp = document.createElement('DIV')
@@ -9,21 +16,41 @@ const stripHTML = html => {
   return tmp.textContent || tmp.innerText || ''
 }
 
-const validateAuthor = {
-  error: 'Must be a registered WormBase Person',
-  // eslint-disable-next-line func-names, prefer-arrow-callback
-  test: function test(val) {
-    if (!val) return true
-    const { WBPerson } = this.parent
-    if (!WBPerson) return false
+// const validateAsync = (val, fetchFn, self) => {
+//   if (!val) return true
+//   const { WBId } = self.parent
+//   console.log(self.parent)
+//   if (!WBId) return false
 
-    return validateWBPerson({ id: WBPerson, search: val })
-      .then(response => response.json())
-      .then(res => {
-        if (!res.data.result) return false
-        return true
-      })
-  },
+//   return fetchFn({ id: WBId, search: val })
+//     .then(response => response.json())
+//     .then(res => {
+//       if (!res.data.result) return false
+//       return true
+//     })
+// }
+
+// const validateAuthor = {
+//   error: 'Must be a registered WormBase Person',
+//   // eslint-disable-next-line func-names, prefer-arrow-callback, object-shorthand
+//   test: function(val) {
+//     return validateAsync(val, validateWBPerson, this)
+//   },
+// }
+
+// eslint-disable-next-line func-names, prefer-arrow-callback, object-shorthand
+const validateWBExists = function(val) {
+  // console.log('val', val)
+  if (!val) return true
+  // console.log('parent', this.parent)
+  const { WBId } = this.parent
+  // console.log('WBId', WBId)
+
+  // if (!WBId) console.log('not')
+  // if (!WBId.length) console.log('no length')
+  if (!WBId || !WBId.length) return false
+  // console.log(val, 'pass')
+  return true
 }
 
 const initial = {
@@ -35,14 +62,22 @@ const initial = {
     name: yup
       .string()
       .required('Name is required')
-      .test('is author valid', validateAuthor.error, validateAuthor.test),
-    WBPerson: yup.string(),
+      .test(
+        'is author valid',
+        'Must be a registered WormBase Person',
+        validateWBExists,
+      ),
+    WBId: yup.string(),
   }),
   coAuthors: yup.array(
     yup.object().shape({
       name: yup
         .string()
-        .test('is co-author valid', validateAuthor.error, validateAuthor.test),
+        .test(
+          'is co-author valid',
+          'Must be a registered WormBase Person',
+          validateWBExists,
+        ),
     }),
   ),
   comments: yup.string(),
@@ -51,7 +86,17 @@ const initial = {
   image: yup.object().shape({
     url: yup.string().required('Image is required'),
   }),
-  laboratory: yup.string().required('Laboratory is required'),
+  laboratory: yup.object().shape({
+    name: yup
+      .string()
+      .required('Laboratory is required')
+      .test(
+        'is-lab-valid',
+        'Must a registered WormBase Laboratory',
+        validateWBExists,
+      ),
+    WBId: yup.string(),
+  }),
   patternDescription: yup
     .string()
     .test(
@@ -100,7 +145,16 @@ const geneExpression = {
           .max(10)
           .compact(val => val.name === ''),
       }),
-    expressionPattern: yup.string().required('Expression pattern is required'),
+    expressionPattern: yup.object().shape({
+      name: yup
+        .string()
+        .required('Expression pattern is required')
+        .test(
+          'is expression pattern valid',
+          'Must be a valid WormBase expression pattern',
+          validateWBExists,
+        ),
+    }),
     fusionType: yup.string().when(['detectionMethod'], {
       is: val => val === 'newTransgene',
       then: yup.string().required('Fusion type is required'),
@@ -115,102 +169,113 @@ const geneExpression = {
       then: yup.string().required('In Situ Details are required'),
     }),
     integratedBy: yup.string(),
-    observeExpression: yup
-      .object()
-      .shape({
-        certainly: yup.array().of(
-          yup.object().shape({
-            certainly: yup.object().shape({
-              id: yup.string().required(),
-              value: yup.string(),
-            }),
-            during: yup.object().shape({
-              id: yup.string().required(),
-              value: yup.string(),
-            }),
-            id: yup.string(),
-            subcellularLocalization: yup.object().shape({
-              id: yup.string().required(),
-              value: yup.string(),
-            }),
-          }),
-        ),
-        not: yup.array().of(
-          yup.object().shape({
-            during: yup.object().shape({
-              id: yup.string().required(),
-              value: yup.string(),
-            }),
-            id: yup.string(),
-            not: yup.object().shape({
-              id: yup.string().required(),
-              value: yup.string(),
-            }),
-            subcellularLocalization: yup.object().shape({
-              id: yup.string().required(),
-              value: yup.string(),
-            }),
-          }),
-        ),
-        partially: yup.array().of(
-          yup.object().shape({
-            during: yup.object().shape({
-              id: yup.string().required(),
-              value: yup.string(),
-            }),
-            id: yup.string(),
-            partially: yup.object().shape({
-              id: yup.string().required(),
-              value: yup.string(),
-            }),
-            subcellularLocalization: yup.object().shape({
-              id: yup.string().required(),
-              value: yup.string(),
-            }),
-          }),
-        ),
-        possibly: yup.array().of(
-          yup.object().shape({
-            during: yup.object().shape({
-              id: yup.string().required(),
-              value: yup.string(),
-            }),
-            id: yup.string(),
-            possibly: yup.object().shape({
-              id: yup.string().required(),
-              value: yup.string(),
-            }),
-            subcellularLocalization: yup.object().shape({
-              id: yup.string().required(),
-              value: yup.string(),
-            }),
-          }),
-        ),
-      })
-      .test('observe expression test', 'Fill in at least one field', val => {
-        const flatFirstLevel = reduce(values(val), (result, item) =>
-          concat(result, item),
-        )
+    // observeExpression: yup
+    //   .object()
+    //   .shape({
+    //     certainly: yup.array().of(
+    //       yup.object().shape({
+    //         certainly: yup.object().shape({
+    //           id: yup.string().required(),
+    //           value: yup.string(),
+    //         }),
+    //         during: yup.object().shape({
+    //           id: yup.string().required(),
+    //           value: yup.string(),
+    //         }),
+    //         id: yup.string(),
+    //         subcellularLocalization: yup.object().shape({
+    //           id: yup.string().required(),
+    //           value: yup.string(),
+    //         }),
+    //       }),
+    //     ),
+    //     not: yup.array().of(
+    //       yup.object().shape({
+    //         during: yup.object().shape({
+    //           id: yup.string().required(),
+    //           value: yup.string(),
+    //         }),
+    //         id: yup.string(),
+    //         not: yup.object().shape({
+    //           id: yup.string().required(),
+    //           value: yup.string(),
+    //         }),
+    //         subcellularLocalization: yup.object().shape({
+    //           id: yup.string().required(),
+    //           value: yup.string(),
+    //         }),
+    //       }),
+    //     ),
+    //     partially: yup.array().of(
+    //       yup.object().shape({
+    //         during: yup.object().shape({
+    //           id: yup.string().required(),
+    //           value: yup.string(),
+    //         }),
+    //         id: yup.string(),
+    //         partially: yup.object().shape({
+    //           id: yup.string().required(),
+    //           value: yup.string(),
+    //         }),
+    //         subcellularLocalization: yup.object().shape({
+    //           id: yup.string().required(),
+    //           value: yup.string(),
+    //         }),
+    //       }),
+    //     ),
+    //     possibly: yup.array().of(
+    //       yup.object().shape({
+    //         during: yup.object().shape({
+    //           id: yup.string().required(),
+    //           value: yup.string(),
+    //         }),
+    //         id: yup.string(),
+    //         possibly: yup.object().shape({
+    //           id: yup.string().required(),
+    //           value: yup.string(),
+    //         }),
+    //         subcellularLocalization: yup.object().shape({
+    //           id: yup.string().required(),
+    //           value: yup.string(),
+    //         }),
+    //       }),
+    //     ),
+    //   })
+    //   .test('observe expression test', 'Fill in at least one field', val => {
+    //     console.log('observe', val)
+    //     const flatFirstLevel = reduce(values(val), (result, item) =>
+    //       concat(result, item),
+    //     )
 
-        let flatValues = []
+    //     let flatValues = []
 
-        flatFirstLevel.forEach(obj => {
-          flatValues = concat(
-            flatValues,
-            values(obj).filter(item => !isString(item)),
-          )
-        })
+    //     flatFirstLevel.forEach(obj => {
+    //       flatValues = concat(
+    //         flatValues,
+    //         values(obj).filter(item => !isString(item)),
+    //       )
+    //     })
 
-        return flatValues.find(item => {
-          if (!item.id) return false
-          return item.value && item.value.length > 0
-        })
-      }),
+    //     return flatValues.find(item => {
+    //       if (!item.id) return false
+    //       return item.value && item.value.length > 0
+    //     })
+    //   }),
     reporter: yup.string().when(['detectionMethod'], {
       is: val => val === 'newTransgene',
       then: yup.string().required('Reporter is required'),
     }),
-    species: yup.string().required('Species is required'),
+    species: yup.object().shape({
+      name: yup
+        .string()
+        .required('Species is required')
+        .test(
+          'is species valid',
+          'Must be a valid WormBase species',
+          validateWBExists,
+        ),
+      WBId: yup.string(),
+    }),
     strain: yup.string(),
     transgeneName: yup.string().when(['detectionMethod'], {
       is: val => val === 'newTransgene',
@@ -220,7 +285,14 @@ const geneExpression = {
       .array()
       .of(
         yup.object().shape({
-          name: yup.string(),
+          name: yup
+            .string()
+            .test(
+              'is transgene valid',
+              'Must be a valid WormBase transgene',
+              validateWBExists,
+            ),
+          WBId: yup.string(),
         }),
       )
       .when(['detectionMethod'], {
@@ -237,10 +309,32 @@ const geneExpression = {
           .compact(val => val.name === ''),
       }),
     utr: yup.string(),
-    variation: yup.string().when(['detectionMethod'], {
-      is: val => val === 'genomeEditing',
-      then: yup.string().required('Variation is required'),
-    }),
+    variation: yup
+      .object()
+      .shape({
+        name: yup
+          .string()
+          .test(
+            'is variation valid',
+            'Must be a valid WormBase variation',
+            validateWBExists,
+          ),
+        WBId: yup.string(),
+      })
+      .when('detectionMethod', {
+        is: val => val === 'genomeEditing',
+        then: yup.object().shape({
+          name: yup
+            .string()
+            .required('Variation is required')
+            .test(
+              'is variation valid',
+              'Must be a valid WormBase variation',
+              validateWBExists,
+            ),
+          WBId: yup.string(),
+        }),
+      }),
   }),
 }
 

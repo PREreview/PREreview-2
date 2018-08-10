@@ -20,7 +20,7 @@ const typeDefs = `
     geneExpression: GeneExpression
     id: ID!
     image: File
-    laboratory: String
+    laboratory: WBItem
     patternDescription: String
     status: Status
     suggestedReviewer: String
@@ -37,7 +37,7 @@ const typeDefs = `
     geneExpression: GeneExpressionInput
     id: ID!
     image: FileInput
-    laboratory: String
+    laboratory: WBItemInput
     patternDescription: String
     status: StatusInput
     suggestedReviewer: String
@@ -60,14 +60,14 @@ const typeDefs = `
     email: String
     name: String
     submittingAuthor: Boolean
-    WBPerson: String
+    WBId: String
   }
 
   input AuthorInput {
     email: String
     name: String
     submittingAuthor: Boolean
-    WBPerson: String
+    WBId: String
   }
 
   type File {
@@ -86,70 +86,62 @@ const typeDefs = `
 
   type GeneExpression {
     antibodyUsed: String
-    backboneVector: String
+    backboneVector: WBItem
     coinjected: String
     constructComments: String
     constructionDetails: String
     detectionMethod: String
-    dnaSequence: [DNASequence]
-    expressionPattern: String
-    fusionType: String
+    dnaSequence: [WBItem]
+    expressionPattern: WBItem
+    fusionType: WBItem
     genotype: String
     injectionConcentration: String
     inSituDetails: String
-    integratedBy: String
+    integratedBy: WBItem
     observeExpression: ObserveExpression
-    reporter: String
-    species: String
+    reporter: WBItem
+    species: WBItem
     strain: String
     transgeneName: String
-    transgeneUsed: [TransgeneUsed]
-    utr: String
-    variation: String
+    transgeneUsed: [WBItem]
+    utr: WBItem
+    variation: WBItem
   }
 
   input GeneExpressionInput {
     antibodyUsed: String
-    backboneVector: String
+    backboneVector: WBItemInput
     coinjected: String
     constructComments: String
     constructionDetails: String
     detectionMethod: String
-    dnaSequence: [DNASequenceInput]
-    expressionPattern: String
-    fusionType: String
+    dnaSequence: [WBItemInput]
+    expressionPattern: WBItemInput
+    fusionType: WBItemInput
     genotype: String
     injectionConcentration: String
     inSituDetails: String
-    integratedBy: String
+    integratedBy: WBItemInput
     observeExpression: ObserveExpressionInput
-    reporter: String
-    species: String
+    reporter: WBItemInput
+    species: WBItemInput
     strain: String
     transgeneName: String
-    transgeneUsed: [TransgeneUsedInput]
-    utr: String
-    variation: String
+    transgeneUsed: [WBItemInput]
+    utr: WBItemInput
+    variation: WBItemInput
   }
 
-  type TransgeneUsed {
-    id: ID
+  type WBItem {
     name: String
+    type: String
+    WBId: String
   }
 
-  input TransgeneUsedInput {
-    id: ID
+  input WBItemInput {
     name: String
-  }
-
-  type DNASequence {
-    id: ID
-    name: String
-  }
-
-  input DNASequenceInput {
-    id: ID
-    name: String
+    type: String
+    WBId: String
   }
 
   type ObserveExpression {
@@ -160,29 +152,29 @@ const typeDefs = `
   }
 
   type ObserveExpressionCertainlyEntry {
-    certainly: ObserveExpressionField
-    during: ObserveExpressionField
+    certainly: WBItem
+    during: WBItem
     id: ID
     subcellularLocalization: ObserveExpressionField
   }
 
   type ObserveExpressionPartiallyEntry {
-    partially: ObserveExpressionField
-    during: ObserveExpressionField
+    partially: WBItem
+    during: WBItem
     id: ID
     subcellularLocalization: ObserveExpressionField
   }
 
   type ObserveExpressionPossiblyEntry {
-    possibly: ObserveExpressionField
-    during: ObserveExpressionField
+    possibly: WBItem
+    during: WBItem
     id: ID
     subcellularLocalization: ObserveExpressionField
   }
 
   type ObserveExpressionNotEntry {
-    not: ObserveExpressionField
-    during: ObserveExpressionField
+    not: WBItem
+    during: WBItem
     id: ID
     subcellularLocalization: ObserveExpressionField
   }
@@ -200,30 +192,30 @@ const typeDefs = `
   }
 
   input ObserveExpressionCertainlyEntryInput {
-    certainly: ObserveExpressionFieldInput
-    during: ObserveExpressionFieldInput
+    certainly: WBItemInput
+    during: WBItemInput
     id: ID
     subcellularLocalization: ObserveExpressionFieldInput
   }
 
   input ObserveExpressionPartiallyEntryInput {
-    during: ObserveExpressionFieldInput
+    during: WBItemInput
     id: ID
-    partially: ObserveExpressionFieldInput
+    partially: WBItemInput
     subcellularLocalization: ObserveExpressionFieldInput
   }
 
   input ObserveExpressionPossiblyEntryInput {
-    during: ObserveExpressionFieldInput
+    during: WBItemInput
     id: ID
-    possibly: ObserveExpressionFieldInput
+    possibly: WBItemInput
     subcellularLocalization: ObserveExpressionFieldInput
   }
 
   input ObserveExpressionNotEntryInput {
-    during: ObserveExpressionFieldInput
+    during: WBItemInput
     id: ID
-    not: ObserveExpressionFieldInput
+    not: WBItemInput
     subcellularLocalization: ObserveExpressionFieldInput
   }
 

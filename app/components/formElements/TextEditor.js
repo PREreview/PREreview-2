@@ -2,7 +2,7 @@
 
 import React from 'react'
 import styled from 'styled-components'
-// import { get } from 'lodash'
+import { get } from 'lodash'
 
 import { th } from '@pubsweet/ui-toolkit'
 import { TextEditor as Editor } from 'xpub-edit'
@@ -45,29 +45,28 @@ const TextEditor = props => {
     setFieldValue,
     value,
   } = props
-  // const value = ''
 
   const handleChange = newValue => {
     setFieldValue(name, newValue)
   }
 
-  // const handleFocus = e => {
-  //   console.log('focus')
-  // }
+  const handleBlur = e => {
+    props.setFieldTouched(name, true)
+  }
 
-  // const touchedThis = get(props.touched, name)
-  // console.log(touchedThis)
+  const touchedThis = get(props.touched, name)
 
   return (
     <Wrapper>
       {label && (
         <Label>
-          {`${label}${required ? ' *' : ''}`} {error && <Error>{error}</Error>}
+          {`${label}${required ? ' *' : ''}`}{' '}
+          {touchedThis && error && <Error>{error}</Error>}
         </Label>
       )}
       <Editor
+        onBlur={handleBlur}
         onChange={handleChange}
-        // onFocus={handleFocus}
         placeholder={placeholder}
         value={value || ''}
       />

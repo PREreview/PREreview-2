@@ -15,7 +15,7 @@ const makeValidateQuery = (objectType, query) => ({
   userValue: encodeURI(`${query.search} ( ${query.id} ) `),
 })
 
-const makeRequest = (objectType, typeIdentifier, req, res) => {
+const makeRequest = (objectType, req, res) => {
   request(
     {
       qs: makeQuery(objectType, req.query),
@@ -24,7 +24,7 @@ const makeRequest = (objectType, typeIdentifier, req, res) => {
     (error, response, body) => {
       // eslint-disable-next-line no-console
       if (error) return console.log(error)
-      return res.send({ values: cleanData(body, typeIdentifier) })
+      return res.send({ values: cleanData(body) })
     },
   )
 }
@@ -44,7 +44,7 @@ const makeValidateRequest = (objectType, req, res) => {
   )
 }
 
-const cleanData = (data, typeIdentifier) =>
+const cleanData = data =>
   data
     .split('\n')
     .map(entry =>
@@ -62,7 +62,7 @@ const cleanData = (data, typeIdentifier) =>
         label: item[0],
         value: item[0],
       }
-      formattedItem[typeIdentifier] = item[1] // eslint-disable-line
+      formattedItem.WBId = item[1] // eslint-disable-line
       return formattedItem
     })
 
@@ -71,56 +71,56 @@ const WbApi = app => {
    * GET ENDPOINTS
    */
 
-  app.get('/api/wb/person', (req, res) => {
-    makeRequest('person', 'WBPerson', req, res)
-  })
-
-  app.get('/api/wb/laboratory', (req, res) => {
-    makeRequest('laboratory', 'wbLabId', req, res)
-  })
-
-  app.get('/api/wb/species', (req, res) => {
-    makeRequest('species', 'wbSpeciesId', req, res)
-  })
-
-  app.get('/api/wb/transgene', (req, res) => {
-    makeRequest('transgene', 'wbTransgeneId', req, res)
-  })
-
-  app.get('/api/wb/reporter', (req, res) => {
-    makeRequest('reporter', 'wbReporterId', req, res)
-  })
-
-  app.get('/api/wb/wbbt', (req, res) => {
-    makeRequest('wbbt', 'wbWbbtId', req, res)
-  })
-
-  app.get('/api/wb/wbls', (req, res) => {
-    makeRequest('wbls', 'wbWblsId', req, res)
-  })
-
-  app.get('/api/wb/gocc', (req, res) => {
-    makeRequest('gocc', 'wbGoccId', req, res)
-  })
-
-  app.get('/api/wb/variation', (req, res) => {
-    makeRequest('variation', 'wbVariationId', req, res)
-  })
-
   app.get('/api/wb/backbonevector', (req, res) => {
-    makeRequest('backbonevector', 'wbBackboneVectorId', req, res)
+    makeRequest('backbonevector', req, res)
   })
 
   app.get('/api/wb/fusiontype', (req, res) => {
-    makeRequest('fusion', 'wbFusionId', req, res)
-  })
-
-  app.get('/api/wb/integrationmethod', (req, res) => {
-    makeRequest('integrationmethod', 'wbIntegrationMethodId', req, res)
+    makeRequest('fusion', req, res)
   })
 
   app.get('/api/wb/gene', (req, res) => {
-    makeRequest('gene', 'wbGeneId', req, res)
+    makeRequest('gene', req, res)
+  })
+
+  app.get('/api/wb/gocc', (req, res) => {
+    makeRequest('gocc', req, res)
+  })
+
+  app.get('/api/wb/integrationmethod', (req, res) => {
+    makeRequest('integrationmethod', req, res)
+  })
+
+  app.get('/api/wb/laboratory', (req, res) => {
+    makeRequest('laboratory', req, res)
+  })
+
+  app.get('/api/wb/person', (req, res) => {
+    makeRequest('person', req, res)
+  })
+
+  app.get('/api/wb/reporter', (req, res) => {
+    makeRequest('reporter', req, res)
+  })
+
+  app.get('/api/wb/species', (req, res) => {
+    makeRequest('species', req, res)
+  })
+
+  app.get('/api/wb/transgene', (req, res) => {
+    makeRequest('transgene', req, res)
+  })
+
+  app.get('/api/wb/variation', (req, res) => {
+    makeRequest('variation', req, res)
+  })
+
+  app.get('/api/wb/wbbt', (req, res) => {
+    makeRequest('wbbt', req, res)
+  })
+
+  app.get('/api/wb/wbls', (req, res) => {
+    makeRequest('wbls', req, res)
   })
 
   /**

@@ -19,12 +19,13 @@ let defaultFormValues = {
   author: {
     email: '',
     name: '',
-    WBPerson: '',
+    WBId: '',
   },
   coAuthors: [
     {
       id: uuid(),
       name: '',
+      WBId: '',
     },
   ],
   comments: '',
@@ -33,7 +34,10 @@ let defaultFormValues = {
   funding: '',
   geneExpression: {
     antibodyUsed: '',
-    backboneVector: '',
+    backboneVector: {
+      name: '',
+      WBId: '',
+    },
     coinjected: '',
     constructComments: '',
     constructionDetails: '',
@@ -42,63 +46,121 @@ let defaultFormValues = {
       {
         id: uuid(),
         name: '',
+        WBId: '',
       },
     ],
-    expressionPattern: '',
-    fusionType: '',
+    expressionPattern: {
+      name: '',
+      WBId: '',
+    },
+    fusionType: {
+      name: '',
+      WBId: '',
+    },
     genotype: '',
     injectionConcentration: '',
     inSituDetails: '',
-    integratedBy: '',
+    integratedBy: {
+      name: '',
+      WBId: '',
+    },
     observeExpression: {
       certainly: [
         {
-          certainly: { id: uuid(), value: '' },
-          during: { id: uuid(), value: '' },
+          certainly: {
+            id: uuid(),
+            name: '',
+            WBId: '',
+          },
+          during: {
+            id: uuid(),
+            name: '',
+            WBId: '',
+          },
           id: uuid(),
           subcellularLocalization: { id: uuid(), value: '' },
         },
       ],
       not: [
         {
-          during: { id: uuid(), value: '' },
+          during: {
+            id: uuid(),
+            name: '',
+            WBId: '',
+          },
           id: uuid(),
-          not: { id: uuid(), value: '' },
+          not: {
+            id: uuid(),
+            name: '',
+            WBId: '',
+          },
           subcellularLocalization: { id: uuid(), value: '' },
         },
       ],
       partially: [
         {
-          during: { id: uuid(), value: '' },
+          during: {
+            id: uuid(),
+            name: '',
+            WBId: '',
+          },
           id: uuid(),
-          partially: { id: uuid(), value: '' },
+          partially: {
+            id: uuid(),
+            name: '',
+            WBId: '',
+          },
           subcellularLocalization: { id: uuid(), value: '' },
         },
       ],
       possibly: [
         {
-          during: { id: uuid(), value: '' },
+          during: {
+            id: uuid(),
+            name: '',
+            WBId: '',
+          },
           id: uuid(),
-          possibly: { id: uuid(), value: '' },
+          possibly: {
+            id: uuid(),
+            name: '',
+            WBId: '',
+          },
           subcellularLocalization: { id: uuid(), value: '' },
         },
       ],
     },
-    reporter: '',
-    species: '',
+    reporter: {
+      name: '',
+      WBId: '',
+    },
+    species: {
+      name: '',
+      WBId: '',
+    },
     strain: '',
     transgeneName: '',
     transgeneUsed: [
       {
         id: uuid(),
         name: '',
+        WBId: '',
       },
     ],
-    utr: '',
-    variation: '',
+    utr: {
+      name: '',
+      WBId: '',
+    },
+    variation: {
+      name: '',
+      WBId: '',
+    },
   },
   image: {},
-  laboratory: '',
+  laboratory: {
+    name: '',
+    WBId: '',
+  },
   patternDescription: '<p></p>',
   suggestedReviewer: '',
   title: '',
@@ -109,84 +171,154 @@ if (process.env.NODE_ENV === 'development') {
     acknowledgements: '',
     author: {
       email: 'john@john.com',
-      name: 'john',
-      WBPerson: '',
+      name: 'John A Bryden',
+      WBId: 'WBPerson6903',
     },
-    coAuthors: [{ id: uuid(), name: 'Yannus' }, { id: uuid(), name: 'Alexus' }],
+    coAuthors: [
+      { id: uuid(), name: 'Yanna Cen', WBId: 'WBPerson18694' },
+      { id: uuid(), name: 'Alec Barret', WBId: 'WBPerson15466' },
+    ],
     comments: '<p>some comments here</p>',
     dataType: '',
     disclaimer: true,
     funding: 'blah',
     geneExpression: {
       antibodyUsed: 'an antibody',
-      backboneVector: '',
+      backboneVector: {
+        name: '',
+        WBId: '',
+      },
       coinjected: '',
       constructComments: '',
       constructionDetails: '',
       detectionMethod: 'antibody',
+      // detectionMethod: 'genomeEditing',
       dnaSequence: [
         {
           id: uuid(),
           name: '',
+          WBId: '',
         },
       ],
-      expressionPattern: 'some expression',
-      fusionType: '',
+      expressionPattern: {
+        name: 'some expression',
+        WBId: '',
+      },
+      fusionType: {
+        name: '',
+        WBId: '',
+      },
       genotype: '',
       injectionConcentration: '',
       inSituDetails: '',
-      integratedBy: '',
+      integratedBy: {
+        name: '',
+        WBId: '',
+      },
       observeExpression: {
         certainly: [
           {
-            certainly: { id: uuid(), value: 'some' },
-            during: { id: uuid(), value: '' },
+            certainly: {
+              id: uuid(),
+              name: '',
+              WBId: '',
+            },
+            during: {
+              id: uuid(),
+              name: '',
+              WBId: '',
+            },
             id: uuid(),
             subcellularLocalization: { id: uuid(), value: '' },
           },
         ],
         not: [
           {
-            during: { id: uuid(), value: '' },
+            during: {
+              id: uuid(),
+              name: '',
+              WBId: '',
+            },
             id: uuid(),
-            not: { id: uuid(), value: '' },
+            not: {
+              id: uuid(),
+              name: '',
+              WBId: '',
+            },
             subcellularLocalization: { id: uuid(), value: '' },
           },
         ],
         partially: [
           {
-            during: { id: uuid(), value: '' },
+            during: {
+              id: uuid(),
+              name: '',
+              WBId: '',
+            },
             id: uuid(),
-            partially: { id: uuid(), value: '' },
+            partially: {
+              id: uuid(),
+              name: '',
+              WBId: '',
+            },
             subcellularLocalization: { id: uuid(), value: '' },
           },
         ],
         possibly: [
           {
-            during: { id: uuid(), value: '' },
+            during: {
+              id: uuid(),
+              name: '',
+              WBId: '',
+            },
             id: uuid(),
-            possibly: { id: uuid(), value: '' },
+            possibly: {
+              id: uuid(),
+              name: '',
+              WBId: '',
+            },
             subcellularLocalization: { id: uuid(), value: '' },
           },
         ],
       },
-      reporter: '',
-      species: 'a species',
+      reporter: {
+        name: '',
+        WBId: '',
+      },
+      species: {
+        name: 'a species',
+        WBId: '',
+      },
       strain: '',
       transgeneName: '',
       transgeneUsed: [
         {
           id: uuid(),
-          name: '',
+          name: 'Some',
+          WBId: '',
+        },
+        {
+          id: uuid(),
+          name: 'Some',
+          WBId: '',
         },
       ],
-      utr: '',
-      variation: '',
+      utr: {
+        name: '',
+        WBId: '',
+      },
+      variation: {
+        name: '',
+        WBId: '',
+      },
     },
     image: {},
-    laboratory: 'lab',
+    laboratory: {
+      name: 'Jean-Claude Labbe',
+      WBId: 'UM',
+    },
     // patternDescription: '<p>this is it</p>',
-    patternDescription: '<p></p>',
+    patternDescription: '<p>Hello there</p>',
     suggestedReviewer: '',
     title: 'titlez',
   }
@@ -302,18 +434,69 @@ const formValuesToData = values => {
   delete data.author
   delete data.coAuthors
 
+  // eslint-disable-next-line no-underscore-dangle
+  delete data.laboratory.__typename
+
   if (data.geneExpression) {
     // eslint-disable-next-line no-underscore-dangle
     delete data.geneExpression.__typename
 
     if (data.geneExpression.dnaSequence) {
-      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
-      data.geneExpression.dnaSequence.forEach(item => delete item.__typename)
+      data.geneExpression.dnaSequence.forEach(item => {
+        // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+        delete item.__typename
+        // eslint-disable-next-line no-param-reassign
+        delete item.id
+      })
     }
 
     if (data.geneExpression.transgeneUsed) {
+      data.geneExpression.transgeneUsed.forEach(item => {
+        // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+        delete item.__typename
+        // eslint-disable-next-line no-param-reassign
+        delete item.id
+      })
+    }
+
+    if (data.geneExpression.variation) {
       // eslint-disable-next-line no-underscore-dangle, no-param-reassign
-      data.geneExpression.transgeneUsed.forEach(item => delete item.__typename)
+      delete data.geneExpression.variation.__typename
+    }
+
+    if (data.geneExpression.utr) {
+      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+      delete data.geneExpression.utr.__typename
+    }
+
+    if (data.geneExpression.species) {
+      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+      delete data.geneExpression.species.__typename
+    }
+
+    if (data.geneExpression.reporter) {
+      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+      delete data.geneExpression.reporter.__typename
+    }
+
+    if (data.geneExpression.integratedBy) {
+      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+      delete data.geneExpression.integratedBy.__typename
+    }
+
+    if (data.geneExpression.fusionType) {
+      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+      delete data.geneExpression.fusionType.__typename
+    }
+
+    if (data.geneExpression.expressionPattern) {
+      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+      delete data.geneExpression.expressionPattern.__typename
+    }
+
+    if (data.geneExpression.backboneVector) {
+      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+      delete data.geneExpression.backboneVector.__typename
     }
 
     if (data.geneExpression.observeExpression) {
@@ -326,18 +509,61 @@ const formValuesToData = values => {
           // console.log('item', item)
           // eslint-disable-next-line no-underscore-dangle, no-param-reassign
           delete item.__typename
+          // eslint-disable-next-line no-param-reassign
+          delete item.id
 
-          // eslint-disable-next-line no-underscore-dangle, no-param-reassign
-          _.values(item).forEach(entry => delete entry.__typename)
+          _.values(item).forEach(entry => {
+            // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+            delete entry.__typename
+            // eslint-disable-next-line no-param-reassign
+            delete entry.id
+          })
         })
       })
     }
   }
 
+  // console.log(keys(data))
+  const autocompleteKeys = keys(data).filter(key => {
+    const match = key.match(/react-autowhatever*/)
+    // console.log(key, match)
+    return match !== null
+  })
+
+  // console.log(autocompleteKeys) //, self)
+  // const self = this
+  autocompleteKeys.forEach(key => delete data[key])
+  // console.log(data)
+
+  // throw fjdlksjlfj
   // console.log(data.authors)
 
   // console.log('final', data)
   return data
 }
 
-export { dataToFormValues, formValuesToData }
+const getParentField = field =>
+  field
+    .split('.')
+    .slice(0, -1)
+    .join('.')
+
+// When a suggestion is selected, set the WB id
+const onSuggestionSelected = (event, options, setFieldValue, name) => {
+  const field = getParentField(name)
+  setFieldValue(`${field}.WBId`, options.suggestion.WBId)
+}
+
+// When the autocomplete value changes, remove the WB id
+const onAutocompleteChange = (e, field, setFieldValue, handleChange) => {
+  const parent = getParentField(field)
+  setFieldValue(`${parent}.WBId`, '')
+  handleChange(e)
+}
+
+export {
+  dataToFormValues,
+  formValuesToData,
+  onAutocompleteChange,
+  onSuggestionSelected,
+}

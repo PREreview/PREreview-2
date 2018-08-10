@@ -5,6 +5,8 @@ import { get } from 'lodash'
 
 import { getWBLaboratory, getWBPerson } from '../../fetch/WBApi'
 
+import { onAutocompleteChange, onSuggestionSelected } from './helpers'
+
 import AutoComplete from './AutoComplete'
 import Checkbox from './Checkbox'
 import Image from './Image'
@@ -23,12 +25,12 @@ const authorSuggestionSelected = (event, authorOptions, setFieldValue) => {
   // })
   // console.log(authorOptions)
   // console.log(setFieldValue)
-  setFieldValue('author.WBPerson', authorOptions.suggestion.WBPerson)
+  setFieldValue('author.WBId', authorOptions.suggestion.WBId)
 }
 
 const InitialSubmission = props => {
   // console.log(props)
-  const { errors, handleChange, values } = props
+  const { errors, handleChange, setFieldValue, values } = props
 
   return (
     <React.Fragment>
@@ -37,7 +39,9 @@ const InitialSubmission = props => {
         fetchData={getWBPerson}
         label="Name"
         name="author.name"
-        onChange={handleChange}
+        onChange={e =>
+          onAutocompleteChange(e, 'author.name', setFieldValue, handleChange)
+        }
         onSuggestionSelected={authorSuggestionSelected}
         placeholder="Please type in your name"
         required
@@ -65,14 +69,22 @@ const InitialSubmission = props => {
       />
 
       <AutoComplete
-        error={get(errors, 'laboratory')}
+        error={get(errors, 'laboratory.name')}
         fetchData={getWBLaboratory}
         label="Laboratory"
-        name="laboratory"
-        onChange={handleChange}
+        name="laboratory.name"
+        onChange={e =>
+          onAutocompleteChange(
+            e,
+            'laboratory.name',
+            setFieldValue,
+            handleChange,
+          )
+        }
+        onSuggestionSelected={onSuggestionSelected}
         placeholder="Please type in the laboratory"
         required
-        value={get(values, 'laboratory')}
+        value={get(values, 'laboratory.name')}
         {...props}
       />
 

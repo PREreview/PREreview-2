@@ -10,15 +10,24 @@ import { th } from '@pubsweet/ui-toolkit'
 
 import AutoComplete from './AutoComplete'
 
+import { onAutocompleteChange, onSuggestionSelected } from './helpers'
+
+// const onSuggestionSelected = (event, options, setFieldValue, name) => {
+//   const field = name.split('.').slice(0, -1)
+//   console.log(options)
+//   setFieldValue(`${field}.WBId`, options.suggestion.WBId)
+// }
+
 const Field = props => {
-  const { data, handleChange, name, value } = props
+  const { data, handleChange, name, setFieldValue, value } = props
   const passProps = omit(props, ['label'])
 
   return (
     <AutoComplete
       fetchData={data}
       name={name}
-      onChange={handleChange}
+      onChange={e => onAutocompleteChange(e, name, setFieldValue, handleChange)}
+      onSuggestionSelected={onSuggestionSelected}
       placeholder=""
       value={value}
       {...passProps}
@@ -48,14 +57,9 @@ const Error = styled.span`
   padding-left: ${th('gridUnit')};
 `
 
-class TextFieldGroup extends React.Component {
-  constructor(props) {
-    super(props)
-    this.handleAdd = this.handleAdd.bind(this)
-  }
-
-  handleAdd() {
-    const { maxItems, name, setValues, values } = this.props
+const TextFieldGroup = props => {
+  const handleAdd = () => {
+    const { maxItems, name, setValues, values } = props
     let data = get(values, name)
     // console.log('data', data)
 
@@ -73,8 +77,8 @@ class TextFieldGroup extends React.Component {
     setValues(values, name, newValues)
   }
 
-  handleRemove(id) {
-    const { name, setValues, values } = this.props
+  const handleRemove = id => {
+    const { name, setValues, values } = props
     const data = get(values, name)
 
     const changed = data.filter(val => val.id !== id)
@@ -82,77 +86,59 @@ class TextFieldGroup extends React.Component {
     setValues(newValues)
   }
 
-  render() {
-    const {
-      handleChange,
-      label,
-      name,
-      placeholder,
-      required,
-      values,
-    } = this.props
+  const { handleChange, label, name, placeholder, required, values } = props
 
-    let data = get(values, name)
-    if (!data || data.length === 0) data = [{ name: '' }]
+  let data = get(values, name)
+  if (!data || data.length === 0) data = [{ name: '' }]
 
-    // console.log(data)
-    // console.log(data.length > 0)
-    const error = get(this.props.errors, name)
-    const touched = get(this.props.touched, name)
+  const error = get(props.errors, name)
+  const touched = get(props.touched, name)
 
-    // console.log(error)
+  return (
+    <GroupWrapper>
+      {label && (
+        <Label>
+          {label} {required ? ' *' : ''}{' '}
+          {touched && error && <Error>{!Array.isArray(error) && error}</Error>}
+        </Label>
+      )}
+      {data &&
+        data.length > 0 &&
+        data.map((item, i) => {
+          const itemName = `${name}[${i}].name`
+          const itemValue = data[i].name
 
-    return (
-      <GroupWrapper>
-        {label && (
-          <Label>
-            {label} {required ? ' *' : ''}{' '}
-            {touched &&
-              error && <Error>{!Array.isArray(error) && error}</Error>}
-          </Label>
-        )}
-        {data &&
-          data.length > 0 &&
-          data.map((item, i) => {
-            const itemName = `${name}[${i}].name`
-            const itemValue = data[i].name
-            const itemId = data[i].id || uuid()
-            // console.log(itemName)
+          const itemId = data[i].WBId || uuid()
 
-            // console.log('isArray', Array.isArray(this.props.errors[name]))
+          return (
+            <LineWrapper key={itemName}>
+              <Field
+                {...props}
+                error={Array.isArray(error) && error[i] && error[i].name}
+                handleChange={handleChange}
+                name={itemName}
+                placeholder={placeholder}
+                value={itemValue}
+              />
+              <Button onClick={() => handleRemove(itemId)}>Remove</Button>
+            </LineWrapper>
+          )
+        })}
 
-            return (
-              <LineWrapper key={itemId}>
-                <Field
-                  {...this.props}
-                  error={Array.isArray(error) && error[i] && error[i].name}
-                  handleChange={handleChange}
-                  name={itemName}
-                  placeholder={placeholder}
-                  value={itemValue}
-                />
-                <Button onClick={() => this.handleRemove(itemId)}>
-                  Remove
-                </Button>
-              </LineWrapper>
-            )
-          })}
-
-        {(!data || data.length === 0) && (
-          <Field
-            error={Array.isArray(error) && error[0] && error[0].name}
-            handleChange={handleChange}
-            name={`${name}[0].name`}
-            value={data[0].name}
-            {...this.props}
-          />
-        )}
-        <Button onClick={this.handleAdd} primary>
-          Add another
-        </Button>
-      </GroupWrapper>
-    )
-  }
+      {(!data || data.length === 0) && (
+        <Field
+          error={Array.isArray(error) && error[0] && error[0].name}
+          handleChange={handleChange}
+          name={`${name}[0].name`}
+          value={data[0].name}
+          {...props}
+        />
+      )}
+      <Button onClick={handleAdd} primary>
+        Add another
+      </Button>
+    </GroupWrapper>
+  )
 }
 
 export default TextFieldGroup

@@ -110,10 +110,10 @@ class AutoComplete extends React.Component {
 
   onSuggestionSelected = (event, options) => {
     const { name, onSuggestionSelected, setFieldValue } = this.props
-    // console.log(this.props)
 
     if (onSuggestionSelected)
-      onSuggestionSelected(event, options, setFieldValue)
+      onSuggestionSelected(event, options, setFieldValue, name)
+
     // formik specific -- cannot stay here if this moves to ui lib
     if (setFieldValue) setFieldValue(name, options.suggestionValue)
   }

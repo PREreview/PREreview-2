@@ -4,20 +4,23 @@ import React from 'react'
 import { get } from 'lodash'
 
 import {
-  getBackboneVector,
-  getFusionType,
-  getIntegrationMethod,
-  getReporter,
+  // getBackboneVector,
+  // getFusionType,
+  // getIntegrationMethod,
+  // getReporter,
   getTransgene,
   getWBGene,
   getWBSpecies,
+  getVariation,
 } from '../../fetch/WBApi'
 
 import AutoComplete from './AutoComplete'
 import Radio from './Radio'
-import ObserveExpression from './ObserveExpression'
+// import ObserveExpression from './ObserveExpression'
 import TextField from './TextField'
 import TextFieldGroup from './TextFieldGroup'
+
+import { onAutocompleteChange, onSuggestionSelected } from './helpers'
 
 const options = {
   detectionMethod: [
@@ -49,33 +52,49 @@ const options = {
 }
 
 const GeneExpressionForm = props => {
-  const { errors, values } = props
+  const { errors, handleChange, setFieldValue, values } = props
 
   // console.log(props.errors)
 
   return (
     <React.Fragment>
       <AutoComplete
-        error={get(errors, 'geneExpression.species')}
+        error={get(errors, 'geneExpression.species.name')}
         fetchData={getWBSpecies}
         label="Species"
-        name="geneExpression.species"
-        onChange={props.handleChange}
+        name="geneExpression.species.name"
+        onChange={e => {
+          onAutocompleteChange(
+            e,
+            'geneExpression.species.name',
+            setFieldValue,
+            handleChange,
+          )
+        }}
+        onSuggestionSelected={onSuggestionSelected}
         placeholder="Please type in the species"
         required
-        value={get(values, 'geneExpression.species')}
+        value={get(values, 'geneExpression.species.name')}
         {...props}
       />
 
       <AutoComplete
-        error={get(errors, 'geneExpression.expressionPattern')}
+        error={get(errors, 'geneExpression.expressionPattern.name')}
         fetchData={getWBGene}
         label="Expression pattern for gene"
-        name="geneExpression.expressionPattern"
-        onChange={props.handleChange}
+        name="geneExpression.expressionPattern.name"
+        onChange={e => {
+          onAutocompleteChange(
+            e,
+            'geneExpression.expressionPattern.name',
+            setFieldValue,
+            handleChange,
+          )
+        }}
+        onSuggestionSelected={onSuggestionSelected}
         placeholder="Please type in expression pattern for the gene"
         required
-        value={get(values, 'geneExpression.expressionPattern')}
+        value={get(values, 'geneExpression.expressionPattern.name')}
         {...props}
       />
 
@@ -113,12 +132,23 @@ const GeneExpressionForm = props => {
       )}
 
       {values.geneExpression.detectionMethod === 'genomeEditing' && (
-        <TextField
-          error={get(errors, 'geneExpression.variation')}
+        <AutoComplete
+          error={get(errors, 'geneExpression.variation.name')}
+          fetchData={getVariation}
           label="Variation"
-          name="geneExpression.variation"
+          name="geneExpression.variation.name"
+          onChange={e => {
+            onAutocompleteChange(
+              e,
+              'geneExpression.variation.name',
+              setFieldValue,
+              handleChange,
+            )
+          }}
+          onSuggestionSelected={onSuggestionSelected}
           placeholder="Please type in variation"
-          value={get(values, 'geneExpression.variation')}
+          required
+          value={get(values, 'geneExpression.variation.name')}
           {...props}
         />
       )}
@@ -168,49 +198,49 @@ const GeneExpressionForm = props => {
             {...props}
           />
 
-          <AutoComplete
-            error={get(errors, 'geneExpression.utr')}
+          {/* <AutoComplete
+            error={get(errors, 'geneExpression.utr.name')}
             fetchData={getWBGene}
             label="3' UTR"
-            name="geneExpression.utr"
+            name="geneExpression.utr.name"
             onChange={props.handleChange}
             placeholder="Please type in 3' UTR"
-            value={get(values, 'geneExpression.utr')}
+            value={get(values, 'geneExpression.utr.name')}
             {...props}
           />
 
           <AutoComplete
-            error={get(errors, 'geneExpression.reporter')}
+            error={get(errors, 'geneExpression.reporter.name')}
             fetchData={getReporter}
             label="Reporter"
-            name="geneExpression.reporter"
+            name="geneExpression.reporter.name"
             onChange={props.handleChange}
             placeholder="Please type in reporter"
             required
-            value={get(values, 'geneExpression.reporter')}
+            value={get(values, 'geneExpression.reporter.name')}
             {...props}
           />
 
           <AutoComplete
-            error={get(errors, 'geneExpression.backboneVector')}
+            error={get(errors, 'geneExpression.backboneVector.name')}
             fetchData={getBackboneVector}
             label="Backbone Vector"
-            name="geneExpression.backboneVector"
+            name="geneExpression.backboneVector.name"
             onChange={props.handleChange}
             placeholder="Please type in Backbone Vector"
-            value={get(values, 'geneExpression.backboneVector')}
+            value={get(values, 'geneExpression.backboneVector.name')}
             {...props}
           />
 
           <AutoComplete
-            error={get(errors, 'geneExpression.fusionType')}
+            error={get(errors, 'geneExpression.fusionType.name')}
             fetchData={getFusionType}
             label="Fusion Type"
-            name="geneExpression.fusionType"
+            name="geneExpression.fusionType.name"
             onChange={props.handleChange}
             placeholder="Please type in fusion type"
             required
-            value={get(values, 'geneExpression.fusionType')}
+            value={get(values, 'geneExpression.fusionType.name')}
             {...props}
           />
 
@@ -261,25 +291,25 @@ const GeneExpressionForm = props => {
           />
 
           <AutoComplete
-            error={get(errors, 'geneExpression.integratedBy')}
+            error={get(errors, 'geneExpression.integratedBy.name')}
             fetchData={getIntegrationMethod}
             label="Integrated by"
-            name="geneExpression.integratedBy"
+            name="geneExpression.integratedBy.name"
             onChange={props.handleChange}
             placeholder="Please type in Integrated by"
-            value={get(values, 'geneExpression.integratedBy')}
+            value={get(values, 'geneExpression.integratedBy.name')}
             {...props}
-          />
+          /> */}
         </React.Fragment>
       )}
 
-      <ObserveExpression
+      {/* <ObserveExpression
         error={get(props.errors, 'geneExpression.observeExpression')}
         name="geneExpression.observeExpression"
         // touched={get(props.touched, 'geneExpression.observeExpression')}
         value={get(values, 'geneExpression.observeExpression')}
         {...props}
-      />
+      /> */}
     </React.Fragment>
   )
 }

@@ -8,7 +8,7 @@ const SUBMIT_MANUSCRIPT = gql`
         email
         name
         submittingAuthor
-        WBPerson
+        WBId
       }
       comments
       dataType
@@ -16,30 +16,42 @@ const SUBMIT_MANUSCRIPT = gql`
       funding
       geneExpression {
         antibodyUsed
-        backboneVector
+        backboneVector {
+          name
+          WBId
+        }
         coinjected
         constructComments
         constructionDetails
         detectionMethod
         dnaSequence {
-          id
           name
+          WBId
         }
-        expressionPattern
-        fusionType
+        expressionPattern {
+          name
+          WBId
+        }
+        fusionType {
+          name
+          WBId
+        }
         genotype
         injectionConcentration
         inSituDetails
-        integratedBy
+        integratedBy {
+          name
+          WBId
+        }
         observeExpression {
           certainly {
             certainly {
-              id
-              value
+              name
+              WBId
             }
             during {
-              id
-              value
+              name
+              WBId
             }
             id
             subcellularLocalization {
@@ -49,12 +61,12 @@ const SUBMIT_MANUSCRIPT = gql`
           }
           partially {
             partially {
-              id
-              value
+              name
+              WBId
             }
             during {
-              id
-              value
+              name
+              WBId
             }
             id
             subcellularLocalization {
@@ -64,12 +76,12 @@ const SUBMIT_MANUSCRIPT = gql`
           }
           possibly {
             possibly {
-              id
-              value
+              name
+              WBId
             }
             during {
-              id
-              value
+              name
+              WBId
             }
             id
             subcellularLocalization {
@@ -79,12 +91,12 @@ const SUBMIT_MANUSCRIPT = gql`
           }
           not {
             not {
-              id
-              value
+              name
+              WBId
             }
             during {
-              id
-              value
+              name
+              WBId
             }
             id
             subcellularLocalization {
@@ -93,23 +105,38 @@ const SUBMIT_MANUSCRIPT = gql`
             }
           }
         }
-        reporter
+        reporter {
+          name
+          WBId
+        }
+        species {
+          name
+          WBId
+        }
         strain
-        species
         transgeneName
         transgeneUsed {
-          id
           name
+          WBId
         }
-        utr
-        variation
+        utr {
+          name
+          WBId
+        }
+        variation {
+          name
+          WBId
+        }
       }
       id
       image {
         name
         url
       }
-      laboratory
+      laboratory {
+        name
+        WBId
+      }
       patternDescription
       status {
         dataTypeSelected
