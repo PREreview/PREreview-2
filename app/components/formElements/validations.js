@@ -172,6 +172,7 @@ const geneExpression = {
           'Must be a valid WormBase expression pattern',
           validateWBExists,
         ),
+      WBId: yup.string(),
     }),
     fusionType: yup
       .object()
