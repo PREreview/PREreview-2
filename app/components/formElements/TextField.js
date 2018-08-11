@@ -50,6 +50,7 @@ const Field = ({
   error,
   handleBlur,
   handleChange,
+  hideErrorMessage,
   inline,
   // isSubmitting,
   label,
@@ -89,7 +90,7 @@ const Field = ({
         value={value}
         {...props}
       />
-      {showError() && <Error>{error}</Error>}
+      {showError() && !hideErrorMessage && <Error>{error}</Error>}
     </FieldWithError>
   )
 }

@@ -506,11 +506,11 @@ const formValuesToData = values => {
       keys(data.geneExpression.observeExpression).forEach(key => {
         // console.log('key', key)
         data.geneExpression.observeExpression[key].forEach(item => {
-          // console.log('item', item)
           // eslint-disable-next-line no-underscore-dangle, no-param-reassign
           delete item.__typename
           // eslint-disable-next-line no-param-reassign
-          delete item.id
+          if (!item.id) item.id = uuid()
+          // delete item.id
 
           _.values(item).forEach(entry => {
             // eslint-disable-next-line no-underscore-dangle, no-param-reassign

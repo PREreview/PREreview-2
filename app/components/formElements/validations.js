@@ -1,12 +1,5 @@
 import * as yup from 'yup'
-import {
-  cloneDeep,
-  // concat,
-  // isString,
-  merge,
-  // reduce,
-  // values,
-} from 'lodash'
+import { cloneDeep, concat, isString, merge, reduce, values } from 'lodash'
 
 // import { validateWBPerson, validateWBLaboratory } from '../../fetch/WBApi'
 
@@ -223,98 +216,148 @@ const geneExpression = {
           WBId: yup.string(),
         }),
       }),
-    // observeExpression: yup
-    //   .object()
-    //   .shape({
-    //     certainly: yup.array().of(
-    //       yup.object().shape({
-    //         certainly: yup.object().shape({
-    //           id: yup.string().required(),
-    //           value: yup.string(),
-    //         }),
-    //         during: yup.object().shape({
-    //           id: yup.string().required(),
-    //           value: yup.string(),
-    //         }),
-    //         id: yup.string(),
-    //         subcellularLocalization: yup.object().shape({
-    //           id: yup.string().required(),
-    //           value: yup.string(),
-    //         }),
-    //       }),
-    //     ),
-    //     not: yup.array().of(
-    //       yup.object().shape({
-    //         during: yup.object().shape({
-    //           id: yup.string().required(),
-    //           value: yup.string(),
-    //         }),
-    //         id: yup.string(),
-    //         not: yup.object().shape({
-    //           id: yup.string().required(),
-    //           value: yup.string(),
-    //         }),
-    //         subcellularLocalization: yup.object().shape({
-    //           id: yup.string().required(),
-    //           value: yup.string(),
-    //         }),
-    //       }),
-    //     ),
-    //     partially: yup.array().of(
-    //       yup.object().shape({
-    //         during: yup.object().shape({
-    //           id: yup.string().required(),
-    //           value: yup.string(),
-    //         }),
-    //         id: yup.string(),
-    //         partially: yup.object().shape({
-    //           id: yup.string().required(),
-    //           value: yup.string(),
-    //         }),
-    //         subcellularLocalization: yup.object().shape({
-    //           id: yup.string().required(),
-    //           value: yup.string(),
-    //         }),
-    //       }),
-    //     ),
-    //     possibly: yup.array().of(
-    //       yup.object().shape({
-    //         during: yup.object().shape({
-    //           id: yup.string().required(),
-    //           value: yup.string(),
-    //         }),
-    //         id: yup.string(),
-    //         possibly: yup.object().shape({
-    //           id: yup.string().required(),
-    //           value: yup.string(),
-    //         }),
-    //         subcellularLocalization: yup.object().shape({
-    //           id: yup.string().required(),
-    //           value: yup.string(),
-    //         }),
-    //       }),
-    //     ),
-    //   })
-    //   .test('observe expression test', 'Fill in at least one field', val => {
-    //     console.log('observe', val)
-    //     const flatFirstLevel = reduce(values(val), (result, item) =>
-    //       concat(result, item),
-    //     )
+    observeExpression: yup
+      .object()
+      .shape({
+        certainly: yup.array().of(
+          yup.object().shape({
+            certainly: yup.object().shape({
+              name: yup
+                .string()
+                .test(
+                  'is certainly valid',
+                  'Expression fields must be valid WormBase body locations',
+                  validateWBExists,
+                ),
+              WBId: yup.string(),
+            }),
+            during: yup.object().shape({
+              name: yup
+                .string()
+                .test(
+                  'is certainly during valid',
+                  'During fields must be valid WormBase life stages',
+                  validateWBExists,
+                ),
+              WBId: yup.string(),
+            }),
+            id: yup.string().nullable(),
+            subcellularLocalization: yup.object().shape({
+              id: yup.string().nullable(),
+              value: yup.string(),
+            }),
+          }),
+        ),
+        not: yup.array().of(
+          yup.object().shape({
+            during: yup.object().shape({
+              name: yup
+                .string()
+                .test(
+                  'is not during valid',
+                  'During fields must be valid WormBase life stages',
+                  validateWBExists,
+                ),
+              WBId: yup.string(),
+            }),
+            id: yup.string().nullable(),
+            not: yup.object().shape({
+              name: yup
+                .string()
+                .test(
+                  'is not valid',
+                  'Expression fields must be valid WormBase body locations',
+                  validateWBExists,
+                ),
+              WBId: yup.string(),
+            }),
+            subcellularLocalization: yup.object().shape({
+              id: yup.string().nullable(),
+              value: yup.string(),
+            }),
+          }),
+        ),
+        partially: yup.array().of(
+          yup.object().shape({
+            during: yup.object().shape({
+              name: yup
+                .string()
+                .test(
+                  'is partially during valid',
+                  'During fields must be valid WormBase life stages',
+                  validateWBExists,
+                ),
+              WBId: yup.string(),
+            }),
+            id: yup.string().nullable(),
+            partially: yup.object().shape({
+              name: yup
+                .string()
+                .test(
+                  'is partially valid',
+                  'Expression fields must be valid WormBase body locations',
+                  validateWBExists,
+                ),
+              WBId: yup.string(),
+            }),
+            subcellularLocalization: yup.object().shape({
+              id: yup.string().nullable(),
+              value: yup.string(),
+            }),
+          }),
+        ),
+        possibly: yup.array().of(
+          yup.object().shape({
+            during: yup.object().shape({
+              name: yup
+                .string()
+                .test(
+                  'is possibly during valid',
+                  'During fields must be valid WormBase life stages',
+                  validateWBExists,
+                ),
+              WBId: yup.string(),
+            }),
+            id: yup.string().nullable(),
+            possibly: yup.object().shape({
+              name: yup
+                .string()
+                .test(
+                  'is possibly valid',
+                  'Expression fields must be valid WormBase body locations',
+                  validateWBExists,
+                ),
+              WBId: yup.string(),
+            }),
+            subcellularLocalization: yup.object().shape({
+              id: yup.string().nullable(),
+              value: yup.string(),
+            }),
+          }),
+        ),
+      })
+      .test('observe expression test', 'Fill in at least one field', val => {
+        const flatFirstLevel = reduce(values(val), (result, item) =>
+          concat(result, item),
+        )
 
-    //     let flatValues = []
+        let flatValues = []
 
-    //     flatFirstLevel.forEach(obj => {
-    //       flatValues = concat(
-    //         flatValues,
-    //         values(obj).filter(item => !isString(item)),
-    //       )
-    //     })
+        flatFirstLevel.forEach(obj => {
+          flatValues = concat(
+            flatValues,
+            values(obj).filter(item => !isString(item)),
+          )
+        })
 
-    //     return flatValues.find(item => {
-    //       if (!item.id) return false
-    //       return item.value && item.value.length > 0
-    //     })
-    //   }),
+        return flatValues.find(item => {
+          if (item === null) return false
+          return (
+            (item.value && item.value.length > 0) ||
+            (item.name && item.name.length > 0)
+          )
+        })
+      }),
     reporter: yup
       .object()
       .shape({

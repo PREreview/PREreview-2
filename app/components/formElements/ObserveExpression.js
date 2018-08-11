@@ -2,7 +2,7 @@
 
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { cloneDeep, get, remove } from 'lodash'
+import { cloneDeep, get, keys, remove } from 'lodash'
 import { v4 as uuid } from 'uuid'
 
 import { Button, Icon } from '@pubsweet/ui'
@@ -11,6 +11,7 @@ import { th } from '@pubsweet/ui-toolkit'
 import AutoComplete from './AutoComplete'
 // import TextField from './TextField'
 
+import { onAutocompleteChange, onSuggestionSelected } from './helpers'
 import { getWBbt, getWBls } from '../../fetch/WBApi'
 
 const rows = [
@@ -144,50 +145,68 @@ const RowWithControls = props => {
     addItem,
     dataId,
     deleteItem,
+    error,
     first,
     handleBlur,
     handleChange,
     label,
     name,
     position,
+    setFieldValue,
+    touched,
     values,
   } = props
+  // console.log('these', props)
   // console.log(values, name, values[name])
 
   const base = `geneExpression.observeExpression[${name}][${position}]`
-  const primaryFieldName = `${base}[${name}].value`
-  const duringFieldName = `${base}.during.value`
+  const primaryFieldName = `${base}[${name}].name`
+  const duringFieldName = `${base}.during.name`
   const subcellFieldName = `${base}.subcellularLocalization.value`
   // console.log(base, values)
 
   const isEmpty = !(
-    values[name].value ||
-    values.during.value ||
+    values[name].name ||
+    values.during.name ||
     values.subcellularLocalization.value
   )
 
   return (
     <Row>
       <Field
+        error={error && error[name] && error[name].name}
         fetchData={getWBbt}
         handleBlur={handleBlur}
+        hideErrorMessage
         inline
         label={`${label} expressed in`}
         name={primaryFieldName}
-        onChange={handleChange}
+        onChange={e => {
+          onAutocompleteChange(e, primaryFieldName, setFieldValue, handleChange)
+        }}
+        onSuggestionSelected={onSuggestionSelected}
         placeholder="Ex. Pharynx"
-        value={values[name].value}
+        setFieldValue={setFieldValue}
+        touched={touched}
+        value={values[name].name}
       />
 
       <Field
+        error={error && error.during && error.during.name}
         fetchData={getWBls}
         handleBlur={handleBlur}
+        hideErrorMessage
         inline
         label="During"
         name={duringFieldName}
-        onChange={handleChange}
+        onChange={e => {
+          onAutocompleteChange(e, duringFieldName, setFieldValue, handleChange)
+        }}
+        onSuggestionSelected={onSuggestionSelected}
         placeholder="Ex. Embryo Ce"
-        value={values.during.value}
+        setFieldValue={setFieldValue}
+        touched={touched}
+        value={values.during.name}
       />
 
       <Field
@@ -219,11 +238,13 @@ const RowWithControls = props => {
 const RowArray = props => {
   const {
     data,
+    error,
     label,
     handleBlur,
     handleChange,
     name,
     setFieldValue,
+    touched,
     values,
   } = props
 
@@ -234,11 +255,11 @@ const RowArray = props => {
     const vals = cloneDeep(values)
 
     const toAdd = {
-      during: { id: uuid(), value: '' },
+      during: { name: '', WBId: '' },
       id: uuid(),
       subcellularLocalization: { id: uuid(), value: '' },
     }
-    toAdd[name] = { id: uuid(), value: '' }
+    toAdd[name] = { name: '', WBId: '' }
 
     vals[name].push(toAdd)
     setFieldValue('geneExpression.observeExpression', vals)
@@ -259,6 +280,7 @@ const RowArray = props => {
             addItem={addItem}
             dataId={row.id}
             deleteItem={deleteItem}
+            error={error && error[name] && error[name][i]}
             first={i === 0}
             handleBlur={handleBlur}
             handleChange={handleChange}
@@ -266,6 +288,8 @@ const RowArray = props => {
             label={label}
             name={name}
             position={i}
+            setFieldValue={setFieldValue}
+            touched={touched}
             values={data[name][i]}
           />
         ))}
@@ -288,19 +312,29 @@ const Error = styled.span`
 `
 
 const Inputs = props => {
-  const { handleBlur, handleChange, setFieldValue, value, values } = props
+  const {
+    error,
+    handleBlur,
+    handleChange,
+    setFieldValue,
+    touched,
+    value,
+    values,
+  } = props
 
   return (
     <Wrapper>
       {rows.map(row => (
         <RowArray
           data={value}
+          error={error}
           handleBlur={handleBlur}
           handleChange={handleChange}
           key={row.key}
           label={row.label}
           name={row.name}
           setFieldValue={setFieldValue}
+          touched={touched}
           values={get(values, 'geneExpression.observeExpression')}
         />
       ))}
@@ -312,11 +346,36 @@ const ObserveExpression = props => {
   const { error, name, touched } = props
   const touchedThis = get(touched, name)
 
+  const handleError = err => {
+    if (typeof error === 'string') return err
+
+    let arr = []
+    keys(err).forEach(key => (arr = arr.concat(err[key])))
+
+    let result
+
+    arr.find(row => {
+      if (keys(row).length > 0) {
+        const item = row[keys(row)[0]]
+
+        if (keys(item).length > 0) {
+          if (item[keys(item)]) {
+            return (result = item[keys(item)[0]])
+          }
+        }
+      }
+      return false
+    })
+
+    if (result) return result
+    return null
+  }
+
   return (
     <div>
       <h4>
         When and where did you observe expression? *
-        {touchedThis && error && <Error>{error}</Error>}
+        {touchedThis && error && <Error>{handleError(error)}</Error>}
       </h4>
       <Inputs {...props} />
     </div>

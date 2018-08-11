@@ -16,7 +16,7 @@ import {
 
 import AutoComplete from './AutoComplete'
 import Radio from './Radio'
-// import ObserveExpression from './ObserveExpression'
+import ObserveExpression from './ObserveExpression'
 import TextField from './TextField'
 import TextFieldGroup from './TextFieldGroup'
 
@@ -343,13 +343,13 @@ const GeneExpressionForm = props => {
         </React.Fragment>
       )}
 
-      {/* <ObserveExpression
+      <ObserveExpression
         error={get(props.errors, 'geneExpression.observeExpression')}
         name="geneExpression.observeExpression"
         // touched={get(props.touched, 'geneExpression.observeExpression')}
         value={get(values, 'geneExpression.observeExpression')}
         {...props}
-      /> */}
+      />
     </React.Fragment>
   )
 }
