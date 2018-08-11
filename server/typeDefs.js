@@ -58,6 +58,7 @@ const typeDefs = `
 
   type Author {
     email: String
+    id: ID
     name: String
     submittingAuthor: Boolean
     WBId: String
@@ -65,6 +66,7 @@ const typeDefs = `
 
   input AuthorInput {
     email: String
+    id: ID
     name: String
     submittingAuthor: Boolean
     WBId: String

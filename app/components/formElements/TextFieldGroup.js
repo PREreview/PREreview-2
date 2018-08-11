@@ -107,8 +107,7 @@ const TextFieldGroup = props => {
         data.map((item, i) => {
           const itemName = `${name}[${i}].name`
           const itemValue = data[i].name
-
-          const itemId = data[i].WBId || uuid()
+          const itemId = data[i].id
 
           return (
             <LineWrapper key={itemName}>

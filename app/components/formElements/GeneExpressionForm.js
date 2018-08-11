@@ -4,10 +4,10 @@ import React from 'react'
 import { get } from 'lodash'
 
 import {
-  // getBackboneVector,
-  // getFusionType,
-  // getIntegrationMethod,
-  // getReporter,
+  getBackboneVector,
+  getFusionType,
+  getIntegrationMethod,
+  getReporter,
   getTransgene,
   getWBGene,
   getWBSpecies,
@@ -169,7 +169,7 @@ const GeneExpressionForm = props => {
       {values.geneExpression.detectionMethod === 'newTransgene' && (
         <React.Fragment>
           <TextField
-            error={get(errors, 'geneExpression.genoType')}
+            error={get(errors, 'geneExpression.genotype')}
             label="Genotype"
             name="geneExpression.genotype"
             placeholder="Please type in genotype"
@@ -198,12 +198,20 @@ const GeneExpressionForm = props => {
             {...props}
           />
 
-          {/* <AutoComplete
+          <AutoComplete
             error={get(errors, 'geneExpression.utr.name')}
             fetchData={getWBGene}
             label="3' UTR"
             name="geneExpression.utr.name"
-            onChange={props.handleChange}
+            onChange={e =>
+              onAutocompleteChange(
+                e,
+                'geneExpression.utr.name',
+                setFieldValue,
+                handleChange,
+              )
+            }
+            onSuggestionSelected={onSuggestionSelected}
             placeholder="Please type in 3' UTR"
             value={get(values, 'geneExpression.utr.name')}
             {...props}
@@ -214,7 +222,15 @@ const GeneExpressionForm = props => {
             fetchData={getReporter}
             label="Reporter"
             name="geneExpression.reporter.name"
-            onChange={props.handleChange}
+            onChange={e =>
+              onAutocompleteChange(
+                e,
+                'geneExpression.reporter.name',
+                setFieldValue,
+                handleChange,
+              )
+            }
+            onSuggestionSelected={onSuggestionSelected}
             placeholder="Please type in reporter"
             required
             value={get(values, 'geneExpression.reporter.name')}
@@ -226,7 +242,15 @@ const GeneExpressionForm = props => {
             fetchData={getBackboneVector}
             label="Backbone Vector"
             name="geneExpression.backboneVector.name"
-            onChange={props.handleChange}
+            onChange={e =>
+              onAutocompleteChange(
+                e,
+                'geneExpression.backboneVector.name',
+                setFieldValue,
+                handleChange,
+              )
+            }
+            onSuggestionSelected={onSuggestionSelected}
             placeholder="Please type in Backbone Vector"
             value={get(values, 'geneExpression.backboneVector.name')}
             {...props}
@@ -237,7 +261,15 @@ const GeneExpressionForm = props => {
             fetchData={getFusionType}
             label="Fusion Type"
             name="geneExpression.fusionType.name"
-            onChange={props.handleChange}
+            onChange={e =>
+              onAutocompleteChange(
+                e,
+                'geneExpression.fusionType.name',
+                setFieldValue,
+                handleChange,
+              )
+            }
+            onSuggestionSelected={onSuggestionSelected}
             placeholder="Please type in fusion type"
             required
             value={get(values, 'geneExpression.fusionType.name')}
@@ -295,11 +327,19 @@ const GeneExpressionForm = props => {
             fetchData={getIntegrationMethod}
             label="Integrated by"
             name="geneExpression.integratedBy.name"
-            onChange={props.handleChange}
+            onChange={e =>
+              onAutocompleteChange(
+                e,
+                'geneExpression.integratedBy.name',
+                setFieldValue,
+                handleChange,
+              )
+            }
+            onSuggestionSelected={onSuggestionSelected}
             placeholder="Please type in Integrated by"
             value={get(values, 'geneExpression.integratedBy.name')}
             {...props}
-          /> */}
+          />
         </React.Fragment>
       )}
 

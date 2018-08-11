@@ -117,7 +117,25 @@ const geneExpression = {
       is: val => val === 'antibody',
       then: yup.string().required('Antibody is required'),
     }),
-    backboneVector: yup.string(),
+    backboneVector: yup
+      .object()
+      .shape({
+        name: yup.string(),
+        WBId: yup.string(),
+      })
+      .when('detectionMethod', {
+        is: val => val === 'newTransgene',
+        then: yup.object().shape({
+          name: yup
+            .string()
+            .test(
+              'is backbone vector valid',
+              'Must be a valid WormBase vector',
+              validateWBExists,
+            ),
+          WBId: yup.string(),
+        }),
+      }),
     coinjected: yup.string(),
     constructComments: yup.string(),
     constructionDetails: yup.string().when(['detectionMethod'], {
@@ -155,10 +173,26 @@ const geneExpression = {
           validateWBExists,
         ),
     }),
-    fusionType: yup.string().when(['detectionMethod'], {
-      is: val => val === 'newTransgene',
-      then: yup.string().required('Fusion type is required'),
-    }),
+    fusionType: yup
+      .object()
+      .shape({
+        name: yup.string(),
+        WBId: yup.string(),
+      })
+      .when(['detectionMethod'], {
+        is: val => val === 'newTransgene',
+        then: yup.object().shape({
+          name: yup
+            .string()
+            .required('Fusion type is required')
+            .test(
+              'is fusion type valid',
+              'Must be a valid WormBase fusion type',
+              validateWBExists,
+            ),
+          WBId: yup.string(),
+        }),
+      }),
     genotype: yup.string().when(['detectionMethod'], {
       is: val => val === 'newTransgene',
       then: yup.string().required('Genotype is required'),
@@ -168,7 +202,26 @@ const geneExpression = {
       is: val => val === 'inSituHybridization',
       then: yup.string().required('In Situ Details are required'),
     }),
-    integratedBy: yup.string(),
+    integratedBy: yup
+      .object()
+      .shape({
+        name: yup.string(),
+        WBId: yup.string(),
+      })
+      .when(['detectionMethod'], {
+        is: val => val === 'newTransgene',
+        then: yup.object().shape({
+          name: yup
+            .string()
+            .required('Integration type is required')
+            .test(
+              'is integration type valid',
+              'Must be a valid WormBase integration type',
+              validateWBExists,
+            ),
+          WBId: yup.string(),
+        }),
+      }),
     // observeExpression: yup
     //   .object()
     //   .shape({
@@ -261,10 +314,26 @@ const geneExpression = {
     //       return item.value && item.value.length > 0
     //     })
     //   }),
-    reporter: yup.string().when(['detectionMethod'], {
-      is: val => val === 'newTransgene',
-      then: yup.string().required('Reporter is required'),
-    }),
+    reporter: yup
+      .object()
+      .shape({
+        name: yup.string(),
+        WBId: yup.string(),
+      })
+      .when(['detectionMethod'], {
+        is: val => val === 'newTransgene',
+        then: yup.object().shape({
+          name: yup
+            .string()
+            .required('Reporter is required')
+            .test(
+              'is reporter valid',
+              'Must be a valid WormBase protein',
+              validateWBExists,
+            ),
+          WBId: yup.string(),
+        }),
+      }),
     species: yup.object().shape({
       name: yup
         .string()
@@ -285,13 +354,7 @@ const geneExpression = {
       .array()
       .of(
         yup.object().shape({
-          name: yup
-            .string()
-            .test(
-              'is transgene valid',
-              'Must be a valid WormBase transgene',
-              validateWBExists,
-            ),
+          name: yup.string(),
           WBId: yup.string(),
         }),
       )
@@ -301,14 +364,39 @@ const geneExpression = {
           .array()
           .of(
             yup.object().shape({
-              name: yup.string(),
+              name: yup
+                .string()
+                .test(
+                  'is transgene valid',
+                  'Must be a valid WormBase transgene',
+                  validateWBExists,
+                ),
+              WBId: yup.string(),
             }),
           )
           .min(1, 'Provide at least one transgene')
           .max(10)
           .compact(val => val.name === ''),
       }),
-    utr: yup.string(),
+    utr: yup
+      .object()
+      .shape({
+        name: yup.string(),
+        WBId: yup.string(),
+      })
+      .when('detectionMethod', {
+        is: val => val === 'newTransgene',
+        then: yup.object().shape({
+          name: yup
+            .string()
+            .test(
+              'is utr valid',
+              'Must be a valid WormBase gene',
+              validateWBExists,
+            ),
+          WBId: yup.string(),
+        }),
+      }),
     variation: yup
       .object()
       .shape({

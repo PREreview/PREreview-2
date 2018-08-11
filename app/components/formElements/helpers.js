@@ -286,8 +286,8 @@ if (process.env.NODE_ENV === 'development') {
         WBId: '',
       },
       species: {
-        name: 'a species',
-        WBId: '',
+        name: 'Caenorhabditis brenneri',
+        WBId: 'Caenorhabditis brenneri',
       },
       strain: '',
       transgeneName: '',
@@ -538,7 +538,6 @@ const formValuesToData = values => {
   // throw fjdlksjlfj
   // console.log(data.authors)
 
-  // console.log('final', data)
   return data
 }
 
