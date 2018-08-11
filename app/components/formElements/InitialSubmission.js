@@ -14,22 +14,7 @@ import TextEditor from './TextEditor'
 import TextField from './TextField'
 import TextFieldGroup from './TextFieldGroup'
 
-const authorSuggestionSelected = (event, authorOptions, setFieldValue) => {
-  // const { name, onSuggestionSelected, setValues } = this.props
-
-  // if (onSuggestionSelected) onSuggestionSelected(event, authorOptions)
-  // formik specific -- cannot stay here if this moves to ui lib
-  // if (setFieldValue) setFieldValue(name, authorOptions.suggestionValue)
-  // if (setValues) setValues({
-  //   'author.name':
-  // })
-  // console.log(authorOptions)
-  // console.log(setFieldValue)
-  setFieldValue('author.WBId', authorOptions.suggestion.WBId)
-}
-
 const InitialSubmission = props => {
-  // console.log(props)
   const { errors, handleChange, setFieldValue, values } = props
 
   return (
@@ -42,7 +27,7 @@ const InitialSubmission = props => {
         onChange={e =>
           onAutocompleteChange(e, 'author.name', setFieldValue, handleChange)
         }
-        onSuggestionSelected={authorSuggestionSelected}
+        onSuggestionSelected={onSuggestionSelected}
         placeholder="Please type in your name"
         required
         value={get(values, 'author.name')}
