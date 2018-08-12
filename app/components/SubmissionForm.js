@@ -20,6 +20,13 @@ const options = {
   ],
 }
 
+const isReadOnly = status => {
+  const { dataTypeSelected, initialSubmission, submitted } = status
+  if (initialSubmission && !dataTypeSelected) return true
+  if (submitted) return true
+  return false
+}
+
 const SubmissionForm = props => {
   const { values } = props
   // console.log(values)
@@ -28,6 +35,9 @@ const SubmissionForm = props => {
   // console.log(props)
   // console.log(props.errors)
   // console.log(props.touched)
+  // console.log(isReadOnly(values.status))
+
+  const readOnly = isReadOnly(values.status)
 
   const {
     initialSubmission,
@@ -36,7 +46,7 @@ const SubmissionForm = props => {
 
   return (
     <Form>
-      <InitialSubmission values={values} {...props} />
+      <InitialSubmission readOnly={readOnly} values={values} {...props} />
 
       {initialSubmission && (
         <Dropdown
@@ -53,7 +63,7 @@ const SubmissionForm = props => {
 
       {values.status.dataTypeSelected &&
         values.dataType === 'geneExpression' && (
-          <GeneExpressionForm {...props} />
+          <GeneExpressionForm readOnly={readOnly} {...props} />
         )}
 
       <Button primary type="submit">

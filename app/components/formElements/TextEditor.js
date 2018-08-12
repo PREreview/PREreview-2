@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 
 import React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { get } from 'lodash'
 
 import { th } from '@pubsweet/ui-toolkit'
-import { TextEditor as Editor } from 'xpub-edit'
+import { TextEditor as XpubTextEditor } from 'xpub-edit'
 
 // TO DO -- extract Labels from TextField
 const Label = styled.label`
@@ -14,18 +14,23 @@ const Label = styled.label`
   display: block;
 `
 
+const readOnlyStyles = css`
+  background: ${th('colorBackgroundHue')};
+  cursor: not-allowed;
+`
+
+const Editor = styled(XpubTextEditor)`
+  ${props => props.readonly && readOnlyStyles};
+
+  div:last-child {
+    border-color: ${th('colorBorder')};
+    border-radius: ${th('borderRadius')};
+    margin-top: ${th('gridUnit')};
+  }
+`
+
 const Wrapper = styled.div`
   width: 600px;
-
-  div {
-    border-color: ${th('colorBorder')};
-    border-radius: 5px;
-    margin-top: ${th('gridUnit')};
-
-    div[contenteditable='true'] {
-      /* height: 100px; */
-    }
-  }
 `
 
 const Error = styled.span`
@@ -41,6 +46,7 @@ const TextEditor = props => {
     label,
     name,
     placeholder,
+    readOnly,
     required,
     setFieldValue,
     value,
@@ -68,6 +74,7 @@ const TextEditor = props => {
         onBlur={handleBlur}
         onChange={handleChange}
         placeholder={placeholder}
+        readonly={readOnly}
         value={value || ''}
       />
     </Wrapper>

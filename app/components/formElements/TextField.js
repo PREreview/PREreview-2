@@ -7,6 +7,11 @@ import { get } from 'lodash'
 import { TextField as UiTextField } from '@pubsweet/ui'
 import { fadeIn, th } from '@pubsweet/ui-toolkit'
 
+const readOnly = css`
+  background: ${th('colorBackgroundHue')};
+  cursor: not-allowed;
+`
+
 const StyledTextField = styled(UiTextField)`
   line-height: ${th('lineHeightBase')};
   margin-bottom: calc(${th('gridUnit')} * 3);
@@ -14,6 +19,7 @@ const StyledTextField = styled(UiTextField)`
 
   input {
     height: calc(${th('gridUnit')} * 4);
+    ${props => props.readOnly && readOnly};
   }
 `
 

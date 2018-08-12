@@ -82,21 +82,24 @@ class DropArea extends React.Component {
   }
 
   render() {
+    const { readOnly } = this.props
     const { file } = this.state
 
     return (
       <div>
-        <StyledDropzone
-          accept="image/*"
-          // onClick={this.handleClick}
-          onDrop={this.handleDrop}
-          style={{}}
-        >
-          <p>
-            Drop an image here {file && 'to replace current'} <br /> or click to
-            select
-          </p>
-        </StyledDropzone>
+        {!readOnly && (
+          <StyledDropzone
+            accept="image/*"
+            // onClick={this.handleClick}
+            onDrop={this.handleDrop}
+            style={{}}
+          >
+            <p>
+              Drop an image here {file && 'to replace current'} <br /> or click
+              to select
+            </p>
+          </StyledDropzone>
+        )}
         {file && <Img alt="" src={file.preview} />}
         {file && (
           <div>

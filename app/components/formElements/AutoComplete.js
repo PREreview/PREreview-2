@@ -83,10 +83,12 @@ class AutoComplete extends React.Component {
   }
 
   onSuggestionsFetchRequested = async ({ value }) => {
-    const { delayAfterTypingStopped, fetchData } = this.props
+    const { delayAfterTypingStopped, fetchData, readOnly } = this.props
     const { typingTimeout } = this.state
 
     if (!fetchData) return
+    if (readOnly) return
+
     if (typingTimeout) clearTimeout(typingTimeout)
 
     this.setState({

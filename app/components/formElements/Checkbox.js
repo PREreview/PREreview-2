@@ -3,7 +3,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Checkbox as Check } from '@pubsweet/ui'
+import { Checkbox as UICheckBox } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
 
 // TO DO -- extract Labels from TextField
@@ -13,17 +13,47 @@ const Label = styled.label`
   display: block;
 `
 
+const Check = styled(UICheckBox)`
+  cursor: ${props => (props.disabled ? 'not-allowed' : 'default')};
+
+  input {
+    display: none;
+    margin: 0;
+    position: unset;
+  }
+
+  span {
+    transition: none;
+
+    &:before {
+      margin-left: 1px;
+    }
+
+    &:hover {
+      color: ${th('colorText')};
+    }
+
+    &:hover:before {
+      animation: none;
+      background: ${props => {
+        if (props.disabled) return 'currentColor'
+        if (props.checked) return th('colorPrimary')
+        return 'transparent'
+      }};
+      box-shadow: ${props =>
+        props.disabled
+          ? '0 0 0 1px currentColor'
+          : `0 0 0 1px ${th('colorPrimary')}`};
+    }
+  }
+`
+
 const Wrapper = styled.div`
   margin-bottom: calc(${th('gridUnit')} * 2);
   width: 400px;
 
   label:last-of-type {
     margin-top: ${th('gridUnit')};
-
-    input {
-      margin: 0;
-      position: unset;
-    }
 
     span {
       font-family: ${th('fontInterface')};
@@ -54,6 +84,7 @@ const Checkbox = props => {
     name,
     onBlur,
     onChange,
+    readOnly,
     required,
     value,
     text,
@@ -67,6 +98,7 @@ const Checkbox = props => {
       <BoxWithError>
         <Check
           checked={checked}
+          disabled={readOnly}
           label={text}
           name={name}
           onBlur={onBlur}

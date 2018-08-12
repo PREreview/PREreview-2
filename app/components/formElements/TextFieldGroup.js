@@ -86,7 +86,15 @@ const TextFieldGroup = props => {
     setValues(newValues)
   }
 
-  const { handleChange, label, name, placeholder, required, values } = props
+  const {
+    handleChange,
+    label,
+    name,
+    placeholder,
+    readOnly,
+    required,
+    values,
+  } = props
 
   let data = get(values, name)
   if (!data || data.length === 0) data = [{ name: '' }]
@@ -119,7 +127,9 @@ const TextFieldGroup = props => {
                 placeholder={placeholder}
                 value={itemValue}
               />
-              <Button onClick={() => handleRemove(itemId)}>Remove</Button>
+              {!readOnly && (
+                <Button onClick={() => handleRemove(itemId)}>Remove</Button>
+              )}
             </LineWrapper>
           )
         })}
@@ -133,9 +143,11 @@ const TextFieldGroup = props => {
           {...props}
         />
       )}
-      <Button onClick={handleAdd} primary>
-        Add another
-      </Button>
+      {!readOnly && (
+        <Button onClick={handleAdd} primary>
+          Add another
+        </Button>
+      )}
     </GroupWrapper>
   )
 }

@@ -4,7 +4,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { get, omit } from 'lodash'
 
-import { RadioGroup } from '@pubsweet/ui'
+import { RadioGroup as UIRadioGroup } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
 
 // TO DO -- extract Labels from TextField
@@ -14,26 +14,47 @@ const Label = styled.label`
   display: block;
 `
 
+const RadioGroup = styled(UIRadioGroup)`
+  margin-top: ${th('gridUnit')};
+
+  label {
+    cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
+
+    span {
+      font-family: ${th('fontInterface')};
+      font-size: ${th('fontSizeBaseSmall')};
+      font-style: normal;
+      letter-spacing: unset;
+
+      &:before {
+        margin-left: 1px;
+      }
+    }
+
+    &:hover {
+      span {
+        color: ${props =>
+          props.disabled ? 'currentColor' : th('colorPrimary')};
+      }
+
+      span:before {
+        animation: none;
+        box-shadow: 0 0 0 1px
+          ${props => (props.disabled ? 'currentColor' : th('colorPrimary'))};
+        color: ${props =>
+          props.disabled ? 'currentColor' : th('colorPrimary')};
+      }
+    }
+
+    input {
+      display: none;
+    }
+  }
+`
+
 const Wrapper = styled.div`
   margin-bottom: calc(${th('gridUnit')} * 2);
   width: 400px;
-
-  div {
-    margin-top: ${th('gridUnit')};
-
-    label {
-      input {
-        position: unset;
-      }
-
-      span {
-        font-family: ${th('fontInterface')};
-        font-size: ${th('fontSizeBaseSmall')};
-        font-style: normal;
-        letter-spacing: unset;
-      }
-    }
-  }
 `
 
 const Error = styled.span`
@@ -44,8 +65,16 @@ const Error = styled.span`
 `
 
 const Radio = props => {
-  const { error, label, name, options, required, setFieldValue, values } = props
-  // console.log(error)
+  const {
+    error,
+    label,
+    name,
+    options,
+    readOnly,
+    required,
+    setFieldValue,
+    values,
+  } = props
 
   const value = get(values, name)
   const onChange = newValue => setFieldValue(name, newValue)
@@ -60,6 +89,7 @@ const Radio = props => {
         </Label>
       )}
       <RadioGroup
+        disabled={readOnly}
         onChange={onChange}
         options={options}
         value={value}
