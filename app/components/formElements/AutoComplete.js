@@ -113,6 +113,11 @@ class AutoComplete extends React.Component {
   onSuggestionSelected = (event, options) => {
     const { name, onSuggestionSelected, setFieldValue } = this.props
 
+    if (options.method === 'enter') {
+      event.preventDefault()
+      event.stopPropagation()
+    }
+
     if (onSuggestionSelected)
       onSuggestionSelected(event, options, setFieldValue, name)
 
