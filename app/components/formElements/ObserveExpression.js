@@ -152,6 +152,7 @@ const RowWithControls = props => {
     label,
     name,
     position,
+    readOnly,
     setFieldValue,
     touched,
     values,
@@ -186,6 +187,7 @@ const RowWithControls = props => {
         }}
         onSuggestionSelected={onSuggestionSelected}
         placeholder="Ex. Pharynx"
+        readOnly={readOnly}
         setFieldValue={setFieldValue}
         touched={touched}
         value={values[name].name}
@@ -204,6 +206,7 @@ const RowWithControls = props => {
         }}
         onSuggestionSelected={onSuggestionSelected}
         placeholder="Ex. Embryo Ce"
+        readOnly={readOnly}
         setFieldValue={setFieldValue}
         touched={touched}
         value={values.during.name}
@@ -216,21 +219,24 @@ const RowWithControls = props => {
         name={subcellFieldName}
         onChange={handleChange}
         placeholder="Ex. Nucleus"
+        readOnly={readOnly}
         value={values.subcellularLocalization.value}
       />
 
-      {first &&
+      {!readOnly &&
+        first &&
         !isEmpty && (
           <IconButton onClick={addItem} primary>
             <Icon>plus</Icon>
           </IconButton>
         )}
 
-      {!first && (
-        <IconButton onClick={() => deleteItem(dataId)}>
-          <Icon>minus</Icon>
-        </IconButton>
-      )}
+      {!readOnly &&
+        !first && (
+          <IconButton onClick={() => deleteItem(dataId)}>
+            <Icon>minus</Icon>
+          </IconButton>
+        )}
     </Row>
   )
 }
@@ -243,6 +249,7 @@ const RowArray = props => {
     handleBlur,
     handleChange,
     name,
+    readOnly,
     setFieldValue,
     touched,
     values,
@@ -288,6 +295,7 @@ const RowArray = props => {
             label={label}
             name={name}
             position={i}
+            readOnly={readOnly}
             setFieldValue={setFieldValue}
             touched={touched}
             values={data[name][i]}
@@ -316,6 +324,7 @@ const Inputs = props => {
     error,
     handleBlur,
     handleChange,
+    readOnly,
     setFieldValue,
     touched,
     value,
@@ -333,6 +342,7 @@ const Inputs = props => {
           key={row.key}
           label={row.label}
           name={row.name}
+          readOnly={readOnly}
           setFieldValue={setFieldValue}
           touched={touched}
           values={get(values, 'geneExpression.observeExpression')}
