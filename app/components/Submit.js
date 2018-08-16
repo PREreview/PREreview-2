@@ -5,11 +5,15 @@ import { Formik } from 'formik'
 import { Mutation, Query } from 'react-apollo'
 import { withRouter } from 'react-router-dom'
 import { get, set } from 'lodash'
+import styled from 'styled-components'
+
+import { th } from '@pubsweet/ui-toolkit'
 
 // eslint-disable-next-line no-unused-vars
 import makeSchema from './formElements/validations'
 // import fakeData from '../queries/fakeData'
 
+import EditorPanel from './EditorPanel'
 import Loading from './Loading'
 import SubmissionForm from './SubmissionForm'
 
@@ -18,6 +22,29 @@ import { dataToFormValues, formValuesToData } from './formElements/helpers'
 import { GET_MANUSCRIPT } from '../queries/manuscripts'
 import SUBMIT_MANUSCRIPT from '../mutations/submitManuscript'
 import UPLOAD_FILE from '../mutations/uploadFile'
+
+const SplitScreen = styled.div`
+  display: flex;
+  height: 100%;
+
+  > div:first-child {
+    /* background: teal; */
+    flex-grow: 1;
+    overflow: auto;
+  }
+
+  > div:last-child {
+    /* background: indianred; */
+    border: ${th('borderWidth')} ${th('borderStyle')}
+      ${th('colorBackgroundHue')};
+    border-radius: ${th('borderRadius')};
+    flex-basis: 40%;
+    height: 100%;
+    margin-left: ${th('gridUnit')};
+    padding: ${th('gridUnit')};
+    overflow: auto;
+  }
+`
 
 class Submit extends React.Component {
   constructor(props) {
@@ -272,8 +299,9 @@ class Submit extends React.Component {
                           })
                         }
                       }
-                      return (
-                        <div>
+
+                      const form = (
+                        <React.Fragment>
                           <h1>Submit your article</h1>
                           <Formik
                             enableReinitialize
@@ -284,8 +312,30 @@ class Submit extends React.Component {
                             validationSchema={validations}
                             // values={values}
                           />
-                        </div>
+                        </React.Fragment>
                       )
+
+                      // console.log(submission)
+
+                      const final = values.status.submitted ? (
+                        <SplitScreen>
+                          <div>{form}</div>
+                          <div>
+                            <EditorPanel
+                              // submission={submission}
+                              submission={values}
+                              update={submitManuscript}
+                              values={values}
+                            />
+                          </div>
+                        </SplitScreen>
+                      ) : (
+                        <div>{form}</div>
+                      )
+
+                      // const doit = true
+
+                      return final
                       // )
                     }}
                   </Mutation>

@@ -403,20 +403,28 @@ const formValuesToData = values => {
 
   // console.log(data)
 
-  data.authors = union([], coAuthors)
+  // console.log('author', author)
+  // console.log('coauthors', coAuthors)
+
+  if (author && coAuthors) {
+    data.authors = union([], coAuthors)
+    author.submittingAuthor = true
+    data.authors.push(author)
+
+    data.authors = data.authors.map(item => {
+      const modAuthor = cloneDeep(item)
+      // modAuthor.wormBaseId = modAuthor.WBPerson
+      // delete modAuthor.WBPerson
+      delete modAuthor.id
+      // eslint-disable-next-line no-underscore-dangle
+      delete modAuthor.__typename
+      // console.log(modAuthor)
+
+      return modAuthor
+    })
+  }
+
   // console.log(data.authors)
-
-  author.submittingAuthor = true
-  data.authors.push(author)
-
-  // if (coAuthors)
-  data.authors = data.authors.map(item => {
-    const modAuthor = cloneDeep(item)
-    // modAuthor.wormBaseId = modAuthor.WBPerson
-    // delete modAuthor.WBPerson
-    delete modAuthor.id
-    return modAuthor
-  })
 
   // if (author) {
   //   console.log('yes author')
@@ -537,6 +545,18 @@ const formValuesToData = values => {
 
   // throw fjdlksjlfj
   // console.log(data.authors)
+
+  // eslint-disable-next-line no-underscore-dangle
+  if (data.image) delete data.image.__typename
+
+  // eslint-disable-next-line no-underscore-dangle
+  delete data.__typename
+
+  if (data.communicationsHistory)
+    data.communicationsHistory.forEach(item => {
+      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+      delete item.__typename
+    })
 
   return data
 }

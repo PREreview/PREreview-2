@@ -4,6 +4,7 @@ const CURRENT_USER = gql`
   query CurrentUser {
     currentUser {
       admin
+      id
       username
     }
   }

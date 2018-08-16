@@ -10,11 +10,27 @@ const typeDefs = `
     updateManuscript(data: ManuscriptInput!): Manuscript!
   }
 
+  type HistoryEntry {
+    content: String
+    timestamp: String
+    userId: String
+    username: String
+  }
+
+  input HistoryEntryInput {
+    content: String
+    timestamp: String
+    userId: String
+    username: String
+  }
+
   type Manuscript {
     acknowledgements: String
     authors: [Author]
     comments: String
+    communicationsHistory: [HistoryEntry]
     dataType: String
+    decisionLetter: String
     disclaimer: Boolean
     funding: String
     geneExpression: GeneExpression
@@ -31,7 +47,9 @@ const typeDefs = `
     acknowledgements: String
     authors: [AuthorInput]
     comments: String
+    communicationsHistory: [HistoryEntryInput]
     dataType: String
+    decisionLetter: String
     disclaimer: Boolean
     funding: String
     geneExpression: GeneExpressionInput
@@ -46,14 +64,28 @@ const typeDefs = `
 
   type Status {
     dataTypeSelected: Boolean
+    decision: DecisionStatus
     initialSubmission: Boolean
     submitted: Boolean
   }
 
   input StatusInput {
     dataTypeSelected: Boolean
+    decision: DecisionStatusInput
     initialSubmission: Boolean
     submitted: Boolean
+  }
+
+  type DecisionStatus {
+    accepted: Boolean
+    rejected: Boolean
+    revise: Boolean
+  }
+
+  input DecisionStatusInput {
+    accepted: Boolean
+    rejected: Boolean
+    revise: Boolean
   }
 
   type Author {

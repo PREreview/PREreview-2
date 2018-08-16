@@ -23,6 +23,11 @@ const Check = styled(UICheckBox)`
   }
 
   span {
+    cursor: pointer;
+    font-family: ${th('fontInterface')};
+    font-size: ${th('fontSizeBaseSmall')};
+    font-style: normal;
+    letter-spacing: unset;
     transition: none;
 
     &:before {
@@ -54,13 +59,6 @@ const Wrapper = styled.div`
 
   label:last-of-type {
     margin-top: ${th('gridUnit')};
-
-    span {
-      font-family: ${th('fontInterface')};
-      font-size: ${th('fontSizeBaseSmall')};
-      font-style: normal;
-      letter-spacing: unset;
-    }
   }
 `
 
@@ -79,6 +77,7 @@ const Error = styled.div`
 const Checkbox = props => {
   const {
     checked,
+    className,
     errors,
     label,
     name,
@@ -89,7 +88,7 @@ const Checkbox = props => {
     value,
     text,
   } = props
-  const error = typeof value !== 'undefined' && errors[name]
+  const error = typeof value !== 'undefined' && errors && errors[name]
 
   return (
     <Wrapper>
@@ -98,6 +97,7 @@ const Checkbox = props => {
       <BoxWithError>
         <Check
           checked={checked}
+          className={className}
           disabled={readOnly}
           label={text}
           name={name}

@@ -29,6 +29,7 @@ const isReadOnly = status => {
 
 const SubmissionForm = props => {
   const { values } = props
+  // console.log(props)
   // console.log(values)
   // console.log(values.coAuthors)
   // console.log(Array.isArray(values))
@@ -38,6 +39,7 @@ const SubmissionForm = props => {
   // console.log(isReadOnly(values.status))
 
   const readOnly = isReadOnly(values.status)
+  const { submitted } = values.status
 
   const {
     initialSubmission,
@@ -66,9 +68,11 @@ const SubmissionForm = props => {
           <GeneExpressionForm readOnly={readOnly} {...props} />
         )}
 
-      <Button primary type="submit">
-        Submit
-      </Button>
+      {!submitted && (
+        <Button primary type="submit">
+          Submit
+        </Button>
+      )}
     </Form>
   )
 }

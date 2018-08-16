@@ -42,6 +42,7 @@ const Error = styled.span`
 
 const TextEditor = props => {
   const {
+    className,
     error,
     label,
     name,
@@ -63,7 +64,7 @@ const TextEditor = props => {
   const touchedThis = get(props.touched, name)
 
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       {label && (
         <Label>
           {`${label}${required ? ' *' : ''}`}{' '}

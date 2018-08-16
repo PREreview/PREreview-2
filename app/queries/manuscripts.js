@@ -11,7 +11,14 @@ const GET_MANUSCRIPT = gql`
         WBId
       }
       comments
+      communicationsHistory {
+        content
+        timestamp
+        userId
+        username
+      }
       dataType
+      decisionLetter
       disclaimer
       funding
       geneExpression {
@@ -140,6 +147,11 @@ const GET_MANUSCRIPT = gql`
       patternDescription
       status {
         dataTypeSelected
+        decision {
+          accepted
+          rejected
+          revise
+        }
         initialSubmission
         submitted
       }

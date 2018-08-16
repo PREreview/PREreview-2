@@ -8,6 +8,7 @@ const Page = styled.div`
   /* padding: ${th('gridUnit')} 15px calc(${th('gridUnit')} * 14); */
   padding: calc(${th('gridUnit')} * 2);
   /* padding-bottom: calc(${th('gridUnit')} * 14); */
+  height: 100%;
 
   overflow-y: auto;
 
