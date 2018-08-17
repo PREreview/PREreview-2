@@ -6,6 +6,14 @@ const components = require('./components.json')
 module.exports = {
   authsome: {
     mode: path.join(__dirname, 'auth.js'),
+    teams: {
+      author: {
+        name: 'Author',
+      },
+      editor: {
+        name: 'Editor',
+      },
+    },
   },
   mailer: {
     from: 'nobody@example.com',

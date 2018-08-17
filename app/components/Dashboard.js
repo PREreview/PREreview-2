@@ -18,14 +18,31 @@ import {
   GET_MANUSCRIPTS,
 } from '../queries/manuscripts'
 import DELETE_MANUSCRIPT from '../mutations/deleteManuscript'
+import CREATE_TEAM from '../mutations/createTeam'
+import CURRENT_USER from '../queries/currentUser'
 
 import Loading from './Loading'
 
 const SubmitButton = props => {
+  const { createSubmission, createTeam, currentUser } = props
+
   const onClick = () => {
-    props.createSubmission().then(res => {
+    createSubmission().then(res => {
       const { id } = res.data.createSubmission
-      props.history.push(`/submit/${id}`)
+
+      const team = {
+        members: [currentUser.id],
+        name: `author-${id}`,
+        object: {
+          objectId: id,
+          objectType: 'article',
+        },
+        teamType: 'author',
+      }
+
+      createTeam({ variables: { data: team } }).then(response => {
+        props.history.push(`/submit/${id}`)
+      })
     })
   }
 
@@ -188,10 +205,24 @@ const Dashboard = props => {
               }}
             >
               {(createSubmission, more) => (
-                <SubmitButton
-                  createSubmission={createSubmission}
-                  history={history}
-                />
+                <Mutation mutation={CREATE_TEAM}>
+                  {(createTeam, other) => {
+                    // console.log(more)
+                    const { client } = more
+                    const { currentUser } = client.readQuery({
+                      query: CURRENT_USER,
+                    })
+
+                    return (
+                      <SubmitButton
+                        createSubmission={createSubmission}
+                        createTeam={createTeam}
+                        currentUser={currentUser}
+                        history={history}
+                      />
+                    )
+                  }}
+                </Mutation>
               )}
             </Mutation>
             <Section items={items} label="My Articles" />

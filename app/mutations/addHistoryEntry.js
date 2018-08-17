@@ -1,3 +1,5 @@
+/* DELETE */
+
 import gql from 'graphql-tag'
 
 const ADD_HISTORY_ENTRY = gql`

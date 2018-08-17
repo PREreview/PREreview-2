@@ -337,28 +337,28 @@
     typeface-fira-sans-condensed "^0.0.54"
     typeface-vollkorn "^0.0.54"
 
-"@pubsweet/db-manager@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@pubsweet/db-manager/-/db-manager-1.1.0.tgz#20f2754a99a8cb8f54fec1d6dd6091c0eed25af1"
+"@pubsweet/db-manager@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@pubsweet/db-manager/-/db-manager-1.3.0.tgz#84473189bf0cc53278e68266d961021c550ac6f5"
   dependencies:
-    "@pubsweet/logger" "^0.2.3"
+    "@pubsweet/logger" "^0.2.5"
     fs-extra "^4.0.2"
     isomorphic-fetch "^2.2.1"
     joi "^13.1.0"
     pg "^7.4.1"
-    pubsweet-server "^7.1.0"
+    pubsweet-server "^8.0.0"
     tmp "^0.0.33"
     umzug "^2.1.0"
 
-"@pubsweet/logger@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@pubsweet/logger/-/logger-0.2.3.tgz#e625e8cea3b61d283dc723fbad9da5e872704834"
+"@pubsweet/logger@^0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@pubsweet/logger/-/logger-0.2.5.tgz#0fbe1bdd2581fe97927a2c72e449315047569532"
   dependencies:
     config "^1.26.2"
     joi "^13.1.0"
     lodash "^4.17.4"
 
-"@pubsweet/ui-toolkit@1.1.3", "@pubsweet/ui-toolkit@^1.1.3":
+"@pubsweet/ui-toolkit@1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@pubsweet/ui-toolkit/-/ui-toolkit-1.1.3.tgz#20416f0a4e80eb580aa68867ceb155cb67a620ee"
   dependencies:
@@ -377,6 +377,14 @@
 "@pubsweet/ui-toolkit@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@pubsweet/ui-toolkit/-/ui-toolkit-1.1.2.tgz#d8edf90716f14102e8bc20b01f39e17c9be9119a"
+  dependencies:
+    color "^3.0.0"
+    lodash "^4.17.4"
+    styled-components "^3.2.5"
+
+"@pubsweet/ui-toolkit@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@pubsweet/ui-toolkit/-/ui-toolkit-1.2.0.tgz#5531149fa2229acc06e76e964b8a412bf503c4ce"
   dependencies:
     color "^3.0.0"
     lodash "^4.17.4"
@@ -404,11 +412,11 @@
     redux-form "^7.0.3"
     styled-components "^3.2.5"
 
-"@pubsweet/ui@^8.1.0":
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/@pubsweet/ui/-/ui-8.1.0.tgz#3c0ac8dc9c03577e933c01a49b4fb51a61d3e075"
+"@pubsweet/ui@^8.4.0":
+  version "8.4.0"
+  resolved "https://registry.yarnpkg.com/@pubsweet/ui/-/ui-8.4.0.tgz#3c63f4fd8b2484abd819ec852db801c03f968ef3"
   dependencies:
-    "@pubsweet/ui-toolkit" "^1.1.3"
+    "@pubsweet/ui-toolkit" "^1.2.0"
     babel-jest "^21.2.0"
     classnames "^2.2.5"
     enzyme "^3.2.0"
@@ -454,9 +462,9 @@
   version "10.1.2"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.1.2.tgz#1b928a0baa408fc8ae3ac012cc81375addc147c6"
 
-"@types/zen-observable@^0.5.3":
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.5.3.tgz#91b728599544efbb7386d8b6633693a3c2e7ade5"
+"@types/zen-observable@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
 
 JSONStream@^1.0.4:
   version "1.3.3"
@@ -627,39 +635,29 @@ apollo-cache-control@^0.1.0:
   dependencies:
     graphql-extensions "^0.0.x"
 
-apollo-cache-inmemory@^1.1.7:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/apollo-cache-inmemory/-/apollo-cache-inmemory-1.2.1.tgz#1f8222270aa7983eb9d2ac30057196378ab3bb01"
+apollo-cache-inmemory@^1.2.4:
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/apollo-cache-inmemory/-/apollo-cache-inmemory-1.2.7.tgz#80517c4b5e910022ab8d318f47d9364f99db8541"
   dependencies:
-    apollo-cache "^1.1.8"
-    apollo-utilities "^1.0.12"
-    graphql-anywhere "^4.1.10"
+    apollo-cache "^1.1.14"
+    apollo-utilities "^1.0.18"
+    graphql-anywhere "^4.1.16"
 
-apollo-cache@^1.1.8:
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/apollo-cache/-/apollo-cache-1.1.8.tgz#b078d33dec876d52b5a81a325d3c254d4e362d3c"
+apollo-cache@^1.1.14:
+  version "1.1.14"
+  resolved "https://registry.yarnpkg.com/apollo-cache/-/apollo-cache-1.1.14.tgz#c7d54cdbc7f544161f78fa5e4bae56650e22f7ad"
   dependencies:
-    apollo-utilities "^1.0.12"
+    apollo-utilities "^1.0.18"
 
-apollo-client-preset@^1.0.8:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/apollo-client-preset/-/apollo-client-preset-1.0.8.tgz#23bd7176849d0d815f12c648774d009b258a449e"
+apollo-client@^2.3.4:
+  version "2.3.8"
+  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-2.3.8.tgz#0384a7210eb601ab88b1c13750da076fc9255b95"
   dependencies:
-    apollo-cache-inmemory "^1.1.7"
-    apollo-client "^2.2.2"
-    apollo-link "^1.0.6"
-    apollo-link-http "^1.3.1"
-    graphql-tag "^2.4.2"
-
-apollo-client@^2.2.2:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-2.3.1.tgz#64b204779b7e8b21f901529527a9a9c973eb7fd4"
-  dependencies:
-    "@types/zen-observable" "^0.5.3"
-    apollo-cache "^1.1.8"
+    "@types/zen-observable" "^0.8.0"
+    apollo-cache "^1.1.14"
     apollo-link "^1.0.0"
     apollo-link-dedup "^1.0.0"
-    apollo-utilities "^1.0.12"
+    apollo-utilities "^1.0.18"
     symbol-observable "^1.0.2"
     zen-observable "^0.8.0"
   optionalDependencies:
@@ -683,14 +681,20 @@ apollo-link-http-common@^0.2.3, apollo-link-http-common@^0.2.4:
   dependencies:
     apollo-link "^1.2.2"
 
-apollo-link-http@^1.3.1:
+apollo-link-http@^1.5.4:
   version "1.5.4"
   resolved "https://registry.yarnpkg.com/apollo-link-http/-/apollo-link-http-1.5.4.tgz#b80b7b4b342c655b6a5614624b076a36be368f43"
   dependencies:
     apollo-link "^1.2.2"
     apollo-link-http-common "^0.2.4"
 
-apollo-link@^1.0.0, apollo-link@^1.0.6, apollo-link@^1.2.1, apollo-link@^1.2.2:
+apollo-link-ws@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/apollo-link-ws/-/apollo-link-ws-1.0.8.tgz#ac1de8f29e92418728479a9a523af9f75b9ccc8b"
+  dependencies:
+    apollo-link "^1.2.2"
+
+apollo-link@^1.0.0, apollo-link@^1.2.1, apollo-link@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/apollo-link/-/apollo-link-1.2.2.tgz#54c84199b18ac1af8d63553a68ca389c05217a03"
   dependencies:
@@ -739,9 +743,15 @@ apollo-upload-server@^4.0.2:
     busboy "^0.2.14"
     object-path "^0.11.4"
 
-apollo-utilities@^1.0.0, apollo-utilities@^1.0.1, apollo-utilities@^1.0.12:
+apollo-utilities@^1.0.0, apollo-utilities@^1.0.1:
   version "1.0.12"
   resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-1.0.12.tgz#9e2b2a34cf89f3bf0d73a664effd8c1bb5d1b7f7"
+
+apollo-utilities@^1.0.18:
+  version "1.0.18"
+  resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-1.0.18.tgz#e4ee91534283fde2b744a26caaea120fe6a94f67"
+  dependencies:
+    fast-json-stable-stringify "^2.0.0"
 
 app-module-path@^2.2.0:
   version "2.2.0"
@@ -1921,6 +1931,10 @@ babylon@^6.18.0:
 babylon@^7.0.0-beta.40:
   version "7.0.0-beta.47"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-7.0.0-beta.47.tgz#6d1fa44f0abec41ab7c780481e62fd9aafbdea80"
+
+backo2@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/backo2/-/backo2-1.0.2.tgz#31ab1ac8b129363463e35b3ebb69f4dfcfba7947"
 
 bail@^1.0.0:
   version "1.0.3"
@@ -4105,6 +4119,10 @@ eventemitter2@0.4.14:
   version "0.4.14"
   resolved "https://registry.yarnpkg.com/eventemitter2/-/eventemitter2-0.4.14.tgz#8f61b75cde012b2e9eb284d4545583b5643b61ab"
 
+eventemitter3@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-3.1.0.tgz#090b4d6cdbd645ed10bf750d4b5407942d7ba163"
+
 events@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/events/-/events-1.1.1.tgz#9ebdb7635ad099c70dcc4c2a1f5004288e8bd924"
@@ -4918,11 +4936,11 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.3, graceful-fs@^4.1.6,
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
 
-graphql-anywhere@^4.1.10:
-  version "4.1.10"
-  resolved "https://registry.yarnpkg.com/graphql-anywhere/-/graphql-anywhere-4.1.10.tgz#247ada0c8d85b9d5d6b37180973442ac68ff15de"
+graphql-anywhere@^4.1.16:
+  version "4.1.16"
+  resolved "https://registry.yarnpkg.com/graphql-anywhere/-/graphql-anywhere-4.1.16.tgz#82bb59643e30183cfb7b485ed4262a7b39d8a6c1"
   dependencies:
-    apollo-utilities "^1.0.12"
+    apollo-utilities "^1.0.18"
 
 graphql-extensions@^0.0.x, graphql-extensions@~0.0.9:
   version "0.0.10"
@@ -4931,7 +4949,23 @@ graphql-extensions@^0.0.x, graphql-extensions@~0.0.9:
     core-js "^2.5.3"
     source-map-support "^0.5.1"
 
-graphql-tag@^2.4.2, graphql-tag@^2.7.3, graphql-tag@^2.9.2:
+graphql-postgres-subscriptions@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/graphql-postgres-subscriptions/-/graphql-postgres-subscriptions-1.0.2.tgz#d9c2e88653b249ffee75dc20689149d07e24e579"
+  dependencies:
+    graphql "^0.13.2"
+    graphql-subscriptions "^0.5.8"
+    iterall "^1.2.2"
+    pg "^7.4.1"
+    pg-ipc "^1.0.4"
+
+graphql-subscriptions@^0.5.8:
+  version "0.5.8"
+  resolved "https://registry.yarnpkg.com/graphql-subscriptions/-/graphql-subscriptions-0.5.8.tgz#13a6143c546bce390404657dc73ca501def30aa7"
+  dependencies:
+    iterall "^1.2.1"
+
+graphql-tag@^2.7.3, graphql-tag@^2.9.2:
   version "2.9.2"
   resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.9.2.tgz#2f60a5a981375f430bf1e6e95992427dc18af686"
 
@@ -4945,13 +4979,7 @@ graphql-tools@^2.18.0:
     iterall "^1.1.3"
     uuid "^3.1.0"
 
-graphql@^0.12.3:
-  version "0.12.3"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.12.3.tgz#11668458bbe28261c0dcb6e265f515ba79f6ce07"
-  dependencies:
-    iterall "1.1.3"
-
-graphql@^0.13.0:
+graphql@^0.13.0, graphql@^0.13.2:
   version "0.13.2"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.13.2.tgz#4c740ae3c222823e7004096f832e7b93b2108270"
   dependencies:
@@ -5893,11 +5921,7 @@ istanbul-reports@^1.3.0:
   dependencies:
     handlebars "^4.0.3"
 
-iterall@1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.1.3.tgz#1cbbff96204056dde6656e2ed2e2226d0e6d72c9"
-
-iterall@^1.1.3, iterall@^1.2.1:
+iterall@^1.1.3, iterall@^1.2.1, iterall@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.2.2.tgz#92d70deb8028e0c39ff3164fdbf4d8b088130cd7"
 
@@ -7941,6 +7965,10 @@ pg-connection-string@0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/pg-connection-string/-/pg-connection-string-0.1.3.tgz#da1847b20940e42ee1492beaf65d49d91b245df7"
 
+pg-ipc@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/pg-ipc/-/pg-ipc-1.0.4.tgz#e018f5aae417ded8a917878e33c1fe911bcce45f"
+
 pg-pool@~2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/pg-pool/-/pg-pool-2.0.3.tgz#c022032c8949f312a4f91fb6409ce04076be3257"
@@ -8538,12 +8566,35 @@ prosemirror-model@^1.0.0, prosemirror-model@^1.1.0:
   dependencies:
     orderedmap "^1.0.0"
 
+prosemirror-schema-basic@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/prosemirror-schema-basic/-/prosemirror-schema-basic-1.0.0.tgz#240516a52637e1a5b9d6d0bde0708906f2f51397"
+  dependencies:
+    prosemirror-model "^1.0.0"
+
+prosemirror-schema-list@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/prosemirror-schema-list/-/prosemirror-schema-list-1.0.1.tgz#f216e0cf4809b6074aa27912449ac89897f1ae94"
+  dependencies:
+    prosemirror-model "^1.0.0"
+    prosemirror-transform "^1.0.0"
+
 prosemirror-state@^1.0.0, prosemirror-state@^1.0.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/prosemirror-state/-/prosemirror-state-1.2.1.tgz#71971e2b992a2f2bf3aa9f805499031cccf12226"
   dependencies:
     prosemirror-model "^1.0.0"
     prosemirror-transform "^1.0.0"
+
+prosemirror-tables@^0.7.5:
+  version "0.7.6"
+  resolved "https://registry.yarnpkg.com/prosemirror-tables/-/prosemirror-tables-0.7.6.tgz#1e9e2cf2f3f2b8d4eb59bd9485b5ece0285029e1"
+  dependencies:
+    prosemirror-keymap "^1.0.0"
+    prosemirror-model "^1.0.0"
+    prosemirror-state "^1.0.0"
+    prosemirror-transform "^1.0.0"
+    prosemirror-view "^1.0.0"
 
 prosemirror-transform@^1.0.0, prosemirror-transform@^1.1.0:
   version "1.1.3"
@@ -8600,14 +8651,18 @@ public-encrypt@^4.0.0:
     parse-asn1 "^5.0.0"
     randombytes "^2.0.1"
 
-pubsweet-client@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/pubsweet-client/-/pubsweet-client-3.0.0.tgz#f67d26485138863c3a841960a4cd7ba955cb6db2"
+pubsweet-client@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/pubsweet-client/-/pubsweet-client-4.1.0.tgz#dde1d5f8c3e5c516bbad45d6e41c9e5f56ba00c8"
   dependencies:
-    "@pubsweet/ui-toolkit" "^1.0.0"
-    apollo-client-preset "^1.0.8"
+    "@pubsweet/ui" "^8.4.0"
+    "@pubsweet/ui-toolkit" "^1.2.0"
+    apollo-cache-inmemory "^1.2.4"
+    apollo-client "^2.3.4"
     apollo-link "^1.2.1"
     apollo-link-context "^1.0.5"
+    apollo-link-http "^1.5.4"
+    apollo-link-ws "^1.0.8"
     apollo-upload-client "^8.0.0"
     authsome "^0.1.0"
     config "^1.21.0"
@@ -8631,6 +8686,7 @@ pubsweet-client@^3.0.0:
     reselect "^3.0.1"
     styled-components "^3.2.5"
     styled-normalize "^3.0.1"
+    subscriptions-transport-ws "^0.9.12"
 
 pubsweet-component-login@^1.1.2:
   version "1.1.2"
@@ -8674,11 +8730,11 @@ pubsweet-component-signup@^1.0.17:
     react-router "^4.2.0"
     redux "^3.7.2"
 
-pubsweet-server@^7.1.0:
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/pubsweet-server/-/pubsweet-server-7.1.0.tgz#d25a0b0cb49c7ff9e306a9cae2501e02ac28aae6"
+pubsweet-server@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/pubsweet-server/-/pubsweet-server-8.0.0.tgz#f1dea811dbde1803e9c4eaa8472e09061bda2e15"
   dependencies:
-    "@pubsweet/logger" "^0.2.3"
+    "@pubsweet/logger" "^0.2.5"
     apollo-server-express "^1.3.2"
     apollo-upload-server "^4.0.2"
     authsome "^0.1.0"
@@ -8690,7 +8746,8 @@ pubsweet-server@^7.1.0:
     cookie-parser "^1.4.3"
     dotenv "^4.0.0"
     express "^4.16.1"
-    graphql "^0.12.3"
+    graphql "^0.13.2"
+    graphql-postgres-subscriptions "^1.0.2"
     graphql-tools "^2.18.0"
     helmet "^3.8.1"
     http-status-codes "^1.0.6"
@@ -8709,6 +8766,7 @@ pubsweet-server@^7.1.0:
     prompt "^1.0.0"
     pubsweet-sse "^1.0.0"
     require-relative "^0.8.7"
+    subscriptions-transport-ws "^0.9.12"
     uuid "^3.0.1"
     winston "^2.2.0"
 
@@ -8716,12 +8774,12 @@ pubsweet-sse@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/pubsweet-sse/-/pubsweet-sse-1.0.0.tgz#dd36aa378a302b518d417b545b064da65aec876a"
 
-pubsweet@^2.2.4:
-  version "2.2.4"
-  resolved "https://registry.yarnpkg.com/pubsweet/-/pubsweet-2.2.4.tgz#9ed343f561d6288068913d1e479c0fbe65989695"
+pubsweet@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/pubsweet/-/pubsweet-2.3.0.tgz#2064a6eed67d70c8e6f5700342359e2622a6261e"
   dependencies:
-    "@pubsweet/db-manager" "^1.1.0"
-    "@pubsweet/logger" "^0.2.3"
+    "@pubsweet/db-manager" "^1.3.0"
+    "@pubsweet/logger" "^0.2.5"
     bluebird "^3.5.0"
     colors "^1.1.2"
     commander "^2.9.0"
@@ -8730,7 +8788,7 @@ pubsweet@^2.2.4:
     fs-extra "^4.0.2"
     inflection "^1.12.0"
     prompt flatiron/prompt#1c95d1d8d333b5fbc13fa5f0619f3dcf0d514f87
-    pubsweet-server "^7.1.0"
+    pubsweet-server "^8.0.0"
     require-relative "^0.8.7"
     uuid "^3.0.1"
     webpack "^3.8.1"
@@ -10341,6 +10399,16 @@ stylis@^3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/stylis/-/stylis-3.5.0.tgz#016fa239663d77f868fef5b67cf201c4b7c701e1"
 
+subscriptions-transport-ws@^0.9.12:
+  version "0.9.14"
+  resolved "https://registry.yarnpkg.com/subscriptions-transport-ws/-/subscriptions-transport-ws-0.9.14.tgz#a39e08edba89ee4cfd95f30484c55d865f5d8451"
+  dependencies:
+    backo2 "^1.0.2"
+    eventemitter3 "^3.1.0"
+    iterall "^1.2.1"
+    symbol-observable "^1.0.4"
+    ws "^5.2.0"
+
 sugarss@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/sugarss/-/sugarss-1.0.1.tgz#be826d9003e0f247735f92365dc3fd7f1bae9e44"
@@ -11407,6 +11475,12 @@ ws@^4.0.0:
     async-limiter "~1.0.0"
     safe-buffer "~5.1.0"
 
+ws@^5.2.0:
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-5.2.2.tgz#dffef14866b8e8dc9133582514d1befaf96e980f"
+  dependencies:
+    async-limiter "~1.0.0"
+
 x-is-string@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/x-is-string/-/x-is-string-0.1.0.tgz#474b50865af3a49a9c4657f05acd145458f77d82"
@@ -11419,11 +11493,11 @@ xml-name-validator@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/xml-name-validator/-/xml-name-validator-3.0.0.tgz#6ae73e06de4d8c6e47f9fb181f78d648ad457c6a"
 
-xpub-edit@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/xpub-edit/-/xpub-edit-2.0.2.tgz#4300281a1b857133245c41c543daab5779b8b4ee"
+xpub-edit@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/xpub-edit/-/xpub-edit-2.5.0.tgz#9be67916476690a57a2b6dd4971ecf48aee0e6a4"
   dependencies:
-    "@pubsweet/ui-toolkit" "^1.1.2"
+    "@pubsweet/ui-toolkit" "^1.2.0"
     prosemirror-commands "^1.0.1"
     prosemirror-dropcursor "^1.0.0"
     prosemirror-gapcursor "^1.0.0"
@@ -11431,7 +11505,10 @@ xpub-edit@^2.0.2:
     prosemirror-inputrules "^1.0.0"
     prosemirror-keymap "^1.0.0"
     prosemirror-model "^1.0.0"
+    prosemirror-schema-basic "^1.0.0"
+    prosemirror-schema-list "^1.0.0"
     prosemirror-state "^1.0.1"
+    prosemirror-tables "^0.7.5"
     prosemirror-view "^1.0.0"
 
 xtend@^4.0.0, xtend@^4.0.1, xtend@~4.0.1:

@@ -22,7 +22,7 @@ const readOnlyStyles = css`
 const Editor = styled(XpubTextEditor)`
   ${props => props.readonly && readOnlyStyles};
 
-  div:last-child {
+  div[contenteditable] {
     border-color: ${th('colorBorder')};
     border-radius: ${th('borderRadius')};
     margin-top: ${th('gridUnit')};

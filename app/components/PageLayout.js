@@ -1,5 +1,12 @@
 // import React from 'react'
-import styled from 'styled-components'
+import styled, { injectGlobal } from 'styled-components'
+
+// HACK -- figure out why this is needed
+injectGlobal`
+  body {
+    overflow: hidden;
+  }
+`
 
 const PageLayout = styled.div`
   display: flex;
