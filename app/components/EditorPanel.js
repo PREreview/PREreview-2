@@ -177,6 +177,7 @@ const ReviewWrapper = styled.div`
 `
 
 const Pending = styled.div`
+  align-self: flex-end;
   color: ${th('colorPrimary')};
   font-size: ${th('fontSizeBaseSmall')};
   font-style: italic;
