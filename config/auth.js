@@ -35,6 +35,12 @@ const permissions = {
       }
     }
 
+    if (object === 'users') return true
+
+    if (object.type === 'user') {
+      if (object.id === userId) return true
+    }
+
     return false
   },
 }
