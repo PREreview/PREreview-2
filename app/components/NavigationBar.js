@@ -59,7 +59,7 @@ const NavigationBar = ({
 
   return (
     <AppBar
-      brand="WormBase"
+      brand="MicroPublications"
       navLinkComponents={links}
       onLogoutClick={onLogoutClick}
       user={currentUser}
