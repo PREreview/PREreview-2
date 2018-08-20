@@ -299,8 +299,9 @@ const InfoBar = styled.div`
   }};
   color: ${props =>
     props.success || props.error ? th('colorTextReverse') : th('colorText')};
-  /* height: 34px; */
-  padding: ${th('gridUnit')};
+  font-size: ${th('fontSizeBaseSmall')};
+  line-height: ${th('lineHeightBaseSmall')};
+  padding: calc(${th('gridUnit')} / 2);
   text-align: center;
   visibility: ${props => (props.hide ? 'hidden' : 'visible')};
 `
