@@ -1,7 +1,17 @@
 const { deferConfig } = require('config/defer')
 const path = require('path')
+const winston = require('winston')
 
 const components = require('./components.json')
+
+const logger = new winston.Logger({
+  transports: [
+    new winston.transports.Console({
+      colorize: true,
+      // level: 'debug',
+    }),
+  ],
+})
 
 module.exports = {
   authsome: {
@@ -12,6 +22,9 @@ module.exports = {
       },
       editor: {
         name: 'Editor',
+      },
+      editors: {
+        name: 'Editors Global',
       },
     },
   },
@@ -31,6 +44,7 @@ module.exports = {
       cfg => `${cfg['pubsweet-server'].host}:${cfg['pubsweet-server'].port}`,
     ),
     enableExperimentalGraphql: true,
+    logger,
     uploads: 'uploads',
   },
   validations: path.join(__dirname, 'validations'),

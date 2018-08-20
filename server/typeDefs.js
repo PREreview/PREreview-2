@@ -257,6 +257,14 @@ const typeDefs = `
     id: ID
     value: String
   }
+
+  extend type Team {
+    global: Boolean
+  }
+
+  extend input TeamInput {
+    global: Boolean
+  }
 `
 
 module.exports = typeDefs

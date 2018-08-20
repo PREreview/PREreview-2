@@ -1,4 +1,9 @@
 const permissions = {
+  // eslint-disable-next-line consistent-return
+  before: async (userId, operation, object, context) => {
+    const user = await context.models.User.find(userId)
+    if (user.admin) return true
+  },
   create: (userId, operation, object, context) => {
     // console.log('\ncreate')
     // console.log('userId', userId)

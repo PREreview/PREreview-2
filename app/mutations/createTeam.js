@@ -4,6 +4,15 @@ const CREATE_TEAM = gql`
   mutation CreateTeam($data: TeamInput!) {
     createTeam(input: $data) {
       id
+      members {
+        id
+        username
+      }
+      object {
+        objectId
+        objectType
+      }
+      name
     }
   }
 `

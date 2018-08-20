@@ -10,7 +10,9 @@ import PasswordReset from 'pubsweet-component-password-reset-frontend/PasswordRe
 import Dashboard from './components/Dashboard'
 import NavigationBar from './components/NavigationBar'
 import Submit from './components/Submit'
+import TeamManager from './components/TeamManager'
 
+import AdminRoute from './components/AdminRoute'
 import Page from './components/Page'
 import PageLayout from './components/PageLayout'
 import Private from './components/Private'
@@ -28,6 +30,7 @@ const routes = (
           <Switch>
             <Route component={Dashboard} exact path="/dashboard" />
             <Route component={Submit} exact path="/submit/:id" />
+            <AdminRoute component={TeamManager} exact path="/teams" />
             <Redirect from="/" to="/dashboard" />
           </Switch>
         </Page>

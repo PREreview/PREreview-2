@@ -7,4 +7,7 @@ module.exports = {
   fragment: {
     title: Joi.string(),
   },
+  team: {
+    global: Joi.boolean().allow(null),
+  },
 }
