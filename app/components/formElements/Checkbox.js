@@ -55,7 +55,7 @@ const Check = styled(UICheckBox)`
 
 const Wrapper = styled.div`
   margin-bottom: calc(${th('gridUnit')} * 2);
-  width: 400px;
+  width: 100%;
 
   label:last-of-type {
     margin-top: ${th('gridUnit')};

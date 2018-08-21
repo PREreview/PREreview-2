@@ -2,12 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Query } from 'react-apollo'
 import { withRouter } from 'react-router-dom'
+import styled from 'styled-components'
 
 import { Action, AppBar } from '@pubsweet/ui'
 
 import CURRENT_USER from '../queries/currentUser'
 
-// TODO -- use classname on appbar in ui
+const StyledBar = styled(AppBar)`
+  flex: initial;
+`
 
 const navLinks = (location, currentUser) => {
   const isDashboard = location.pathname.match(/dashboard/g)
@@ -58,7 +61,7 @@ const NavigationBar = ({
   }
 
   return (
-    <AppBar
+    <StyledBar
       brand="MicroPublications"
       navLinkComponents={links}
       onLogoutClick={onLogoutClick}

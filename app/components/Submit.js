@@ -27,10 +27,13 @@ const SplitScreen = styled.div`
   display: flex;
   height: 100%;
 
+  > div {
+    overflow-y: auto;
+  }
+
   > div:first-child {
     /* background: teal; */
     flex-grow: 1;
-    overflow: auto;
   }
 
   > div:last-child {
@@ -42,7 +45,6 @@ const SplitScreen = styled.div`
     height: 100%;
     margin-left: ${th('gridUnit')};
     padding: ${th('gridUnit')};
-    overflow: auto;
   }
 `
 
