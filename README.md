@@ -15,12 +15,12 @@ This is the repo for the Micropublications.org project
 |Linting on Commit          |               |&#x2714;   |#24
 |Conventional Commits       |               |&#x2714;   |#11
 |Unit Tests Scripts         |               |&#x2714;   |#7
-|e2e Test Scripts           |&#x2714;       |           |#6
-|Decide on Form Lib         |&#x2714;       |           |#18
-|Set up Dashboard           |               |           |#16
-|Set up Form Submission     |               |           |#17
+|e2e Test Scripts           |               |&#x2714;   |#6
+|Decide on Form Lib         |               |&#x2714;   |#18
+|Set up Dashboard           |&#x2714;       |           |#16
+|Set up Form Submission     |&#x2714;       |           |#17
 |Granttome API extension    |               |           |#20
 |Amigo API extension        |               |           |#21
-|Wormbase DB API extension  |               |           |#19
+|Wormbase DB API extension  |               |&#x2714;   |#19
 
 
