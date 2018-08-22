@@ -2,24 +2,16 @@
 
 import React from 'react'
 import { withRouter } from 'react-router-dom'
-import { Query, Mutation } from 'react-apollo'
+import { Mutation } from 'react-apollo'
 import styled from 'styled-components'
-import {
-  get,
-  // without,
-} from 'lodash'
+import { get } from 'lodash'
 
 import { Action as UIAction, ActionGroup, Button } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
 
-import CREATE_SUBMISSION from '../mutations/createSubmission'
-import {
-  // GET_MANUSCRIPT,
-  GET_MANUSCRIPTS,
-} from '../queries/manuscripts'
+import ComposedDashboard from './compose/Dashboard'
+import { GET_MANUSCRIPTS } from '../queries/manuscripts'
 import DELETE_MANUSCRIPT from '../mutations/deleteManuscript'
-import CREATE_TEAM from '../mutations/createTeam'
-import CURRENT_USER from '../queries/currentUser'
 
 import Loading from './Loading'
 
@@ -104,31 +96,7 @@ const SectionItem = props => {
           <Action to={`/submit/${data.id}`}>Edit</Action>
           <Mutation
             mutation={DELETE_MANUSCRIPT}
-            refetchQueries={[
-              // { query: GET_MANUSCRIPT, variables: { id: data.id } },
-              { query: GET_MANUSCRIPTS },
-            ]}
-            // update={(cache, { data: { deleteManuscript } }) => {
-            //   const { manuscripts } = cache.readQuery({
-            //     query: GET_MANUSCRIPTS,
-            //   })
-
-            //   // const a = cache.readQuery({
-            //   //   query: GET_MANUSCRIPT,
-            //   //   variables: { id: deleteManuscript },
-            //   // })
-
-            //   // console.log(a)
-
-            //   const toRemove = manuscripts.find(
-            //     item => item.id === deleteManuscript,
-            //   )
-
-            //   cache.writeQuery({
-            //     data: { manuscripts: without(manuscripts, toRemove) },
-            //     query: GET_MANUSCRIPTS,
-            //   })
-            // }}
+            refetchQueries={[{ query: GET_MANUSCRIPTS }]}
           >
             {deleteManuscript => (
               <Action
@@ -146,11 +114,8 @@ const SectionItem = props => {
 
 const SectionItemWrapper = styled.div`
   align-items: flex-end;
-  /* border-bottom: 1px dashed black; */
   display: flex;
   justify-content: space-between;
-  /* padding: ${th('gridUnit')}; */
-  /* position: relative; */
   max-width: 800px;
 
   div:last-child {
@@ -169,69 +134,32 @@ const SectionItemTitle = styled.span`
 `
 
 const Dashboard = props => {
-  const { history } = props
+  const {
+    articles,
+    createSubmission,
+    createTeam,
+    currentUser,
+    history,
+    loading,
+  } = props
+
+  if (loading) return <Loading />
+  const editorItems =
+    articles && articles.filter(item => get(item, 'status.initialSubmission'))
 
   return (
-    <Query query={GET_MANUSCRIPTS}>
-      {response => {
-        if (response.loading) {
-          // console.log('not yet')
-          return <Loading />
-        }
-
-        const items = get(response, 'data.manuscripts')
-        // console.log(items)
-
-        // const authoredItems
-        const editorItems =
-          items && items.filter(item => get(item, 'status.initialSubmission'))
-
-        return (
-          <div>
-            <Mutation
-              mutation={CREATE_SUBMISSION}
-              update={(cache, { data: { createSubmission } }) => {
-                // console.log(data)
-                const { manuscripts } = cache.readQuery({
-                  query: GET_MANUSCRIPTS,
-                })
-
-                // console.log(cache)
-
-                cache.writeQuery({
-                  data: { manuscripts: manuscripts.push(createSubmission) },
-                  query: GET_MANUSCRIPTS,
-                })
-              }}
-            >
-              {(createSubmission, more) => (
-                <Mutation mutation={CREATE_TEAM}>
-                  {(createTeam, other) => {
-                    // console.log(more)
-                    const { client } = more
-                    const { currentUser } = client.readQuery({
-                      query: CURRENT_USER,
-                    })
-
-                    return (
-                      <SubmitButton
-                        createSubmission={createSubmission}
-                        createTeam={createTeam}
-                        currentUser={currentUser}
-                        history={history}
-                      />
-                    )
-                  }}
-                </Mutation>
-              )}
-            </Mutation>
-            <Section items={items} label="My Articles" />
-            <Section items={editorItems} label="Editor Section" />
-          </div>
-        )
-      }}
-    </Query>
+    <React.Fragment>
+      <SubmitButton
+        createSubmission={createSubmission}
+        createTeam={createTeam}
+        currentUser={currentUser}
+        history={history}
+      />
+      <Section items={articles} label="My Articles" />
+      <Section items={editorItems} label="Editor Section" />
+    </React.Fragment>
   )
 }
 
-export default withRouter(Dashboard)
+const Composed = props => <ComposedDashboard render={Dashboard} {...props} />
+export default withRouter(Composed)
