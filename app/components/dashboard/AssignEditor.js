@@ -43,7 +43,12 @@ const AssignEditor = props => {
   }
 
   return (
-    <StyledSelect onChange={handleChange} options={options} value={value} />
+    <StyledSelect
+      isSearchable={false}
+      onChange={handleChange}
+      options={options}
+      value={value}
+    />
   )
 }
 
