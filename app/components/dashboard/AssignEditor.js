@@ -20,10 +20,11 @@ const StyledSelect = styled(Select)`
   } */
 `
 
-const mapUserToSelect = user => ({
-  label: user.username,
-  value: user.id,
-})
+const mapUserToSelect = user =>
+  user && {
+    label: user.username,
+    value: user.id,
+  }
 
 const mapUsersToOptions = users =>
   users && users.map(user => mapUserToSelect(user))
