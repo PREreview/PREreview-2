@@ -87,6 +87,7 @@ const InitialSubmission = props => {
 
       <TextEditor
         error={get(props.errors, 'patternDescription')}
+        key={`pattern-description-${props.readOnly}`}
         label="Pattern description"
         name="patternDescription"
         placeholder="Provide a description for the pattern"
@@ -137,6 +138,7 @@ const InitialSubmission = props => {
 
       <TextEditor
         error={get(props.errors, 'comments')}
+        key={`comments-${props.readOnly}`}
         label="Comments"
         name="comments"
         placeholder="Provide a description for the pattern"
