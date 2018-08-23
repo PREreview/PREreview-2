@@ -3,8 +3,9 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Menu } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
+
+import Select from '../ui/Select'
 
 const Wrapper = styled.div`
   margin-bottom: calc(${th('gridUnit')} * 2);
@@ -50,7 +51,7 @@ const Dropdown = props => {
   // console.log(error)
   // console.log(props)
 
-  const onChange = newValue => setFieldValue(name, newValue)
+  const onChange = newValue => setFieldValue(name, newValue.value)
 
   return (
     <Wrapper>
@@ -61,7 +62,7 @@ const Dropdown = props => {
           {touched && error && <Error>{error}</Error>}
         </Label>
       )}
-      <Menu onChange={onChange} options={options} value={value} />
+      <Select onChange={onChange} options={options} value={value} />
     </Wrapper>
   )
 }
