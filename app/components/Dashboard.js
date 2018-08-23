@@ -10,29 +10,54 @@ import { Action as UIAction, ActionGroup, Button } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
 
 import ComposedDashboard from './compose/Dashboard'
+
 import { GET_MANUSCRIPTS } from '../queries/manuscripts'
 import DELETE_MANUSCRIPT from '../mutations/deleteManuscript'
 
 import Loading from './Loading'
+import AssignEditor from '././dashboard/AssignEditor'
 
 const SubmitButton = props => {
-  const { createSubmission, createTeam, currentUser } = props
+  const { createSubmission, createTeam, currentUser, scienceOfficer } = props
 
   const onClick = () => {
     createSubmission().then(res => {
       const { id } = res.data.createSubmission
 
-      const team = {
-        members: [currentUser.id],
-        name: `author-${id}`,
-        object: {
-          objectId: id,
-          objectType: 'article',
+      const teams = [
+        {
+          members: [currentUser.id],
+          name: `author-${id}`,
+          object: {
+            objectId: id,
+            objectType: 'article',
+          },
+          teamType: 'author',
         },
-        teamType: 'author',
-      }
+        {
+          members: [],
+          name: `editor-${id}`,
+          object: {
+            objectId: id,
+            objectType: 'article',
+          },
+          teamType: 'editor',
+        },
+        {
+          members: [scienceOfficer.id],
+          name: `science-officer-${id}`,
+          object: {
+            objectId: id,
+            objectType: 'article',
+          },
+          teamType: 'scienceOfficer',
+        },
+      ]
 
-      createTeam({ variables: { data: team } }).then(response => {
+      Promise.all(
+        teams.map(team => createTeam({ variables: { data: team } })),
+      ).then(response => {
+        // console.log(response)
         props.history.push(`/submit/${id}`)
       })
     })
@@ -52,13 +77,20 @@ const SectionHeader = styled.h3`
 `
 
 const Section = props => {
-  const { items, label } = props
+  const { items, editors, label, updateTeam } = props
   return (
     <div>
       <SectionHeader>{label}</SectionHeader>
       {items &&
         items.length > 0 &&
-        items.map(item => <SectionItem data={item} key={item.id} />)}
+        items.map(item => (
+          <SectionItem
+            data={item}
+            editors={editors}
+            key={item.id}
+            updateTeam={updateTeam}
+          />
+        ))}
     </div>
   )
 }
@@ -86,12 +118,16 @@ const Action = styled(UIAction)`
 `
 
 const SectionItem = props => {
-  const { data } = props
+  const { data, editors } = props
   return (
     <React.Fragment>
       <Status status={data.status} />
       <SectionItemWrapper key={data.id}>
-        <SectionItemTitle>{data.title || 'Untitled'}</SectionItemTitle>
+        <div>
+          <SectionItemTitle>{data.title || 'Untitled'}</SectionItemTitle>
+          {editors && <AssignEditor articleId={data.id} />}
+        </div>
+
         <ActionGroup>
           <Action to={`/submit/${data.id}`}>Edit</Action>
           <Mutation
@@ -139,6 +175,8 @@ const Dashboard = props => {
     createSubmission,
     createTeam,
     currentUser,
+    globalEditorTeam,
+    globalScienceOfficerTeam,
     history,
     loading,
   } = props
@@ -154,9 +192,14 @@ const Dashboard = props => {
         createTeam={createTeam}
         currentUser={currentUser}
         history={history}
+        scienceOfficer={globalScienceOfficerTeam.members[0]}
       />
       <Section items={articles} label="My Articles" />
-      <Section items={editorItems} label="Editor Section" />
+      <Section
+        editors={globalEditorTeam.members}
+        items={editorItems}
+        label="Editor Section"
+      />
     </React.Fragment>
   )
 }

@@ -8,6 +8,7 @@ import {
   createTeam as createTeamMutation,
   getArticles as getArticlesQuery,
   getCurrentUser as getCurrentUserQuery,
+  getGlobalTeams as getGlobalTeamsQuery,
 } from './pieces'
 
 const mapper = {
@@ -15,14 +16,26 @@ const mapper = {
   createTeamMutation,
   getArticlesQuery,
   getCurrentUserQuery,
+  getGlobalTeamsQuery,
 }
+
+const getTeamByType = (teams, type) =>
+  teams && teams.find(t => t.teamType === type)
 
 const mapProps = args => ({
   articles: args.getArticlesQuery.data.manuscripts,
   createSubmission: args.createSubmissionMutation.createSubmission,
   createTeam: args.createTeamMutation.createTeam,
   currentUser: args.getCurrentUserQuery.data.currentUser,
-  loading: args.getArticlesQuery.loading,
+  globalEditorTeam: getTeamByType(
+    args.getGlobalTeamsQuery.data.globalTeams,
+    'editors',
+  ),
+  globalScienceOfficerTeam: getTeamByType(
+    args.getGlobalTeamsQuery.data.globalTeams,
+    'scienceOfficers',
+  ),
+  loading: args.getArticlesQuery.loading || args.getGlobalTeamsQuery.loading,
 })
 
 const Composed = ({ render, ...props }) => (
