@@ -61,7 +61,7 @@
     "webpack": "^3.11.0",
     "webpack-hot-middleware": "^2.22.2",
     "winston": "2",
-    "xpub-edit": "^2.5.0",
+    "xpub-edit": "^2.5.1",
     "yup": "^0.25.1"
   },
   "devDependencies": {

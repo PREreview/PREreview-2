@@ -11685,9 +11685,9 @@ xml-name-validator@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/xml-name-validator/-/xml-name-validator-3.0.0.tgz#6ae73e06de4d8c6e47f9fb181f78d648ad457c6a"
 
-xpub-edit@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/xpub-edit/-/xpub-edit-2.5.0.tgz#9be67916476690a57a2b6dd4971ecf48aee0e6a4"
+xpub-edit@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/xpub-edit/-/xpub-edit-2.5.1.tgz#be42cb35df1ea37adfcd1a35da2c0810ccbbe2bb"
   dependencies:
     "@pubsweet/ui-toolkit" "^1.2.0"
     prosemirror-commands "^1.0.1"
