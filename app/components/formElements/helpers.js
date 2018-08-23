@@ -78,7 +78,11 @@ let defaultFormValues = {
             WBId: '',
           },
           id: uuid(),
-          subcellularLocalization: { id: uuid(), value: '' },
+          subcellularLocalization: {
+            id: uuid(),
+            name: '',
+            WBId: '',
+          },
         },
       ],
       not: [
@@ -94,7 +98,11 @@ let defaultFormValues = {
             name: '',
             WBId: '',
           },
-          subcellularLocalization: { id: uuid(), value: '' },
+          subcellularLocalization: {
+            id: uuid(),
+            name: '',
+            WBId: '',
+          },
         },
       ],
       partially: [
@@ -110,7 +118,11 @@ let defaultFormValues = {
             name: '',
             WBId: '',
           },
-          subcellularLocalization: { id: uuid(), value: '' },
+          subcellularLocalization: {
+            id: uuid(),
+            name: '',
+            WBId: '',
+          },
         },
       ],
       possibly: [
@@ -126,7 +138,11 @@ let defaultFormValues = {
             name: '',
             WBId: '',
           },
-          subcellularLocalization: { id: uuid(), value: '' },
+          subcellularLocalization: {
+            id: uuid(),
+            name: '',
+            WBId: '',
+          },
         },
       ],
     },
@@ -229,7 +245,11 @@ if (process.env.NODE_ENV === 'development') {
               WBId: '',
             },
             id: uuid(),
-            subcellularLocalization: { id: uuid(), value: '' },
+            subcellularLocalization: {
+              id: uuid(),
+              name: '',
+              WBId: '',
+            },
           },
         ],
         not: [
@@ -245,7 +265,11 @@ if (process.env.NODE_ENV === 'development') {
               name: '',
               WBId: '',
             },
-            subcellularLocalization: { id: uuid(), value: '' },
+            subcellularLocalization: {
+              id: uuid(),
+              name: '',
+              WBId: '',
+            },
           },
         ],
         partially: [
@@ -261,7 +285,11 @@ if (process.env.NODE_ENV === 'development') {
               name: '',
               WBId: '',
             },
-            subcellularLocalization: { id: uuid(), value: '' },
+            subcellularLocalization: {
+              id: uuid(),
+              name: '',
+              WBId: '',
+            },
           },
         ],
         possibly: [
@@ -277,7 +305,11 @@ if (process.env.NODE_ENV === 'development') {
               name: '',
               WBId: '',
             },
-            subcellularLocalization: { id: uuid(), value: '' },
+            subcellularLocalization: {
+              id: uuid(),
+              name: '',
+              WBId: '',
+            },
           },
         ],
       },

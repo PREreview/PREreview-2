@@ -191,33 +191,28 @@ const typeDefs = `
     certainly: WBItem
     during: WBItem
     id: ID
-    subcellularLocalization: ObserveExpressionField
+    subcellularLocalization: WBItem
   }
 
   type ObserveExpressionPartiallyEntry {
     partially: WBItem
     during: WBItem
     id: ID
-    subcellularLocalization: ObserveExpressionField
+    subcellularLocalization: WBItem
   }
 
   type ObserveExpressionPossiblyEntry {
     possibly: WBItem
     during: WBItem
     id: ID
-    subcellularLocalization: ObserveExpressionField
+    subcellularLocalization: WBItem
   }
 
   type ObserveExpressionNotEntry {
     not: WBItem
     during: WBItem
     id: ID
-    subcellularLocalization: ObserveExpressionField
-  }
-
-  type ObserveExpressionField {
-    id: ID
-    value: String
+    subcellularLocalization: WBItem
   }
 
   input ObserveExpressionInput {
@@ -231,33 +226,28 @@ const typeDefs = `
     certainly: WBItemInput
     during: WBItemInput
     id: ID
-    subcellularLocalization: ObserveExpressionFieldInput
+    subcellularLocalization: WBItemInput
   }
 
   input ObserveExpressionPartiallyEntryInput {
     during: WBItemInput
     id: ID
     partially: WBItemInput
-    subcellularLocalization: ObserveExpressionFieldInput
+    subcellularLocalization: WBItemInput
   }
 
   input ObserveExpressionPossiblyEntryInput {
     during: WBItemInput
     id: ID
     possibly: WBItemInput
-    subcellularLocalization: ObserveExpressionFieldInput
+    subcellularLocalization: WBItemInput
   }
 
   input ObserveExpressionNotEntryInput {
     during: WBItemInput
     id: ID
     not: WBItemInput
-    subcellularLocalization: ObserveExpressionFieldInput
-  }
-
-  input ObserveExpressionFieldInput {
-    id: ID
-    value: String
+    subcellularLocalization: WBItemInput
   }
 
   extend type Team {

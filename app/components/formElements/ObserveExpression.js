@@ -12,7 +12,7 @@ import AutoComplete from './AutoComplete'
 // import TextField from './TextField'
 
 import { onAutocompleteChange, onSuggestionSelected } from './helpers'
-import { getWBbt, getWBls } from '../../fetch/WBApi'
+import { getGOcc, getWBbt, getWBls } from '../../fetch/WBApi'
 
 const rows = [
   {
@@ -163,13 +163,13 @@ const RowWithControls = props => {
   const base = `geneExpression.observeExpression[${name}][${position}]`
   const primaryFieldName = `${base}[${name}].name`
   const duringFieldName = `${base}.during.name`
-  const subcellFieldName = `${base}.subcellularLocalization.value`
+  const subcellFieldName = `${base}.subcellularLocalization.name`
   // console.log(base, values)
 
   const isEmpty = !(
     values[name].name ||
     values.during.name ||
-    values.subcellularLocalization.value
+    values.subcellularLocalization.name
   )
 
   return (
@@ -213,14 +213,26 @@ const RowWithControls = props => {
       />
 
       <Field
+        error={
+          error &&
+          error.subcellularLocalization &&
+          error.subcellularLocalization.name
+        }
+        fetchData={getGOcc}
         handleBlur={handleBlur}
+        hideErrorMessage
         inline
         label="Subcellular localization"
         name={subcellFieldName}
-        onChange={handleChange}
+        onChange={e => {
+          onAutocompleteChange(e, subcellFieldName, setFieldValue, handleChange)
+        }}
+        onSuggestionSelected={onSuggestionSelected}
         placeholder="Ex. Nucleus"
         readOnly={readOnly}
-        value={values.subcellularLocalization.value}
+        setFieldValue={setFieldValue}
+        touched={touched}
+        value={values.subcellularLocalization.name}
       />
 
       {!readOnly &&
@@ -264,7 +276,7 @@ const RowArray = props => {
     const toAdd = {
       during: { name: '', WBId: '' },
       id: uuid(),
-      subcellularLocalization: { id: uuid(), value: '' },
+      subcellularLocalization: { name: '', WBId: '' },
     }
     toAdd[name] = { name: '', WBId: '' }
 

@@ -62,8 +62,8 @@ const SUBMIT_MANUSCRIPT = gql`
             }
             id
             subcellularLocalization {
-              id
-              value
+              name
+              WBId
             }
           }
           partially {
@@ -77,8 +77,8 @@ const SUBMIT_MANUSCRIPT = gql`
             }
             id
             subcellularLocalization {
-              id
-              value
+              name
+              WBId
             }
           }
           possibly {
@@ -92,8 +92,8 @@ const SUBMIT_MANUSCRIPT = gql`
             }
             id
             subcellularLocalization {
-              id
-              value
+              name
+              WBId
             }
           }
           not {
@@ -107,8 +107,8 @@ const SUBMIT_MANUSCRIPT = gql`
             }
             id
             subcellularLocalization {
-              id
-              value
+              name
+              WBId
             }
           }
         }
