@@ -47,11 +47,23 @@ const resolvers = {
     },
   },
   Query: {
+    async globalTeams() {
+      const teams = await db.select({ global: true, type: 'team' })
+      return teams
+    },
     async manuscript(_, { id }) {
       return db.selectId(id)
     },
     async manuscripts() {
       return db.select({ type: 'manuscript' })
+    },
+    async teamsForArticle(_, { id }) {
+      const selector = {
+        'object.objectId': id,
+        type: 'team',
+      }
+      const teams = await db.select(selector)
+      return teams
     },
   },
 }

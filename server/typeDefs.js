@@ -1,7 +1,9 @@
 const typeDefs = `
   extend type Query {
+    globalTeams: [Team]
     manuscript(id: ID!): Manuscript!
     manuscripts: [Manuscript]!
+    teamsForArticle(id: ID!): [Team]
   }
 
   extend type Mutation {
