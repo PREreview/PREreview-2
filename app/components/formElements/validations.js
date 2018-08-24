@@ -48,6 +48,7 @@ const validateWBExists = function(val) {
 
 const initial = {
   author: yup.object().shape({
+    credit: yup.string().required('Must choose credit to assign to the author'),
     email: yup
       .string()
       .required('Email is required')
@@ -64,6 +65,17 @@ const initial = {
   }),
   coAuthors: yup.array(
     yup.object().shape({
+      credit: yup.string().test(
+        'coauthor has credit',
+        'Must choose credit for all authors',
+        // eslint-disable-next-line func-names, prefer-arrow-callback
+        function(val) {
+          const { name } = this.parent
+          if (!name) return true
+          if (name && !val) return false
+          return true
+        },
+      ),
       name: yup
         .string()
         .test(

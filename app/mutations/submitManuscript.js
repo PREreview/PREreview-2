@@ -5,6 +5,7 @@ const SUBMIT_MANUSCRIPT = gql`
     updateManuscript(data: $data) {
       acknowledgements
       authors {
+        credit
         email
         name
         submittingAuthor

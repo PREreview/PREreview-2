@@ -91,6 +91,7 @@ const typeDefs = `
   }
 
   type Author {
+    credit: String
     email: String
     id: ID
     name: String
@@ -99,6 +100,7 @@ const typeDefs = `
   }
 
   input AuthorInput {
+    credit: String
     email: String
     id: ID
     name: String

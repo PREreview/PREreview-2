@@ -7,6 +7,7 @@ import { getWBLaboratory, getWBPerson } from '../../fetch/WBApi'
 
 import { onAutocompleteChange, onSuggestionSelected } from './helpers'
 
+import { AuthorInput } from './index'
 import AutoComplete from './AutoComplete'
 import Checkbox from './Checkbox'
 import Image from './Image'
@@ -19,18 +20,11 @@ const InitialSubmission = props => {
 
   return (
     <React.Fragment>
-      <AutoComplete
-        error={get(errors, 'author.name')}
-        fetchData={getWBPerson}
+      <AuthorInput
         label="Name"
-        name="author.name"
-        onChange={e =>
-          onAutocompleteChange(e, 'author.name', setFieldValue, handleChange)
-        }
-        onSuggestionSelected={onSuggestionSelected}
+        name="author"
         placeholder="Please type in your name"
         required
-        value={get(values, 'author.name')}
         {...props}
       />
 
@@ -45,6 +39,7 @@ const InitialSubmission = props => {
       />
 
       <TextFieldGroup
+        authors
         data={getWBPerson}
         handleChange={handleChange}
         label="Co-Authors"
