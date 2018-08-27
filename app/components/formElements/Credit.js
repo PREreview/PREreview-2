@@ -86,7 +86,6 @@ const Credit = props => {
 
   return (
     <StyledSelect
-      aria-label="fkdjfk"
       onChange={handleChange}
       options={options}
       value={currentValue}
