@@ -12,7 +12,6 @@ import {
   // mergeWith
 } from 'lodash'
 // import { v4 as uuid } from 'uuid'
-// import { withApollo } from 'react-apollo'
 
 // import { Action, Button, H6 } from '@pubsweet/ui'
 // import { th } from '@pubsweet/ui-toolkit'
@@ -20,65 +19,20 @@ import {
 import ComposedEditorPanel from './compose/EditorPanel'
 import Loading from './Loading'
 
-// import { formValuesToData } from './formElements/helpers'
+import { formValuesToData } from './formElements/helpers'
 import { isRejected, setRejected } from '../helpers/status'
 
 // import ADD_HISTORY_ENTRY from '../mutations/addHistoryEntry'
-// import CURRENT_USER from '../queries/currentUser'
 
-import { PanelInfo, RejectArticle, Ribbon } from './ui'
-import { formValuesToData } from './formElements/helpers'
+import { PanelInfo, RejectArticle, ReviewerInfo, Ribbon } from './ui'
 
 // import { RejectCheckbox } from './formElements'
 // import Dropdown from './formElements/Dropdown'
 // import TextEditor from './formElements/TextEditor'
 
-// const StyledAction = styled(Action)`
-//   line-height: unset;
-//   margin-bottom: ${th('gridUnit')};
-// `
-
 // const StyledDropdown = styled(Dropdown)`
 //   max-width: 100%;
 // `
-
-// const StyledH6 = styled(H6)`
-//   color: ${th('colorText')};
-//   margin: calc(${th('gridUnit')} * 2) 0 0 0;
-// `
-
-// const ReviewEditor = StyledEditor.extend`
-//   ${props =>
-//     props.readOnly &&
-//     css`
-//       div[contenteditable] {
-//         border: 0;
-//       }
-//     `};
-// `
-
-// const ReviewersNumbersItem = props => {
-//   const { number, text } = props
-
-//   return (
-//     <ReviewersNumbersItemWrapper>
-//       <span>{number}</span>
-//       <span>reviewers {text}</span>
-//     </ReviewersNumbersItemWrapper>
-//   )
-// }
-
-// eslint-disable-next-line arrow-body-style
-// const ReviewersNumbers = props => {
-//   // const {}(
-//   return (
-//     <div>
-//       <ReviewersNumbersItem number={10} text="invited" />
-//       <ReviewersNumbersItem number={7} text="responded" />
-//       <ReviewersNumbersItem number={2} text="accepted" />
-//     </div>
-//   )
-// }
 
 // const initialValues = {
 //   content: 'hello',
@@ -106,85 +60,6 @@ import { formValuesToData } from './formElements/helpers'
 //         <Editor label={item.username} readOnly value={item.content} />
 //       ))}
 //     </React.Fragment>
-//   )
-// }
-
-// const reviewsData = [
-//   {
-//     content: '<p>This is almost ok</p>',
-//     recommendation: 'revise',
-//     status: 'pending',
-//     username: 'Yannis Barlas',
-//   },
-//   {
-//     content: '<p>This is great</p>',
-//     recommendation: 'accept',
-//     status: 'submitted',
-//     username: 'Alexis Georgantas',
-//   },
-// ]
-
-// const RecommendationDot = styled.div`
-//   align-self: center;
-//   background: ${props => {
-//     const { recommendation } = props
-//     if (recommendation === 'revise') return th('colorWarning')
-//     if (recommendation === 'accept') return th('colorSuccess')
-//     if (recommendation === 'reject') return th('colorError')
-//     return th('colorFurniture')
-//   }};
-//   border-radius: 50%;
-//   display: inline-flex;
-//   height: calc(${th('gridUnit')} * 1);
-//   margin-right: ${th('gridUnit')};
-//   width: calc(${th('gridUnit')} * 1);
-// `
-
-// const ReviewHeadWrapper = styled.div`
-//   border-bottom: ${th('borderWidth')} ${th('borderStyle')} ${th('colorBorder')};
-//   display: flex;
-// `
-
-// const ReviewWrapper = styled.div`
-//   margin-bottom: ${th('gridUnit')};
-// `
-
-// const Pending = styled.div`
-//   align-self: flex-end;
-//   color: ${th('colorPrimary')};
-//   font-size: ${th('fontSizeBaseSmall')};
-//   font-style: italic;
-//   line-height: ${th('lineHeightBaseSmall')};
-//   margin-left: auto; /* pull right */
-// `
-
-// const Review = props => {
-//   const { data } = props
-//   const pending = data.status === 'pending'
-
-//   return (
-//     <ReviewWrapper>
-//       <ReviewHeadWrapper>
-//         <RecommendationDot
-//           recommendation={pending ? null : data.recommendation}
-//         />
-//         {data.username}
-//         {pending && <Pending>pending</Pending>}
-//       </ReviewHeadWrapper>
-//       {!pending && <ReviewEditor readOnly value={data.content} />}
-//     </ReviewWrapper>
-//   )
-// }
-
-// const Reviews = props => {
-//   const { data } = props
-//   if (!data || !data.length > 0) return null
-
-//   return (
-//     <div>
-//       <StyledH6>Reviews</StyledH6>
-//       {data.map(item => <Review data={item} />)}
-//     </div>
 //   )
 // }
 
@@ -265,53 +140,7 @@ import { formValuesToData } from './formElements/helpers'
 //   )
 // }
 
-// class SendForm extends React.Component {
-//   constructor(props) {
-//     super(props)
-//     this.state = {
-//       reject: false,
-//     }
-//   }
-
-//   render() {
-//     const infoMessage = 'You are about to reject'
-
-//     return (
-//       <Form>
-//         <InfoBar>{infoMessage}</InfoBar>
-//         <RejectCheckbox />
-//       </Form>
-//     )
-//   }
-// }
-
-// const EditorPanel = props => {
-//   const { submission, update } = props
-
-//   return (
-//     <React.Fragment>
-//       <h1>Editor Panel</h1>
-//       {/* <Mutation mutation={ADD_HISTORY_ENTRY}>
-//         {(addHistoryEntry, more) => ( */}
-//       <Formik
-//         initialValues={initialValues}
-//         onSubmit={formValues => {
-//           console.log(formValues)
-//           const data = cloneDeep(submission)
-//           if (!data.history) data.history = []
-//           data.history.push(formValues)
-//           update({ variables: { data } })
-//         }}
-//         render={SendForm}
-//         validationSchema={validationSchema}
-//       />
-//       {/* )}
-//       </Mutation> */}
-//     </React.Fragment>
-//   )
-// }
-
-// class EditorPanelz extends React.Component {
+// class EditorPanel extends React.Component {
 //   constructor(props) {
 //     super(props)
 
@@ -537,6 +366,9 @@ const EditorPanel = props => {
                       update={toggleRejectionWarning}
                       {...formikProps}
                     />
+
+                    {!alreadyRejected &&
+                      !state.rejectedCheck && <ReviewerInfo />}
                   </React.Fragment>
                 )}
               </EditorPanelForm>
