@@ -162,6 +162,31 @@ const GET_MANUSCRIPT = gql`
   }
 `
 
+const GET_MANUSCRIPT_FOR_EDITOR = gql`
+  query manuscript($id: ID!) {
+    manuscript(id: $id) {
+      communicationsHistory {
+        content
+        timestamp
+        userId
+        username
+      }
+      decisionLetter
+      id
+      status {
+        dataTypeSelected
+        decision {
+          accepted
+          rejected
+          revise
+        }
+        initialSubmission
+        submitted
+      }
+    }
+  }
+`
+
 const GET_MANUSCRIPTS = gql`
   query manuscripts {
     manuscripts {
@@ -176,4 +201,4 @@ const GET_MANUSCRIPTS = gql`
   }
 `
 
-export { GET_MANUSCRIPT, GET_MANUSCRIPTS }
+export { GET_MANUSCRIPT, GET_MANUSCRIPT_FOR_EDITOR, GET_MANUSCRIPTS }

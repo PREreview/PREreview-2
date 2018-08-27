@@ -478,8 +478,10 @@ const formValuesToData = values => {
   delete data.author
   delete data.coAuthors
 
-  // eslint-disable-next-line no-underscore-dangle
-  delete data.laboratory.__typename
+  if (data.laboratory) {
+    // eslint-disable-next-line no-underscore-dangle
+    delete data.laboratory.__typename
+  }
 
   if (data.geneExpression) {
     // eslint-disable-next-line no-underscore-dangle

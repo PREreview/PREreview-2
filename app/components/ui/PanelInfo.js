@@ -18,6 +18,7 @@ const Item = styled.div`
 `
 
 const Wrapper = styled.div`
+  margin-bottom: ${th('gridUnit')};
   width: 100%;
 
   ${Item}:first-child {

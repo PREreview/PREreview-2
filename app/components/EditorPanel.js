@@ -1,16 +1,16 @@
 /* eslint-disable react/prop-types */
 
 import React from 'react'
+import { State } from 'react-powerplug'
 // import styled, { css } from 'styled-components'
-// import {
-// Form,
-// Formik
-// } from 'formik'
+import { Form, Formik } from 'formik'
 // import * as yup from 'yup'
-// import {
-// cloneDeep,
-// mergeWith
-// } from 'lodash'
+import {
+  assign,
+  // cloneDeep,
+  isFunction,
+  // mergeWith
+} from 'lodash'
 // import { v4 as uuid } from 'uuid'
 // import { withApollo } from 'react-apollo'
 
@@ -21,12 +21,13 @@ import ComposedEditorPanel from './compose/EditorPanel'
 import Loading from './Loading'
 
 // import { formValuesToData } from './formElements/helpers'
-// import { isRejected, setRejected } from './formElements/statusHelpers'
+import { isRejected, setRejected } from '../helpers/status'
 
 // import ADD_HISTORY_ENTRY from '../mutations/addHistoryEntry'
 // import CURRENT_USER from '../queries/currentUser'
 
-import { PanelInfo } from './ui'
+import { PanelInfo, RejectArticle, Ribbon } from './ui'
+import { formValuesToData } from './formElements/helpers'
 
 // import { RejectCheckbox } from './formElements'
 // import Dropdown from './formElements/Dropdown'
@@ -44,45 +45,6 @@ import { PanelInfo } from './ui'
 // const StyledH6 = styled(H6)`
 //   color: ${th('colorText')};
 //   margin: calc(${th('gridUnit')} * 2) 0 0 0;
-// `
-
-// const historyEntryStyle = css`
-//   > div > div {
-//     margin-bottom: 0;
-//   }
-
-//   label {
-//     color: ${th('colorPrimary')};
-//   }
-
-//   div[contenteditable] {
-//     background: ${th('colorBackground')};
-//     border: 0;
-//     border-bottom: ${th('borderWidth')} ${th('borderStyle')}
-//       ${th('colorBorder')};
-//     cursor: default;
-//     margin-bottom: 0;
-//     padding: 0;
-//   }
-// `
-
-// const StyledEditor = styled(TextEditor)`
-//   max-width: 100%;
-//   padding: ${th('gridUnit')} 0;
-//   width: unset;
-
-//   ${props => props.readOnly && historyEntryStyle};
-// `
-
-// const ReviewersNumbersItemWrapper = styled.div`
-//   border-left: ${th('borderWidth')} ${th('borderStyle')} ${th('colorBorder')};
-//   display: flex;
-//   padding-left: ${th('gridUnit')};
-
-//   span:first-child {
-//     flex-basis: 5%;
-//     font-family: ${th('fontReading')};
-//   }
 // `
 
 // const ReviewEditor = StyledEditor.extend`
@@ -303,21 +265,6 @@ import { PanelInfo } from './ui'
 //   )
 // }
 
-// const InfoBar = styled.div`
-//   background: ${props => {
-//     if (props.success) return th('colorSuccess')
-//     if (props.error) return th('colorError')
-//     return th('colorBackgroundHue')
-//   }};
-//   color: ${props =>
-//     props.success || props.error ? th('colorTextReverse') : th('colorText')};
-//   font-size: ${th('fontSizeBaseSmall')};
-//   line-height: ${th('lineHeightBaseSmall')};
-//   padding: calc(${th('gridUnit')} / 2);
-//   text-align: center;
-//   visibility: ${props => (props.hide ? 'hidden' : 'visible')};
-// `
-
 // class SendForm extends React.Component {
 //   constructor(props) {
 //     super(props)
@@ -494,18 +441,110 @@ import { PanelInfo } from './ui'
 //   }
 // }
 
+const initialValues = {
+  decisionLetter: 'Something',
+}
+
+const EditorPanelForm = props => {
+  const { children, ...other } = props
+  return (
+    <Formik {...other}>
+      {formikProps => (
+        <Form>{isFunction(children) ? children(formikProps) : children}</Form>
+      )}
+    </Formik>
+  )
+}
+
 const EditorPanel = props => {
-  const { editor, loading, scienceOfficer } = props
+  const { article, editor, loading, scienceOfficer, updateArticle } = props
+  const { status } = article
+  const alreadyRejected = isRejected(status)
+  // console.log(props)
+
+  const initialState = {
+    rejectedCheck: false,
+    ribbonMessage: '',
+    ribbonStatus: null,
+  }
+
+  const rejectedState = {
+    ribbonMessage: 'This article has been rejected',
+    ribbonStatus: 'error',
+  }
+
+  if (alreadyRejected) {
+    assign(initialState, rejectedState)
+  }
+
+  // console.log(initialState)
 
   return (
-    <React.Fragment>
-      <h1>Editor Panel </h1>
-      {loading && <Loading />}
+    <State initial={initialState}>
+      {({ state, setState }) => {
+        const onSubmit = (formValues, formikBag) => {
+          // console.log('submit')
 
-      {!loading && (
-        <PanelInfo editor={editor} scienceOfficer={scienceOfficer} />
-      )}
-    </React.Fragment>
+          let data = { id: article.id }
+
+          if (state.rejectedCheck) {
+            data.decisionLetter = formValues.decisionLetter
+            data.status = setRejected(status)
+            setState(rejectedState)
+          }
+
+          // console.log('og', data)
+          data = formValuesToData(data)
+          // console.log('transformed', data)
+          updateArticle({ variables: { data } })
+        }
+
+        const toggleRejectionWarning = () => {
+          setState({
+            rejectedCheck: !state.rejectedCheck,
+            ribbonMessage: state.rejectedCheck
+              ? ''
+              : 'You are about to reject this article',
+            ribbonStatus: state.rejectedCheck ? null : 'error',
+          })
+        }
+
+        return (
+          <React.Fragment>
+            <h1>Editor Panel </h1>
+            {loading && <Loading />}
+
+            {!loading && (
+              <EditorPanelForm
+                initialValues={initialValues}
+                onSubmit={onSubmit}
+              >
+                {formikProps => (
+                  <React.Fragment>
+                    <PanelInfo
+                      editor={editor}
+                      scienceOfficer={scienceOfficer}
+                    />
+
+                    <Ribbon
+                      message={state.ribbonMessage}
+                      status={state.ribbonStatus}
+                    />
+
+                    <RejectArticle
+                      alreadyRejected={alreadyRejected}
+                      checked={state.rejectedCheck}
+                      update={toggleRejectionWarning}
+                      {...formikProps}
+                    />
+                  </React.Fragment>
+                )}
+              </EditorPanelForm>
+            )}
+          </React.Fragment>
+        )
+      }}
+    </State>
   )
 }
 
