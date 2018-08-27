@@ -14,41 +14,37 @@ const Label = styled.label`
   display: block;
 `
 
+// applies directly to label
 const RadioGroup = styled(UIRadioGroup)`
+  cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
   margin-top: ${th('gridUnit')};
 
-  label {
-    cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
+  span {
+    font-family: ${th('fontInterface')};
+    font-size: ${th('fontSizeBaseSmall')};
+    font-style: normal;
+    letter-spacing: unset;
 
+    &:before {
+      margin-left: 1px;
+    }
+  }
+
+  &:hover {
     span {
-      font-family: ${th('fontInterface')};
-      font-size: ${th('fontSizeBaseSmall')};
-      font-style: normal;
-      letter-spacing: unset;
-
-      &:before {
-        margin-left: 1px;
-      }
+      color: ${props => (props.disabled ? 'currentColor' : th('colorPrimary'))};
     }
 
-    &:hover {
-      span {
-        color: ${props =>
-          props.disabled ? 'currentColor' : th('colorPrimary')};
-      }
-
-      span:before {
-        animation: none;
-        box-shadow: 0 0 0 1px
-          ${props => (props.disabled ? 'currentColor' : th('colorPrimary'))};
-        color: ${props =>
-          props.disabled ? 'currentColor' : th('colorPrimary')};
-      }
+    span:before {
+      animation: none;
+      box-shadow: 0 0 0 1px
+        ${props => (props.disabled ? 'currentColor' : th('colorPrimary'))};
+      color: ${props => (props.disabled ? 'currentColor' : th('colorPrimary'))};
     }
+  }
 
-    input {
-      display: none;
-    }
+  input {
+    display: none;
   }
 `
 

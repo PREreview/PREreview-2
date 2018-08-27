@@ -48,6 +48,7 @@ const validateWBExists = function(val) {
 
 const initial = {
   author: yup.object().shape({
+    credit: yup.string().required('Must choose credit to assign to the author'),
     email: yup
       .string()
       .required('Email is required')
@@ -64,6 +65,17 @@ const initial = {
   }),
   coAuthors: yup.array(
     yup.object().shape({
+      credit: yup.string().test(
+        'coauthor has credit',
+        'Must choose credit for all authors',
+        // eslint-disable-next-line func-names, prefer-arrow-callback
+        function(val) {
+          const { name } = this.parent
+          if (!name) return true
+          if (name && !val) return false
+          return true
+        },
+      ),
       name: yup
         .string()
         .test(
@@ -243,8 +255,14 @@ const geneExpression = {
             }),
             id: yup.string().nullable(),
             subcellularLocalization: yup.object().shape({
-              id: yup.string().nullable(),
-              value: yup.string(),
+              name: yup
+                .string()
+                .test(
+                  'is certainly subcell valid',
+                  'Subcellular localization fields must be valid WormBase life stages',
+                  validateWBExists,
+                ),
+              WBId: yup.string(),
             }),
           }),
         ),
@@ -272,8 +290,14 @@ const geneExpression = {
               WBId: yup.string(),
             }),
             subcellularLocalization: yup.object().shape({
-              id: yup.string().nullable(),
-              value: yup.string(),
+              name: yup
+                .string()
+                .test(
+                  'is not subcell valid',
+                  'Subcellular localization fields must be valid WormBase life stages',
+                  validateWBExists,
+                ),
+              WBId: yup.string(),
             }),
           }),
         ),
@@ -301,8 +325,14 @@ const geneExpression = {
               WBId: yup.string(),
             }),
             subcellularLocalization: yup.object().shape({
-              id: yup.string().nullable(),
-              value: yup.string(),
+              name: yup
+                .string()
+                .test(
+                  'is partially subcell valid',
+                  'Subcellular localization fields must be valid WormBase life stages',
+                  validateWBExists,
+                ),
+              WBId: yup.string(),
             }),
           }),
         ),
@@ -330,8 +360,14 @@ const geneExpression = {
               WBId: yup.string(),
             }),
             subcellularLocalization: yup.object().shape({
-              id: yup.string().nullable(),
-              value: yup.string(),
+              name: yup
+                .string()
+                .test(
+                  'is possibly subcell valid',
+                  'Subcellular localization fields must be valid WormBase life stages',
+                  validateWBExists,
+                ),
+              WBId: yup.string(),
             }),
           }),
         ),

@@ -17,12 +17,14 @@ import _, {
 let defaultFormValues = {
   acknowledgements: '',
   author: {
+    credit: '',
     email: '',
     name: '',
     WBId: '',
   },
   coAuthors: [
     {
+      credit: '',
       id: uuid(),
       name: '',
       WBId: '',
@@ -78,7 +80,11 @@ let defaultFormValues = {
             WBId: '',
           },
           id: uuid(),
-          subcellularLocalization: { id: uuid(), value: '' },
+          subcellularLocalization: {
+            id: uuid(),
+            name: '',
+            WBId: '',
+          },
         },
       ],
       not: [
@@ -94,7 +100,11 @@ let defaultFormValues = {
             name: '',
             WBId: '',
           },
-          subcellularLocalization: { id: uuid(), value: '' },
+          subcellularLocalization: {
+            id: uuid(),
+            name: '',
+            WBId: '',
+          },
         },
       ],
       partially: [
@@ -110,7 +120,11 @@ let defaultFormValues = {
             name: '',
             WBId: '',
           },
-          subcellularLocalization: { id: uuid(), value: '' },
+          subcellularLocalization: {
+            id: uuid(),
+            name: '',
+            WBId: '',
+          },
         },
       ],
       possibly: [
@@ -126,7 +140,11 @@ let defaultFormValues = {
             name: '',
             WBId: '',
           },
-          subcellularLocalization: { id: uuid(), value: '' },
+          subcellularLocalization: {
+            id: uuid(),
+            name: '',
+            WBId: '',
+          },
         },
       ],
     },
@@ -170,13 +188,15 @@ if (process.env.NODE_ENV === 'development') {
   defaultFormValues = {
     acknowledgements: '',
     author: {
+      // credit: 'formalAnalysis',
+      credit: '',
       email: 'john@john.com',
       name: 'John A Bryden',
       WBId: 'WBPerson6903',
     },
     coAuthors: [
-      { id: uuid(), name: 'Yanna Cen', WBId: 'WBPerson18694' },
-      { id: uuid(), name: 'Alec Barret', WBId: 'WBPerson15466' },
+      { credit: '', id: uuid(), name: 'Yanna Cen', WBId: 'WBPerson18694' },
+      { credit: '', id: uuid(), name: 'Alec Barret', WBId: 'WBPerson15466' },
     ],
     comments: '<p>some comments here</p>',
     dataType: '',
@@ -229,7 +249,11 @@ if (process.env.NODE_ENV === 'development') {
               WBId: '',
             },
             id: uuid(),
-            subcellularLocalization: { id: uuid(), value: '' },
+            subcellularLocalization: {
+              id: uuid(),
+              name: '',
+              WBId: '',
+            },
           },
         ],
         not: [
@@ -245,7 +269,11 @@ if (process.env.NODE_ENV === 'development') {
               name: '',
               WBId: '',
             },
-            subcellularLocalization: { id: uuid(), value: '' },
+            subcellularLocalization: {
+              id: uuid(),
+              name: '',
+              WBId: '',
+            },
           },
         ],
         partially: [
@@ -261,7 +289,11 @@ if (process.env.NODE_ENV === 'development') {
               name: '',
               WBId: '',
             },
-            subcellularLocalization: { id: uuid(), value: '' },
+            subcellularLocalization: {
+              id: uuid(),
+              name: '',
+              WBId: '',
+            },
           },
         ],
         possibly: [
@@ -277,7 +309,11 @@ if (process.env.NODE_ENV === 'development') {
               name: '',
               WBId: '',
             },
-            subcellularLocalization: { id: uuid(), value: '' },
+            subcellularLocalization: {
+              id: uuid(),
+              name: '',
+              WBId: '',
+            },
           },
         ],
       },

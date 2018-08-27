@@ -58,7 +58,9 @@ const SubmissionForm = props => {
           options={options.dataType}
           required
           touched={get(props.touched, 'dataType')}
-          value={get(values, 'dataType')}
+          value={options.dataType.find(
+            o => o.value === get(values, 'dataType'),
+          )}
           {...props}
         />
       )}

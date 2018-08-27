@@ -5,6 +5,7 @@ const GET_MANUSCRIPT = gql`
     manuscript(id: $id) {
       acknowledgements
       authors {
+        credit
         email
         name
         submittingAuthor
@@ -62,8 +63,8 @@ const GET_MANUSCRIPT = gql`
             }
             id
             subcellularLocalization {
-              id
-              value
+              name
+              WBId
             }
           }
           partially {
@@ -77,8 +78,8 @@ const GET_MANUSCRIPT = gql`
             }
             id
             subcellularLocalization {
-              id
-              value
+              name
+              WBId
             }
           }
           possibly {
@@ -92,8 +93,8 @@ const GET_MANUSCRIPT = gql`
             }
             id
             subcellularLocalization {
-              id
-              value
+              name
+              WBId
             }
           }
           not {
@@ -107,8 +108,8 @@ const GET_MANUSCRIPT = gql`
             }
             id
             subcellularLocalization {
-              id
-              value
+              name
+              WBId
             }
           }
         }

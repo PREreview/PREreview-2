@@ -2,25 +2,38 @@
 
 import React from 'react'
 import styled from 'styled-components'
-import { get, omit, set } from 'lodash'
+import { get, isEmpty, keys, omit, set } from 'lodash'
 import { v4 as uuid } from 'uuid'
 
 import { Button } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
 
-import AutoComplete from './AutoComplete'
+import { AuthorInput, AutoComplete } from './index'
 
 import { onAutocompleteChange, onSuggestionSelected } from './helpers'
 
-// const onSuggestionSelected = (event, options, setFieldValue, name) => {
-//   const field = name.split('.').slice(0, -1)
-//   console.log(options)
-//   setFieldValue(`${field}.WBId`, options.suggestion.WBId)
-// }
-
 const Field = props => {
-  const { data, handleChange, name, setFieldValue, value } = props
+  const {
+    authors,
+    data,
+    handleChange,
+    name,
+    placeholder,
+    setFieldValue,
+    value,
+  } = props
   const passProps = omit(props, ['label'])
+
+  if (authors) {
+    return (
+      <AuthorInput
+        name={name}
+        placeholder={placeholder}
+        values={value}
+        {...passProps}
+      />
+    )
+  }
 
   return (
     <AutoComplete
@@ -28,7 +41,7 @@ const Field = props => {
       name={name}
       onChange={e => onAutocompleteChange(e, name, setFieldValue, handleChange)}
       onSuggestionSelected={onSuggestionSelected}
-      placeholder=""
+      placeholder={placeholder}
       value={value}
       {...passProps}
     />
@@ -59,7 +72,7 @@ const Error = styled.span`
 
 const TextFieldGroup = props => {
   const handleAdd = () => {
-    const { maxItems, name, setValues, values } = props
+    const { authors, maxItems, name, setValues, values } = props
     let data = get(values, name)
     // console.log('data', data)
 
@@ -71,6 +84,7 @@ const TextFieldGroup = props => {
       id: uuid(),
       name: '',
     }
+    if (authors) newItem.credit = ''
 
     const newValues = data.push(newItem)
     // console.log(newValues, data)
@@ -87,6 +101,7 @@ const TextFieldGroup = props => {
   }
 
   const {
+    authors,
     handleChange,
     label,
     name,
@@ -97,30 +112,43 @@ const TextFieldGroup = props => {
   } = props
 
   let data = get(values, name)
-  if (!data || data.length === 0) data = [{ name: '' }]
+  if (!data || data.length === 0) {
+    data = [{ name: '' }]
+    if (authors) data[0].credit = ''
+  }
 
   const error = get(props.errors, name)
   const touched = get(props.touched, name)
+
+  let err
+  if (Array.isArray(error)) {
+    const firstErr = error.find(e => !isEmpty(e))
+    const firstKey = keys(firstErr) && keys(firstErr)[0]
+    err = firstErr && firstErr[firstKey]
+  } else {
+    err = error
+  }
 
   return (
     <GroupWrapper>
       {label && (
         <Label>
           {label} {required ? ' *' : ''}{' '}
-          {touched && error && <Error>{!Array.isArray(error) && error}</Error>}
+          {touched && error && <Error>{err}</Error>}
         </Label>
       )}
       {data &&
         data.length > 0 &&
         data.map((item, i) => {
-          const itemName = `${name}[${i}].name`
-          const itemValue = data[i].name
+          const itemName = authors ? `${name}[${i}]` : `${name}[${i}].name`
+          const itemValue = authors ? data[i] : data[i].name
           const itemId = data[i].id
 
           return (
             <LineWrapper key={itemName}>
               <Field
                 {...props}
+                authors={authors}
                 error={Array.isArray(error) && error[i] && error[i].name}
                 handleChange={handleChange}
                 name={itemName}
@@ -136,10 +164,11 @@ const TextFieldGroup = props => {
 
       {(!data || data.length === 0) && (
         <Field
+          authors={authors}
           error={Array.isArray(error) && error[0] && error[0].name}
           handleChange={handleChange}
-          name={`${name}[0].name`}
-          value={data[0].name}
+          name={authors ? `${name}[0]` : `${name}[0].name`}
+          value={authors ? data[0] : data[0].name}
           {...props}
         />
       )}
