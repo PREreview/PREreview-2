@@ -6,6 +6,13 @@ import { get } from 'lodash'
 
 import { Button } from '@pubsweet/ui'
 
+import {
+  getCurrentStatus,
+  isDatatypeSelected,
+  isFullSubmissionReady,
+  isInitialSubmissionReady,
+} from '../helpers/status'
+
 import Dropdown from './formElements/Dropdown'
 
 import InitialSubmission from './formElements/InitialSubmission'
@@ -21,9 +28,14 @@ const options = {
 }
 
 const isReadOnly = status => {
-  const { dataTypeSelected, initialSubmission, submitted } = status
-  if (initialSubmission && !dataTypeSelected) return true
-  if (submitted) return true
+  const currentStatus = getCurrentStatus(status)
+
+  if (
+    currentStatus === 'Initial submission ready' ||
+    currentStatus === 'Submitted'
+  )
+    return true
+
   return false
 }
 
@@ -38,19 +50,17 @@ const SubmissionForm = props => {
   // console.log(props.touched)
   // console.log(isReadOnly(values.status))
 
-  const readOnly = isReadOnly(values.status)
-  const { submitted } = values.status
-
-  const {
-    initialSubmission,
-    // submitted,
-  } = values.status
+  const { status } = values
+  const readOnly = isReadOnly(status)
+  const datatypeSelected = isDatatypeSelected(status)
+  const initial = isInitialSubmissionReady(status)
+  const submitted = isFullSubmissionReady(status)
 
   return (
     <Form>
       <InitialSubmission readOnly={readOnly} values={values} {...props} />
 
-      {initialSubmission && (
+      {initial && (
         <Dropdown
           error={get(props.errors, 'dataType')}
           label="Choose a datatype"
@@ -65,7 +75,7 @@ const SubmissionForm = props => {
         />
       )}
 
-      {values.status.dataTypeSelected &&
+      {datatypeSelected &&
         values.dataType === 'geneExpression' && (
           <GeneExpressionForm readOnly={readOnly} {...props} />
         )}

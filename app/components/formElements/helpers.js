@@ -189,17 +189,27 @@ if (process.env.NODE_ENV === 'development') {
     acknowledgements: '',
     author: {
       // credit: 'formalAnalysis',
-      credit: '',
+      credit: 'software',
       email: 'john@john.com',
       name: 'John A Bryden',
       WBId: 'WBPerson6903',
     },
     coAuthors: [
-      { credit: '', id: uuid(), name: 'Yanna Cen', WBId: 'WBPerson18694' },
-      { credit: '', id: uuid(), name: 'Alec Barret', WBId: 'WBPerson15466' },
+      {
+        credit: 'formalAnalysis',
+        id: uuid(),
+        name: 'Yanna Cen',
+        WBId: 'WBPerson18694',
+      },
+      {
+        credit: 'dataCuration',
+        id: uuid(),
+        name: 'Alec Barret',
+        WBId: 'WBPerson15466',
+      },
     ],
     comments: '<p>some comments here</p>',
-    dataType: '',
+    dataType: 'geneExpression',
     disclaimer: true,
     funding: 'blah',
     geneExpression: {
@@ -222,7 +232,7 @@ if (process.env.NODE_ENV === 'development') {
       ],
       expressionPattern: {
         name: 'some expression',
-        WBId: '',
+        WBId: '1',
       },
       fusionType: {
         name: '',
@@ -260,8 +270,8 @@ if (process.env.NODE_ENV === 'development') {
           {
             during: {
               id: uuid(),
-              name: '',
-              WBId: '',
+              name: 'soma',
+              WBId: '67',
             },
             id: uuid(),
             not: {
@@ -425,22 +435,11 @@ const dataToFormValues = data => {
   })
 }
 
+/* eslint-disable no-underscore-dangle, no-param-reassign */
+// TODO -- write data cleanup functions (eg. remove __typename)
 const formValuesToData = values => {
   const data = cloneDeep(values)
-
-  // TODO -- write data cleanup functions (eg. remove __typename)
-  // const data = cloneDeepWith(values, (val, key) => {
-  //   console.log(key, val)
-  //   if (key === '__typename') return false
-  //   return val
-  // })
-
   const { author, coAuthors, status } = data
-
-  // console.log(data)
-
-  // console.log('author', author)
-  // console.log('coauthors', coAuthors)
 
   if (author && coAuthors) {
     data.authors = union([], coAuthors)
@@ -449,117 +448,83 @@ const formValuesToData = values => {
 
     data.authors = data.authors.map(item => {
       const modAuthor = cloneDeep(item)
-      // modAuthor.wormBaseId = modAuthor.WBPerson
-      // delete modAuthor.WBPerson
       delete modAuthor.id
-      // eslint-disable-next-line no-underscore-dangle
       delete modAuthor.__typename
-      // console.log(modAuthor)
-
       return modAuthor
     })
   }
 
-  // console.log(data.authors)
-
-  // if (author) {
-  //   console.log('yes author')
-  //   author.submittingAuthor = true
-  //   // if (coAuthors) coAuthors.push(author)
-  //   if (!data.authors) data.authors = []
-
-  //   // delete data.author
-  //   // delete data.coAuthors
-  // }
-
-  // eslint-disable-next-line no-underscore-dangle
-  if (status) delete status.__typename
+  if (status) {
+    delete status.__typename
+    if (status.decision) delete status.decision.__typename
+    if (status.scienceOfficer) delete status.scienceOfficer.__typename
+    if (status.submission) delete status.submission.__typename
+  }
 
   delete data.author
   delete data.coAuthors
 
-  // eslint-disable-next-line no-underscore-dangle
-  delete data.laboratory.__typename
+  if (data.laboratory) delete data.laboratory.__typename
 
   if (data.geneExpression) {
-    // eslint-disable-next-line no-underscore-dangle
     delete data.geneExpression.__typename
 
     if (data.geneExpression.dnaSequence) {
       data.geneExpression.dnaSequence.forEach(item => {
-        // eslint-disable-next-line no-underscore-dangle, no-param-reassign
         delete item.__typename
-        // eslint-disable-next-line no-param-reassign
         delete item.id
       })
     }
 
     if (data.geneExpression.transgeneUsed) {
       data.geneExpression.transgeneUsed.forEach(item => {
-        // eslint-disable-next-line no-underscore-dangle, no-param-reassign
         delete item.__typename
-        // eslint-disable-next-line no-param-reassign
         delete item.id
       })
     }
 
     if (data.geneExpression.variation) {
-      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
       delete data.geneExpression.variation.__typename
     }
 
     if (data.geneExpression.utr) {
-      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
       delete data.geneExpression.utr.__typename
     }
 
     if (data.geneExpression.species) {
-      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
       delete data.geneExpression.species.__typename
     }
 
     if (data.geneExpression.reporter) {
-      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
       delete data.geneExpression.reporter.__typename
     }
 
     if (data.geneExpression.integratedBy) {
-      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
       delete data.geneExpression.integratedBy.__typename
     }
 
     if (data.geneExpression.fusionType) {
-      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
       delete data.geneExpression.fusionType.__typename
     }
 
     if (data.geneExpression.expressionPattern) {
-      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
       delete data.geneExpression.expressionPattern.__typename
     }
 
     if (data.geneExpression.backboneVector) {
-      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
       delete data.geneExpression.backboneVector.__typename
     }
 
     if (data.geneExpression.observeExpression) {
-      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
       delete data.geneExpression.observeExpression.__typename
 
       keys(data.geneExpression.observeExpression).forEach(key => {
-        // console.log('key', key)
         data.geneExpression.observeExpression[key].forEach(item => {
-          // eslint-disable-next-line no-underscore-dangle, no-param-reassign
           delete item.__typename
-          // eslint-disable-next-line no-param-reassign
           if (!item.id) item.id = uuid()
-          // delete item.id
 
           _.values(item).forEach(entry => {
-            // eslint-disable-next-line no-underscore-dangle, no-param-reassign
             delete entry.__typename
-            // eslint-disable-next-line no-param-reassign
             delete entry.id
           })
         })
@@ -567,35 +532,25 @@ const formValuesToData = values => {
     }
   }
 
-  // console.log(keys(data))
   const autocompleteKeys = keys(data).filter(key => {
     const match = key.match(/react-autowhatever*/)
-    // console.log(key, match)
     return match !== null
   })
 
-  // console.log(autocompleteKeys) //, self)
-  // const self = this
   autocompleteKeys.forEach(key => delete data[key])
-  // console.log(data)
 
-  // throw fjdlksjlfj
-  // console.log(data.authors)
-
-  // eslint-disable-next-line no-underscore-dangle
   if (data.image) delete data.image.__typename
 
-  // eslint-disable-next-line no-underscore-dangle
   delete data.__typename
 
-  if (data.communicationsHistory)
-    data.communicationsHistory.forEach(item => {
-      // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+  if (data.communicationHistory)
+    data.communicationHistory.forEach(item => {
       delete item.__typename
     })
 
   return data
 }
+/* eslint-enable no-underscore-dangle, no-param-reassign */
 
 const getParentField = field =>
   field

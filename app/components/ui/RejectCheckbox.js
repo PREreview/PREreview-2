@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { th } from '@pubsweet/ui-toolkit'
 
-import Checkbox from './Checkbox'
+import Checkbox from '../formElements/Checkbox'
 
 const StyledCheckbox = styled(Checkbox)`
   span {
@@ -18,6 +18,10 @@ const StyledCheckbox = styled(Checkbox)`
     &:hover:before {
       background: ${th('colorError')};
       box-shadow: 0 0 0 1px ${th('colorError')};
+    }
+
+    &::selection {
+      background: none;
     }
   }
 `

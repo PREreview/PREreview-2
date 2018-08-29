@@ -12,11 +12,13 @@ const SUBMIT_MANUSCRIPT = gql`
         WBId
       }
       comments
-      communicationsHistory {
+      communicationHistory {
         content
         timestamp
-        userId
-        username
+        user {
+          id
+          username
+        }
       }
       dataType
       decisionLetter
@@ -147,14 +149,20 @@ const SUBMIT_MANUSCRIPT = gql`
       }
       patternDescription
       status {
-        dataTypeSelected
         decision {
           accepted
           rejected
           revise
         }
-        initialSubmission
-        submitted
+        scienceOfficer {
+          approved
+          pending
+        }
+        submission {
+          initial
+          datatypeSelected
+          full
+        }
       }
       suggestedReviewer
       title

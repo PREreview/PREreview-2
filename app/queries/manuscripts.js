@@ -12,12 +12,6 @@ const GET_MANUSCRIPT = gql`
         WBId
       }
       comments
-      communicationsHistory {
-        content
-        timestamp
-        userId
-        username
-      }
       dataType
       decisionLetter
       disclaimer
@@ -147,17 +141,57 @@ const GET_MANUSCRIPT = gql`
       }
       patternDescription
       status {
-        dataTypeSelected
         decision {
           accepted
           rejected
           revise
         }
-        initialSubmission
-        submitted
+        scienceOfficer {
+          approved
+          pending
+        }
+        submission {
+          initial
+          datatypeSelected
+          full
+        }
       }
       suggestedReviewer
       title
+    }
+  }
+`
+
+const GET_MANUSCRIPT_FOR_EDITOR = gql`
+  query manuscript($id: ID!) {
+    manuscript(id: $id) {
+      communicationHistory {
+        content
+        # id
+        timestamp
+        user {
+          id
+          username
+        }
+      }
+      decisionLetter
+      id
+      status {
+        decision {
+          accepted
+          rejected
+          revise
+        }
+        scienceOfficer {
+          approved
+          pending
+        }
+        submission {
+          initial
+          datatypeSelected
+          full
+        }
+      }
     }
   }
 `
@@ -167,13 +201,24 @@ const GET_MANUSCRIPTS = gql`
     manuscripts {
       id
       status {
-        dataTypeSelected
-        initialSubmission
-        submitted
+        decision {
+          accepted
+          rejected
+          revise
+        }
+        scienceOfficer {
+          approved
+          pending
+        }
+        submission {
+          initial
+          datatypeSelected
+          full
+        }
       }
       title
     }
   }
 `
 
-export { GET_MANUSCRIPT, GET_MANUSCRIPTS }
+export { GET_MANUSCRIPT, GET_MANUSCRIPT_FOR_EDITOR, GET_MANUSCRIPTS }

@@ -11,6 +11,8 @@ import { th } from '@pubsweet/ui-toolkit'
 
 import ComposedDashboard from './compose/Dashboard'
 
+import { getCurrentStatus } from '../helpers/status'
+
 import { GET_MANUSCRIPTS } from '../queries/manuscripts'
 import DELETE_MANUSCRIPT from '../mutations/deleteManuscript'
 
@@ -102,15 +104,9 @@ const StatusLabel = styled.span`
 
 const Status = props => {
   const { status } = props
-  let text
+  const label = getCurrentStatus(status)
 
-  if (!status.initialSubmission) text = 'Not Submitted'
-  if (status.initialSubmission && !status.dataTypeSelected)
-    text = 'Initial Submission ready'
-  if (status.dataTypeSelected) text = 'Datatype selected'
-  if (status.submitted) text = 'Submitted'
-
-  return <StatusLabel>{text}</StatusLabel>
+  return <StatusLabel>{label}</StatusLabel>
 }
 
 const Action = styled(UIAction)`
@@ -183,7 +179,7 @@ const Dashboard = props => {
 
   if (loading) return <Loading />
   const editorItems =
-    articles && articles.filter(item => get(item, 'status.initialSubmission'))
+    articles && articles.filter(item => get(item, 'status.submission.initial'))
 
   return (
     <React.Fragment>

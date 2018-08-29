@@ -3,14 +3,33 @@ const db = require('./dbHelpers')
 const cloneDeep = require('lodash/cloneDeep')
 const merge = require('lodash/merge')
 
+const newStatus = {
+  decision: {
+    accepted: false,
+    rejected: false,
+    revise: false,
+  },
+  scienceOfficer: {
+    approved: null,
+    pending: false,
+  },
+  submission: {
+    datatypeSelected: false,
+    full: false,
+    initial: false,
+  },
+}
+
 const resolvers = {
+  HistoryEntry: {
+    user(historyEntry, vars, ctx) {
+      return ctx.connectors.user.fetchOne(historyEntry.user, ctx)
+    },
+  },
   Mutation: {
     async createSubmission(_, vars, ctx) {
       const emptyManuscript = {
-        status: {
-          initialSubmission: false,
-          submitted: false,
-        },
+        status: cloneDeep(newStatus),
       }
 
       const manuscript = cloneDeep(emptyManuscript)
