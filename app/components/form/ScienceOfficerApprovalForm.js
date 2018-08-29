@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import React from 'react'
-import { get, isUndefined } from 'lodash'
+import { get, isNull, isUndefined } from 'lodash'
 
 import { formValuesToData } from '../formElements/helpers'
 import { isTruthy } from '../../helpers/generic'
@@ -12,7 +12,8 @@ const ScienceOfficerApprovalForm = props => {
   const { article, updateArticle, ...otherProps } = props
 
   let approved = get(article, 'status.scienceOfficer.approved')
-  if (!isUndefined(approved)) approved = approved.toString()
+  if (!isUndefined(approved) && !isNull(approved))
+    approved = approved.toString()
 
   const initialValues = {
     approve: approved,

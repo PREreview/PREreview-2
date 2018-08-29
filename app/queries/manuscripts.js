@@ -141,18 +141,20 @@ const GET_MANUSCRIPT = gql`
       }
       patternDescription
       status {
-        dataTypeSelected
         decision {
           accepted
           rejected
           revise
         }
-        initialSubmission
         scienceOfficer {
           approved
           pending
         }
-        submitted
+        submission {
+          initial
+          datatypeSelected
+          full
+        }
       }
       suggestedReviewer
       title
@@ -175,18 +177,20 @@ const GET_MANUSCRIPT_FOR_EDITOR = gql`
       decisionLetter
       id
       status {
-        dataTypeSelected
         decision {
           accepted
           rejected
           revise
         }
-        initialSubmission
         scienceOfficer {
           approved
           pending
         }
-        submitted
+        submission {
+          initial
+          datatypeSelected
+          full
+        }
       }
     }
   }
@@ -197,13 +201,20 @@ const GET_MANUSCRIPTS = gql`
     manuscripts {
       id
       status {
-        dataTypeSelected
-        initialSubmission
+        decision {
+          accepted
+          rejected
+          revise
+        }
         scienceOfficer {
           approved
           pending
         }
-        submitted
+        submission {
+          initial
+          datatypeSelected
+          full
+        }
       }
       title
     }

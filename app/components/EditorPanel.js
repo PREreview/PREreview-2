@@ -7,12 +7,14 @@ import ComposedEditorPanel from './compose/EditorPanel'
 import Loading from './Loading'
 
 import {
+  isAccepted,
   isApprovedByScienceOfficer,
   isNotApprovedByScienceOfficer,
   isRejected,
 } from '../helpers/status'
 
 import {
+  DecisionSection,
   Discuss,
   EditorPanelRibbon,
   PanelInfo,
@@ -40,9 +42,11 @@ const EditorPanel = props => {
 
   const { status } = article
 
+  const accepted = isAccepted(status)
   const alreadyRejected = isRejected(status)
   const approved = isApprovedByScienceOfficer(status)
   const notApproved = isNotApprovedByScienceOfficer(status)
+  const scienceOfficerHasDecision = approved || notApproved
 
   const initialState = {
     rejectedCheck: false,
@@ -55,15 +59,23 @@ const EditorPanel = props => {
         const { rejectedCheck, ribbonStatus } = state
 
         // HACK -- Find a more elegant way to handle this
-        if (alreadyRejected && ribbonStatus !== 'rejected') {
+        if (accepted && ribbonStatus !== 'accepted') {
+          setState({ ribbonStatus: 'accepted' })
+        } else if (
+          !accepted &&
+          alreadyRejected &&
+          ribbonStatus !== 'rejected'
+        ) {
           setState({ ribbonStatus: 'rejected' })
         } else if (
+          !accepted &&
           !alreadyRejected &&
           approved &&
           ribbonStatus !== 'scienceOfficerApproved'
         ) {
           setState({ ribbonStatus: 'scienceOfficerApproved' })
         } else if (
+          !accepted &&
           !alreadyRejected &&
           !approved &&
           notApproved &&
@@ -88,13 +100,15 @@ const EditorPanel = props => {
 
                 <EditorPanelRibbon type={ribbonStatus} />
 
-                <RejectArticle
-                  alreadyRejected={alreadyRejected}
-                  article={article}
-                  checked={rejectedCheck}
-                  update={toggleRejectionWarning}
-                  updateArticle={updateArticle}
-                />
+                {!scienceOfficerHasDecision && (
+                  <RejectArticle
+                    alreadyRejected={alreadyRejected}
+                    article={article}
+                    checked={rejectedCheck}
+                    update={toggleRejectionWarning}
+                    updateArticle={updateArticle}
+                  />
+                )}
 
                 {!alreadyRejected &&
                   !rejectedCheck && (
@@ -112,6 +126,13 @@ const EditorPanel = props => {
                   currentUser={currentUser}
                   updateArticle={updateArticle}
                 />
+
+                {approved && (
+                  <DecisionSection
+                    article={article}
+                    updateArticle={updateArticle}
+                  />
+                )}
               </React.Fragment>
             )}
           </React.Fragment>

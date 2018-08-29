@@ -456,7 +456,9 @@ const formValuesToData = values => {
 
   if (status) {
     delete status.__typename
+    if (status.decision) delete status.decision.__typename
     if (status.scienceOfficer) delete status.scienceOfficer.__typename
+    if (status.submission) delete status.submission.__typename
   }
 
   delete data.author

@@ -64,19 +64,15 @@ const typeDefs = `
   }
 
   type Status {
-    dataTypeSelected: Boolean
     decision: DecisionStatus
-    initialSubmission: Boolean
     scienceOfficer: ScienceOfficerStatus
-    submitted: Boolean
+    submission: SubmissionStatus
   }
 
   input StatusInput {
-    dataTypeSelected: Boolean
     decision: DecisionStatusInput
-    initialSubmission: Boolean
     scienceOfficer: ScienceOfficerStatusInput
-    submitted: Boolean
+    submission: SubmissionStatusInput
   }
 
   type DecisionStatus {
@@ -99,6 +95,18 @@ const typeDefs = `
   input ScienceOfficerStatusInput {
     approved: Boolean
     pending: Boolean
+  }
+
+  type SubmissionStatus {
+    datatypeSelected: Boolean
+    full: Boolean
+    initial: Boolean
+  }
+
+  input SubmissionStatusInput {
+    datatypeSelected: Boolean
+    full: Boolean
+    initial: Boolean
   }
 
   type Author {

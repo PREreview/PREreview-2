@@ -149,18 +149,20 @@ const SUBMIT_MANUSCRIPT = gql`
       }
       patternDescription
       status {
-        dataTypeSelected
         decision {
           accepted
           rejected
           revise
         }
-        initialSubmission
         scienceOfficer {
           approved
           pending
         }
-        submitted
+        submission {
+          initial
+          datatypeSelected
+          full
+        }
       }
       suggestedReviewer
       title

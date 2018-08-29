@@ -15,6 +15,18 @@ const cleanScienceOfficer = {
   pending: false,
 }
 
+const cleanSubmission = {
+  datatypeSelected: false,
+  full: false,
+  initial: false,
+}
+
+const createNewStatus = () => ({
+  decision: clone(cleanDecision),
+  scienceOfficer: clone(cleanScienceOfficer),
+  submission: clone(cleanSubmission),
+})
+
 /*
   STATUS INFO
 */
@@ -46,18 +58,31 @@ const getStatus = article => {
   }
 }
 
+/* Decision */
 const isAccepted = status => {
   if (get(status, 'decision.accepted')) return true
   return false
 }
 
+const isRejected = status => {
+  if (get(status, 'decision.rejected')) return true
+  return false
+}
+
+/* Science Officer */
 const isApprovedByScienceOfficer = status => {
   if (get(status, 'scienceOfficer.approved')) return true
   return false
 }
 
+const isNotApprovedByScienceOfficer = status => {
+  if (get(status, 'scienceOfficer.approved') === false) return true
+  return false
+}
+
+/* Submission */
 const isFullSubmissionReady = status => {
-  if (get(status, 'decision.full')) return true
+  if (get(status, 'submission.full')) return true
   return false
 }
 
@@ -71,24 +96,28 @@ const isDatatypeSelected = status => {
   return false
 }
 
-const isNotApprovedByScienceOfficer = status => {
-  if (get(status, 'scienceOfficer.approved') === false) return true
-  return false
-}
-
-const isRejected = status => {
-  if (get(status, 'decision.rejected')) return true
-  return false
-}
-
 /*
   DECISION
 */
 
+const setAccepted = status => {
+  const newStatus = clone(status)
+  newStatus.decision = clone(cleanDecision)
+  set(newStatus, 'decision.accepted', true)
+  return newStatus
+}
+
 const setRejected = status => {
   const newStatus = clone(status)
-  newStatus.decision = cleanDecision
+  newStatus.decision = clone(cleanDecision)
   set(newStatus, 'decision.rejected', true)
+  return newStatus
+}
+
+const setRevise = status => {
+  const newStatus = clone(status)
+  newStatus.decision = clone(cleanDecision)
+  set(newStatus, 'decision.revise', true)
   return newStatus
 }
 
@@ -105,7 +134,53 @@ const setApproved = (status, approved) => {
   return newStatus
 }
 
+/*
+  SUBMISSION
+*/
+
+const setInitialSubmissionReady = status => {
+  set(status, 'submission.initial', true)
+  return status
+}
+
+const setDatatypeSelected = status => {
+  set(status, 'submission.datatypeSelected', true)
+  return status
+}
+
+const setFullSubmissionReady = status => {
+  set(status, 'submission.full', true)
+  return status
+}
+
+// Sets submission status to its next logical state
+// initial -> datatype selected -> full
+const updateSubmissionStatus = status => {
+  if (!status)
+    throw new Error('Cannot update submission status without a status object')
+
+  const newStatus = clone(status)
+  if (!newStatus.submission) newStatus.submission = clone(cleanSubmission)
+
+  const initial = isInitialSubmissionReady(newStatus)
+  const datatype = isDatatypeSelected(newStatus)
+  const full = isFullSubmissionReady(newStatus)
+
+  if (!initial) return setInitialSubmissionReady(newStatus)
+  if (initial && !datatype) return setDatatypeSelected(newStatus)
+  if (datatype && !full) return setFullSubmissionReady(newStatus)
+
+  throw new Error(
+    'Cannot update submission status, as it has been fully submitted already',
+  )
+}
+
+/*
+  EXPORT
+*/
+
 export {
+  createNewStatus,
   getCurrentStatus,
   getStatus,
   isAccepted,
@@ -116,5 +191,11 @@ export {
   isNotApprovedByScienceOfficer,
   isRejected,
   setApproved,
+  setAccepted,
+  setDatatypeSelected,
+  setFullSubmissionReady,
+  setInitialSubmissionReady,
   setRejected,
+  setRevise,
+  updateSubmissionStatus,
 }

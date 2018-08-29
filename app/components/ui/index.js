@@ -1,4 +1,5 @@
 // export { default as Accordion } from './Accordion'
+export { default as DecisionSection } from './DecisionSection'
 export { default as Discuss } from './Discuss'
 export { default as EditorPanelRibbon } from './EditorPanelRibbon'
 export { default as PanelInfo } from './PanelInfo'

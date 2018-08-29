@@ -6,6 +6,10 @@ import { get } from 'lodash'
 import { Ribbon } from './index'
 
 const options = {
+  accepted: {
+    message: 'This article has been accepted',
+    status: 'success',
+  },
   rejected: {
     message: 'This article has been rejected',
     status: 'error',

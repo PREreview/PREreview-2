@@ -15,18 +15,20 @@ const UPDATE_MANUSCRIPT_FOR_EDITOR = gql`
       decisionLetter
       id
       status {
-        dataTypeSelected
         decision {
           accepted
           rejected
           revise
         }
-        initialSubmission
         scienceOfficer {
           approved
           pending
         }
-        submitted
+        submission {
+          initial
+          datatypeSelected
+          full
+        }
       }
     }
   }

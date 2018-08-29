@@ -1,6 +1,11 @@
 import * as yup from 'yup'
 import { cloneDeep, concat, isString, merge, reduce, values } from 'lodash'
 
+import {
+  isDatatypeSelected,
+  isInitialSubmissionReady,
+} from '../../helpers/status'
+
 // import { validateWBPerson, validateWBLaboratory } from '../../fetch/WBApi'
 
 const stripHTML = html => {
@@ -510,11 +515,11 @@ const makeSchema = vals => {
   const schema = cloneDeep(initial)
   const { status } = vals
 
-  if (status.initialSubmission) {
+  if (isInitialSubmissionReady(status)) {
     merge(schema, selectDataType)
   }
 
-  if (status.dataTypeSelected) {
+  if (isDatatypeSelected(status)) {
     if (vals.dataType === 'geneExpression') {
       merge(schema, geneExpression)
     }
