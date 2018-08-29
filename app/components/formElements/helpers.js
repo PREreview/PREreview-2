@@ -189,17 +189,27 @@ if (process.env.NODE_ENV === 'development') {
     acknowledgements: '',
     author: {
       // credit: 'formalAnalysis',
-      credit: '',
+      credit: 'software',
       email: 'john@john.com',
       name: 'John A Bryden',
       WBId: 'WBPerson6903',
     },
     coAuthors: [
-      { credit: '', id: uuid(), name: 'Yanna Cen', WBId: 'WBPerson18694' },
-      { credit: '', id: uuid(), name: 'Alec Barret', WBId: 'WBPerson15466' },
+      {
+        credit: 'formalAnalysis',
+        id: uuid(),
+        name: 'Yanna Cen',
+        WBId: 'WBPerson18694',
+      },
+      {
+        credit: 'dataCuration',
+        id: uuid(),
+        name: 'Alec Barret',
+        WBId: 'WBPerson15466',
+      },
     ],
     comments: '<p>some comments here</p>',
-    dataType: '',
+    dataType: 'geneExpression',
     disclaimer: true,
     funding: 'blah',
     geneExpression: {
@@ -222,7 +232,7 @@ if (process.env.NODE_ENV === 'development') {
       ],
       expressionPattern: {
         name: 'some expression',
-        WBId: '',
+        WBId: '1',
       },
       fusionType: {
         name: '',
@@ -260,8 +270,8 @@ if (process.env.NODE_ENV === 'development') {
           {
             during: {
               id: uuid(),
-              name: '',
-              WBId: '',
+              name: 'soma',
+              WBId: '67',
             },
             id: uuid(),
             not: {
@@ -590,8 +600,8 @@ const formValuesToData = values => {
   // eslint-disable-next-line no-underscore-dangle
   delete data.__typename
 
-  if (data.communicationsHistory)
-    data.communicationsHistory.forEach(item => {
+  if (data.communicationHistory)
+    data.communicationHistory.forEach(item => {
       // eslint-disable-next-line no-underscore-dangle, no-param-reassign
       delete item.__typename
     })

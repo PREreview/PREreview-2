@@ -14,23 +14,22 @@ const typeDefs = `
 
   type HistoryEntry {
     content: String
+    id: ID!
     timestamp: String
-    userId: String
-    username: String
+    user: User
   }
 
   input HistoryEntryInput {
     content: String
     timestamp: String
-    userId: String
-    username: String
+    user: ID!
   }
 
   type Manuscript {
     acknowledgements: String
     authors: [Author]
     comments: String
-    communicationsHistory: [HistoryEntry]
+    communicationHistory: [HistoryEntry]
     dataType: String
     decisionLetter: String
     disclaimer: Boolean
@@ -49,7 +48,7 @@ const typeDefs = `
     acknowledgements: String
     authors: [AuthorInput]
     comments: String
-    communicationsHistory: [HistoryEntryInput]
+    communicationHistory: [HistoryEntryInput]
     dataType: String
     decisionLetter: String
     disclaimer: Boolean

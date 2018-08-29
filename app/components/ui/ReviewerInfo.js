@@ -16,14 +16,17 @@ const StyledAction = styled(Action)`
 const fakeReviewersNumbers = [
   {
     amount: 10,
+    id: 'fkjfsjldkjflks',
     label: 'invited',
   },
   {
     amount: 6,
+    id: 'lkflsajsalkfj',
     label: 'rejected',
   },
   {
     amount: 3,
+    id: 'lklk;afk;dsk',
     label: 'accepted',
   },
 ]
@@ -31,12 +34,14 @@ const fakeReviewersNumbers = [
 const fakeReviewsData = [
   {
     content: '<p>This is almost ok</p>',
+    id: 'llalfjdljaslfjlsd',
     recommendation: 'revise',
     status: 'pending',
     username: 'Yannis Barlas',
   },
   {
     content: '<p>This is great</p>',
+    id: 'bfjksasdhak',
     recommendation: 'accept',
     status: 'submitted',
     username: 'Alexis Georgantas',

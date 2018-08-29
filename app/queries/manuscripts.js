@@ -12,12 +12,6 @@ const GET_MANUSCRIPT = gql`
         WBId
       }
       comments
-      communicationsHistory {
-        content
-        timestamp
-        userId
-        username
-      }
       dataType
       decisionLetter
       disclaimer
@@ -165,11 +159,13 @@ const GET_MANUSCRIPT = gql`
 const GET_MANUSCRIPT_FOR_EDITOR = gql`
   query manuscript($id: ID!) {
     manuscript(id: $id) {
-      communicationsHistory {
+      communicationHistory {
         content
         timestamp
-        userId
-        username
+        user {
+          id
+          username
+        }
       }
       decisionLetter
       id

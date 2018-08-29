@@ -4,6 +4,11 @@ const cloneDeep = require('lodash/cloneDeep')
 const merge = require('lodash/merge')
 
 const resolvers = {
+  HistoryEntry: {
+    user(historyEntry, vars, ctx) {
+      return ctx.connectors.user.fetchOne(historyEntry.user, ctx)
+    },
+  },
   Mutation: {
     async createSubmission(_, vars, ctx) {
       const emptyManuscript = {

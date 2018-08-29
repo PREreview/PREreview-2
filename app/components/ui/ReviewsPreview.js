@@ -3,15 +3,10 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { List, H6 } from '@pubsweet/ui'
+import { List } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
 
-import { PanelTextEditor, RecommendationDot } from './index'
-
-const StyledH6 = styled(H6)`
-  color: ${th('colorText')};
-  margin: calc(${th('gridUnit')} * 2) 0 0 0;
-`
+import { PanelSectionHeader, PanelTextEditor, RecommendationDot } from './index'
 
 const Editor = styled(PanelTextEditor)`
   div[contenteditable] {
@@ -59,7 +54,7 @@ const Reviews = props => {
 
   return (
     <div>
-      <StyledH6>Reviewer feedback</StyledH6>
+      <PanelSectionHeader>Reviewer feedback</PanelSectionHeader>
       <List component={Review} items={data} />
     </div>
   )

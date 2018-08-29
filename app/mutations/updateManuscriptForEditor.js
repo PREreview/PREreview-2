@@ -3,11 +3,13 @@ import gql from 'graphql-tag'
 const UPDATE_MANUSCRIPT_FOR_EDITOR = gql`
   mutation submitManuscript($data: ManuscriptInput!) {
     updateManuscript(data: $data) {
-      communicationsHistory {
+      communicationHistory {
         content
         timestamp
-        userId
-        username
+        user {
+          id
+          username
+        }
       }
       decisionLetter
       id

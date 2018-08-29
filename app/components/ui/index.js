@@ -1,5 +1,7 @@
 // export { default as Accordion } from './Accordion'
+export { default as Discuss } from './Discuss'
 export { default as PanelInfo } from './PanelInfo'
+export { default as PanelSectionHeader } from './PanelSectionHeader'
 export { default as PanelTextEditor } from './PanelTextEditor'
 export { default as RecommendationDot } from './RecommendationDot'
 export { default as RejectArticle } from './RejectArticle'

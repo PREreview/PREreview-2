@@ -12,11 +12,13 @@ const SUBMIT_MANUSCRIPT = gql`
         WBId
       }
       comments
-      communicationsHistory {
+      communicationHistory {
         content
         timestamp
-        userId
-        username
+        user {
+          id
+          username
+        }
       }
       dataType
       decisionLetter
