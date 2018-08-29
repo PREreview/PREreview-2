@@ -18,6 +18,7 @@ const Label = styled.label`
 const RadioGroup = styled(UIRadioGroup)`
   cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
   margin-top: ${th('gridUnit')};
+  margin-right: ${props => (props.inline ? th('gridUnit') : 0)};
 
   span {
     font-family: ${th('fontInterface')};
@@ -32,14 +33,13 @@ const RadioGroup = styled(UIRadioGroup)`
 
   &:hover {
     span {
-      color: ${props => (props.disabled ? 'currentColor' : th('colorPrimary'))};
+      color: currentColor;
     }
 
     span:before {
       animation: none;
-      box-shadow: 0 0 0 1px
-        ${props => (props.disabled ? 'currentColor' : th('colorPrimary'))};
-      color: ${props => (props.disabled ? 'currentColor' : th('colorPrimary'))};
+      box-shadow: 0 0 0 1px currentColor;
+      color: currentColor;
     }
   }
 

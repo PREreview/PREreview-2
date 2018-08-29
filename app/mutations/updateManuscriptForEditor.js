@@ -5,6 +5,7 @@ const UPDATE_MANUSCRIPT_FOR_EDITOR = gql`
     updateManuscript(data: $data) {
       communicationHistory {
         content
+        # id
         timestamp
         user {
           id
@@ -21,6 +22,10 @@ const UPDATE_MANUSCRIPT_FOR_EDITOR = gql`
           revise
         }
         initialSubmission
+        scienceOfficer {
+          approved
+          pending
+        }
         submitted
       }
     }

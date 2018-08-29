@@ -148,6 +148,10 @@ const GET_MANUSCRIPT = gql`
           revise
         }
         initialSubmission
+        scienceOfficer {
+          approved
+          pending
+        }
         submitted
       }
       suggestedReviewer
@@ -161,6 +165,7 @@ const GET_MANUSCRIPT_FOR_EDITOR = gql`
     manuscript(id: $id) {
       communicationHistory {
         content
+        # id
         timestamp
         user {
           id
@@ -177,6 +182,10 @@ const GET_MANUSCRIPT_FOR_EDITOR = gql`
           revise
         }
         initialSubmission
+        scienceOfficer {
+          approved
+          pending
+        }
         submitted
       }
     }
@@ -190,6 +199,10 @@ const GET_MANUSCRIPTS = gql`
       status {
         dataTypeSelected
         initialSubmission
+        scienceOfficer {
+          approved
+          pending
+        }
         submitted
       }
       title

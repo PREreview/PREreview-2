@@ -156,6 +156,10 @@ const SUBMIT_MANUSCRIPT = gql`
           revise
         }
         initialSubmission
+        scienceOfficer {
+          approved
+          pending
+        }
         submitted
       }
       suggestedReviewer

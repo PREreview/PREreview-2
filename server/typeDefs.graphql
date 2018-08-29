@@ -67,6 +67,7 @@ const typeDefs = `
     dataTypeSelected: Boolean
     decision: DecisionStatus
     initialSubmission: Boolean
+    scienceOfficer: ScienceOfficerStatus
     submitted: Boolean
   }
 
@@ -74,6 +75,7 @@ const typeDefs = `
     dataTypeSelected: Boolean
     decision: DecisionStatusInput
     initialSubmission: Boolean
+    scienceOfficer: ScienceOfficerStatusInput
     submitted: Boolean
   }
 
@@ -87,6 +89,16 @@ const typeDefs = `
     accepted: Boolean
     rejected: Boolean
     revise: Boolean
+  }
+
+  type ScienceOfficerStatus {
+    approved: Boolean
+    pending: Boolean
+  }
+
+  input ScienceOfficerStatusInput {
+    approved: Boolean
+    pending: Boolean
   }
 
   type Author {

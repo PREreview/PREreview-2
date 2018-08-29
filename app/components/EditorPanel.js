@@ -2,19 +2,24 @@
 
 import React from 'react'
 import { State } from 'react-powerplug'
-import { assign } from 'lodash'
 
 import ComposedEditorPanel from './compose/EditorPanel'
 import Loading from './Loading'
 
-import { isRejected } from '../helpers/status'
+import {
+  isApprovedByScienceOfficer,
+  isNotApprovedByScienceOfficer,
+  isRejected,
+} from '../helpers/status'
 
-import { Discuss, PanelInfo, RejectArticle, ReviewerInfo, Ribbon } from './ui'
-
-// const makeValues = values => {
-//   const vals = cloneDeep(values)
-//   return mergeWith(initialValues, vals)
-// }
+import {
+  Discuss,
+  EditorPanelRibbon,
+  PanelInfo,
+  RejectArticle,
+  ReviewerInfo,
+  ScienceOfficerSection,
+} from './ui'
 
 // const validationSchema = yup.object().shape({
 //   content: yup.string(),
@@ -34,41 +39,43 @@ const EditorPanel = props => {
   if (loading) return <Loading />
 
   const { status } = article
+
   const alreadyRejected = isRejected(status)
+  const approved = isApprovedByScienceOfficer(status)
+  const notApproved = isNotApprovedByScienceOfficer(status)
 
   const initialState = {
     rejectedCheck: false,
-    ribbonMessage: '',
     ribbonStatus: null,
-  }
-
-  const rejectedState = {
-    ribbonMessage: 'This article has been rejected',
-    ribbonStatus: 'error',
-  }
-
-  if (alreadyRejected) {
-    assign(initialState, rejectedState)
   }
 
   return (
     <State initial={initialState}>
       {({ state, setState }) => {
-        // HACK -- find a more elegant way to handle this
-        if (
-          alreadyRejected &&
-          state.ribbonMessage !== rejectedState.ribbonMessage
+        const { rejectedCheck, ribbonStatus } = state
+
+        // HACK -- Find a more elegant way to handle this
+        if (alreadyRejected && ribbonStatus !== 'rejected') {
+          setState({ ribbonStatus: 'rejected' })
+        } else if (
+          !alreadyRejected &&
+          approved &&
+          ribbonStatus !== 'scienceOfficerApproved'
         ) {
-          setState(rejectedState)
+          setState({ ribbonStatus: 'scienceOfficerApproved' })
+        } else if (
+          !alreadyRejected &&
+          !approved &&
+          notApproved &&
+          ribbonStatus !== 'scienceOfficerDeclined'
+        ) {
+          setState({ ribbonStatus: 'scienceOfficerDeclined' })
         }
 
         const toggleRejectionWarning = () => {
           setState({
-            rejectedCheck: !state.rejectedCheck,
-            ribbonMessage: state.rejectedCheck
-              ? ''
-              : 'You are about to reject this article',
-            ribbonStatus: state.rejectedCheck ? null : 'error',
+            rejectedCheck: !rejectedCheck,
+            ribbonStatus: rejectedCheck ? null : 'rejectionWarning',
           })
         }
 
@@ -79,22 +86,23 @@ const EditorPanel = props => {
               <React.Fragment>
                 <PanelInfo editor={editor} scienceOfficer={scienceOfficer} />
 
-                <Ribbon
-                  message={state.ribbonMessage}
-                  status={state.ribbonStatus}
-                />
+                <EditorPanelRibbon type={ribbonStatus} />
 
                 <RejectArticle
                   alreadyRejected={alreadyRejected}
                   article={article}
-                  checked={state.rejectedCheck}
+                  checked={rejectedCheck}
                   update={toggleRejectionWarning}
                   updateArticle={updateArticle}
                 />
 
                 {!alreadyRejected &&
-                  !state.rejectedCheck && (
+                  !rejectedCheck && (
                     <React.Fragment>
+                      <ScienceOfficerSection
+                        article={article}
+                        updateArticle={updateArticle}
+                      />
                       <ReviewerInfo />
                     </React.Fragment>
                   )}
