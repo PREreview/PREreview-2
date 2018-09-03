@@ -1,28 +1,100 @@
+/* eslint-disable react/prop-types */
 import Select from 'react-select'
-import styled from 'styled-components'
+import React from 'react'
 
-import { lighten, th } from '@pubsweet/ui-toolkit'
+import { withTheme } from 'styled-components'
 
-const StyledSelect = styled(Select)`
-  margin-top: ${th('gridUnit')};
-  outline: none;
-
-  > div:first-of-type {
-    border-radius: ${th('borderRadius')};
-    border: ${th('borderWidth')} ${th('borderStyle')} ${th('colorBorder')};
-    box-shadow: none;
-
-    &:hover {
-      border-color: ${th('colorPrimary')};
-    }
-
-    > div > div > div:last-child {
-      &:hover {
-        background: ${lighten('colorError', 50)};
-        color: ${th('colorError')};
+const StyledSelect = props => {
+  const { theme, ...rest } = props
+  const stylesFromTheme = {
+    container: base => ({
+      ...base,
+      flexBasis: '200px',
+      minWidth: '200px',
+    }),
+    control: (base, state) => {
+      const myBase = {
+        backgroundColor: theme.colorBackground,
+        border: 0,
+        borderBottom: `${theme.borderWidth} ${theme.borderStyle} ${
+          theme.colorBorder
+        }`,
+        borderRadius: 0,
+        color: theme.colorText,
+        display: 'flex',
+        flex: '0 1 auto',
+        fontFamily: theme.fontInterface,
+        fontSize: theme.fontSizeBase,
+        lineHeight: theme.lineHeightBase,
       }
-    }
+      if (state.isFocused) {
+        return {
+          ...myBase,
+          borderBottom: `${theme.borderWidth} ${theme.borderStyle} ${
+            theme.colorPrimary
+          }`,
+        }
+      }
+      return myBase
+    },
+    dropdownIndicator: base => ({
+      ...base,
+      padding: 6,
+    }),
+    indicatorSeparator: base => ({
+      ...base,
+      display: 'none',
+    }),
+    input: base => ({
+      ...base,
+      margin: 0,
+    }),
+    menu: base => ({
+      ...base,
+      border: `${theme.borderWidth} ${theme.borderStyle} ${theme.colorBorder}`,
+      borderRadius: 0,
+      boxShadow: 'none',
+      flex: '0 1 100%',
+      marginTop: 2,
+    }),
+    menuList: base => ({
+      ...base,
+    }),
+    option: (base, state) => {
+      const myBase = {
+        ...base,
+        backgroundColor: theme.colorBackground,
+        color: theme.colorText,
+        fontFamily: theme.fontInterface,
+        fontSize: theme.fontSizeBase,
+        lineHeight: theme.lineHeightBase,
+      }
+      if (state.isSelected) {
+        return {
+          ...myBase,
+          backgroundColor: theme.colorPrimary,
+          color: theme.colorTextReverse,
+        }
+      }
+      if (state.isFocused) {
+        return {
+          ...myBase,
+          ':hover': {
+            backgroundColor: theme.colorBackgroundHue,
+            color: theme.colorText,
+          },
+          backgroundColor: theme.colorBackground,
+          color: theme.colorText,
+        }
+      }
+      return myBase
+    },
+    valueContainer: base => ({
+      ...base,
+      padding: 0,
+    }),
   }
-`
+  return <Select {...rest} styles={stylesFromTheme} />
+}
 
-export default StyledSelect
+export default withTheme(StyledSelect)

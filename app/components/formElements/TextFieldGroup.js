@@ -59,6 +59,10 @@ const LineWrapper = styled.div`
   display: flex;
 `
 
+const StyledButton = styled(Button)`
+  margin-top: calc(${th('gridUnit')});
+`
+
 const GroupWrapper = styled.div`
   margin-bottom: calc(${th('gridUnit')} * 2);
 `
@@ -173,9 +177,9 @@ const TextFieldGroup = props => {
         />
       )}
       {!readOnly && (
-        <Button onClick={handleAdd} primary>
+        <StyledButton onClick={handleAdd} primary>
           Add another
-        </Button>
+        </StyledButton>
       )}
     </GroupWrapper>
   )

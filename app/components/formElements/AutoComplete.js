@@ -11,10 +11,10 @@ import { th } from '@pubsweet/ui-toolkit'
 import TextField from './TextField'
 
 const Wrapper = styled.div`
+  margin-bottom: calc(${th('gridUnit')} * 2);
+
   div[role='combobox'] {
     position: relative;
-    margin-bottom: calc(${th('gridUnit')} * 3);
-
     /* div.react-autosuggest__input--open { */
     div.react-autosuggest__input {
       margin-bottom: 0;
@@ -133,13 +133,19 @@ class AutoComplete extends React.Component {
       onSuggestionSelected,
       renderInputComponent,
       renderSuggestion,
+      label,
       ...rest
     } = this.props
     const { value, suggestions } = this.state
-    // console.log(this.props)
 
     // find a better way?
-    const otherProps = omit(this.props, ['data', 'onChange', 'onBlur', 'value'])
+    const otherProps = omit(this.props, [
+      'className',
+      'data',
+      'onChange',
+      'onBlur',
+      'value',
+    ])
     // console.log(otherProps)
 
     const inputProps = {
