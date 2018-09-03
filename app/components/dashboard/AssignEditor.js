@@ -1,24 +1,9 @@
 /* eslint-disable react/prop-types */
 
 import React from 'react'
-import styled from 'styled-components'
-
-import { th } from '@pubsweet/ui-toolkit'
 
 import ComposedAssignEditor from '../compose/AssignEditor'
 import Select from '../ui/Select'
-
-const StyledSelect = styled(Select)`
-  display: inline-block;
-  margin: 0 ${th('gridUnit')};
-  /* height: 25px; */
-  width: 150px;
-
-  /* > div {
-    min-height: 25px;
-    height: 25px;
-  } */
-`
 
 const mapUserToSelect = user =>
   user && {
@@ -31,7 +16,6 @@ const mapUsersToOptions = users =>
 
 const AssignEditor = props => {
   const { allEditors, editor, editorTeamId, loading, updateTeam } = props
-
   if (loading) return null
 
   const options = mapUsersToOptions(allEditors)
@@ -43,7 +27,7 @@ const AssignEditor = props => {
   }
 
   return (
-    <StyledSelect
+    <Select
       isSearchable={false}
       onChange={handleChange}
       options={options}

@@ -28,6 +28,7 @@ const mapProps = args => {
     args.getTeams.data.teamsForArticle,
   )
   const editor = getEditor(editorTeamForArticle)
+  // console.log('editor', editorTeamForArticle)
 
   return {
     allEditors: getAllEditors(args.getGlobalTeams.data.globalTeams),

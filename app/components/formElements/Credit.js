@@ -1,9 +1,6 @@
 /* eslint-disable react/prop-types */
 
 import React from 'react'
-import styled from 'styled-components'
-
-import { th } from '@pubsweet/ui-toolkit'
 
 import Select from '../ui/Select'
 
@@ -66,18 +63,6 @@ const options = [
   },
 ]
 
-const StyledSelect = styled(Select)`
-  padding-left: ${th('gridUnit')};
-  margin-top: 0;
-
-  > div:not(:only-of-type):last-child {
-    > div {
-      margin: 0;
-      top: unset;
-    }
-  }
-`
-
 const Credit = props => {
   const { name, setFieldValue, value } = props
   const currentValue = options.find(o => o.value === value)
@@ -85,11 +70,7 @@ const Credit = props => {
   const handleChange = newValue => setFieldValue(name, newValue.value)
 
   return (
-    <StyledSelect
-      onChange={handleChange}
-      options={options}
-      value={currentValue}
-    />
+    <Select onChange={handleChange} options={options} value={currentValue} />
   )
 }
 

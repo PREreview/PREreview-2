@@ -8,15 +8,20 @@ import { th } from '@pubsweet/ui-toolkit'
 
 import { getWBPerson } from '../../fetch/WBApi'
 import { onAutocompleteChange, onSuggestionSelected } from './helpers'
-import { AutoComplete, Credit } from './index'
+import { /* AutoComplete, */ Credit } from './index'
+import AutoComplete from './AutoComplete'
 
 const Wrapper = styled.div`
+  align-items: center;
   display: flex;
   flex-direction: row;
+  justify-content: flex-start;
+  margin-bottom: calc(${th('gridUnit')} * 2);
+`
 
-  > div:last-child {
-    width: 200px;
-  }
+const StyledAutoComplete = styled(AutoComplete)`
+  margin-bottom: 0;
+  margin-right: calc(${th('gridUnit')} * 3);
 `
 
 const Label = styled.label`
@@ -62,7 +67,7 @@ const AuthorInput = props => {
         </Label>
       )}
       <Wrapper>
-        <AutoComplete
+        <StyledAutoComplete
           error={get(errors, authorName)}
           fetchData={getWBPerson}
           hideErrorMessage

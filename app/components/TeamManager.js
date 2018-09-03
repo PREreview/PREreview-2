@@ -3,13 +3,13 @@
 import React from 'react'
 import { Query, Mutation } from 'react-apollo'
 import styled from 'styled-components'
-import Select from 'react-select'
 import { Form, Formik } from 'formik'
 import { keys, sortBy } from 'lodash'
 
 import { Button, H2, H4 } from '@pubsweet/ui'
-import { lighten, th } from '@pubsweet/ui-toolkit'
+import { th } from '@pubsweet/ui-toolkit'
 
+import { Select } from './ui'
 import UPDATE_TEAM from '../mutations/updateTeam'
 import GET_TEAMS from '../queries/getTeams'
 import GET_USERS from '../queries/getUsers'
@@ -20,7 +20,7 @@ const TeamHeadingWrapper = styled(H4)`
   border-bottom: ${th('borderWidth')} ${th('borderStyle')} ${th('colorBorder')};
   font-size: ${th('fontSizeHeading4')};
   line-height: ${th('lineHeightHeading3')};
-  margin: 0;
+  margin: 0 auto ${th('gridUnit')};
 `
 
 const TeamSectionWrapper = styled.div`
@@ -42,28 +42,6 @@ const Ribbon = styled.div`
 
 const ButtonWrapper = styled.div`
   padding: calc(${th('gridUnit')} * 2) 0;
-`
-
-const StyledSelect = styled(Select)`
-  margin-top: ${th('gridUnit')};
-  outline: none;
-
-  > div:first-of-type {
-    border-radius: ${th('borderRadius')};
-    border: ${th('borderWidth')} ${th('borderStyle')} ${th('colorBorder')};
-    box-shadow: none;
-
-    &:hover {
-      border-color: ${th('colorPrimary')};
-    }
-
-    > div > div > div:last-child {
-      &:hover {
-        background: ${lighten('colorError', 50)};
-        color: ${th('colorError')};
-      }
-    }
-  }
 `
 
 const PageHeading = styled(H2)`
@@ -88,7 +66,6 @@ const TeamHeading = props => {
 
 const TeamSection = props => {
   const { name, setFieldValue, type, users, value } = props
-  // console.log(props)
 
   const options = users
     ? users.map(user => ({
@@ -107,14 +84,13 @@ const TeamSection = props => {
   })
 
   const handleChange = newValue => {
-    // console.log('here: new val', newValue)
     setFieldValue(type, newValue)
   }
 
   return (
     <TeamSectionWrapper>
       <TeamHeading name={name} />
-      <StyledSelect
+      <Select
         closeMenuOnSelect={false}
         isMulti
         name={type}
@@ -128,7 +104,6 @@ const TeamSection = props => {
 
 const TeamManagerForm = props => {
   const { setFieldValue, teams, users, values } = props
-  // console.log(props)
 
   return (
     <Form>
@@ -182,7 +157,6 @@ class TeamManager extends React.Component {
     )
 
     Promise.all(promises).then(res => {
-      // console.log(res)
       this.showRibbon()
       formikBag.resetForm(formValues)
     })

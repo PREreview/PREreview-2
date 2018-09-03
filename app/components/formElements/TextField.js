@@ -13,14 +13,13 @@ const readOnly = css`
 `
 
 const StyledTextField = styled(UiTextField)`
-  line-height: ${th('lineHeightBase')};
-  margin-bottom: calc(${th('gridUnit')} * 3);
-  width: calc(${th('gridUnit')} * 50);
-
   input {
     height: calc(${th('gridUnit')} * 4);
     ${props => props.readOnly && readOnly};
   }
+  line-height: ${th('lineHeightBase')};
+  margin-bottom: calc(${th('gridUnit')} * 2);
+  width: calc(${th('gridUnit')} * 50);
 `
 
 const Error = styled.div.attrs({
