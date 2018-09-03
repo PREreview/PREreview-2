@@ -14,6 +14,7 @@ const StyledBar = styled(AppBar)`
 
 const navLinks = (location, currentUser) => {
   const isDashboard = location.pathname.match(/dashboard/g)
+  const isAssignReviewers = location.pathname.match(/assign_reviewers/g)
   const isSubmit = location.pathname.match(/submit/g)
   const isTeamManager = location.pathname.match(/teams/g)
 
@@ -24,7 +25,11 @@ const navLinks = (location, currentUser) => {
       Dashboard
     </Action>
   )
-
+  const assignEditorsLink = (
+    <Action active={isAssignReviewers} to="/assign_reviewers">
+      Assign Reviewers
+    </Action>
+  )
   const submitLink = (
     <Action active={isSubmit} to="/submit">
       Article
@@ -37,7 +42,7 @@ const navLinks = (location, currentUser) => {
     </Action>
   )
 
-  const links = [dashboardLink]
+  const links = [dashboardLink, assignEditorsLink]
 
   if (isSubmit) links.push(submitLink)
   if (isAdmin) links.push(teamsLink)
