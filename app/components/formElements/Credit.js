@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import Select from '../ui/Select'
+import { Select } from '../ui'
 
 const options = [
   {
@@ -64,13 +64,31 @@ const options = [
 ]
 
 const Credit = props => {
-  const { name, setFieldValue, value } = props
-  const currentValue = options.find(o => o.value === value)
+  const { name, readOnly, setTouched, setFieldValue, touched, values } = props
 
-  const handleChange = newValue => setFieldValue(name, newValue.value)
+  const currentValues = values.map(value =>
+    options.find(option => option.value === value),
+  )
+
+  const handleChange = newValues => {
+    const data = newValues.map(item => item.value)
+    setFieldValue(name, data)
+  }
+
+  const handleBlur = e => {
+    if (!touched) setTouched()
+  }
 
   return (
-    <Select onChange={handleChange} options={options} value={currentValue} />
+    <Select
+      closeMenuOnSelect={false}
+      isDisabled={readOnly}
+      isMulti
+      onBlur={handleBlur}
+      onChange={handleChange}
+      options={options}
+      value={currentValues}
+    />
   )
 }
 
