@@ -4,6 +4,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const fs = require('fs-extra')
 const config = require('config')
 const { pick } = require('lodash')
@@ -54,6 +55,9 @@ module.exports = [
       }),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify('production'),
+      }),
+      new UglifyJSPlugin({
+        sourceMap: true,
       }),
       // put dynamically required modules into the build
       new webpack.ContextReplacementPlugin(/./, __dirname, {
