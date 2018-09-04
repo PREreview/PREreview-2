@@ -180,7 +180,10 @@ let defaultFormValues = {
     WBId: '',
   },
   patternDescription: '<p></p>',
-  suggestedReviewer: '',
+  suggestedReviewer: {
+    name: '',
+    WBId: '',
+  },
   title: '',
 }
 
@@ -362,9 +365,11 @@ if (process.env.NODE_ENV === 'development') {
       name: 'Jean-Claude Labbe',
       WBId: 'UM',
     },
-    // patternDescription: '<p>this is it</p>',
     patternDescription: '<p>Hello there</p>',
-    suggestedReviewer: '',
+    suggestedReviewer: {
+      name: '',
+      WBId: '',
+    },
     title: 'titlez',
   }
 }
@@ -539,6 +544,7 @@ const formValuesToData = values => {
   autocompleteKeys.forEach(key => delete data[key])
 
   if (data.image) delete data.image.__typename
+  if (data.suggestedReviewer) delete data.suggestedReviewer.__typename
 
   delete data.__typename
 

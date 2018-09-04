@@ -40,7 +40,7 @@ const typeDefs = `
     laboratory: WBItem
     patternDescription: String
     status: Status
-    suggestedReviewer: String
+    suggestedReviewer: WBPerson
     title: String
   }
 
@@ -59,7 +59,7 @@ const typeDefs = `
     laboratory: WBItemInput
     patternDescription: String
     status: StatusInput
-    suggestedReviewer: String
+    suggestedReviewer: WBPersonInput
     title: String
   }
 
@@ -107,6 +107,16 @@ const typeDefs = `
     datatypeSelected: Boolean
     full: Boolean
     initial: Boolean
+  }
+
+  type WBPerson {
+    name: String
+    WBId: String
+  }
+
+  input WBPersonInput {
+    name: String
+    WBId: String
   }
 
   type Author {

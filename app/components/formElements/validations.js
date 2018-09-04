@@ -6,8 +6,6 @@ import {
   isInitialSubmissionReady,
 } from '../../helpers/status'
 
-// import { validateWBPerson, validateWBLaboratory } from '../../fetch/WBApi'
-
 const stripHTML = html => {
   const tmp = document.createElement('DIV')
   tmp.innerHTML = html
@@ -25,6 +23,7 @@ const validateWBExists = function(val) {
 }
 
 const initial = {
+  acknowledgements: yup.string(),
   author: yup.object().shape({
     credit: yup
       .array()
@@ -49,17 +48,14 @@ const initial = {
       credit: yup
         .array()
         .of(yup.string())
-        // .required('Must choose credit for all authors'),
         .test(
           'coauthor has credit',
           'Must choose credit for all authors',
           // eslint-disable-next-line func-names, prefer-arrow-callback
           function(val) {
-            // console.log(val)
             const { name } = this.parent
             if (!name) return true
             if (name && (!val || val.length === 0)) return false
-            console.log(name, val)
             return true
           },
         ),
@@ -96,6 +92,15 @@ const initial = {
       'Pattern description is required',
       val => stripHTML(val).length > 0,
     ),
+  suggestedReviewer: yup.object().shape({
+    name: yup
+      .string()
+      .test(
+        'is suggested reviewer valid',
+        'Must be a registered WormBase Person',
+        validateWBExists,
+      ),
+  }),
   title: yup.string().required('Title is required'),
 }
 
