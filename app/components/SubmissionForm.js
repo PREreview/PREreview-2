@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 
 import React from 'react'
-import { Form } from 'formik'
 import { get } from 'lodash'
 
 import { Button } from '@pubsweet/ui'
@@ -57,7 +56,7 @@ const SubmissionForm = props => {
   const submitted = isFullSubmissionReady(status)
 
   return (
-    <Form>
+    <React.Fragment>
       <InitialSubmission readOnly={readOnly} values={values} {...props} />
 
       {initial && (
@@ -85,7 +84,7 @@ const SubmissionForm = props => {
           Submit
         </Button>
       )}
-    </Form>
+    </React.Fragment>
   )
 }
 

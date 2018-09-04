@@ -17,7 +17,7 @@ const UpdateArticle = props => {
   ]
 
   return (
-    <Mutation mutation={SUBMIT_MANUSCRIPT} refetch={refetch}>
+    <Mutation mutation={SUBMIT_MANUSCRIPT} refetchQueries={refetch}>
       {(updateArticle, updateArticleResponse) =>
         render({ updateArticle, updateArticleResponse })
       }
