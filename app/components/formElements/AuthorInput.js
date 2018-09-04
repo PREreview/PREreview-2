@@ -12,7 +12,7 @@ import { /* AutoComplete, */ Credit } from './index'
 import AutoComplete from './AutoComplete'
 
 const Wrapper = styled.div`
-  align-items: center;
+  align-items: flex-end;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -44,7 +44,9 @@ const AuthorInput = props => {
     label,
     name,
     placeholder,
+    readOnly,
     required,
+    setFieldTouched,
     setFieldValue,
     touched,
     values,
@@ -57,6 +59,8 @@ const AuthorInput = props => {
   const touchedThis = get(touched, name)
 
   const autoCompleteProps = omit(props, ['label', 'name', 'value'])
+
+  const setTouched = () => setFieldTouched(name, true)
 
   return (
     <React.Fragment>
@@ -84,8 +88,11 @@ const AuthorInput = props => {
 
         <Credit
           name={creditName}
+          readOnly={readOnly}
           setFieldValue={setFieldValue}
-          value={get(values, creditName)}
+          setTouched={setTouched}
+          touched={touchedThis}
+          values={get(values, creditName)}
         />
       </Wrapper>
     </React.Fragment>

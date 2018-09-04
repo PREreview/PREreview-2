@@ -17,14 +17,14 @@ import _, {
 let defaultFormValues = {
   acknowledgements: '',
   author: {
-    credit: '',
+    credit: [''],
     email: '',
     name: '',
     WBId: '',
   },
   coAuthors: [
     {
-      credit: '',
+      credit: [''],
       id: uuid(),
       name: '',
       WBId: '',
@@ -188,21 +188,20 @@ if (process.env.NODE_ENV === 'development') {
   defaultFormValues = {
     acknowledgements: '',
     author: {
-      // credit: 'formalAnalysis',
-      credit: 'software',
+      credit: ['software'],
       email: 'john@john.com',
       name: 'John A Bryden',
       WBId: 'WBPerson6903',
     },
     coAuthors: [
       {
-        credit: 'formalAnalysis',
+        credit: ['formalAnalysis'],
         id: uuid(),
         name: 'Yanna Cen',
         WBId: 'WBPerson18694',
       },
       {
-        credit: 'dataCuration',
+        credit: ['dataCuration'],
         id: uuid(),
         name: 'Alec Barret',
         WBId: 'WBPerson15466',

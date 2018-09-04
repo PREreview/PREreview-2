@@ -14,46 +14,22 @@ const stripHTML = html => {
   return tmp.textContent || tmp.innerText || ''
 }
 
-// const validateAsync = (val, fetchFn, self) => {
-//   if (!val) return true
-//   const { WBId } = self.parent
-//   console.log(self.parent)
-//   if (!WBId) return false
-
-//   return fetchFn({ id: WBId, search: val })
-//     .then(response => response.json())
-//     .then(res => {
-//       if (!res.data.result) return false
-//       return true
-//     })
-// }
-
-// const validateAuthor = {
-//   error: 'Must be a registered WormBase Person',
-//   // eslint-disable-next-line func-names, prefer-arrow-callback, object-shorthand
-//   test: function(val) {
-//     return validateAsync(val, validateWBPerson, this)
-//   },
-// }
-
 // eslint-disable-next-line func-names, prefer-arrow-callback, object-shorthand
 const validateWBExists = function(val) {
-  // console.log('val', val)
   if (!val) return true
-  // console.log('parent', this.parent)
-  const { WBId } = this.parent
-  // console.log('WBId', WBId)
 
-  // if (!WBId) console.log('not')
-  // if (!WBId.length) console.log('no length')
+  const { WBId } = this.parent
   if (!WBId || !WBId.length) return false
-  // console.log(val, 'pass')
+
   return true
 }
 
 const initial = {
   author: yup.object().shape({
-    credit: yup.string().required('Must choose credit to assign to the author'),
+    credit: yup
+      .array()
+      .of(yup.string())
+      .required('Must choose credit to assign to the author'),
     email: yup
       .string()
       .required('Email is required')
@@ -70,17 +46,23 @@ const initial = {
   }),
   coAuthors: yup.array(
     yup.object().shape({
-      credit: yup.string().test(
-        'coauthor has credit',
-        'Must choose credit for all authors',
-        // eslint-disable-next-line func-names, prefer-arrow-callback
-        function(val) {
-          const { name } = this.parent
-          if (!name) return true
-          if (name && !val) return false
-          return true
-        },
-      ),
+      credit: yup
+        .array()
+        .of(yup.string())
+        // .required('Must choose credit for all authors'),
+        .test(
+          'coauthor has credit',
+          'Must choose credit for all authors',
+          // eslint-disable-next-line func-names, prefer-arrow-callback
+          function(val) {
+            // console.log(val)
+            const { name } = this.parent
+            if (!name) return true
+            if (name && (!val || val.length === 0)) return false
+            console.log(name, val)
+            return true
+          },
+        ),
       name: yup
         .string()
         .test(

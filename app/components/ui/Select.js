@@ -6,10 +6,11 @@ import { withTheme } from 'styled-components'
 
 const StyledSelect = props => {
   const { theme, ...rest } = props
+
   const stylesFromTheme = {
     container: base => ({
       ...base,
-      flexBasis: '200px',
+      maxWidth: '675px',
       minWidth: '200px',
     }),
     control: (base, state) => {
@@ -55,7 +56,7 @@ const StyledSelect = props => {
       borderRadius: 0,
       boxShadow: 'none',
       flex: '0 1 100%',
-      marginTop: 2,
+      marginTop: theme.gridUnit / 4,
     }),
     menuList: base => ({
       ...base,
@@ -94,6 +95,7 @@ const StyledSelect = props => {
       padding: 0,
     }),
   }
+
   return <Select {...rest} styles={stylesFromTheme} />
 }
 

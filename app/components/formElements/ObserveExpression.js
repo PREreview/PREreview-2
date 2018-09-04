@@ -76,16 +76,20 @@ const Row = styled.div`
 
   div > div[role='combobox'] > div[role='listbox'] {
     /* background: teal; */
-    left: 63px;
+    left: 48px;
+    width: 190px;
+  }
+
+  div.react-autosuggest__input > div {
     width: 190px;
   }
 
   div:first-child > div[role='combobox'] > div[role='listbox'] {
-    left: 155px;
+    left: 140px;
   }
 
   div:last-of-type > div[role='combobox'] > div[role='listbox'] {
-    left: 175px;
+    left: 160px;
   }
 
   div:first-child > div > div {
