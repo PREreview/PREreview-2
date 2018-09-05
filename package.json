@@ -118,6 +118,7 @@
     "release": "standard-version",
     "resetdb": "pubsweet setupdb --clobber && npm run seed",
     "seed": "node ./scripts/seedTeams.js",
+    "seed:demo": "node ./scripts/seedDemoData.js",
     "server": "pubsweet server",
     "setupdb": "pubsweet setupdb && npm run seed",
     "test": "jest",

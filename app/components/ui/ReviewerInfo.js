@@ -48,16 +48,17 @@ const fakeReviewsData = [
   },
 ]
 
-// eslint-disable-next-line arrow-body-style
 const ReviewerInfo = props => {
-  // const { data } = props
-  // if (!data || !data.length > 0) return null
+  const { articleId } = props
 
   return (
     <Accordion label="Reviews" startExpanded>
       <div>
-        <StyledAction to="">Reviewers Control Panel</StyledAction>
+        <StyledAction to={`/assign-reviewers/${articleId}`}>
+          Reviewers Control Panel
+        </StyledAction>
       </div>
+
       <ReviewersNumbers data={fakeReviewersNumbers} />
       <ReviewsPreview data={fakeReviewsData} />
     </Accordion>

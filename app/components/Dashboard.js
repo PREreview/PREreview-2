@@ -18,7 +18,9 @@ const SubmitButton = props => {
     createSubmission().then(res => {
       const { id } = res.data.createSubmission
 
+      // Create teams for article
       const teams = [
+        // Author team with current user as member
         {
           members: [currentUser.id],
           name: `author-${id}`,
@@ -28,6 +30,7 @@ const SubmitButton = props => {
           },
           teamType: 'author',
         },
+        // Editor team with no one assigned yet
         {
           members: [],
           name: `editor-${id}`,
@@ -37,6 +40,7 @@ const SubmitButton = props => {
           },
           teamType: 'editor',
         },
+        // Science officer team with first (and only) SO pre-assigned
         {
           members: [scienceOfficer.id],
           name: `science-officer-${id}`,
@@ -46,12 +50,23 @@ const SubmitButton = props => {
           },
           teamType: 'scienceOfficer',
         },
+        // Reviewer team with no one assigned yet
+        {
+          members: [],
+          name: `reviewers-${id}`,
+          object: {
+            objectId: id,
+            objectType: 'article',
+          },
+          teamType: 'reviewers',
+        },
       ]
 
+      // Create all, then redirect
       Promise.all(
         teams.map(team => createTeam({ variables: { data: team } })),
       ).then(response => {
-        props.history.push(`/submit/${id}`)
+        props.history.push(`/article/${id}`)
       })
     })
   }

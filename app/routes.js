@@ -30,8 +30,12 @@ const routes = (
         <Page>
           <Switch>
             <Route component={Dashboard} exact path="/dashboard" />
-            <Route component={AssignReviewers} exact path="/assign_reviewers" />
-            <Route component={Submit} exact path="/submit/:id" />
+            <Route
+              component={AssignReviewers}
+              exact
+              path="/assign-reviewers/:id"
+            />
+            <Route component={Submit} exact path="/article/:id" />
             <AdminRoute component={TeamManager} exact path="/teams" />
             <Redirect from="/" to="/dashboard" />
           </Switch>

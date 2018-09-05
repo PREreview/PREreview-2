@@ -367,8 +367,8 @@ if (process.env.NODE_ENV === 'development') {
     },
     patternDescription: '<p>Hello there</p>',
     suggestedReviewer: {
-      name: '',
-      WBId: '',
+      name: 'John C Cooper',
+      WBId: 'lklajfldjsf',
     },
     title: 'titlez',
   }

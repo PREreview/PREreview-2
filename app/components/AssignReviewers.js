@@ -2,62 +2,24 @@
 
 import React from 'react'
 import styled from 'styled-components'
+import { clone } from 'lodash'
 
-import { Accordion, H2 } from '@pubsweet/ui'
+import { Accordion, Button, H2, List } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
 
-const suggested = [
-  { email: 'user1@example.com', userId: 'user1', username: 'User One' },
-  { email: 'user2@example.com', userId: 'user2', username: 'User Two' },
-  { email: 'user3@example.com', userId: 'user3', username: 'User Three' },
-]
+import ComposedAssignReviewers from './compose/AssignReviewers'
+import { Select as DefaultSelect } from './ui'
+import { AssignReviewersForm } from './form'
+import Loading from './Loading'
 
-// const usersPool = [
-//   { email: 'user1@example.com', userId: 'user1', username: 'User One' },
-//   { email: 'user2@example.com', userId: 'user2', username: 'User Two' },
-//   { email: 'user3@example.com', userId: 'user3', username: 'User Three' },
-//   { email: 'user4@example.com', userId: 'user4', username: 'User Four' },
-//   { email: 'user5@example.com', userId: 'user5', username: 'User Five' },
-//   { email: 'user6@example.com', userId: 'user6', username: 'User Six' },
-//   { email: 'user7@example.com', userId: 'user7', username: 'User Seven' },
-// ]
-
-// const teamReviewers = [
-//   {
-//     email: 'user1@example.com',
-//     status: 'accepted',
-//     userId: 'user1',
-//     username: 'User One',
-//   },
-//   {
-//     email: 'user2@example.com',
-//     status: 'rejected',
-//     userId: 'user2',
-//     username: 'User Two',
-//   },
-//   {
-//     email: 'user3@example.com',
-//     status: 'pending',
-//     userId: 'user3',
-//     username: 'User Three',
-//   },
-//   {
-//     email: 'user4@example.com',
-//     status: 'pending',
-//     userId: 'user4',
-//     username: 'User Four',
-//   },
-// ]
-
-const PageWrapper = styled.div`
+const Centered = styled.div`
   margin: 0 auto;
-  clear: both;
-  max-width: ${props => {
-    if (props.minWidth) {
-      return props.minWidth
-    }
-    return '1024'
-  }}px;
+  /* max-width: 770px; */
+  width: 60%;
+
+  > div {
+    margin-bottom: calc(${th('gridUnit')} * 2);
+  }
 `
 
 const PageHeading = styled(H2)`
@@ -68,51 +30,109 @@ const PageHeading = styled(H2)`
 
 const ContentWrapper = styled.div`
   display: flex;
+  margin-left: ${th('gridUnit')};
+
+  form {
+    width: 100%;
+
+    button {
+      margin-top: calc(${th('gridUnit')} * 2);
+    }
+  }
 `
 
-const AccordionWrapper = styled.div`
-  margin: 0 auto calc(${th('gridUnit')} * 2);
+const Select = styled(DefaultSelect)`
+  max-width: unset !important;
+  width: 100%;
 `
-const SuggestedReviewer = styled.span`
-  background-color: ${th('colorSecondary')};
+
+const Tag = styled.span`
+  background-color: ${th('colorBackgroundHue')};
   font-size: ${th('fontSizeBase')};
   line-height: ${th('lineHeightBase')};
   padding: calc(${th('gridUnit')} / 2);
-  margin: 0 ${th('gridUnit')};
+  margin: ${th('gridUnit')} 0;
 `
 
-const SuggestedReviewers = props => {
-  const { suggestedReviewers } = props
-  return suggestedReviewers.map(reviewer => (
-    <SuggestedReviewer>{reviewer.username}</SuggestedReviewer>
-  ))
+const SuggestedReviewer = props => {
+  const { name } = props
+  return <Tag>{name}</Tag>
 }
 
-const AssignReviewers = props => (
-  <PageWrapper>
-    <PageHeading>Assign Reviewers</PageHeading>
-    <AccordionWrapper>
-      <Accordion label="Suggested Reviewers" startExpanded>
-        <ContentWrapper>
-          <SuggestedReviewers suggestedReviewers={suggested} />
-        </ContentWrapper>
-      </Accordion>
-    </AccordionWrapper>
-    <AccordionWrapper>
-      <Accordion label="Pool of Reviewers">
-        <ContentWrapper>Something else</ContentWrapper>
-      </Accordion>
-    </AccordionWrapper>
-    <AccordionWrapper>
-      <Accordion label="Invite Reviewers">
-        <ContentWrapper>Something else 2</ContentWrapper>
-      </Accordion>
-    </AccordionWrapper>
-    <AccordionWrapper>
-      <Accordion label="Stats">
-        <ContentWrapper>Something else 3</ContentWrapper>
-      </Accordion>
-    </AccordionWrapper>
-  </PageWrapper>
+const SuggestedReviewers = props => {
+  const { data } = props
+  if (!data || data.length === 0) return null
+  const items = data.map(item => {
+    const i = clone(item)
+    i.id = i.WBId
+    return i
+  })
+
+  return <List component={SuggestedReviewer} items={items} />
+}
+
+const Section = ({ children, label }) => (
+  <Accordion label={label} startExpanded>
+    <ContentWrapper>{children}</ContentWrapper>
+  </Accordion>
 )
-export default AssignReviewers
+
+const AssignReviewers = props => {
+  const { loading, suggested, users, ...otherProps } = props
+
+  if (loading) return <Loading />
+
+  let suggestedReviewers
+  if (suggested && suggested.name && suggested.name.length > 0)
+    suggestedReviewers = [suggested]
+
+  const userOptions = users
+    ? users.map(user => ({
+        label: user.username,
+        value: user.id,
+      }))
+    : []
+
+  return (
+    <Centered>
+      <PageHeading>Assign Reviewers</PageHeading>
+
+      <Section label="Suggested Reviewer by the Author">
+        <SuggestedReviewers data={suggestedReviewers} />
+      </Section>
+
+      <Section label="Assign Reviewers to Article">
+        <AssignReviewersForm {...otherProps}>
+          {formProps => {
+            const { dirty, setFieldValue, values } = formProps
+
+            const handleChange = newValue =>
+              setFieldValue('reviewers', newValue)
+
+            return (
+              <React.Fragment>
+                <Select
+                  closeMenuOnSelect={false}
+                  isMulti
+                  name="reviewers"
+                  onChange={handleChange}
+                  options={userOptions}
+                  value={values.reviewers}
+                />
+
+                <Button disabled={!dirty} primary type="submit">
+                  Save
+                </Button>
+              </React.Fragment>
+            )
+          }}
+        </AssignReviewersForm>
+      </Section>
+
+      <Section label="Status">Something else 3</Section>
+    </Centered>
+  )
+}
+
+const Composed = () => <ComposedAssignReviewers render={AssignReviewers} />
+export default Composed

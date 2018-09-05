@@ -66,7 +66,7 @@ const SectionItem = item => (
       </SectionItemTitleWrapper>
 
       <ActionGroup>
-        <Action to={`/submit/${item.id}`}>Edit</Action>
+        <Action to={`/article/${item.id}`}>Edit</Action>
         <Mutation
           mutation={DELETE_MANUSCRIPT}
           refetchQueries={[{ query: GET_MANUSCRIPTS }]}
