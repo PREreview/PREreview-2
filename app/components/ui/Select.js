@@ -10,7 +10,6 @@ const StyledSelect = props => {
   const stylesFromTheme = {
     container: base => ({
       ...base,
-      maxWidth: '675px',
       minWidth: '200px',
     }),
     control: (base, state) => {

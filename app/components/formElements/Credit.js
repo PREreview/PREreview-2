@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import React from 'react'
+import styled from 'styled-components'
 
 import { Select } from '../ui'
 
@@ -79,8 +80,12 @@ const Credit = props => {
     if (!touched) setTouched()
   }
 
+  const StyledSelect = styled(Select)`
+    max-width: 675px;
+  `
+
   return (
-    <Select
+    <StyledSelect
       closeMenuOnSelect={false}
       isDisabled={readOnly}
       isMulti
