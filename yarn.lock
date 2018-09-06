@@ -498,6 +498,30 @@
     redux-form "^7.0.3"
     styled-components "^3.2.5"
 
+"@pubsweet/ui@^8.6.1":
+  version "8.6.1"
+  resolved "https://registry.yarnpkg.com/@pubsweet/ui/-/ui-8.6.1.tgz#244805d1a58b3a83c4d1f1fd53e598c387ef3303"
+  dependencies:
+    "@pubsweet/ui-toolkit" "^1.2.0"
+    babel-jest "^21.2.0"
+    classnames "^2.2.5"
+    enzyme "^3.2.0"
+    enzyme-adapter-react-16 "^1.1.1"
+    invariant "^2.2.3"
+    lodash "^4.17.4"
+    moment "^2.22.1"
+    prop-types "^15.5.10"
+    react "^16.2.0"
+    react-dom "^16.2.0"
+    react-feather "^1.0.8"
+    react-redux "^5.0.2"
+    react-router-dom "^4.2.2"
+    react-tag-autocomplete "^5.5.0"
+    recompose "^0.26.0"
+    redux "^3.6.0"
+    redux-form "^7.0.3"
+    styled-components "^3.2.5"
+
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@samverschueren/stream-to-observable/-/stream-to-observable-0.3.0.tgz#ecdf48d532c58ea477acfcab80348424f8d0662f"
