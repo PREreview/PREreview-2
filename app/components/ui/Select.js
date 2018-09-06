@@ -10,7 +10,6 @@ const StyledSelect = props => {
   const stylesFromTheme = {
     container: base => ({
       ...base,
-      maxWidth: '675px',
       minWidth: '200px',
     }),
     control: (base, state) => {
@@ -80,11 +79,7 @@ const StyledSelect = props => {
       if (state.isFocused) {
         return {
           ...myBase,
-          ':hover': {
-            backgroundColor: theme.colorBackgroundHue,
-            color: theme.colorText,
-          },
-          backgroundColor: theme.colorBackground,
+          backgroundColor: theme.colorBackgroundHue,
           color: theme.colorText,
         }
       }
