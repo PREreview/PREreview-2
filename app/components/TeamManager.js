@@ -17,7 +17,6 @@ import GET_USERS from '../queries/getUsers'
 import Loading from './Loading'
 
 const TeamHeadingWrapper = styled(H4)`
-  border-bottom: ${th('borderWidth')} ${th('borderStyle')} ${th('colorBorder')};
   font-size: ${th('fontSizeHeading4')};
   line-height: ${th('lineHeightHeading3')};
   margin: 0 auto ${th('gridUnit')};
