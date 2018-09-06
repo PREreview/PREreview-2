@@ -124,6 +124,7 @@
     "seed": "node ./scripts/seedTeams.js",
     "seed:demo": "node ./scripts/seedDemoData.js",
     "server": "pubsweet server",
+    "server:production": "./scripts/runProductionServer.sh",
     "setupdb": "pubsweet setupdb && npm run seed",
     "test": "jest",
     "testcafe": "source ./config/test.env && testcafe chromium e2e/"
