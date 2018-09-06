@@ -1,3 +1,5 @@
+/* eslint-disable sort-keys */
+
 const path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
@@ -49,7 +51,7 @@ module.exports = [
     },
     plugins: [
       new HtmlWebpackPlugin({
-        title: 'MicroPubs',
+        title: 'MicroPublications',
         template: '../app/index.ejs', // Load a custom template
         inject: 'body', // Inject all scripts into the body
       }),

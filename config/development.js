@@ -20,11 +20,17 @@ const logger = new winston.Logger({
     }),
   ],
 })
+
 module.exports = {
-  'pubsweet-server': {
+  'pubsweet-client': {
     baseUrl: deferConfig(
       cfg => `http://localhost:${cfg['pubsweet-server'].port}`,
     ),
+  },
+  'pubsweet-server': {
+    host: 'http://localhost',
     logger,
+    port: 3000,
+    secret: 'somesecret',
   },
 }
