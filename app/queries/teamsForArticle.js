@@ -8,6 +8,7 @@ const GET_TEAMS_FOR_ARTICLE = gql`
         id
         username
       }
+      name
       teamType
     }
   }

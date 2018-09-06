@@ -1,4 +1,4 @@
-import { isArray, uniq } from 'lodash'
+import { find, isArray, isUndefined, uniq } from 'lodash'
 
 /*
   GLOBAL TEAMS
@@ -47,8 +47,10 @@ const getEditorTeamId = teamsForArticle => {
   return editorTeam.id
 }
 
-const getReviewersTeamForArticle = teamsForArticle =>
-  getOneTeamByType(teamsForArticle, 'reviewers')
+const getReviewerTeamsForArticle = teamsForArticle => {
+  if (!teamsForArticle) return null
+  return teamsForArticle.filter(t => t.name.match(/^reviewers-/))
+}
 
 // Get science officer assigned to article
 const getScienceOfficer = teamsForArticle => {
@@ -80,6 +82,11 @@ const getTeamMembers = team => {
 const getOneTeamByType = (teams, type) =>
   teams && teams.find(t => t.teamType === type)
 
+const isMember = (team, userId) => {
+  const userInTeam = find(team.members, { id: userId })
+  return !isUndefined(userInTeam)
+}
+
 /*
   EXPORT
 */
@@ -92,10 +99,11 @@ export {
   getEditorTeamForArticle,
   getEditorTeamId,
   getRegularUsers,
-  getReviewersTeamForArticle,
+  getReviewerTeamsForArticle,
   getScienceOfficer,
   getScienceOfficerTeamForArticle,
   getFirstMemberOfTeam,
   getTeamMembers,
   getOneTeamByType,
+  isMember,
 }

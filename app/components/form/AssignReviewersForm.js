@@ -5,10 +5,10 @@ import React from 'react'
 import Form from './Form'
 
 const AssignReviewersForm = props => {
-  const { reviewersTeam, updateTeam, ...otherProps } = props
+  const { reviewers, reviewersTeamId, updateTeam, ...otherProps } = props
 
   const initialValues = {
-    reviewers: reviewersTeam.members.map(member => ({
+    reviewers: reviewers.map(member => ({
       label: member.username,
       value: member.id,
     })),
@@ -20,12 +20,10 @@ const AssignReviewersForm = props => {
 
     updateTeam({
       variables: {
-        id: reviewersTeam.id,
+        id: reviewersTeamId,
         input: data,
       },
-    })
-
-    formikBag.resetForm()
+    }).then(() => formikBag.resetForm(values))
   }
 
   return (

@@ -2,15 +2,18 @@
 
 import React from 'react'
 import styled from 'styled-components'
-import { clone } from 'lodash'
+import { clone, union } from 'lodash'
+import ReactTable from 'react-table'
+import 'react-table/react-table.css'
 
-import { Accordion, Button, H2, List } from '@pubsweet/ui'
+import { Accordion, Action, Button, H2, List } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
 
 import ComposedAssignReviewers from './compose/AssignReviewers'
 import { Select as DefaultSelect } from './ui'
 import { AssignReviewersForm } from './form'
 import Loading from './Loading'
+import { isMember } from '../helpers/teams'
 
 const Centered = styled.div`
   margin: 0 auto;
@@ -22,6 +25,28 @@ const Centered = styled.div`
   }
 `
 
+const Invite = styled(Action)`
+  line-height: unset;
+`
+
+const Table = styled(ReactTable)`
+  width: 100%;
+
+  .rt-tbody {
+    text-align: center;
+  }
+
+  .rt-th {
+    &:focus {
+      outline: none;
+    }
+  }
+
+  div.rt-noData {
+    display: none;
+  }
+`
+
 const PageHeading = styled(H2)`
   margin: 0 auto calc(${th('gridUnit')} * 3);
   padding: 0 calc(${th('gridUnit')} * 2);
@@ -29,6 +54,7 @@ const PageHeading = styled(H2)`
 `
 
 const ContentWrapper = styled.div`
+  cursor: default;
   display: flex;
   margin-left: ${th('gridUnit')};
 
@@ -77,8 +103,91 @@ const Section = ({ children, label }) => (
   </Accordion>
 )
 
+const EmptyMessage = styled.div`
+  color: ${th('colorTextPlaceholder')};
+  margin: 0 auto;
+`
+
+const ReviewerTable = props => {
+  const { data, invitedTeam, updateTeam } = props
+
+  const rows = data.map(reviewer => {
+    const item = clone(reviewer)
+    item.status = 'Not invited'
+    item.action = 'Invite'
+
+    if (isMember(invitedTeam, item.id)) {
+      item.status = 'Invited'
+      item.action = 'Re-invite'
+    }
+
+    return item
+  })
+
+  const sendInvitation = reviewer => {
+    const { id } = reviewer
+    const invitedMemberIds = invitedTeam.members.map(member => member.id)
+
+    updateTeam({
+      variables: {
+        id: invitedTeam.id,
+        input: {
+          members: union([id], invitedMemberIds),
+        },
+      },
+    })
+  }
+
+  const columns = [
+    {
+      accessor: 'username',
+      Header: 'Username',
+    },
+    {
+      accessor: 'status',
+      Header: 'Status',
+    },
+    {
+      accessor: 'action',
+      Cell: context => {
+        const { original, value } = context
+        return <Invite onClick={() => sendInvitation(original)}>{value}</Invite>
+      },
+      Header: 'Action',
+    },
+  ]
+
+  return (
+    <React.Fragment>
+      {(!data || data.length === 0) && (
+        <EmptyMessage>There are currently no reviewers</EmptyMessage>
+      )}
+
+      {data &&
+        data.length > 0 && (
+          <Table
+            className="-striped -highlight"
+            columns={columns}
+            data={rows}
+            minRows={0}
+            resizable={false}
+            showPagination={false}
+          />
+        )}
+    </React.Fragment>
+  )
+}
+
 const AssignReviewers = props => {
-  const { loading, suggested, users, ...otherProps } = props
+  const {
+    loading,
+    suggested,
+    reviewersTeam,
+    reviewersInvitedTeam,
+    users,
+    updateTeam,
+    ...otherProps
+  } = props
 
   if (loading) return <Loading />
 
@@ -93,6 +202,8 @@ const AssignReviewers = props => {
       }))
     : []
 
+  const reviewers = reviewersTeam.members
+
   return (
     <Centered>
       <PageHeading>Assign Reviewers</PageHeading>
@@ -102,7 +213,12 @@ const AssignReviewers = props => {
       </Section>
 
       <Section label="Assign Reviewers to Article">
-        <AssignReviewersForm {...otherProps}>
+        <AssignReviewersForm
+          reviewers={reviewers}
+          reviewersTeamId={reviewersTeam.id}
+          updateTeam={updateTeam}
+          {...otherProps}
+        >
           {formProps => {
             const { dirty, setFieldValue, values } = formProps
 
@@ -129,7 +245,13 @@ const AssignReviewers = props => {
         </AssignReviewersForm>
       </Section>
 
-      <Section label="Status">Something else 3</Section>
+      <Section label="Status">
+        <ReviewerTable
+          data={reviewers}
+          invitedTeam={reviewersInvitedTeam}
+          updateTeam={updateTeam}
+        />
+      </Section>
     </Centered>
   )
 }
