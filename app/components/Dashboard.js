@@ -60,6 +60,36 @@ const SubmitButton = props => {
           },
           teamType: 'reviewers',
         },
+        // Invited reviewers team with no one assigned yet
+        {
+          members: [],
+          name: `reviewers-invited-${id}`,
+          object: {
+            objectId: id,
+            objectType: 'article',
+          },
+          teamType: 'reviewersInvited',
+        },
+        // Reviewers that accepted with no one assigned yet
+        {
+          members: [],
+          name: `reviewers-accepted-${id}`,
+          object: {
+            objectId: id,
+            objectType: 'article',
+          },
+          teamType: 'reviewersAccepted',
+        },
+        // Reviewers that rejected with no one assigned yet
+        {
+          members: [],
+          name: `reviewers-rejected-${id}`,
+          object: {
+            objectId: id,
+            objectType: 'article',
+          },
+          teamType: 'reviewersRejected',
+        },
       ]
 
       // Create all, then redirect

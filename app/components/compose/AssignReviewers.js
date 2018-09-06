@@ -15,7 +15,7 @@ import {
 
 import {
   getRegularUsers,
-  getReviewersTeamForArticle,
+  getReviewerTeamsForArticle,
 } from '../../helpers/teams'
 
 const mapper = {
@@ -29,6 +29,12 @@ const mapper = {
 // eslint-disable-next-line arrow-body-style
 const mapProps = args => {
   // console.log(args)
+  const allReviewerTeams = getReviewerTeamsForArticle(
+    get(args.getTeamsForArticle, 'data.teamsForArticle'),
+  )
+
+  const getTeam = type =>
+    allReviewerTeams && allReviewerTeams.find(t => t.teamType === type)
 
   return {
     loading:
@@ -36,9 +42,10 @@ const mapProps = args => {
       args.getUsers.loading ||
       args.getGlobalTeams.loading ||
       args.getTeamsForArticle.loading,
-    reviewersTeam: getReviewersTeamForArticle(
-      args.getTeamsForArticle.data.teamsForArticle,
-    ),
+    reviewersAcceptedTeam: getTeam('reviewersAccepted'),
+    reviewersInvitedTeam: getTeam('reviewersInvited'),
+    reviewersRejectedTeam: getTeam('reviewersRejected'),
+    reviewersTeam: getTeam('reviewers'),
     suggested: get(
       args.getArticleReviewers.data,
       'manuscript.suggestedReviewer',
