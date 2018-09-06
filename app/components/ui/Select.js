@@ -79,11 +79,7 @@ const StyledSelect = props => {
       if (state.isFocused) {
         return {
           ...myBase,
-          ':hover': {
-            backgroundColor: theme.colorBackgroundHue,
-            color: theme.colorText,
-          },
-          backgroundColor: theme.colorBackground,
+          backgroundColor: theme.colorBackgroundHue,
           color: theme.colorText,
         }
       }
