@@ -10,7 +10,7 @@ const logger = new winston.Logger({
     }),
     new winston.transports.DailyRotateFile({
       datePattern: 'DD-MM-YYYY',
-      dirname: path.join(__dirname, '../logs/development'),
+      dirname: path.join(__dirname, '../logs/production'),
       filename: 'app-%DATE%.log',
       handleExceptions: true,
       humanReadableUnhandledException: true,
@@ -28,9 +28,6 @@ module.exports = {
     ),
   },
   'pubsweet-server': {
-    host: 'http://localhost',
     logger,
-    port: 3000,
-    secret: 'somesecret',
   },
 }

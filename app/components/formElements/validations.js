@@ -58,7 +58,8 @@ const initial = {
             if (name && (!val || val.length === 0)) return false
             return true
           },
-        ),
+        )
+        .nullable(),
       name: yup
         .string()
         .test(

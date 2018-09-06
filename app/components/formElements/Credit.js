@@ -67,9 +67,9 @@ const options = [
 const Credit = props => {
   const { name, readOnly, setTouched, setFieldValue, touched, values } = props
 
-  const currentValues = values.map(value =>
-    options.find(option => option.value === value),
-  )
+  const currentValues =
+    values &&
+    values.map(value => options.find(option => option.value === value))
 
   const handleChange = newValues => {
     const data = newValues.map(item => item.value)
