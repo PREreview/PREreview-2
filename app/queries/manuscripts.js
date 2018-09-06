@@ -156,7 +156,10 @@ const GET_MANUSCRIPT = gql`
           full
         }
       }
-      suggestedReviewer
+      suggestedReviewer {
+        name
+        WBId
+      }
       title
     }
   }

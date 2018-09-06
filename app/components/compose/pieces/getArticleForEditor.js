@@ -5,7 +5,7 @@ import { Query } from 'react-apollo'
 
 import { GET_MANUSCRIPT_FOR_EDITOR } from '../../../queries/manuscripts'
 
-const getArticleForEditorQuery = props => {
+const GetArticleForEditorQuery = props => {
   const { articleId: id, render } = props
 
   return (
@@ -15,4 +15,4 @@ const getArticleForEditorQuery = props => {
   )
 }
 
-export default getArticleForEditorQuery
+export default GetArticleForEditorQuery

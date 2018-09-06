@@ -111,12 +111,21 @@ const InitialSubmission = props => {
       />
 
       <AutoComplete
+        error={get(errors, 'suggestedReviewer.name')}
         fetchData={getWBPerson}
         label="Suggested Reviewer"
-        name="suggestedReviewer"
-        onChange={handleChange}
-        placeholder="this is the suggestedReviewer"
-        value={get(values, 'suggestedReviewer')}
+        name="suggestedReviewer.name"
+        onChange={e =>
+          onAutocompleteChange(
+            e,
+            'laboratory.name',
+            setFieldValue,
+            handleChange,
+          )
+        }
+        onSuggestionSelected={onSuggestionSelected}
+        placeholder="Please type in the suggested reviewer"
+        value={get(values, 'suggestedReviewer.name')}
         {...props}
       />
 

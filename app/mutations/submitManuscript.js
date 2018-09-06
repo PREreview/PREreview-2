@@ -164,7 +164,10 @@ const SUBMIT_MANUSCRIPT = gql`
           full
         }
       }
-      suggestedReviewer
+      suggestedReviewer {
+        name
+        WBId
+      }
       title
     }
   }

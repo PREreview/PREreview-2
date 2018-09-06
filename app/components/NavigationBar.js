@@ -1,23 +1,41 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Query } from 'react-apollo'
-import { withRouter } from 'react-router-dom'
+import { matchPath, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { Action, AppBar } from '@pubsweet/ui'
+import { th } from '@pubsweet/ui-toolkit'
 
 import CURRENT_USER from '../queries/currentUser'
 
 const StyledBar = styled(AppBar)`
   flex: initial;
+
+  > div:first-child > span:first-child {
+    padding: calc(${th('gridUnit')} * 3) 1rem;
+    margin: 0 calc(${th('gridUnit')} * 3) 0 0;
+    height: calc(${th('gridUnit')} * 9);
+    background: ${th('colorPrimary')};
+
+    a {
+      color: ${th('colorTextReverse')};
+    }
+  }
 `
 
 const navLinks = (location, currentUser) => {
   const isDashboard = location.pathname.match(/dashboard/g)
-  const isSubmit = location.pathname.match(/submit/g)
+  const isArticle = location.pathname.match(/article/g)
+  const isReviewers = location.pathname.match(/assign-reviewers/g)
   const isTeamManager = location.pathname.match(/teams/g)
 
   const isAdmin = currentUser && currentUser.admin
+
+  const path = `/${isArticle ? 'article' : 'assign-reviewers'}/:id`
+  const match = matchPath(location.pathname, { path })
+  let id
+  if (match) ({ id } = match.params)
 
   const dashboardLink = (
     <Action active={isDashboard} to="/dashboard">
@@ -26,8 +44,14 @@ const navLinks = (location, currentUser) => {
   )
 
   const submitLink = (
-    <Action active={isSubmit} to="/submit">
+    <Action active={isArticle} to={`/article/${id}`}>
       Article
+    </Action>
+  )
+
+  const reviewersLink = (
+    <Action active={isReviewers} to={`/assign-reviewers/${id}`}>
+      Assign Reviewers
     </Action>
   )
 
@@ -39,7 +63,11 @@ const navLinks = (location, currentUser) => {
 
   const links = [dashboardLink]
 
-  if (isSubmit) links.push(submitLink)
+  if (isArticle || isReviewers) {
+    links.push(submitLink)
+    links.push(reviewersLink)
+  }
+
   if (isAdmin) links.push(teamsLink)
 
   return links
@@ -47,8 +75,8 @@ const navLinks = (location, currentUser) => {
 
 const NavigationBar = ({
   data: { currentUser },
-  location,
   history,
+  location,
   ...props
 }) => {
   const links = navLinks(location, currentUser)

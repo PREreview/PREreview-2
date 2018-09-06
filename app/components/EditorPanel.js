@@ -117,7 +117,7 @@ const EditorPanel = props => {
                         article={article}
                         updateArticle={updateArticle}
                       />
-                      <ReviewerInfo />
+                      <ReviewerInfo articleId={article.id} />
                     </React.Fragment>
                   )}
 

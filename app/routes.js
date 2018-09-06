@@ -8,6 +8,7 @@ import Signup from 'pubsweet-component-signup/SignupContainer'
 import PasswordReset from 'pubsweet-component-password-reset-frontend/PasswordReset'
 
 import Dashboard from './components/Dashboard'
+import AssignReviewers from './components/AssignReviewers'
 import NavigationBar from './components/NavigationBar'
 import Submit from './components/Submit'
 import TeamManager from './components/TeamManager'
@@ -29,7 +30,12 @@ const routes = (
         <Page>
           <Switch>
             <Route component={Dashboard} exact path="/dashboard" />
-            <Route component={Submit} exact path="/submit/:id" />
+            <Route
+              component={AssignReviewers}
+              exact
+              path="/assign-reviewers/:id"
+            />
+            <Route component={Submit} exact path="/article/:id" />
             <AdminRoute component={TeamManager} exact path="/teams" />
             <Redirect from="/" to="/dashboard" />
           </Switch>

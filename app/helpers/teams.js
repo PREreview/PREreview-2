@@ -1,4 +1,4 @@
-import { isArray } from 'lodash'
+import { find, isArray, isUndefined, uniq } from 'lodash'
 
 /*
   GLOBAL TEAMS
@@ -13,6 +13,21 @@ const getAllScienceOfficers = globalTeams =>
 const getGlobalTeamMembersByType = (globalTeams, type) => {
   const globalTeam = getOneTeamByType(globalTeams, type)
   return getTeamMembers(globalTeam)
+}
+
+// Get all users that are not in the global teams
+const getRegularUsers = (users, globalTeams) => {
+  if (!users || !globalTeams) return null
+
+  let allGlobalIds = []
+  globalTeams.forEach(team => {
+    team.members.forEach(member => {
+      allGlobalIds.push(member.id)
+    })
+  })
+  allGlobalIds = uniq(allGlobalIds)
+
+  return users.filter(user => !user.admin && !allGlobalIds.includes(user.id))
 }
 
 /*
@@ -30,6 +45,11 @@ const getEditorTeamId = teamsForArticle => {
   const editorTeam = getEditorTeamForArticle(teamsForArticle)
   if (!editorTeam) return null
   return editorTeam.id
+}
+
+const getReviewerTeamsForArticle = teamsForArticle => {
+  if (!teamsForArticle) return null
+  return teamsForArticle.filter(t => t.name.match(/^reviewers-/))
 }
 
 // Get science officer assigned to article
@@ -62,6 +82,11 @@ const getTeamMembers = team => {
 const getOneTeamByType = (teams, type) =>
   teams && teams.find(t => t.teamType === type)
 
+const isMember = (team, userId) => {
+  const userInTeam = find(team.members, { id: userId })
+  return !isUndefined(userInTeam)
+}
+
 /*
   EXPORT
 */
@@ -73,9 +98,12 @@ export {
   getEditor,
   getEditorTeamForArticle,
   getEditorTeamId,
+  getRegularUsers,
+  getReviewerTeamsForArticle,
   getScienceOfficer,
   getScienceOfficerTeamForArticle,
   getFirstMemberOfTeam,
   getTeamMembers,
   getOneTeamByType,
+  isMember,
 }
