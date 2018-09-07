@@ -76,8 +76,8 @@ const Tag = styled.span`
   background-color: ${th('colorBackgroundHue')};
   font-size: ${th('fontSizeBase')};
   line-height: ${th('lineHeightBase')};
-  padding: calc(${th('gridUnit')} / 2);
   margin: ${th('gridUnit')} 0;
+  padding: calc(${th('gridUnit')} / 2);
 `
 
 const SuggestedReviewer = props => {

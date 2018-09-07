@@ -7,8 +7,6 @@ import { th } from '@pubsweet/ui-toolkit'
 import { getCurrentStatus } from '../../helpers/status'
 
 const StatusLabel = styled.span`
-  font-size: ${th('fontSizeBaseSmall')};
-  line-height: ${th('lineHeightBaseSmall')};
   color: ${props => {
     if (props.decision && props.decision.accepted) {
       return th('colorSuccess')
@@ -17,8 +15,11 @@ const StatusLabel = styled.span`
     }
     return th('colorFurniture')
   }};
-  text-transform: uppercase;
+
+  font-size: ${th('fontSizeBaseSmall')};
+  line-height: ${th('lineHeightBaseSmall')};
   margin: 0 calc(${th('gridUnit')}) 0 0;
+  text-transform: uppercase;
 `
 
 const StatusItem = props => {

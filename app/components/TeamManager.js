@@ -32,8 +32,8 @@ const Ribbon = styled.div`
   color: ${th('colorTextReverse')};
   font-size: ${th('fontSizeBaseSmall')};
   line-height: ${th('lineHeightBaseSmall')};
-  padding: calc(${th('gridUnit')} / 2) 0;
   margin-top: ${th('gridUnit')};
+  padding: calc(${th('gridUnit')} / 2) 0;
   text-align: center;
   visibility: ${props => (props.hide ? 'hidden' : 'visible')};
   width: 60%;

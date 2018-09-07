@@ -13,10 +13,10 @@ const StyledBar = styled(AppBar)`
   flex: initial;
 
   > div:first-child > span:first-child {
-    padding: calc(${th('gridUnit')} * 3) 1rem;
-    margin: 0 calc(${th('gridUnit')} * 3) 0 0;
-    height: calc(${th('gridUnit')} * 9);
     background: ${th('colorPrimary')};
+    height: calc(${th('gridUnit')} * 9);
+    margin: 0 calc(${th('gridUnit')} * 3) 0 0;
+    padding: calc(${th('gridUnit')} * 3) 1rem;
 
     a {
       color: ${th('colorTextReverse')};

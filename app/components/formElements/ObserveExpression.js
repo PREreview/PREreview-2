@@ -39,11 +39,10 @@ const rows = [
 
 const Field = styled(AutoComplete)`
   /* background: pink; */
-  /* flex-basis: 450px; */
-  justify-content: flex-start;
   display: flex;
-
+  /* flex-basis: 450px; */
   height: calc(${th('gridUnit')} * 4);
+  justify-content: flex-start;
   padding: 0 ${th('gridUnit')};
   width: unset;
 
@@ -68,10 +67,10 @@ const Row = styled.div`
   /* background: orange; */
   /* border: 1px dashed yellow; */
   display: flex;
-  justify-content: flex-start;
   flex-direction: row;
   flex-wrap: nowrap;
   /* height: 50px; */
+  justify-content: flex-start;
   padding: ${th('gridUnit')};
 
   div > div[role='combobox'] > div[role='listbox'] {
@@ -127,6 +126,7 @@ const IconButton = styled(Button)`
     padding: 0;
   }
 
+  /* stylelint-disable-next-line order/order, order/properties-alphabetical-order */
   ${props =>
     props.primary &&
     css`

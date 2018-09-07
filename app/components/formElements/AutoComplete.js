@@ -29,8 +29,8 @@ const Wrapper = styled.div`
 
       &.react-autosuggest__suggestions-container--open {
         border: 1px dashed ${th('colorBorder')};
-        border-top: 0;
         border-radius: 0 5px 0 5px;
+        border-top: 0;
       }
 
       ul {

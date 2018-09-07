@@ -22,25 +22,25 @@ const SectionItemTitleWrapper = styled.div`
   flex: 1;
 `
 const GenericRow = styled.div`
+  align-items: center;
   display: flex;
   flex: 0 1 100%;
-  align-items: center;
   justify-content: flex-start;
   margin-bottom: calc(${th('gridUnit')});
 `
 const SecondRow = styled.div`
   align-items: center;
+  border-left: ${th('borderWidth')} ${th('borderStyle')} ${th('colorBorder')};
   display: flex;
+  flex: 0 1 100%;
   flex-flow: row nowrap;
   justify-content: space-between;
   margin-bottom: calc(${th('gridUnit')});
-  flex: 0 1 100%;
-  border-left: ${th('borderWidth')} ${th('borderStyle')} ${th('colorBorder')};
 `
 
 const SectionItemTitle = styled.div`
-  font-size: ${th('fontSizeHeading4')};
   font-family: ${th('fontReading')};
+  font-size: ${th('fontSizeHeading4')};
   line-height: ${th('lineHeightHeading4')};
   margin-left: ${th('gridUnit')};
   word-wrap: break-word;
