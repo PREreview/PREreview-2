@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { get } from 'lodash'
 
 import { Action as UIAction } from '@pubsweet/ui'
-import { Section } from './ui'
+import { ReviewerSectionItem, Section } from './ui'
 
 import ComposedDashboard from './compose/Dashboard'
 import Loading from './Loading'
@@ -121,8 +121,10 @@ const Dashboard = props => {
     currentUser,
     globalEditorTeam,
     globalScienceOfficerTeam,
+    handleInvitation,
     history,
     loading,
+    reviewerArticles,
   } = props
 
   if (loading) return <Loading />
@@ -141,9 +143,27 @@ const Dashboard = props => {
     />,
   ]
 
+  const respondToInvitation = (articleId, action) => {
+    const variables = {
+      action,
+      articleId,
+      currentUserId: currentUser.id,
+    }
+
+    handleInvitation({ variables })
+  }
+
   return (
     <DashboardWrapper>
       <Section actions={headerActions} items={articles} label="My Articles" />
+
+      <Section
+        handleInvitation={respondToInvitation}
+        itemComponent={ReviewerSectionItem}
+        items={reviewerArticles}
+        label="Reviews"
+      />
+
       <Section
         editors={globalEditorTeam.members}
         items={editorItems}

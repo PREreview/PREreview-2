@@ -36,7 +36,7 @@ const NoItems = styled.div`
 `
 
 const Section = props => {
-  const { actions, editors, items, label } = props
+  const { actions, itemComponent, editors, items, label, ...rest } = props
 
   let decoratedItems
   if (items && items.length > 0) {
@@ -61,7 +61,13 @@ const Section = props => {
         <Actions>{actions}</Actions>
       </Header>
 
-      {hasItems && <List component={SectionItem} items={decoratedItems} />}
+      {hasItems && (
+        <List
+          component={itemComponent || SectionItem}
+          items={decoratedItems}
+          {...rest}
+        />
+      )}
 
       {!hasItems && <NoItems>{emptyMessage}</NoItems>}
     </div>

@@ -12,15 +12,15 @@ import DELETE_MANUSCRIPT from '../../mutations/deleteManuscript'
 import AssignEditor from '../dashboard/AssignEditor'
 import { StatusItem } from '../ui'
 
+import TitleWithActions from './TitleWithActions'
+
 const SectionItemWrapper = styled.div`
   display: flex;
   flex: 0 1 100%;
   flex-flow: column nowrap;
   margin-bottom: calc(${th('gridUnit')} * 2);
 `
-const SectionItemTitleWrapper = styled.div`
-  flex: 1;
-`
+
 const GenericRow = styled.div`
   align-items: center;
   display: flex;
@@ -28,64 +28,49 @@ const GenericRow = styled.div`
   justify-content: flex-start;
   margin-bottom: calc(${th('gridUnit')});
 `
-const SecondRow = styled.div`
-  align-items: center;
-  border-left: ${th('borderWidth')} ${th('borderStyle')} ${th('colorBorder')};
-  display: flex;
-  flex: 0 1 100%;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  margin-bottom: calc(${th('gridUnit')});
-`
-
-const SectionItemTitle = styled.div`
-  font-family: ${th('fontReading')};
-  font-size: ${th('fontSizeHeading4')};
-  line-height: ${th('lineHeightHeading4')};
-  margin-left: ${th('gridUnit')};
-  word-wrap: break-word;
-`
 
 const Action = styled(UIAction)`
   line-height: unset;
 `
 
-const SectionItem = item => (
-  <SectionItemWrapper key={item.id}>
-    <GenericRow>
-      {item.statusItems.map(i => {
-        if (!i) return null
-        if (!i.date) return <StatusItem key={uniqueId()} status={i} />
-        return <StatusItem key={uniqueId()} label={i.date.toString()} />
-      })}
-    </GenericRow>
+const SectionItem = props => {
+  const { editors, id: articleId, statusItems, title } = props
 
-    <SecondRow>
-      <SectionItemTitleWrapper>
-        <SectionItemTitle>{item.title || 'Untitled'}</SectionItemTitle>
-      </SectionItemTitleWrapper>
+  const ArticleActions = (
+    <ActionGroup>
+      <Action to={`/article/${articleId}`}>Edit</Action>
+      <Mutation
+        mutation={DELETE_MANUSCRIPT}
+        refetchQueries={[{ query: GET_MANUSCRIPTS }]}
+      >
+        {deleteManuscript => (
+          <Action
+            onClick={() => deleteManuscript({ variables: { id: articleId } })}
+          >
+            Delete
+          </Action>
+        )}
+      </Mutation>
+    </ActionGroup>
+  )
 
-      <ActionGroup>
-        <Action to={`/article/${item.id}`}>Edit</Action>
-        <Mutation
-          mutation={DELETE_MANUSCRIPT}
-          refetchQueries={[{ query: GET_MANUSCRIPTS }]}
-        >
-          {deleteManuscript => (
-            <Action
-              onClick={() => deleteManuscript({ variables: { id: item.id } })}
-            >
-              Delete
-            </Action>
-          )}
-        </Mutation>
-      </ActionGroup>
-    </SecondRow>
+  return (
+    <SectionItemWrapper key={articleId}>
+      <GenericRow>
+        {statusItems.map(i => {
+          if (!i) return null
+          if (!i.date) return <StatusItem key={uniqueId()} status={i} />
+          return <StatusItem key={uniqueId()} label={i.date.toString()} />
+        })}
+      </GenericRow>
 
-    <GenericRow>
-      {item.editors && <AssignEditor articleId={item.id} />}
-    </GenericRow>
-  </SectionItemWrapper>
-)
+      <TitleWithActions rightComponent={ArticleActions} title={title} />
+
+      <GenericRow>
+        {editors && <AssignEditor articleId={articleId} />}
+      </GenericRow>
+    </SectionItemWrapper>
+  )
+}
 
 export default SectionItem

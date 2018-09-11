@@ -13,10 +13,7 @@ import {
   updateTeam,
 } from './pieces'
 
-import {
-  getRegularUsers,
-  getReviewerTeamsForArticle,
-} from '../../helpers/teams'
+import { getRegularUsers, getReviewerTeams } from '../../helpers/teams'
 
 const mapper = {
   getArticleReviewers: props => getArticleReviewers(props),
@@ -29,7 +26,7 @@ const mapper = {
 // eslint-disable-next-line arrow-body-style
 const mapProps = args => {
   // console.log(args)
-  const allReviewerTeams = getReviewerTeamsForArticle(
+  const allReviewerTeams = getReviewerTeams(
     get(args.getTeamsForArticle, 'data.teamsForArticle'),
   )
 

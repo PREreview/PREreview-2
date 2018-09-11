@@ -47,9 +47,9 @@ const getEditorTeamId = teamsForArticle => {
   return editorTeam.id
 }
 
-const getReviewerTeamsForArticle = teamsForArticle => {
-  if (!teamsForArticle) return null
-  return teamsForArticle.filter(t => t.name.match(/^reviewers-/))
+const getReviewerTeams = teams => {
+  if (!teams) return null
+  return teams.filter(t => t.name.match(/^reviewers-/))
 }
 
 // Get science officer assigned to article
@@ -99,7 +99,7 @@ export {
   getEditorTeamForArticle,
   getEditorTeamId,
   getRegularUsers,
-  getReviewerTeamsForArticle,
+  getReviewerTeams,
   getScienceOfficer,
   getScienceOfficerTeamForArticle,
   getFirstMemberOfTeam,

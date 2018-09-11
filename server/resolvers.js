@@ -1,8 +1,10 @@
 const db = require('./dbHelpers')
-// const db = require('pubsweet-server/src/db')
+const clone = require('lodash/clone')
 const cloneDeep = require('lodash/cloneDeep')
 const merge = require('lodash/merge')
+const union = require('lodash/union')
 
+// TO DO -- get these from team helpers (import vs require)
 const newStatus = {
   decision: {
     accepted: false,
@@ -19,6 +21,13 @@ const newStatus = {
     initial: false,
   },
 }
+
+const isMember = (team, userId) => team.members.includes(userId)
+
+const isUserInGlobalTeams = (globalTeams, userId) =>
+  globalTeams.some(team => isMember(team, userId))
+
+// END TO DO
 
 const resolvers = {
   HistoryEntry: {
@@ -42,30 +51,118 @@ const resolvers = {
       await db.deleteManuscript(id)
       return id
     },
-    async updateManuscript(_, { data }, ctx) {
-      // console.log('heeeeeere')
-      // console.log('_', _)
-      // console.log('vars', vars)
-      // console.log('ctx', ctx)
-      // const manuscript = cloneDeep(emptyManuscript)
-      // const manuscriptDb = db.manuscriptGqlToDb(manuscript, ctx.user)
-      // manuscript.id = await db.save(manuscriptDb)
-      // return manuscript
-      // async updateSubmission(_, { data }, ctx) {
-      // logger.debug('Update Submission - starting')
+    async handleInvitation(_, { action, articleId, currentUserId }, context) {
+      if (action !== 'accept' && action !== 'reject')
+        throw new Error(
+          `Invalid action provided to handleInvitation:
+           Must be either "accept" or "reject"`,
+        )
 
+      let team
+
+      if (action === 'accept') {
+        const acceptTeams = await db.select({
+          // object: { objectId: articleId },
+          teamType: 'reviewersAccepted',
+          type: 'team',
+        })
+
+        team = acceptTeams.find(
+          t => t.object && t.object.objectId === articleId,
+        )
+      } else if (action === 'reject') {
+        const rejectTeams = await db.select({
+          // object: { objectId: articleId },
+          teamType: 'reviewersRejected',
+          type: 'team',
+        })
+
+        team = rejectTeams.find(
+          t => t.object && t.object.objectId === articleId,
+        )
+      }
+
+      if (!team) throw new Error('No team was found')
+
+      const newMembers = union(team.members, [currentUserId])
+      team.members = newMembers
+
+      return context.connectors.team
+        .update(team.id, { members: newMembers }, context)
+        .then(res => res.id)
+    },
+    async updateManuscript(_, { data }, ctx) {
       const manuscript = await db.selectId(data.id)
-      // db.checkPermission(manuscript, ctx.user)
       merge(manuscript, data)
 
       await db.update(db.manuscriptGqlToDb(manuscript), data.id)
-      // logger.debug(`Updated Submission ${data.id} by user ${ctx.user}`)
-
       return manuscript
-      // },
     },
   },
   Query: {
+    async dashboardArticles(_, { currentUserId }) {
+      const articles = await db.select({ type: 'manuscript' })
+      const teams = await db.select({ type: 'team' })
+      const globalTeams = teams.filter(t => t.global)
+      const isGlobal = isUserInGlobalTeams(globalTeams, currentUserId)
+
+      const data = {
+        author: [],
+        editor: [],
+        reviewer: [],
+      }
+
+      articles.forEach(article => {
+        const articleTeams = teams.filter(
+          a => a.object && a.object.objectId === article.id,
+        )
+
+        // Is user author of article
+        const authorTeam = articleTeams.find(a => a.teamType === 'author')
+
+        if (isMember(authorTeam, currentUserId)) {
+          data.author.push(article)
+        }
+
+        // Is user a reviewer of article
+        const invitedReviewersTeam = articleTeams.find(
+          t => t.teamType === 'reviewersInvited',
+        )
+
+        const acceptedReviewersTeam = articleTeams.find(
+          t => t.teamType === 'reviewersAccepted',
+        )
+
+        const rejectedReviewersTeam = articleTeams.find(
+          t => t.teamType === 'reviewersRejected',
+        )
+
+        if (isMember(invitedReviewersTeam, currentUserId)) {
+          const reviewArticle = clone(article)
+          let status
+
+          // TO DO -- add review submitted status
+          // Figure out status and attach to article
+          if (isMember(acceptedReviewersTeam, currentUserId)) {
+            status = 'accepted'
+          } else if (isMember(rejectedReviewersTeam, currentUserId)) {
+            status = 'rejected'
+          } else {
+            status = 'pendingDecision'
+          }
+
+          reviewArticle.reviewerStatus = status
+          data.reviewer.push(reviewArticle)
+        }
+
+        // Is user an editor or science officer
+        if (isGlobal && article.status.submission.initial) {
+          data.editor.push(article)
+        }
+      })
+
+      return data
+    },
     async globalTeams() {
       const teams = await db.select({ global: true, type: 'team' })
       return teams
