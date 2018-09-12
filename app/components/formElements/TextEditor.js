@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components'
 import { get } from 'lodash'
 
 import { th } from '@pubsweet/ui-toolkit'
-import { TextEditor as XpubTextEditor } from 'xpub-edit'
+import { AbstractEditor } from 'xpub-edit'
 
 // TO DO -- extract Labels from TextField
 const Label = styled.label`
@@ -19,7 +19,7 @@ const readOnlyStyles = css`
   cursor: not-allowed;
 `
 
-const Editor = styled(XpubTextEditor)`
+const Editor = styled(AbstractEditor)`
   ${props => props.readonly && readOnlyStyles};
 
   div[contenteditable] {
@@ -50,7 +50,13 @@ const TextEditor = props => {
     readOnly,
     required,
     setFieldValue,
+    italic,
     value,
+    bold,
+    heading,
+    smallcaps,
+    subscript,
+    superscript,
   } = props
 
   const handleChange = newValue => {
@@ -72,10 +78,17 @@ const TextEditor = props => {
         </Label>
       )}
       <Editor
+        bold={bold || false}
+        heading={heading || false}
+        italic={italic || false}
         onBlur={handleBlur}
         onChange={handleChange}
         placeholder={placeholder}
         readonly={readOnly}
+        {...props}
+        smallcaps={smallcaps || false}
+        subscript={subscript || false}
+        superscript={superscript || false}
         value={value || ''}
       />
     </Wrapper>
