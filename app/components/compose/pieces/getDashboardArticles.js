@@ -18,6 +18,22 @@ const GET_DASHBOARD_ARTICLES = gql`
         }
         title
       }
+      editor {
+        assignedEditor {
+          id
+          username
+        }
+        id
+        status {
+          submission {
+            datatypeSelected
+            initial
+            full
+          }
+        }
+        title
+      }
+      isGlobal
       reviewer {
         id
         reviewerStatus

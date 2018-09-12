@@ -9,7 +9,6 @@ import {
   createSubmission as createSubmissionMutation,
   createTeam as createTeamMutation,
   deleteArticle,
-  getArticles as getArticlesQuery,
   getCurrentUser as getCurrentUserQuery,
   getDashboardArticles as getDashboardArticlesQuery,
   getGlobalTeams as getGlobalTeamsQuery,
@@ -22,7 +21,6 @@ const mapper = {
   createSubmissionMutation,
   createTeamMutation,
   deleteArticle,
-  getArticlesQuery,
   getDashboardArticlesQuery,
   getGlobalTeamsQuery,
   handleInvitation,
@@ -37,7 +35,6 @@ const mapProps = args => {
   // console.log(args.getDashboardArticlesQuery)
 
   return {
-    articles: args.getArticlesQuery.data.manuscripts,
     authorArticles: get(
       args.getDashboardArticlesQuery,
       'data.dashboardArticles.author',
@@ -46,6 +43,10 @@ const mapProps = args => {
     createTeam: args.createTeamMutation.createTeam,
     currentUser: args.getCurrentUserQuery.data.currentUser,
     deleteArticle: args.deleteArticle.deleteArticle,
+    editorArticles: get(
+      args.getDashboardArticlesQuery,
+      'data.dashboardArticles.editor',
+    ),
     globalEditorTeam: getTeamByType(
       args.getGlobalTeamsQuery.data.globalTeams,
       'editors',
@@ -55,8 +56,11 @@ const mapProps = args => {
       'scienceOfficers',
     ),
     handleInvitation: args.handleInvitation.handleInvitation,
+    isGlobal: get(
+      args.getDashboardArticlesQuery,
+      'data.dashboardArticles.isGlobal',
+    ),
     loading:
-      args.getArticlesQuery.loading ||
       args.getGlobalTeamsQuery.loading ||
       args.getDashboardArticlesQuery.loading,
     reviewerArticles: get(

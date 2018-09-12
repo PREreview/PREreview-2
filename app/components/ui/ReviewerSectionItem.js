@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { Action, ActionGroup } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
 
-import TitleWithActions from './TitleWithActions'
+import SectionItem from './SectionItem'
 
 const ReviewerSectionItem = props => {
   const {
@@ -45,7 +45,7 @@ const ReviewerSectionItem = props => {
   if (status === 'rejected')
     actions = <RejectNotification>Invitation Rejected</RejectNotification>
 
-  return <TitleWithActions rightComponent={actions} title={title} />
+  return <SectionItem rightComponent={actions} title={title} />
 }
 
 export default ReviewerSectionItem

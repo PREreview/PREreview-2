@@ -17,8 +17,16 @@ const typeDefs = `
 
   type DashboardArticles {
     author: [Manuscript]
-    editor: [Manuscript]
+    editor: [EditorArticle]
+    isGlobal: Boolean
     reviewer: [ReviewerArticle]
+  }
+
+  type EditorArticle {
+    assignedEditor: User
+    id: ID
+    status: Status
+    title: String
   }
 
   type ReviewerArticle {

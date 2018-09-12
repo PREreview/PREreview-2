@@ -3,10 +3,14 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
-import { get } from 'lodash'
 
 import { Action as UIAction } from '@pubsweet/ui'
-import { ReviewerSectionItem, Section } from './ui'
+import {
+  AuthorSectionItem,
+  EditorSecionItem,
+  ReviewerSectionItem,
+  Section,
+} from './ui'
 
 import ComposedDashboard from './compose/Dashboard'
 import Loading from './Loading'
@@ -135,25 +139,23 @@ const DashboardWrapper = styled.div`
 
 const Dashboard = props => {
   const {
-    articles,
     authorArticles,
     client,
     createSubmission,
     createTeam,
     currentUser,
     deleteArticle,
+    editorArticles,
     globalEditorTeam,
     globalScienceOfficerTeam,
     handleInvitation,
     history,
+    isGlobal,
     loading,
     reviewerArticles,
   } = props
 
   if (loading) return <Loading />
-
-  const editorItems =
-    articles && articles.filter(item => get(item, 'status.submission.initial'))
 
   const headerActions = [
     <SubmitButton
@@ -182,6 +184,7 @@ const Dashboard = props => {
       <Section
         actions={headerActions}
         deleteArticle={deleteArticle}
+        itemComponent={AuthorSectionItem}
         items={authorArticles}
         label="My Articles"
       />
@@ -193,11 +196,14 @@ const Dashboard = props => {
         label="Reviews"
       />
 
-      <Section
-        editors={globalEditorTeam.members}
-        items={editorItems}
-        label="Editor Section"
-      />
+      {isGlobal && (
+        <Section
+          editors={globalEditorTeam.members}
+          itemComponent={EditorSecionItem}
+          items={editorArticles}
+          label="Editor Section"
+        />
+      )}
     </DashboardWrapper>
   )
 }

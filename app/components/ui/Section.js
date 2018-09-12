@@ -5,8 +5,6 @@ import styled from 'styled-components'
 import { th } from '@pubsweet/ui-toolkit'
 import { List } from '@pubsweet/ui'
 
-import { SectionItem } from './index'
-
 const Title = styled.h2`
   align-self: flex-end;
   color: ${th('colorPrimary')};
@@ -23,7 +21,8 @@ const Header = styled.div`
   justify-content: flex-start;
   margin: calc(${th('gridUnit')} * 2) auto;
 `
-const Actions = styled.div`
+
+const HeaderActions = styled.div`
   border-bottom: ${th('borderWidth')} ${th('borderStyle')} ${th('colorBorder')};
   display: flex;
   flex-grow: 1;
@@ -38,36 +37,17 @@ const NoItems = styled.div`
 const Section = props => {
   const { actions, itemComponent, editors, items, label, ...rest } = props
 
-  let decoratedItems
-  if (items && items.length > 0) {
-    decoratedItems = items.map(item => {
-      // const event = { date: new Date() }
-      const event = null
-      const { status } = item
-      return Object.assign({}, item, {
-        editors,
-        statusItems: [status, event],
-      })
-    })
-  }
-
-  const hasItems = decoratedItems && decoratedItems.length > 0
+  const hasItems = items && items.length > 0
   const emptyMessage = 'There are no articles to display'
 
   return (
     <div>
       <Header>
         <Title>{label}</Title>
-        <Actions>{actions}</Actions>
+        <HeaderActions>{actions}</HeaderActions>
       </Header>
 
-      {hasItems && (
-        <List
-          component={itemComponent || SectionItem}
-          items={decoratedItems}
-          {...rest}
-        />
-      )}
+      {hasItems && <List component={itemComponent} items={items} {...rest} />}
 
       {!hasItems && <NoItems>{emptyMessage}</NoItems>}
     </div>

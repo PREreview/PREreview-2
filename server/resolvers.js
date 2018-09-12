@@ -100,7 +100,8 @@ const resolvers = {
     },
   },
   Query: {
-    async dashboardArticles(_, { currentUserId }) {
+    async dashboardArticles(_, { currentUserId }, context) {
+      const { connectors } = context
       const articles = await db.select({ type: 'manuscript' })
       const teams = await db.select({ type: 'team' })
       const globalTeams = teams.filter(t => t.global)
@@ -109,6 +110,7 @@ const resolvers = {
       const data = {
         author: [],
         editor: [],
+        isGlobal,
         reviewer: [],
       }
 
@@ -157,7 +159,17 @@ const resolvers = {
 
         // Is user an editor or science officer
         if (isGlobal && article.status.submission.initial) {
-          data.editor.push(article)
+          const editorArticle = clone(article)
+
+          const editorTeam = articleTeams.find(t => t.teamType === 'editor')
+          const assignedEditorId = editorTeam.members[0]
+          const assignedEditor = connectors.user.fetchOne(
+            assignedEditorId,
+            context,
+          )
+
+          editorArticle.assignedEditor = assignedEditor
+          data.editor.push(editorArticle)
         }
       })
 
