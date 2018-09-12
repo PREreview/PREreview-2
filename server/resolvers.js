@@ -163,10 +163,11 @@ const resolvers = {
 
           const editorTeam = articleTeams.find(t => t.teamType === 'editor')
           const assignedEditorId = editorTeam.members[0]
-          const assignedEditor = connectors.user.fetchOne(
-            assignedEditorId,
-            context,
-          )
+
+          let assignedEditor
+          if (assignedEditorId) {
+            assignedEditor = connectors.user.fetchOne(assignedEditorId, context)
+          }
 
           editorArticle.assignedEditor = assignedEditor
           data.editor.push(editorArticle)

@@ -8,6 +8,14 @@ import { th } from '@pubsweet/ui-toolkit'
 
 import SectionItem from './SectionItem'
 
+const RejectNotification = styled.div`
+  color: ${th('colorError')};
+  font-size: ${th('fontSizeBaseSmall')};
+  line-height: ${th('lineHeightBaseSmall')};
+  padding: 0 ${th('gridUnit')};
+  text-transform: uppercase;
+`
+
 const ReviewerSectionItem = props => {
   const {
     handleInvitation,
@@ -15,6 +23,7 @@ const ReviewerSectionItem = props => {
     reviewerStatus: status,
     title,
   } = props
+
   let actions
 
   const onInvitationClick = action => handleInvitation(articleId, action)
@@ -35,10 +44,6 @@ const ReviewerSectionItem = props => {
       <Action to={`/article/${articleId}`}>Review</Action>
     </ActionGroup>
   )
-
-  const RejectNotification = styled.div`
-    color: ${th('colorError')};
-  `
 
   if (status === 'pendingDecision') actions = InvitationActions
   if (status === 'accepted') actions = ReviewLink

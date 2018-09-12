@@ -4,6 +4,8 @@ import React from 'react'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
+import { GET_DASHBOARD_ARTICLES } from './getDashboardArticles'
+
 const HANDLE_INVITATION = gql`
   mutation HandleInvitation(
     $action: String!
@@ -26,8 +28,19 @@ const HandleInvitationMutation = props => {
     currentUserId: id,
   }
 
+  const refetch = [
+    {
+      query: GET_DASHBOARD_ARTICLES,
+      variables: { currentUserId: id },
+    },
+  ]
+
   return (
-    <Mutation mutation={HANDLE_INVITATION} variables={variables}>
+    <Mutation
+      mutation={HANDLE_INVITATION}
+      refetchQueries={refetch}
+      variables={variables}
+    >
       {(handleInvitation, handleInvitationResponse) =>
         render({ handleInvitation, handleInvitationResponse })
       }
