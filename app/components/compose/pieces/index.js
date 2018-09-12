@@ -1,5 +1,6 @@
 export { default as createSubmission } from './createSubmission'
 export { default as createTeam } from './createTeam'
+export { default as deleteArticle } from './deleteArticle'
 export { default as getArticle } from './getArticle'
 export { default as getArticleForEditor } from './getArticleForEditor'
 export { default as getArticleReviewers } from './getArticleReviewers'

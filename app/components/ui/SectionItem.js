@@ -1,14 +1,11 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
 import styled from 'styled-components'
-import { Mutation } from 'react-apollo'
 import { uniqueId } from 'lodash'
 
 import { th } from '@pubsweet/ui-toolkit'
 import { Action as UIAction, ActionGroup } from '@pubsweet/ui'
 
-import { GET_MANUSCRIPTS } from '../../queries/manuscripts'
-import DELETE_MANUSCRIPT from '../../mutations/deleteManuscript'
 import AssignEditor from '../dashboard/AssignEditor'
 import { StatusItem } from '../ui'
 
@@ -34,23 +31,14 @@ const Action = styled(UIAction)`
 `
 
 const SectionItem = props => {
-  const { editors, id: articleId, statusItems, title } = props
+  const { deleteArticle, editors, id: articleId, statusItems, title } = props
 
   const ArticleActions = (
     <ActionGroup>
       <Action to={`/article/${articleId}`}>Edit</Action>
-      <Mutation
-        mutation={DELETE_MANUSCRIPT}
-        refetchQueries={[{ query: GET_MANUSCRIPTS }]}
-      >
-        {deleteManuscript => (
-          <Action
-            onClick={() => deleteManuscript({ variables: { id: articleId } })}
-          >
-            Delete
-          </Action>
-        )}
-      </Mutation>
+      <Action onClick={() => deleteArticle({ variables: { id: articleId } })}>
+        Delete
+      </Action>
     </ActionGroup>
   )
 

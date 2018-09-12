@@ -2,11 +2,13 @@
 
 import React from 'react'
 import { Adopt } from 'react-adopt'
+import { withApollo } from 'react-apollo'
 import { get } from 'lodash'
 
 import {
   createSubmission as createSubmissionMutation,
   createTeam as createTeamMutation,
+  deleteArticle,
   getArticles as getArticlesQuery,
   getCurrentUser as getCurrentUserQuery,
   getDashboardArticles as getDashboardArticlesQuery,
@@ -14,15 +16,18 @@ import {
   handleInvitation,
 } from './pieces'
 
+/* eslint-disable sort-keys */
 const mapper = {
+  getCurrentUserQuery,
   createSubmissionMutation,
   createTeamMutation,
+  deleteArticle,
   getArticlesQuery,
-  getCurrentUserQuery,
   getDashboardArticlesQuery,
   getGlobalTeamsQuery,
   handleInvitation,
 }
+/* eslint-enable sort-keys */
 
 const getTeamByType = (teams, type) =>
   teams && teams.find(t => t.teamType === type)
@@ -33,9 +38,14 @@ const mapProps = args => {
 
   return {
     articles: args.getArticlesQuery.data.manuscripts,
+    authorArticles: get(
+      args.getDashboardArticlesQuery,
+      'data.dashboardArticles.author',
+    ),
     createSubmission: args.createSubmissionMutation.createSubmission,
     createTeam: args.createTeamMutation.createTeam,
     currentUser: args.getCurrentUserQuery.data.currentUser,
+    deleteArticle: args.deleteArticle.deleteArticle,
     globalEditorTeam: getTeamByType(
       args.getGlobalTeamsQuery.data.globalTeams,
       'editors',
@@ -62,4 +72,4 @@ const Composed = ({ render, ...props }) => (
   </Adopt>
 )
 
-export default Composed
+export default withApollo(Composed)

@@ -38,4 +38,5 @@ const GetDashboardArticlesQuery = props => {
   )
 }
 
+export { GET_DASHBOARD_ARTICLES }
 export default GetDashboardArticlesQuery

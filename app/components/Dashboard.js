@@ -10,9 +10,17 @@ import { ReviewerSectionItem, Section } from './ui'
 
 import ComposedDashboard from './compose/Dashboard'
 import Loading from './Loading'
+import { GET_DASHBOARD_ARTICLES } from './compose/pieces/getDashboardArticles'
 
 const SubmitButton = props => {
-  const { createSubmission, createTeam, currentUser, scienceOfficer } = props
+  const {
+    client,
+    createSubmission,
+    createTeam,
+    currentUser,
+    history,
+    scienceOfficer,
+  } = props
 
   const onClick = () => {
     createSubmission().then(res => {
@@ -96,7 +104,19 @@ const SubmitButton = props => {
       Promise.all(
         teams.map(team => createTeam({ variables: { data: team } })),
       ).then(response => {
-        props.history.push(`/article/${id}`)
+        /*
+          Manually refetch articles from server.
+          Cannot use refetch on create, as the teams will not have been
+          created yet, so there is no way see that this article belongs to
+          this author.
+        */
+        client.query({
+          fetchPolicy: 'network-only',
+          query: GET_DASHBOARD_ARTICLES,
+          variables: { currentUserId: currentUser.id },
+        })
+
+        history.push(`/article/${id}`)
       })
     })
   }
@@ -116,9 +136,12 @@ const DashboardWrapper = styled.div`
 const Dashboard = props => {
   const {
     articles,
+    authorArticles,
+    client,
     createSubmission,
     createTeam,
     currentUser,
+    deleteArticle,
     globalEditorTeam,
     globalScienceOfficerTeam,
     handleInvitation,
@@ -134,6 +157,7 @@ const Dashboard = props => {
 
   const headerActions = [
     <SubmitButton
+      client={client}
       createSubmission={createSubmission}
       createTeam={createTeam}
       currentUser={currentUser}
@@ -155,7 +179,12 @@ const Dashboard = props => {
 
   return (
     <DashboardWrapper>
-      <Section actions={headerActions} items={articles} label="My Articles" />
+      <Section
+        actions={headerActions}
+        deleteArticle={deleteArticle}
+        items={authorArticles}
+        label="My Articles"
+      />
 
       <Section
         handleInvitation={respondToInvitation}
