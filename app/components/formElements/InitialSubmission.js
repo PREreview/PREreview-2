@@ -81,12 +81,16 @@ const InitialSubmission = props => {
       <Image label="Image" name="image" required {...props} />
 
       <TextEditor
+        bold
         error={get(props.errors, 'patternDescription')}
+        italic
         key={`pattern-description-${props.readOnly}`}
         label="Pattern description"
         name="patternDescription"
         placeholder="Provide a description for the pattern"
         required
+        subscript
+        superscript
         value={get(values, 'patternDescription')}
         {...props}
       />
