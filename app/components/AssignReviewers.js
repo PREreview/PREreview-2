@@ -108,8 +108,12 @@ const EmptyMessage = styled.div`
   margin: 0 auto;
 `
 
+const LinkWrapper = styled.div`
+  margin-bottom: ${th('gridUnit')};
+`
+
 const ReviewerTable = props => {
-  const { data, invitedTeam, updateTeam } = props
+  const { acceptedTeam, data, invitedTeam, rejectedTeam, updateTeam } = props
 
   const rows = data.map(reviewer => {
     const item = clone(reviewer)
@@ -119,6 +123,14 @@ const ReviewerTable = props => {
     if (isMember(invitedTeam, item.id)) {
       item.status = 'Invited'
       item.action = 'Re-invite'
+    }
+
+    if (isMember(rejectedTeam, item.id)) {
+      item.status = 'Rejected'
+      item.action = '-'
+    } else if (isMember(acceptedTeam, item.id)) {
+      item.status = 'Accepted'
+      item.action = '-'
     }
 
     return item
@@ -151,6 +163,8 @@ const ReviewerTable = props => {
       accessor: 'action',
       Cell: context => {
         const { original, value } = context
+
+        if (value === '-') return value
         return <Invite onClick={() => sendInvitation(original)}>{value}</Invite>
       },
       Header: 'Action',
@@ -180,9 +194,12 @@ const ReviewerTable = props => {
 
 const AssignReviewers = props => {
   const {
+    articleId,
     loading,
     suggested,
     reviewersTeam,
+    reviewersAcceptedTeam,
+    reviewersRejectedTeam,
     reviewersInvitedTeam,
     users,
     updateTeam,
@@ -207,6 +224,10 @@ const AssignReviewers = props => {
   return (
     <Centered>
       <PageHeading>Assign Reviewers</PageHeading>
+
+      <LinkWrapper>
+        <Action to={`/article/${articleId}`}>Back to Article</Action>
+      </LinkWrapper>
 
       <Section label="Suggested Reviewer by the Author">
         <SuggestedReviewers data={suggestedReviewers} />
@@ -247,8 +268,10 @@ const AssignReviewers = props => {
 
       <Section label="Status">
         <ReviewerTable
+          acceptedTeam={reviewersAcceptedTeam}
           data={reviewers}
           invitedTeam={reviewersInvitedTeam}
+          rejectedTeam={reviewersRejectedTeam}
           updateTeam={updateTeam}
         />
       </Section>

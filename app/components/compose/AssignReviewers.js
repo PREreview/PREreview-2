@@ -63,7 +63,7 @@ const ComposedAssignReviewers = props => {
 
   return (
     <Composed articleId={articleId}>
-      {mappedProps => render({ ...mappedProps })}
+      {mappedProps => render({ ...mappedProps, articleId })}
     </Composed>
   )
 }
