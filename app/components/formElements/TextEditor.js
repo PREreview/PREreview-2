@@ -20,17 +20,35 @@ const readOnlyStyles = css`
 `
 
 const Editor = styled(AbstractEditor)`
-  ${props => props.readonly && readOnlyStyles};
+  border-color: ${th('colorBorder')};
+  border-radius: ${th('borderRadius')};
+  font-family: ${th('fontInterface')};
+  padding: ${th('gridUnit')} calc(${th('gridUnit')} / 2);
 
-  div[contenteditable] {
-    border-color: ${th('colorBorder')};
-    border-radius: ${th('borderRadius')};
-    margin-top: ${th('gridUnit')};
-  }
+  /* stylelint-disable-next-line order/properties-alphabetical-order */
+  ${props => props.readonly && readOnlyStyles};
+`
+
+const menuBorder = css`
+  border: 1px solid ${th('colorBorder')};
+  border-bottom: 0;
+`
+
+const menuStyles = css`
+  font-size: ${th('fontSizeBaseSmall')};
+  margin: ${th('gridUnit')} 0 0 0;
+
+  ${props => !props.readOnly && menuBorder};
 `
 
 const Wrapper = styled.div`
   width: 600px;
+
+  > div > div:first-child {
+    margin: ${th('gridUnit')} 0 0 0;
+
+    ${props => props.bold && menuStyles};
+  }
 `
 
 const Error = styled.span`
@@ -70,7 +88,7 @@ const TextEditor = props => {
   const touchedThis = get(props.touched, name)
 
   return (
-    <Wrapper className={className}>
+    <Wrapper className={className} {...props}>
       {label && (
         <Label>
           {`${label}${required ? ' *' : ''}`}{' '}
