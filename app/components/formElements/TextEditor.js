@@ -9,9 +9,9 @@ import { TextEditor as XpubTextEditor } from 'xpub-edit'
 
 // TO DO -- extract Labels from TextField
 const Label = styled.label`
+  display: block;
   font-size: ${th('fontSizeBaseSmall')};
   line-height: ${th('lineHeightBaseSmall')};
-  display: block;
 `
 
 const readOnlyStyles = css`

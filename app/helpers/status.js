@@ -96,6 +96,10 @@ const isDatatypeSelected = status => {
   return false
 }
 
+const isEditableByAuthor = status =>
+  isInitialSubmissionReady(status) === false ||
+  (isDatatypeSelected(status) && isFullSubmissionReady(status) === false)
+
 /*
   DECISION
 */
@@ -186,6 +190,7 @@ export {
   isAccepted,
   isApprovedByScienceOfficer,
   isDatatypeSelected,
+  isEditableByAuthor,
   isFullSubmissionReady,
   isInitialSubmissionReady,
   isNotApprovedByScienceOfficer,

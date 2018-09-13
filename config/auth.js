@@ -1,3 +1,5 @@
+/* eslint-disable arrow-body-style */
+
 const permissions = {
   // eslint-disable-next-line consistent-return
   before: async (userId, operation, object, context) => {
@@ -15,6 +17,7 @@ const permissions = {
 
     if (object.type === 'team') {
       if (object.teamType === 'author') return true
+      return true
     }
 
     return false
@@ -25,23 +28,27 @@ const permissions = {
     // console.log('operation', operation)
     // console.log('object', object)
     // console.log('context', context)
+    return true
 
-    if (object === 'teams') return true
+    // if (object === 'teams') return true
 
-    if (object.type === 'team') {
-      if (object.teamType === 'author') {
-        // TODO -- maybe not everyone should read author teams
-        return true
-      }
-    }
+    // if (object.type === 'team') {
+    //   if (object.teamType === 'author') {
+    //     // TODO -- maybe not everyone should read author teams
+    //     return true
+    //   }
+    // }
 
-    if (object === 'users') return true
+    // if (object === 'users') return true
 
-    if (object.type === 'user') {
-      if (object.id === userId) return true
-    }
+    // if (object.type === 'user') {
+    //   if (object.id === userId) return true
+    // }
 
-    return false
+    // return false
+  },
+  update: (userId, operation, object, context) => {
+    return true
   },
 }
 

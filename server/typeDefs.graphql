@@ -1,15 +1,38 @@
 const typeDefs = `
   extend type Query {
+    dashboardArticles(currentUserId: ID!): DashboardArticles
     globalTeams: [Team]
     manuscript(id: ID!): Manuscript!
     manuscripts: [Manuscript]!
     teamsForArticle(id: ID!): [Team]
+    userTeams(id: ID!): [Team]
   }
 
   extend type Mutation {
     createSubmission: Manuscript!
     deleteManuscript(id: ID!): ID!
+    handleInvitation(action: String!, articleId: ID!, currentUserId: ID!): ID!
     updateManuscript(data: ManuscriptInput!): Manuscript!
+  }
+
+  type DashboardArticles {
+    author: [Manuscript]
+    editor: [EditorArticle]
+    isGlobal: Boolean
+    reviewer: [ReviewerArticle]
+  }
+
+  type EditorArticle {
+    assignedEditor: User
+    id: ID
+    status: Status
+    title: String
+  }
+
+  type ReviewerArticle {
+    id: ID
+    reviewerStatus: String
+    title: String
   }
 
   type HistoryEntry {

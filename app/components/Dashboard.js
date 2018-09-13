@@ -3,16 +3,28 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
-import { get } from 'lodash'
 
 import { Action as UIAction } from '@pubsweet/ui'
-import { Section } from './ui'
+import {
+  AuthorSectionItem,
+  EditorSecionItem,
+  ReviewerSectionItem,
+  Section,
+} from './ui'
 
 import ComposedDashboard from './compose/Dashboard'
 import Loading from './Loading'
+import { GET_DASHBOARD_ARTICLES } from './compose/pieces/getDashboardArticles'
 
 const SubmitButton = props => {
-  const { createSubmission, createTeam, currentUser, scienceOfficer } = props
+  const {
+    client,
+    createSubmission,
+    createTeam,
+    currentUser,
+    history,
+    scienceOfficer,
+  } = props
 
   const onClick = () => {
     createSubmission().then(res => {
@@ -96,7 +108,19 @@ const SubmitButton = props => {
       Promise.all(
         teams.map(team => createTeam({ variables: { data: team } })),
       ).then(response => {
-        props.history.push(`/article/${id}`)
+        /*
+          Manually refetch articles from server.
+          Cannot use refetch on create, as the teams will not have been
+          created yet, so there is no way see that this article belongs to
+          this author.
+        */
+        client.query({
+          fetchPolicy: 'network-only',
+          query: GET_DASHBOARD_ARTICLES,
+          variables: { currentUserId: currentUser.id },
+        })
+
+        history.push(`/article/${id}`)
       })
     })
   }
@@ -115,23 +139,27 @@ const DashboardWrapper = styled.div`
 
 const Dashboard = props => {
   const {
-    articles,
+    authorArticles,
+    client,
     createSubmission,
     createTeam,
     currentUser,
+    deleteArticle,
+    editorArticles,
     globalEditorTeam,
     globalScienceOfficerTeam,
+    handleInvitation,
     history,
+    isGlobal,
     loading,
+    reviewerArticles,
   } = props
 
   if (loading) return <Loading />
 
-  const editorItems =
-    articles && articles.filter(item => get(item, 'status.submission.initial'))
-
   const headerActions = [
     <SubmitButton
+      client={client}
       createSubmission={createSubmission}
       createTeam={createTeam}
       currentUser={currentUser}
@@ -141,14 +169,41 @@ const Dashboard = props => {
     />,
   ]
 
+  const respondToInvitation = (articleId, action) => {
+    const variables = {
+      action,
+      articleId,
+      currentUserId: currentUser.id,
+    }
+
+    handleInvitation({ variables })
+  }
+
   return (
     <DashboardWrapper>
-      <Section actions={headerActions} items={articles} label="My Articles" />
       <Section
-        editors={globalEditorTeam.members}
-        items={editorItems}
-        label="Editor Section"
+        actions={headerActions}
+        deleteArticle={deleteArticle}
+        itemComponent={AuthorSectionItem}
+        items={authorArticles}
+        label="My Articles"
       />
+
+      <Section
+        handleInvitation={respondToInvitation}
+        itemComponent={ReviewerSectionItem}
+        items={reviewerArticles}
+        label="Reviews"
+      />
+
+      {isGlobal && (
+        <Section
+          editors={globalEditorTeam.members}
+          itemComponent={EditorSecionItem}
+          items={editorArticles}
+          label="Editor Section"
+        />
+      )}
     </DashboardWrapper>
   )
 }
