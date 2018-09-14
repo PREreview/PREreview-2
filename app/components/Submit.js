@@ -6,11 +6,11 @@ import styled from 'styled-components'
 import { th } from '@pubsweet/ui-toolkit'
 
 import ComposedSubmit from './compose/Submit'
-import EditorPanel from './EditorPanel'
+// import EditorPanel from './EditorPanel'
 import SubmitForm from './form/SubmissionForm'
 import Loading from './Loading'
 import SubmissionForm from './SubmissionForm'
-import { ArticlePreview } from './ui'
+import { ArticlePreview, ReviewerPanel } from './ui'
 import { isFullSubmissionReady } from '../helpers/status'
 
 const SplitScreen = styled.div`
@@ -57,7 +57,8 @@ const Submit = props => {
         <ArticlePreview article={article} />
       </div>
       <div>
-        <EditorPanel />
+        {/* <EditorPanel /> */}
+        <ReviewerPanel />
       </div>
     </SplitScreen>
   ) : (
