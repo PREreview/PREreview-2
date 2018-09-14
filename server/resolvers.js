@@ -30,12 +30,24 @@ const isUserInGlobalTeams = (globalTeams, userId) =>
 // END TO DO
 
 const resolvers = {
+  // TO DO -- deprecated
   HistoryEntry: {
     user(historyEntry, vars, ctx) {
       return ctx.connectors.user.fetchOne(historyEntry.user, ctx)
     },
   },
   Mutation: {
+    async createReview(_, vars, ctx) {
+      console.log(vars)
+
+      const { input } = vars
+      const review = clone(input)
+
+      review.type = 'review'
+      await db.save(review)
+
+      return review
+    },
     async createSubmission(_, vars, ctx) {
       const emptyManuscript = {
         status: cloneDeep(newStatus),
