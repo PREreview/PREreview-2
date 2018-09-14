@@ -10,6 +10,7 @@ import EditorPanel from './EditorPanel'
 import SubmitForm from './form/SubmissionForm'
 import Loading from './Loading'
 import SubmissionForm from './SubmissionForm'
+import { ArticlePreview } from './ui'
 import { isFullSubmissionReady } from '../helpers/status'
 
 const SplitScreen = styled.div`
@@ -28,7 +29,7 @@ const SplitScreen = styled.div`
     border: ${th('borderWidth')} ${th('borderStyle')}
       ${th('colorBackgroundHue')};
     border-radius: ${th('borderRadius')};
-    flex-basis: 40%;
+    flex-basis: 50%;
     height: 100%;
     margin-left: ${th('gridUnit')};
     padding: ${th('gridUnit')};
@@ -52,7 +53,9 @@ const Submit = props => {
 
   const final = isFullSubmissionReady(status) ? (
     <SplitScreen>
-      <div>{theform}</div>
+      <div>
+        <ArticlePreview article={article} />
+      </div>
       <div>
         <EditorPanel />
       </div>

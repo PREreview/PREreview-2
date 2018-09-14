@@ -1,7 +1,11 @@
 /* eslint-disable react/prop-types */
 
 import React from 'react'
+import styled from 'styled-components'
 import { State } from 'react-powerplug'
+
+import { H2 } from '@pubsweet/ui'
+import { th } from '@pubsweet/ui-toolkit'
 
 import ComposedEditorPanel from './compose/EditorPanel'
 import Loading from './Loading'
@@ -27,6 +31,10 @@ import {
 //   content: yup.string(),
 //   decisionLetter: yup.string().nullable(),
 // })
+
+const Header = styled(H2)`
+  color: ${th('colorText')};
+`
 
 const EditorPanel = props => {
   const {
@@ -93,7 +101,8 @@ const EditorPanel = props => {
 
         return (
           <React.Fragment>
-            <h1>Editor Panel </h1>
+            <Header>Editor Panel</Header>
+
             {!loading && (
               <React.Fragment>
                 <PanelInfo editor={editor} scienceOfficer={scienceOfficer} />
