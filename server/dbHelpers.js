@@ -54,6 +54,7 @@ const selectId = async id => {
 
 const update = async (obj, id) => {
   await db.query('UPDATE entities SET data = $2 WHERE id = $1', [id, obj])
+  return id
 }
 
 module.exports = {

@@ -34,4 +34,5 @@ const GetUserReviewsForArticleQuery = props => {
   )
 }
 
+export { GET_USER_REVIEWS_FOR_ARTICLE }
 export default GetUserReviewsForArticleQuery

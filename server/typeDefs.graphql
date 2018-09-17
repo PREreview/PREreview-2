@@ -10,11 +10,12 @@ const typeDefs = `
   }
 
   extend type Mutation {
-    createReview(input: ReviewInput!): ID!
+    createReview(input: CreateReviewInput!): ID!
     createSubmission: Manuscript!
     deleteManuscript(id: ID!): ID!
     handleInvitation(action: String!, articleId: ID!, currentUserId: ID!): ID!
     updateManuscript(data: ManuscriptInput!): Manuscript!
+    updateReview(id: ID!, input: UpdateReviewInput!): ID!
   }
 
   type Review {
@@ -25,11 +26,14 @@ const typeDefs = `
     reviewerId: ID
   }
 
-  input ReviewInput {
+  input CreateReviewInput {
     articleVersionId: ID!
+    reviewerId: ID!
+  }
+
+  input UpdateReviewInput {
     content: String
     recommendation: String
-    reviewerId: ID!
   }
 
   type DashboardArticles {

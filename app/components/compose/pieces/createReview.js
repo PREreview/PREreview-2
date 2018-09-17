@@ -5,7 +5,7 @@ import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
 const CREATE_REVIEW_MUTATION = gql`
-  mutation CreateReview($input: ReviewInput!) {
+  mutation CreateReview($input: CreateReviewInput!) {
     createReview(input: $input)
   }
 `

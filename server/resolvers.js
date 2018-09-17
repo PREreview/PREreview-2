@@ -29,9 +29,29 @@ const isUserInGlobalTeams = (globalTeams, userId) =>
 
 // END TO DO
 
+const updateReview = async (_, vars, ctx) => {
+  const { id, input } = vars
+
+  const review = await db.selectId(id)
+  if (!review) throw new Error(`No review found with id ${id}`)
+  const data = clone(review)
+
+  delete data.id
+  data.type = 'review'
+  merge(data, input)
+
+  return db.update(data, id).then(res => res)
+}
+
 const userReviewsForArticle = async (_, vars, ctx) => {
   const { articleVersionId, reviewerId } = vars
-  const reviews = await db.select({ articleVersionId, reviewerId })
+
+  const reviews = await db.select({
+    articleVersionId,
+    reviewerId,
+    type: 'review',
+  })
+
   return reviews
 }
 
@@ -44,14 +64,11 @@ const resolvers = {
   },
   Mutation: {
     async createReview(_, vars, ctx) {
-      console.log(vars)
-
       const { input } = vars
       const review = clone(input)
 
       review.type = 'review'
       await db.save(review)
-
       return review
     },
     async createSubmission(_, vars, ctx) {
@@ -116,6 +133,7 @@ const resolvers = {
       await db.update(db.manuscriptGqlToDb(manuscript), data.id)
       return manuscript
     },
+    updateReview,
   },
   Query: {
     async dashboardArticles(_, { currentUserId }, context) {

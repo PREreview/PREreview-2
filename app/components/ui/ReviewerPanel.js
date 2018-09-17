@@ -7,7 +7,8 @@ import { Button, H2 } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
 
 import { ReviewForm } from '../form'
-import { Radio, TextEditor } from '../formElements'
+import { Radio as UIRadio, TextEditor } from '../formElements'
+import Loading from '../Loading'
 
 const makeOptions = theme => [
   {
@@ -36,53 +37,53 @@ const Header = styled(H2)`
   color: ${th('colorText')};
 `
 
-const RecommendationLabel = styled.div`
-  font-weight: bold;
+const Radio = styled(UIRadio)`
+  width: 100%;
+
+  label {
+    width: unset;
+  }
 `
 
-const Recommend = props => {
-  const { theme, value } = props
-  const options = makeOptions(theme)
-
-  return (
-    <React.Fragment>
-      <RecommendationLabel>Recommendation to the Editors</RecommendationLabel>
-      <Radio
-        inline
-        name="recommendation"
-        options={options}
-        value={value}
-        {...props}
-      />
-    </React.Fragment>
-  )
-}
-
 const ReviewerPanel = props => {
-  const { theme } = props
+  const { loading, reviews, theme, updateReview } = props
+  if (loading) return <Loading />
+
+  const options = makeOptions(theme)
+  const latestReview = reviews[0] // TO DO -- adjust when there are versions
 
   return (
     <div>
       <Header>Review</Header>
 
-      <ReviewForm>
+      <ReviewForm review={latestReview} updateReview={updateReview}>
         {formProps => {
-          const { values } = formProps
+          const { errors, values } = formProps
+          console.log(errors)
 
           return (
             <React.Fragment>
               <Editor
                 bold
+                error={errors.content}
                 italic
-                name="review"
+                label="Review text"
+                name="content"
                 placeholder="Write your review"
+                required
                 subscript
                 superscript
-                value={values.review}
+                value={values.content}
                 {...formProps}
               />
 
-              <Recommend
+              <Radio
+                error={errors.recommendation}
+                inline
+                label="Recommendation to the Editors"
+                name="recommendation"
+                options={options}
+                required
                 theme={theme}
                 value={values.recommendation}
                 {...formProps}

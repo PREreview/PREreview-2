@@ -1,20 +1,41 @@
 import React from 'react'
+import * as yup from 'yup'
 
 import Form from './Form'
 
+const validations = yup.object().shape({
+  content: yup.string().required('Cannot leave review empty'),
+  recommendation: yup.string().required('You need to make a recommendation'),
+})
+
 const ReviewForm = props => {
+  const { review, updateReview, ...rest } = props
+
+  // TO DO -- remove check when you start rendering form only when there is a review
+  let content, recommendation
+  if (review) ({ content, recommendation } = review)
+
   const initialValues = {
-    // recommendation: null,
-    recommendation: 'accept',
-    review: 'hahha',
+    content: content || '',
+    recommendation: recommendation || '',
   }
 
   const handleSubmit = (values, formikBag) => {
-    // console.log(values)
+    const variables = {
+      id: review.id,
+      input: values,
+    }
+
+    updateReview({ variables })
   }
 
   return (
-    <Form initialValues={initialValues} onSubmit={handleSubmit} {...props} />
+    <Form
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      validationSchema={validations}
+      {...rest}
+    />
   )
 }
 

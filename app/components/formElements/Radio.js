@@ -9,16 +9,16 @@ import { th } from '@pubsweet/ui-toolkit'
 
 // TO DO -- extract Labels from TextField
 const Label = styled.label`
+  display: block;
   font-size: ${th('fontSizeBaseSmall')};
   line-height: ${th('lineHeightBaseSmall')};
-  display: block;
 `
 
 // applies directly to label
 const RadioGroup = styled(UIRadioGroup)`
   cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
-  margin-top: ${th('gridUnit')};
   margin-right: ${props => (props.inline ? th('gridUnit') : 0)};
+  margin-top: ${th('gridUnit')};
 
   span {
     font-family: ${th('fontInterface')};
@@ -62,6 +62,7 @@ const Error = styled.span`
 
 const Radio = props => {
   const {
+    className,
     error,
     label,
     name,
@@ -78,7 +79,7 @@ const Radio = props => {
   const radioProps = omit(props, 'required')
 
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       {label && (
         <Label>
           {`${label}${required ? ' *' : ''}`} {error && <Error>{error}</Error>}
