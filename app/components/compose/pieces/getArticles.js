@@ -9,6 +9,8 @@ import { Query } from 'react-apollo'
 
 import { GET_MANUSCRIPTS } from '../../../queries/manuscripts'
 
-const getArticlesQuery = <Query query={GET_MANUSCRIPTS} />
+const getArticlesQuery = ({ render }) => (
+  <Query query={GET_MANUSCRIPTS}>{render}</Query>
+)
 
 export default getArticlesQuery

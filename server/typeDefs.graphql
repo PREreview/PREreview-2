@@ -5,6 +5,7 @@ const typeDefs = `
     manuscript(id: ID!): Manuscript!
     manuscripts: [Manuscript]!
     teamsForArticle(id: ID!): [Team]
+    userReviewsForArticle(articleVersionId: ID!, reviewerId: ID!): [Review],
     userTeams(id: ID!): [Team]
   }
 
@@ -17,11 +18,11 @@ const typeDefs = `
   }
 
   type Review {
-    articleVersionId: ID!
+    articleVersionId: ID
     content: String
     id: ID!
     recommendation: String
-    reviewerId: ID!
+    reviewerId: ID
   }
 
   input ReviewInput {

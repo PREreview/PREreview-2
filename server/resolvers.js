@@ -29,6 +29,12 @@ const isUserInGlobalTeams = (globalTeams, userId) =>
 
 // END TO DO
 
+const userReviewsForArticle = async (_, vars, ctx) => {
+  const { articleVersionId, reviewerId } = vars
+  const reviews = await db.select({ articleVersionId, reviewerId })
+  return reviews
+}
+
 const resolvers = {
   // TO DO -- deprecated
   HistoryEntry: {
@@ -206,6 +212,7 @@ const resolvers = {
       const teams = await db.select(selector)
       return teams
     },
+    userReviewsForArticle,
   },
 }
 
