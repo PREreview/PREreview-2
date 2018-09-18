@@ -187,6 +187,10 @@ const resolvers = {
       const teams = await db.select({ type: 'team' })
       const globalTeams = teams.filter(t => t.global)
       const isGlobal = isUserInGlobalTeams(globalTeams, currentUserId)
+      const userReviews = await db.select({
+        reviewerId: currentUserId,
+        type: 'review',
+      })
 
       const data = {
         author: [],
@@ -224,9 +228,15 @@ const resolvers = {
           const reviewArticle = clone(article)
           let status
 
-          // TO DO -- add review submitted status
           // Figure out status and attach to article
-          if (isMember(acceptedReviewersTeam, currentUserId)) {
+          const hasSubmittedReviewForArticle = userReviews.find(
+            review =>
+              review.articleVersionId === article.id && review.status.submitted,
+          )
+
+          if (hasSubmittedReviewForArticle) {
+            status = 'submitted'
+          } else if (isMember(acceptedReviewersTeam, currentUserId)) {
             status = 'accepted'
           } else if (isMember(rejectedReviewersTeam, currentUserId)) {
             status = 'rejected'

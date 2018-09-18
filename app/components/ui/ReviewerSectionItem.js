@@ -41,12 +41,15 @@ const ReviewerSectionItem = props => {
 
   const ReviewLink = (
     <ActionGroup>
-      <Action to={`/article/${articleId}`}>Review</Action>
+      <Action to={`/article/${articleId}`}>
+        {status === 'accepted' && 'Review'}
+        {status === 'submitted' && 'Submitted review'}
+      </Action>
     </ActionGroup>
   )
 
   if (status === 'pendingDecision') actions = InvitationActions
-  if (status === 'accepted') actions = ReviewLink
+  if (status === 'accepted' || status === 'submitted') actions = ReviewLink
   if (status === 'rejected')
     actions = <RejectNotification>Invitation Rejected</RejectNotification>
 
