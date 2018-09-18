@@ -130,18 +130,18 @@ const EditorPanel = props => {
                     </React.Fragment>
                   )}
 
+                {/* {approved && ( */}
+                <DecisionSection
+                  article={article}
+                  updateArticle={updateArticle}
+                />
+                {/* )} */}
+
                 <Discuss
                   article={article}
                   currentUser={currentUser}
                   updateArticle={updateArticle}
                 />
-
-                {approved && (
-                  <DecisionSection
-                    article={article}
-                    updateArticle={updateArticle}
-                  />
-                )}
               </React.Fragment>
             )}
           </React.Fragment>
