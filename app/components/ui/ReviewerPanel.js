@@ -45,21 +45,28 @@ const Radio = styled(UIRadio)`
   }
 `
 
+const Message = styled.div`
+  color: ${th('colorPrimary')};
+  margin-bottom: ${th('gridUnit')};
+  text-transform: uppercase;
+`
+
 const ReviewerPanel = props => {
   const { loading, reviews, theme, updateReview } = props
   if (loading) return <Loading />
 
   const options = makeOptions(theme)
   const latestReview = reviews[0] // TO DO -- adjust when there are versions
+  const submitted = latestReview && latestReview.status.submitted
 
   return (
     <div>
       <Header>Review</Header>
+      {submitted && <Message>Submitted</Message>}
 
       <ReviewForm review={latestReview} updateReview={updateReview}>
         {formProps => {
           const { errors, values } = formProps
-          console.log(errors)
 
           return (
             <React.Fragment>
@@ -67,9 +74,11 @@ const ReviewerPanel = props => {
                 bold
                 error={errors.content}
                 italic
+                key={submitted}
                 label="Review text"
                 name="content"
                 placeholder="Write your review"
+                readOnly={submitted}
                 required
                 subscript
                 superscript
@@ -83,15 +92,18 @@ const ReviewerPanel = props => {
                 label="Recommendation to the Editors"
                 name="recommendation"
                 options={options}
+                readOnly={submitted}
                 required
                 theme={theme}
                 value={values.recommendation}
                 {...formProps}
               />
 
-              <Button primary type="submit">
-                Submit
-              </Button>
+              {!submitted && (
+                <Button primary type="submit">
+                  Submit
+                </Button>
+              )}
             </React.Fragment>
           )
         }}

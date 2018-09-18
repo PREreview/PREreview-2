@@ -12,8 +12,14 @@ const GET_USER_REVIEWS_FOR_ARTICLE = gql`
     ) {
       articleVersionId
       content
+      events {
+        createdAt
+      }
       id
       recommendation
+      status {
+        submitted
+      }
     }
   }
 `

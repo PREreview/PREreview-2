@@ -23,7 +23,10 @@ const ReviewForm = props => {
   const handleSubmit = (values, formikBag) => {
     const variables = {
       id: review.id,
-      input: values,
+      input: {
+        submit: true,
+        ...values,
+      },
     }
 
     updateReview({ variables })
