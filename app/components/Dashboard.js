@@ -141,6 +141,7 @@ const Dashboard = props => {
   const {
     authorArticles,
     client,
+    createReview,
     createSubmission,
     createTeam,
     currentUser,
@@ -176,7 +177,16 @@ const Dashboard = props => {
       currentUserId: currentUser.id,
     }
 
-    handleInvitation({ variables })
+    handleInvitation({ variables }).then(res => {
+      if (action === 'accept') {
+        const reviewInput = {
+          articleVersionId: articleId,
+          reviewerId: currentUser.id,
+        }
+
+        createReview({ variables: { input: reviewInput } })
+      }
+    })
   }
 
   return (

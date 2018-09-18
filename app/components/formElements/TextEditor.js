@@ -97,13 +97,14 @@ const TextEditor = props => {
       )}
       <Editor
         bold={bold || false}
+        className={className}
         heading={heading || false}
         italic={italic || false}
         onBlur={handleBlur}
         onChange={handleChange}
         placeholder={placeholder}
         readonly={readOnly}
-        {...props}
+        // {...props}
         smallcaps={smallcaps || false}
         subscript={subscript || false}
         superscript={superscript || false}

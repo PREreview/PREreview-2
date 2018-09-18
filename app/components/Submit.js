@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { th } from '@pubsweet/ui-toolkit'
 
 import ComposedSubmit from './compose/Submit'
+// import ReviewerPanel from './compose/ReviewerPanel'
 import EditorPanel from './EditorPanel'
 import SubmitForm from './form/SubmissionForm'
 import Loading from './Loading'
@@ -58,6 +59,7 @@ const Submit = props => {
       </div>
       <div>
         <EditorPanel />
+        {/* <ReviewerPanel /> */}
       </div>
     </SplitScreen>
   ) : (

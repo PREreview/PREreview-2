@@ -5,6 +5,8 @@ import { Query } from 'react-apollo'
 
 import CURRENT_USER from '../../../queries/currentUser'
 
-const getCurrentUserQuery = <Query query={CURRENT_USER} />
+const getCurrentUserQuery = ({ render }) => (
+  <Query query={CURRENT_USER}>{render}</Query>
+)
 
 export default getCurrentUserQuery

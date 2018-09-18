@@ -6,6 +6,7 @@ import { withApollo } from 'react-apollo'
 import { get } from 'lodash'
 
 import {
+  createReview,
   createSubmission as createSubmissionMutation,
   createTeam as createTeamMutation,
   deleteArticle,
@@ -18,6 +19,7 @@ import {
 /* eslint-disable sort-keys */
 const mapper = {
   getCurrentUserQuery,
+  createReview,
   createSubmissionMutation,
   createTeamMutation,
   deleteArticle,
@@ -39,6 +41,7 @@ const mapProps = args => {
       args.getDashboardArticlesQuery,
       'data.dashboardArticles.author',
     ),
+    createReview: args.createReview.createReview,
     createSubmission: args.createSubmissionMutation.createSubmission,
     createTeam: args.createTeamMutation.createTeam,
     currentUser: args.getCurrentUserQuery.data.currentUser,
