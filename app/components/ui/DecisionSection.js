@@ -9,6 +9,7 @@ import { th } from '@pubsweet/ui-toolkit'
 import { Radio } from '../formElements'
 import { DecisionForm } from '../form'
 import { Accordion, PanelTextEditor as Editor } from './index'
+import { hasDecision } from '../../helpers/status'
 
 const makeOptions = theme => [
   {
@@ -29,39 +30,56 @@ const makeOptions = theme => [
 ]
 
 const FormWrapper = styled.div`
+  cursor: default;
   margin-bottom: calc(${th('gridUnit')} * 2);
   margin-left: calc(${th('gridUnit')} * 3);
 `
 
+const Message = styled.div`
+  color: ${th('colorPrimary')};
+  text-transform: uppercase;
+`
+
 const DecisionSection = props => {
-  const { theme, ...otherProps } = props
+  const { article, theme, ...otherProps } = props
   const options = makeOptions(theme)
+  const { status } = article
+  const decisionExists = hasDecision(status)
 
   return (
-    <Accordion label="Decision">
+    <Accordion label="Decision" startExpanded={decisionExists}>
       <FormWrapper>
-        <DecisionForm {...otherProps}>
+        <DecisionForm article={article} {...otherProps}>
           {formProps => {
             const { values } = formProps
 
             return (
               <React.Fragment>
+                {hasDecision && <Message>Decision submitted</Message>}
+
                 <Radio
                   inline
                   name="decision"
                   options={options}
+                  readOnly={decisionExists}
                   {...formProps}
                 />
+
                 <Editor
+                  key={decisionExists}
                   label="Decision letter"
                   name="decisionLetter"
                   placeholder="Make some comments to the author"
+                  readOnly={decisionExists}
                   value={values.decisionLetter}
                   {...formProps}
                 />
-                <Button primary type="submit">
-                  Send to Author
-                </Button>
+
+                {!decisionExists && (
+                  <Button primary type="submit">
+                    Send to Author
+                  </Button>
+                )}
               </React.Fragment>
             )
           }}

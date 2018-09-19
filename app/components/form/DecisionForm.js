@@ -4,7 +4,12 @@ import React from 'react'
 
 import { Form } from './index'
 import { formValuesToData } from '../formElements/helpers'
-import { setAccepted, setRejected, setRevise } from '../../helpers/status'
+import {
+  getDecision,
+  setAccepted,
+  setRejected,
+  setRevise,
+} from '../../helpers/status'
 
 const getNewStatus = (status, decision) => {
   if (decision === 'accept') return setAccepted(status)
@@ -16,14 +21,14 @@ const getNewStatus = (status, decision) => {
 
 const DecisionForm = props => {
   const { article, updateArticle, ...otherProps } = props
+  const { decisionLetter: letter, id, status } = article
 
   const initialValues = {
-    decision: 'accept',
-    decisionLetter: 'yesh',
+    decision: getDecision(status) || '',
+    decisionLetter: letter || '',
   }
 
   const handleSubmit = (values, formikBag) => {
-    const { id, status } = article
     const { decision, decisionLetter } = values
 
     const data = {

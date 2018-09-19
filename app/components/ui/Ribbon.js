@@ -8,12 +8,13 @@ import { th } from '@pubsweet/ui-toolkit'
 const background = props => {
   if (props.status === 'success') return th('colorSuccess')
   if (props.status === 'error') return th('colorError')
+  if (props.status === 'warning') return th('colorWarning')
   return th('colorBackgroundHue')
 }
 
 const color = props => {
   const { status } = props
-  return status === 'success' || status === 'error'
+  return status === 'success' || status === 'error' || status === 'warning'
     ? th('colorTextReverse')
     : th('colorText')
 }

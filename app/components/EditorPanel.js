@@ -11,6 +11,7 @@ import ComposedEditorPanel from './compose/EditorPanel'
 import Loading from './Loading'
 
 import {
+  getDecision,
   isAccepted,
   isApprovedByScienceOfficer,
   isNotApprovedByScienceOfficer,
@@ -53,6 +54,7 @@ const EditorPanel = props => {
   if (loading) return <Loading />
 
   const { status } = article
+  const decision = getDecision(status)
 
   const accepted = isAccepted(status)
   const alreadyRejected = isRejected(status)
@@ -79,6 +81,13 @@ const EditorPanel = props => {
           ribbonStatus !== 'rejected'
         ) {
           setState({ ribbonStatus: 'rejected' })
+        } else if (
+          !accepted &&
+          !alreadyRejected &&
+          decision === 'revise' &&
+          ribbonStatus !== 'revise'
+        ) {
+          setState({ ribbonStatus: 'revise' })
         } else if (
           !accepted &&
           !alreadyRejected &&
@@ -113,26 +122,27 @@ const EditorPanel = props => {
 
                 <EditorPanelRibbon type={ribbonStatus} />
 
-                {!scienceOfficerHasDecision && (
-                  <RejectArticle
-                    alreadyRejected={alreadyRejected}
-                    article={article}
-                    checked={rejectedCheck}
-                    update={toggleRejectionWarning}
-                    updateArticle={updateArticle}
-                  />
-                )}
+                {!scienceOfficerHasDecision &&
+                  !decision && (
+                    <RejectArticle
+                      alreadyRejected={alreadyRejected}
+                      article={article}
+                      checked={rejectedCheck}
+                      update={toggleRejectionWarning}
+                      updateArticle={updateArticle}
+                    />
+                  )}
 
                 {!alreadyRejected &&
-                  !rejectedCheck && (
-                    <React.Fragment>
-                      <ScienceOfficerSection
-                        article={article}
-                        updateArticle={updateArticle}
-                      />
-                      <ReviewerInfo articleId={article.id} />
-                    </React.Fragment>
+                  !rejectedCheck &&
+                  !decision && (
+                    <ScienceOfficerSection
+                      article={article}
+                      updateArticle={updateArticle}
+                    />
                   )}
+
+                <ReviewerInfo articleId={article.id} />
 
                 {/* {approved && ( */}
                 <DecisionSection

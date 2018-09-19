@@ -25,6 +25,10 @@ const options = {
     message: 'You are about to reject this article',
     status: 'error',
   },
+  revise: {
+    message: 'This article is marked for revision',
+    status: 'warning',
+  },
   scienceOfficerApproved: {
     message: 'Approved by Science Officer',
     status: 'success',
