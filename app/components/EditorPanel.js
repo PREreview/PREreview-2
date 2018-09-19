@@ -103,6 +103,14 @@ const EditorPanel = props => {
           ribbonStatus !== 'scienceOfficerDeclined'
         ) {
           setState({ ribbonStatus: 'scienceOfficerDeclined' })
+        } else if (
+          !accepted &&
+          !alreadyRejected &&
+          !approved &&
+          !notApproved &&
+          ribbonStatus !== 'scienceOfficerPending'
+        ) {
+          setState({ ribbonStatus: 'scienceOfficerPending' })
         }
 
         const toggleRejectionWarning = () => {

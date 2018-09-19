@@ -55,7 +55,7 @@ const DecisionSection = props => {
 
             return (
               <React.Fragment>
-                {hasDecision && <Message>Decision submitted</Message>}
+                {decisionExists && <Message>Decision submitted</Message>}
 
                 <Radio
                   inline

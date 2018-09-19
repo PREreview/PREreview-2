@@ -126,9 +126,9 @@ const setRevise = status => {
 }
 
 const hasDecision = status =>
-  get(status, 'decision.accepted') ||
-  get(status, 'decision.rejected') ||
-  get(status, 'decision.revise')
+  get(status, 'decision.accepted') === true ||
+  get(status, 'decision.rejected') === true ||
+  get(status, 'decision.revise') === true
 
 const getDecision = status => {
   if (!status) throw new Error('No status provided!')
