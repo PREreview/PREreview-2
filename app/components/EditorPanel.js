@@ -32,6 +32,10 @@ import {
 //   decisionLetter: yup.string().nullable(),
 // })
 
+const Wrapper = styled.div`
+  padding-right: calc(${th('gridUnit')} * 2);
+`
+
 const Header = styled(H2)`
   color: ${th('colorText')};
 `
@@ -100,7 +104,7 @@ const EditorPanel = props => {
         }
 
         return (
-          <React.Fragment>
+          <Wrapper>
             <Header>Editor Panel</Header>
 
             {!loading && (
@@ -144,7 +148,7 @@ const EditorPanel = props => {
                 />
               </React.Fragment>
             )}
-          </React.Fragment>
+          </Wrapper>
         )
       }}
     </State>

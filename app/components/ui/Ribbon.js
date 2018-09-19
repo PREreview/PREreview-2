@@ -32,15 +32,16 @@ const StyledRibbon = styled.div`
   text-align: center;
   visibility: visible;
 
+  /* stylelint-disable-next-line order/properties-alphabetical-order */
   ${props => props.hide && hidden};
 `
 
 const Ribbon = props => {
-  const { message, status } = props
+  const { className, message, status } = props
   const hide = !message || !message.length > 0
 
   return (
-    <StyledRibbon hide={hide} status={status}>
+    <StyledRibbon className={className} hide={hide} status={status}>
       {message}
     </StyledRibbon>
   )

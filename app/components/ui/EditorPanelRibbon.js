@@ -1,9 +1,16 @@
 /* eslint-disable react/prop-types */
 
 import React from 'react'
+import styled from 'styled-components'
 import { get } from 'lodash'
 
-import { Ribbon } from './index'
+import { th } from '@pubsweet/ui-toolkit'
+
+import Ribbon from './Ribbon'
+
+const StyledRibbon = styled(Ribbon)`
+  margin-bottom: calc(${th('gridUnit')} * 2);
+`
 
 const options = {
   accepted: {
@@ -37,7 +44,7 @@ const EditorPanelRibbon = props => {
   const message = get(options[type], 'message')
   const status = get(options[type], 'status')
 
-  return <Ribbon message={message} status={status} />
+  return <StyledRibbon message={message} status={status} />
 }
 
 export default EditorPanelRibbon
