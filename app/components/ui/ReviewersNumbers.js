@@ -17,6 +17,10 @@ const ReviewersNumbersItemWrapper = styled.div`
   }
 `
 
+const Header = styled.div`
+  font-weight: bold;
+`
+
 const ReviewersNumbersItem = props => {
   const { amount, label } = props
   if (!amount && !label) return null
@@ -31,7 +35,12 @@ const ReviewersNumbersItem = props => {
 
 const ReviewersNumbers = props => {
   const { data } = props
-  return <List component={ReviewersNumbersItem} items={data} />
+  return (
+    <div>
+      <Header>Reviewer stats</Header>
+      <List component={ReviewersNumbersItem} items={data} />
+    </div>
+  )
 }
 
 export default ReviewersNumbers

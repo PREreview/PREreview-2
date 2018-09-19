@@ -19,8 +19,8 @@ const readOnly = css`
     border-bottom: ${th('borderWidth')} ${th('borderStyle')}
       ${th('colorBorder')};
     cursor: default;
-    /* margin-bottom: 0; */
     padding: 0;
+    text-align: justify;
   }
 `
 
@@ -30,8 +30,10 @@ const StyledEditor = styled(TextEditor)`
 
   div[contenteditable] {
     margin-bottom: 0;
+    padding: ${th('gridUnit')};
   }
 
+  /* stylelint-disable-next-line order/order, order/properties-alphabetical-order */
   ${props => props.readOnly && readOnly};
 `
 

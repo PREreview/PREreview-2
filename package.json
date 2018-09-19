@@ -17,7 +17,7 @@
   "dependencies": {
     "@pubsweet/coko-theme": "^4.0.0",
     "@pubsweet/logger": "^0.2.5",
-    "@pubsweet/ui": "^8.6.1",
+    "@pubsweet/ui": "^8.6.2",
     "@pubsweet/ui-toolkit": "1.2.0",
     "app-module-path": "^2.2.0",
     "babel-preset-es2015-native-modules": "^6.9.4",
@@ -67,7 +67,7 @@
     "webpack-hot-middleware": "^2.22.2",
     "winston": "2",
     "winston-daily-rotate-file": "^3.2.1",
-    "xpub-edit": "^2.5.1",
+    "xpub-edit": "^2.5.2",
     "yup": "^0.26.2"
   },
   "devDependencies": {

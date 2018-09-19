@@ -11,6 +11,7 @@ import ComposedEditorPanel from './compose/EditorPanel'
 import Loading from './Loading'
 
 import {
+  getDecision,
   isAccepted,
   isApprovedByScienceOfficer,
   isNotApprovedByScienceOfficer,
@@ -32,6 +33,10 @@ import {
 //   decisionLetter: yup.string().nullable(),
 // })
 
+const Wrapper = styled.div`
+  padding-right: calc(${th('gridUnit')} * 2);
+`
+
 const Header = styled(H2)`
   color: ${th('colorText')};
 `
@@ -49,6 +54,7 @@ const EditorPanel = props => {
   if (loading) return <Loading />
 
   const { status } = article
+  const decision = getDecision(status)
 
   const accepted = isAccepted(status)
   const alreadyRejected = isRejected(status)
@@ -78,6 +84,13 @@ const EditorPanel = props => {
         } else if (
           !accepted &&
           !alreadyRejected &&
+          decision === 'revise' &&
+          ribbonStatus !== 'revise'
+        ) {
+          setState({ ribbonStatus: 'revise' })
+        } else if (
+          !accepted &&
+          !alreadyRejected &&
           approved &&
           ribbonStatus !== 'scienceOfficerApproved'
         ) {
@@ -90,6 +103,14 @@ const EditorPanel = props => {
           ribbonStatus !== 'scienceOfficerDeclined'
         ) {
           setState({ ribbonStatus: 'scienceOfficerDeclined' })
+        } else if (
+          !accepted &&
+          !alreadyRejected &&
+          !approved &&
+          !notApproved &&
+          ribbonStatus !== 'scienceOfficerPending'
+        ) {
+          setState({ ribbonStatus: 'scienceOfficerPending' })
         }
 
         const toggleRejectionWarning = () => {
@@ -100,7 +121,7 @@ const EditorPanel = props => {
         }
 
         return (
-          <React.Fragment>
+          <Wrapper>
             <Header>Editor Panel</Header>
 
             {!loading && (
@@ -109,42 +130,43 @@ const EditorPanel = props => {
 
                 <EditorPanelRibbon type={ribbonStatus} />
 
-                {!scienceOfficerHasDecision && (
-                  <RejectArticle
-                    alreadyRejected={alreadyRejected}
-                    article={article}
-                    checked={rejectedCheck}
-                    update={toggleRejectionWarning}
-                    updateArticle={updateArticle}
-                  />
-                )}
+                {!scienceOfficerHasDecision &&
+                  !decision && (
+                    <RejectArticle
+                      alreadyRejected={alreadyRejected}
+                      article={article}
+                      checked={rejectedCheck}
+                      update={toggleRejectionWarning}
+                      updateArticle={updateArticle}
+                    />
+                  )}
 
                 {!alreadyRejected &&
-                  !rejectedCheck && (
-                    <React.Fragment>
-                      <ScienceOfficerSection
-                        article={article}
-                        updateArticle={updateArticle}
-                      />
-                      <ReviewerInfo articleId={article.id} />
-                    </React.Fragment>
+                  !rejectedCheck &&
+                  !decision && (
+                    <ScienceOfficerSection
+                      article={article}
+                      updateArticle={updateArticle}
+                    />
                   )}
+
+                <ReviewerInfo articleId={article.id} />
+
+                {/* {approved && ( */}
+                <DecisionSection
+                  article={article}
+                  updateArticle={updateArticle}
+                />
+                {/* )} */}
 
                 <Discuss
                   article={article}
                   currentUser={currentUser}
                   updateArticle={updateArticle}
                 />
-
-                {approved && (
-                  <DecisionSection
-                    article={article}
-                    updateArticle={updateArticle}
-                  />
-                )}
               </React.Fragment>
             )}
-          </React.Fragment>
+          </Wrapper>
         )
       }}
     </State>

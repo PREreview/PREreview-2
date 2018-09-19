@@ -538,9 +538,9 @@
     redux-form "^7.0.3"
     styled-components "^3.2.5"
 
-"@pubsweet/ui@^8.6.1":
-  version "8.6.1"
-  resolved "https://registry.yarnpkg.com/@pubsweet/ui/-/ui-8.6.1.tgz#244805d1a58b3a83c4d1f1fd53e598c387ef3303"
+"@pubsweet/ui@^8.6.2":
+  version "8.6.2"
+  resolved "https://registry.yarnpkg.com/@pubsweet/ui/-/ui-8.6.2.tgz#63f3e41267a35b0e8640b2d0f0c40266fbfb0a3c"
   dependencies:
     "@pubsweet/ui-toolkit" "^1.2.0"
     babel-jest "^21.2.0"
@@ -11963,9 +11963,9 @@ xml-name-validator@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/xml-name-validator/-/xml-name-validator-3.0.0.tgz#6ae73e06de4d8c6e47f9fb181f78d648ad457c6a"
 
-xpub-edit@^2.5.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/xpub-edit/-/xpub-edit-2.5.1.tgz#be42cb35df1ea37adfcd1a35da2c0810ccbbe2bb"
+xpub-edit@^2.5.2:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/xpub-edit/-/xpub-edit-2.5.2.tgz#0a026891edc5bd20dac68e749ed2d6d3032c5739"
   dependencies:
     "@pubsweet/ui-toolkit" "^1.2.0"
     prosemirror-commands "^1.0.1"

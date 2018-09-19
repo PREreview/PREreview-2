@@ -8,12 +8,13 @@ import { th } from '@pubsweet/ui-toolkit'
 const background = props => {
   if (props.status === 'success') return th('colorSuccess')
   if (props.status === 'error') return th('colorError')
+  if (props.status === 'warning') return th('colorWarning')
   return th('colorBackgroundHue')
 }
 
 const color = props => {
   const { status } = props
-  return status === 'success' || status === 'error'
+  return status === 'success' || status === 'error' || status === 'warning'
     ? th('colorTextReverse')
     : th('colorText')
 }
@@ -32,15 +33,16 @@ const StyledRibbon = styled.div`
   text-align: center;
   visibility: visible;
 
+  /* stylelint-disable-next-line order/properties-alphabetical-order */
   ${props => props.hide && hidden};
 `
 
 const Ribbon = props => {
-  const { message, status } = props
+  const { className, message, status } = props
   const hide = !message || !message.length > 0
 
   return (
-    <StyledRibbon hide={hide} status={status}>
+    <StyledRibbon className={className} hide={hide} status={status}>
       {message}
     </StyledRibbon>
   )

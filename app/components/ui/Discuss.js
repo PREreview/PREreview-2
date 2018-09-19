@@ -1,12 +1,19 @@
 /* eslint-disable react/prop-types */
 
 import React from 'react'
+import styled from 'styled-components'
 import { isArray, clone } from 'lodash'
 
-import { Accordion, Button, List } from '@pubsweet/ui'
+import { Button, List } from '@pubsweet/ui'
+import { th } from '@pubsweet/ui-toolkit'
 
 import { DiscussForm } from '../form'
-import { PanelTextEditor as Editor } from './index'
+import { Accordion, PanelTextEditor as Editor } from './index'
+
+const DiscussionWrapper = styled.div`
+  margin-bottom: calc(${th('gridUnit')} * 2);
+  margin-left: calc(${th('gridUnit')} * 3);
+`
 
 const transformEntries = entries =>
   entries.map(entry => ({
@@ -62,9 +69,11 @@ const Discuss = props => {
   if (hasEntries) entries = transformEntries(entries)
 
   return (
-    <Accordion label="Discuss" startExpanded>
-      {hasEntries && <List component={Editor} items={entries} />}
-      <NewEntry {...props} />
+    <Accordion label="Discuss">
+      <DiscussionWrapper>
+        {hasEntries && <List component={Editor} items={entries} />}
+        <NewEntry {...props} />
+      </DiscussionWrapper>
     </Accordion>
   )
 }

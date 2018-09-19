@@ -1,4 +1,4 @@
-import { clone, get, isUndefined, set } from 'lodash'
+import { clone, get, isUndefined, keys, pickBy, set } from 'lodash'
 
 /*
   CLEAN STATES
@@ -125,6 +125,24 @@ const setRevise = status => {
   return newStatus
 }
 
+const hasDecision = status =>
+  get(status, 'decision.accepted') === true ||
+  get(status, 'decision.rejected') === true ||
+  get(status, 'decision.revise') === true
+
+const getDecision = status => {
+  if (!status) throw new Error('No status provided!')
+  const truthy = keys(pickBy(status.decision, value => value === true))
+
+  if (truthy.length > 1)
+    throw new Error(
+      'There should only be one valid status in a decision object!',
+    )
+  if (truthy.length === 0) return null
+
+  return truthy[0]
+}
+
 /*
   SCIENCE OFFICER APPROVAL
 */
@@ -186,7 +204,9 @@ const updateSubmissionStatus = status => {
 export {
   createNewStatus,
   getCurrentStatus,
+  getDecision,
   getStatus,
+  hasDecision,
   isAccepted,
   isApprovedByScienceOfficer,
   isDatatypeSelected,
