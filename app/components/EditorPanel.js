@@ -91,6 +91,7 @@ const EditorPanel = props => {
         } else if (
           !accepted &&
           !alreadyRejected &&
+          decision !== 'revise' &&
           approved &&
           ribbonStatus !== 'scienceOfficerApproved'
         ) {
@@ -98,6 +99,7 @@ const EditorPanel = props => {
         } else if (
           !accepted &&
           !alreadyRejected &&
+          decision !== 'revise' &&
           !approved &&
           notApproved &&
           ribbonStatus !== 'scienceOfficerDeclined'
@@ -106,6 +108,7 @@ const EditorPanel = props => {
         } else if (
           !accepted &&
           !alreadyRejected &&
+          decision !== 'revise' &&
           !approved &&
           !notApproved &&
           ribbonStatus !== 'scienceOfficerPending'
