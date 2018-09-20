@@ -45,7 +45,7 @@
     "pubsweet-component-password-reset-backend": "^1.0.4",
     "pubsweet-component-password-reset-frontend": "^2.0.0",
     "pubsweet-component-signup": "^1.0.17",
-    "pubsweet-server": "^8.0.1",
+    "pubsweet-server": "^9.0.0",
     "react": "^16.4.0",
     "react-adopt": "^0.6.0",
     "react-apollo": "^2.1.9",
@@ -116,6 +116,9 @@
     "testcafe-react-selectors": "^2.1.0",
     "url-loader": "^1.0.1"
   },
+  "resolutions": {
+    "babel-plugin-istanbul": "https://github.com/jure/babel-plugin-istanbul.git#temp_release"
+  },
   "scripts": {
     "commitmsg": "commitlint -E GIT_PARAMS",
     "cz": "git-cz",
@@ -137,12 +140,35 @@
     }
   },
   "jest": {
-    "setupTestFrameworkScriptFile": "./app/test/setup.js",
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/*test.{js,jsx}",
+      "!**/test/**",
+      "!**/node_modules/**",
+      "!**/config/**",
+      "!**/coverage/**"
     ],
-    "transformIgnorePatterns": [
-      "./node_modules/(?!@?pubsweet)"
+    "coverageDirectory": "<rootDir>/coverage",
+    "projects": [
+      {
+        "rootDir": "<rootDir>/app",
+        "displayName": "app",
+        "setupTestFrameworkScriptFile": "<rootDir>/test/setup.js",
+        "transformIgnorePatterns": [
+          "./node_modules/(?!@?pubsweet)"
+        ],
+        "snapshotSerializers": [
+          "enzyme-to-json/serializer"
+        ]
+      },
+      {
+        "rootDir": "<rootDir>/server",
+        "displayName": "server",
+        "testRegex": "manuscript/test/.+test.jsx?$",
+        "globals": {
+          "window": {}
+        }
+      }
     ]
   }
 }

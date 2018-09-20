@@ -5,70 +5,28 @@ const typeDefs = `
     manuscript(id: ID!): Manuscript!
     manuscripts: [Manuscript]!
     teamsForArticle(id: ID!): [Team]
-    userReviewsForArticle(articleVersionId: ID!, reviewerId: ID!): [Review],
     userTeams(id: ID!): [Team]
   }
 
   extend type Mutation {
-    createReview(input: CreateReviewInput!): ID!
     createSubmission: Manuscript!
     deleteManuscript(id: ID!): ID!
     handleInvitation(action: String!, articleId: ID!, currentUserId: ID!): ID!
     updateManuscript(data: ManuscriptInput!): Manuscript!
-    updateReview(id: ID!, input: UpdateReviewInput!): ID!
   }
 
   scalar Date
-
-  type Review {
-    articleVersionId: ID
-    content: String
-    events: ReviewEvents
-    id: ID!
-    recommendation: String
-    reviewerId: ID
-    status: ReviewStatus
-  }
-
-  type ReviewEvents {
-    createdAt: Date
-    submittedAt: Date
-    updatedAt: Date
-  }
-
-  type ReviewStatus {
-    pending: Boolean
-    submitted: Boolean
-  }
-
-  input CreateReviewInput {
-    articleVersionId: ID!
-    reviewerId: ID!
-  }
-
-  input UpdateReviewInput {
-    content: String
-    recommendation: String
-    submit: Boolean
-  }
 
   type DashboardArticles {
     author: [Manuscript]
     editor: [EditorArticle]
     isGlobal: Boolean
-    reviewer: [ReviewerArticle]
   }
 
   type EditorArticle {
     assignedEditor: User
     id: ID
     status: Status
-    title: String
-  }
-
-  type ReviewerArticle {
-    id: ID
-    reviewerStatus: String
     title: String
   }
 

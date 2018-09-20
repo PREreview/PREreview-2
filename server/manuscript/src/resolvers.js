@@ -7,6 +7,8 @@ const union = require('lodash/union')
 const { GraphQLScalarType } = require('graphql')
 const { Kind } = require('graphql/language')
 
+const Manuscript = require('./manuscript')
+
 // TO DO -- get these from team helpers (import vs require)
 const newStatus = {
   decision: {
@@ -23,16 +25,6 @@ const newStatus = {
     full: false,
     initial: false,
   },
-}
-
-const newReviewStatus = {
-  pending: true,
-  submitted: false,
-}
-
-const reviewSubmittedStatus = {
-  pending: false,
-  submitted: true,
 }
 
 const isMember = (team, userId) => team.members.includes(userId)
@@ -59,41 +51,6 @@ const date = new GraphQLScalarType({
   },
 })
 
-const updateReview = async (_, vars, ctx) => {
-  const { id, input } = vars
-  const { content, recommendation, submit } = input
-
-  const review = await db.selectId(id)
-  if (!review) throw new Error(`No review found with id ${id}`)
-  const data = clone(review)
-
-  delete data.id
-  data.type = 'review'
-  data.content = content
-  data.recommendation = recommendation
-  data.events.updatedAt = new Date()
-
-  if (submit) {
-    data.events.submittedAt = new Date()
-    data.status = reviewSubmittedStatus
-  }
-  // merge(data, input)
-
-  return db.update(data, id).then(res => res)
-}
-
-const userReviewsForArticle = async (_, vars, ctx) => {
-  const { articleVersionId, reviewerId } = vars
-
-  const reviews = await db.select({
-    articleVersionId,
-    reviewerId,
-    type: 'review',
-  })
-
-  return reviews
-}
-
 const resolvers = {
   Date: date,
   // TO DO -- deprecated
@@ -103,28 +60,11 @@ const resolvers = {
     },
   },
   Mutation: {
-    async createReview(_, vars, ctx) {
-      const { input } = vars
-      const review = clone(input)
-
-      review.type = 'review'
-      review.events = {
-        createdAt: new Date(),
-      }
-      review.status = clone(newReviewStatus)
-
-      await db.save(review)
-      return review
-    },
     async createSubmission(_, vars, ctx) {
       const emptyManuscript = {
-        status: cloneDeep(newStatus),
+        status: newStatus,
       }
-
-      const manuscript = cloneDeep(emptyManuscript)
-      const manuscriptDb = db.manuscriptGqlToDb(manuscript, ctx.user)
-      manuscript.id = await db.save(manuscriptDb)
-
+      const manuscript = await new Manuscript(emptyManuscript).save()
       return manuscript
     },
     async deleteManuscript(_, { id }) {
@@ -178,7 +118,6 @@ const resolvers = {
       await db.update(db.manuscriptGqlToDb(manuscript), data.id)
       return manuscript
     },
-    updateReview,
   },
   Query: {
     async dashboardArticles(_, { currentUserId }, context) {
@@ -187,10 +126,6 @@ const resolvers = {
       const teams = await db.select({ type: 'team' })
       const globalTeams = teams.filter(t => t.global)
       const isGlobal = isUserInGlobalTeams(globalTeams, currentUserId)
-      const userReviews = await db.select({
-        reviewerId: currentUserId,
-        type: 'review',
-      })
 
       const data = {
         author: [],
@@ -209,43 +144,6 @@ const resolvers = {
 
         if (isMember(authorTeam, currentUserId)) {
           data.author.push(article)
-        }
-
-        // Is user a reviewer of article
-        const invitedReviewersTeam = articleTeams.find(
-          t => t.teamType === 'reviewersInvited',
-        )
-
-        const acceptedReviewersTeam = articleTeams.find(
-          t => t.teamType === 'reviewersAccepted',
-        )
-
-        const rejectedReviewersTeam = articleTeams.find(
-          t => t.teamType === 'reviewersRejected',
-        )
-
-        if (isMember(invitedReviewersTeam, currentUserId)) {
-          const reviewArticle = clone(article)
-          let status
-
-          // Figure out status and attach to article
-          const hasSubmittedReviewForArticle = userReviews.find(
-            review =>
-              review.articleVersionId === article.id && review.status.submitted,
-          )
-
-          if (hasSubmittedReviewForArticle) {
-            status = 'submitted'
-          } else if (isMember(acceptedReviewersTeam, currentUserId)) {
-            status = 'accepted'
-          } else if (isMember(rejectedReviewersTeam, currentUserId)) {
-            status = 'rejected'
-          } else {
-            status = 'pendingDecision'
-          }
-
-          reviewArticle.reviewerStatus = status
-          data.reviewer.push(reviewArticle)
         }
 
         // Is user an editor or science officer
@@ -272,10 +170,10 @@ const resolvers = {
       return teams
     },
     async manuscript(_, { id }) {
-      return db.selectId(id)
+      return Manuscript.find(id)
     },
     async manuscripts() {
-      return db.select({ type: 'manuscript' })
+      return Manuscript.query()
     },
     async teamsForArticle(_, { id }) {
       const selector = {
@@ -285,7 +183,6 @@ const resolvers = {
       const teams = await db.select(selector)
       return teams
     },
-    userReviewsForArticle,
   },
 }
 
