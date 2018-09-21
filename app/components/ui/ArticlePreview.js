@@ -17,7 +17,7 @@ const humanize = authors =>
     return `${author.name}, `
   })
 
-const metadataExtrator = geneExpression => {
+const metadataExtractor = geneExpression => {
   const { detectionMethod } = geneExpression
   const { detectionMethodCorrelations } = config
   const correlations = detectionMethodCorrelations[detectionMethod]
@@ -162,7 +162,7 @@ const ArticlePreview = props => {
   const lab = laboratory.name
   const imageSource = `/uploads/${image.url}`
 
-  const metadata = metadataExtrator(article.geneExpression).map(item => (
+  const metadata = metadataExtractor(article.geneExpression).map(item => (
     <Section key={item.label}>
       <InlineData label={item.label} value={item.values} />
     </Section>
