@@ -5,15 +5,12 @@ import { adopt } from 'react-adopt'
 import { withRouter } from 'react-router-dom'
 import { get } from 'lodash'
 
-import {
-  getCurrentUser,
-  getUserReviewsForArticle,
-  updateReview,
-} from './pieces'
+import { withCurrentUser } from '../../userContext'
+
+import { getUserReviewsForArticle, updateReview } from './pieces'
 import { ReviewerPanel } from '../ui'
 
 const mapper = {
-  getCurrentUser,
   getUserReviewsForArticle,
   updateReview,
 }
@@ -21,9 +18,7 @@ const mapper = {
 /* eslint-disable-next-line arrow-body-style */
 const mapProps = args => {
   return {
-    currentUser: get(args.getCurrentUser, 'data.currentUser'),
-    loading:
-      args.getCurrentUser.loading || args.getUserReviewsForArticle.loading,
+    loading: args.getUserReviewsForArticle.loading,
     reviews: get(args.getUserReviewsForArticle, 'data.userReviewsForArticle'),
     updateReview: args.updateReview.updateReview,
   }
@@ -32,14 +27,16 @@ const mapProps = args => {
 const Composed = adopt(mapper, mapProps)
 
 const ComposedReviewerPanel = props => {
-  const { match } = props
+  const { currentUser, match } = props
   const articleVersionId = match.params.id
 
   return (
     <Composed articleVersionId={articleVersionId}>
-      {mappedProps => <ReviewerPanel {...mappedProps} />}
+      {mappedProps => (
+        <ReviewerPanel currentUser={currentUser} {...mappedProps} />
+      )}
     </Composed>
   )
 }
 
-export default withRouter(ComposedReviewerPanel)
+export default withRouter(withCurrentUser(ComposedReviewerPanel))

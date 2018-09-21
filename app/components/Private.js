@@ -1,17 +1,38 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Query } from 'react-apollo'
-
 import { Redirect, withRouter } from 'react-router-dom'
+import { pick } from 'lodash'
+import gql from 'graphql-tag'
 
-import CURRENT_USER from '../queries/currentUser'
+import { CurrentUserProvider } from '../userContext'
 
-import Loading from './Loading'
+const CURRENT_USER = gql`
+  query CurrentUser {
+    currentUser {
+      admin
+      id
+      username
+    }
+  }
+`
 
 const Private = ({ children, location }) => (
   <Query query={CURRENT_USER}>
-    {({ loading }) => {
-      if (loading) return <Loading />
+    {({ client, data, error, loading, networkStatus }) => {
+      if (loading) return null
+
+      // remove invalid token and prepare for login redirect
+      if (
+        (networkStatus === 7 &&
+          !loading &&
+          !error &&
+          data.currentUser === null) ||
+        error
+      ) {
+        client.cache.reset()
+        localStorage.removeItem('token')
+      }
 
       if (!localStorage.getItem('token')) {
         const { pathname, search = '' } = location
@@ -19,7 +40,13 @@ const Private = ({ children, location }) => (
         return <Redirect to={`/login?next=${url}`} />
       }
 
-      return children
+      const currentUser = pick(data.currentUser, ['admin', 'id', 'username'])
+
+      return (
+        <CurrentUserProvider value={{ currentUser }}>
+          {children}
+        </CurrentUserProvider>
+      )
     }}
   </Query>
 )

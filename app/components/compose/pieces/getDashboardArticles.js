@@ -4,6 +4,8 @@ import React from 'react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
+import { withCurrentUser } from '../../../userContext'
+
 const GET_DASHBOARD_ARTICLES = gql`
   query GetDashboardArticles($currentUserId: ID!) {
     dashboardArticles(currentUserId: $currentUserId) {
@@ -44,15 +46,18 @@ const GET_DASHBOARD_ARTICLES = gql`
 `
 
 const GetDashboardArticlesQuery = props => {
-  const { getCurrentUserQuery, render } = props
-  const { id } = getCurrentUserQuery.data.currentUser
+  const { currentUser, render } = props
+
+  const variables = {
+    currentUserId: currentUser.id,
+  }
 
   return (
-    <Query query={GET_DASHBOARD_ARTICLES} variables={{ currentUserId: id }}>
+    <Query query={GET_DASHBOARD_ARTICLES} variables={variables}>
       {render}
     </Query>
   )
 }
 
 export { GET_DASHBOARD_ARTICLES }
-export default GetDashboardArticlesQuery
+export default withCurrentUser(GetDashboardArticlesQuery)

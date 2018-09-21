@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 
 import React from 'react'
-import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { Action as UIAction } from '@pubsweet/ui'
@@ -219,4 +218,4 @@ const Dashboard = props => {
 }
 
 const Composed = props => <ComposedDashboard render={Dashboard} {...props} />
-export default withRouter(Composed)
+export default Composed

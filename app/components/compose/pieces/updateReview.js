@@ -4,6 +4,7 @@ import React from 'react'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
+import { withCurrentUser } from '../../../userContext'
 import { GET_USER_REVIEWS_FOR_ARTICLE } from './getUserReviewsForArticle'
 
 const UPDATE_REVIEW = gql`
@@ -13,15 +14,14 @@ const UPDATE_REVIEW = gql`
 `
 
 const UpdateReviewMutation = props => {
-  const { articleVersionId, getCurrentUser, render } = props
-  const userId = getCurrentUser.data.currentUser.id
+  const { articleVersionId, currentUser, render } = props
 
   const refetch = [
     {
       query: GET_USER_REVIEWS_FOR_ARTICLE,
       variables: {
         articleVersionId,
-        reviewerId: userId,
+        reviewerId: currentUser.id,
       },
     },
   ]
@@ -35,4 +35,4 @@ const UpdateReviewMutation = props => {
   )
 }
 
-export default UpdateReviewMutation
+export default withCurrentUser(UpdateReviewMutation)

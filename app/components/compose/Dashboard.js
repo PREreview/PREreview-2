@@ -3,14 +3,16 @@
 import React from 'react'
 import { Adopt } from 'react-adopt'
 import { withApollo } from 'react-apollo'
+import { withRouter } from 'react-router-dom'
 import { get } from 'lodash'
+
+import { withCurrentUser } from '../../userContext'
 
 import {
   createReview,
   createSubmission as createSubmissionMutation,
   createTeam as createTeamMutation,
   deleteArticle,
-  getCurrentUser as getCurrentUserQuery,
   getDashboardArticles as getDashboardArticlesQuery,
   getGlobalTeams as getGlobalTeamsQuery,
   handleInvitation,
@@ -18,7 +20,6 @@ import {
 
 /* eslint-disable sort-keys */
 const mapper = {
-  getCurrentUserQuery,
   createReview,
   createSubmissionMutation,
   createTeamMutation,
@@ -44,7 +45,6 @@ const mapProps = args => {
     createReview: args.createReview.createReview,
     createSubmission: args.createSubmissionMutation.createSubmission,
     createTeam: args.createTeamMutation.createTeam,
-    currentUser: args.getCurrentUserQuery.data.currentUser,
     deleteArticle: args.deleteArticle.deleteArticle,
     editorArticles: get(
       args.getDashboardArticlesQuery,
@@ -73,10 +73,10 @@ const mapProps = args => {
   }
 }
 
-const Composed = ({ render, ...props }) => (
+const Composed = ({ currentUser, render, ...props }) => (
   <Adopt mapper={mapper} mapProps={mapProps}>
-    {mappedProps => render({ ...props, ...mappedProps })}
+    {mappedProps => render({ ...props, ...mappedProps, currentUser })}
   </Adopt>
 )
 
-export default withApollo(Composed)
+export default withApollo(withRouter(withCurrentUser(Composed)))
