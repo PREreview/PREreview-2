@@ -1,13 +1,15 @@
+/* eslint-disable react/prop-types */
+
 import React from 'react'
-import PropTypes from 'prop-types'
-import { Query } from 'react-apollo'
-import { matchPath, withRouter } from 'react-router-dom'
+// import PropTypes from 'prop-types'
+import { withApollo } from 'react-apollo'
+import { matchPath } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { Action, AppBar } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
 
-import CURRENT_USER from '../queries/currentUser'
+import { withCurrentUser } from '../userContext'
 
 const StyledBar = styled(AppBar)`
   flex: initial;
@@ -73,16 +75,11 @@ const navLinks = (location, currentUser) => {
   return links
 }
 
-const NavigationBar = ({
-  data: { currentUser },
-  history,
-  location,
-  ...props
-}) => {
+const NavigationBar = props => {
+  const { currentUser, history, location } = props
   const links = navLinks(location, currentUser)
 
   const onLogoutClick = () => {
-    // eslint-disable-next-line react/prop-types
     props.client.cache.reset()
     localStorage.removeItem('token')
     history.push('/login')
@@ -98,21 +95,19 @@ const NavigationBar = ({
   )
 }
 
-NavigationBar.propTypes = {
-  data: PropTypes.shape({
-    currentUser: PropTypes.shape({
-      admin: PropTypes.bool,
-      username: PropTypes.string.isRequired,
-    }),
-  }).isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-  location: PropTypes.shape({
-    pathname: PropTypes.string.isRequired,
-  }).isRequired,
-}
+// NavigationBar.propTypes = {
+//   data: PropTypes.shape({
+//     currentUser: PropTypes.shape({
+//       admin: PropTypes.bool,
+//       username: PropTypes.string.isRequired,
+//     }),
+//   }).isRequired,
+//   history: PropTypes.shape({
+//     push: PropTypes.func.isRequired,
+//   }).isRequired,
+//   location: PropTypes.shape({
+//     pathname: PropTypes.string.isRequired,
+//   }).isRequired,
+// }
 
-export default () => (
-  <Query query={CURRENT_USER}>{withRouter(NavigationBar)}</Query>
-)
+export default withApollo(withCurrentUser(NavigationBar))

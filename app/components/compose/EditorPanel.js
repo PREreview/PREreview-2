@@ -6,28 +6,23 @@ import { withRouter } from 'react-router-dom'
 
 import {
   getArticleForEditor,
-  getCurrentUser,
   getTeamsForArticle,
   updateArticleForEditor,
 } from './pieces'
 
+import { withCurrentUser } from '../../userContext'
 import { getEditor, getScienceOfficer } from '../../helpers/teams'
 
 const mapper = {
   getArticleForEditor: props => getArticleForEditor(props),
-  getCurrentUser,
   getTeamsForArticle: props => getTeamsForArticle(props),
   updateArticleForEditor,
 }
 
 const mapProps = args => ({
   article: args.getArticleForEditor.data.manuscript,
-  currentUser: args.getCurrentUser.data.currentUser,
   editor: getEditor(args.getTeamsForArticle.data.teamsForArticle),
-  loading:
-    args.getCurrentUser.loading ||
-    args.getTeamsForArticle.loading ||
-    args.getArticleForEditor.loading,
+  loading: args.getTeamsForArticle.loading || args.getArticleForEditor.loading,
   scienceOfficer: getScienceOfficer(
     args.getTeamsForArticle.data.teamsForArticle,
   ),
@@ -37,16 +32,16 @@ const mapProps = args => ({
 const Composed = adopt(mapper, mapProps)
 
 const ComposedEditorPanel = props => {
-  const { match, render, ...otherProps } = props
+  const { currentUser, match, render, ...otherProps } = props
   const { id: articleId } = match.params
 
   return (
     <Composed articleId={articleId} {...otherProps}>
-      {mappedProps => render({ articleId, ...mappedProps })}
+      {mappedProps => render({ articleId, currentUser, ...mappedProps })}
     </Composed>
   )
 }
 
 // TO DO -- delete withRouter and get article id from getArticle
 
-export default withRouter(ComposedEditorPanel)
+export default withRouter(withCurrentUser(ComposedEditorPanel))

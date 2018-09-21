@@ -4,6 +4,8 @@ import React from 'react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
+import { withCurrentUser } from '../../../userContext'
+
 const GET_USER_REVIEWS_FOR_ARTICLE = gql`
   query GetUserReviewsForArticle($articleVersionId: ID!, $reviewerId: ID!) {
     userReviewsForArticle(
@@ -25,12 +27,11 @@ const GET_USER_REVIEWS_FOR_ARTICLE = gql`
 `
 
 const GetUserReviewsForArticleQuery = props => {
-  const { articleVersionId, getCurrentUser, render } = props
-  const userId = getCurrentUser.data.currentUser.id
+  const { articleVersionId, currentUser, render } = props
 
   const variables = {
     articleVersionId,
-    reviewerId: userId,
+    reviewerId: currentUser.id,
   }
 
   return (
@@ -41,4 +42,4 @@ const GetUserReviewsForArticleQuery = props => {
 }
 
 export { GET_USER_REVIEWS_FOR_ARTICLE }
-export default GetUserReviewsForArticleQuery
+export default withCurrentUser(GetUserReviewsForArticleQuery)

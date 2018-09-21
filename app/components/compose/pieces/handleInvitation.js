@@ -4,6 +4,7 @@ import React from 'react'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
+import { withCurrentUser } from '../../../userContext'
 import { GET_DASHBOARD_ARTICLES } from './getDashboardArticles'
 
 const HANDLE_INVITATION = gql`
@@ -21,17 +22,16 @@ const HANDLE_INVITATION = gql`
 `
 
 const HandleInvitationMutation = props => {
-  const { getCurrentUserQuery, render } = props
-  const { id } = getCurrentUserQuery.data.currentUser
+  const { currentUser, render } = props
 
   const variables = {
-    currentUserId: id,
+    currentUserId: currentUser.id,
   }
 
   const refetch = [
     {
       query: GET_DASHBOARD_ARTICLES,
-      variables: { currentUserId: id },
+      variables,
     },
   ]
 
@@ -48,4 +48,4 @@ const HandleInvitationMutation = props => {
   )
 }
 
-export default HandleInvitationMutation
+export default withCurrentUser(HandleInvitationMutation)
