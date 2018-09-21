@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
 import styled, { css } from 'styled-components'
+import { isArray, isPlainObject, isUndefined, isString } from 'lodash'
 
+import config from 'config'
 import { H2, H4, H6 } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
 import { TextEditor } from 'xpub-edit'
@@ -14,6 +16,58 @@ const humanize = authors =>
     if (i === authors.length - 2) return `${author.name} and `
     return `${author.name}, `
   })
+
+const metadataExtrator = geneExpression => {
+  const { detectionMethod } = geneExpression
+  const { detectionMethodCorrelations } = config
+  const correlations = detectionMethodCorrelations[detectionMethod]
+  const extracted = []
+
+  if (!isUndefined(correlations)) {
+    for (let i = 0; i < correlations.length; i += 1) {
+      const key = correlations[i]
+      if (isString(geneExpression[key])) {
+        const value = geneExpression[key] === '' ? '-' : geneExpression[key]
+        extracted.push({
+          label: unCamelCase(key),
+          values: value,
+        })
+      }
+      if (isPlainObject(geneExpression[key])) {
+        if (!isUndefined(geneExpression[key].name)) {
+          const value =
+            geneExpression[key].name === '' ? '-' : geneExpression[key].name
+          extracted.push({
+            label: unCamelCase(key),
+            values: value,
+          })
+        }
+      }
+      if (isArray(geneExpression[key])) {
+        const temp = {
+          label: unCamelCase(key),
+          values: '',
+        }
+        for (let j = 0; j < geneExpression[key].length; j += 1) {
+          if (!isUndefined(geneExpression[key][j].name)) {
+            const value =
+              geneExpression[key][j].name === ''
+                ? '-'
+                : geneExpression[key][j].name
+            if (j === geneExpression[key].length - 1) {
+              temp.values += value
+            } else {
+              temp.values += `${value}, `
+            }
+          }
+        }
+        extracted.push(temp)
+      }
+    }
+  }
+
+  return extracted
+}
 
 const Wrapper = styled.div`
   font-family: ${th('fontReading')};
@@ -108,6 +162,12 @@ const ArticlePreview = props => {
   const lab = laboratory.name
   const imageSource = `/uploads/${image.url}`
 
+  const metadata = metadataExtrator(article.geneExpression).map(item => (
+    <Section key={item.label}>
+      <InlineData label={item.label} value={item.values} />
+    </Section>
+  ))
+
   return (
     <Wrapper>
       <PageHeader>Article Preview</PageHeader>
@@ -159,6 +219,7 @@ const ArticlePreview = props => {
         <Section>
           <InlineData label="Datatype" value={unCamelCase(dataType)} />
         </Section>
+        {metadata}
       </Metadata>
     </Wrapper>
   )
