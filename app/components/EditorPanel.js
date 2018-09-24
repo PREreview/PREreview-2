@@ -2,7 +2,6 @@
 
 import React from 'react'
 import styled from 'styled-components'
-import { State } from 'react-powerplug'
 
 import { H2 } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
@@ -23,7 +22,6 @@ import {
   Discuss,
   EditorPanelRibbon,
   PanelInfo,
-  RejectArticle,
   ReviewerInfo,
   ScienceOfficerSection,
 } from './ui'
@@ -56,123 +54,51 @@ const EditorPanel = props => {
   const { status } = article
   const decision = getDecision(status)
 
-  const accepted = isAccepted(status)
   const alreadyRejected = isRejected(status)
   const approved = isApprovedByScienceOfficer(status)
   const notApproved = isNotApprovedByScienceOfficer(status)
   const scienceOfficerHasDecision = approved || notApproved
 
-  const initialState = {
-    rejectedCheck: false,
-    ribbonStatus: null,
+  const deriveRibbonStatus = () => {
+    if (isAccepted(status)) return 'accepted'
+    if (isRejected(status)) return 'rejected'
+    if (decision === 'revise') return 'revise'
+    if (approved) return 'scienceOfficerApproved'
+    if (notApproved) return 'scienceOfficerDeclined'
+    if (!scienceOfficerHasDecision) return 'scienceOfficerPending'
+    return null
   }
 
   return (
-    <State initial={initialState}>
-      {({ state, setState }) => {
-        const { rejectedCheck, ribbonStatus } = state
+    <Wrapper>
+      <Header>Editor Panel</Header>
 
-        // HACK -- Find a more elegant way to handle this
-        if (accepted && ribbonStatus !== 'accepted') {
-          setState({ ribbonStatus: 'accepted' })
-        } else if (
-          !accepted &&
-          alreadyRejected &&
-          ribbonStatus !== 'rejected'
-        ) {
-          setState({ ribbonStatus: 'rejected' })
-        } else if (
-          !accepted &&
-          !alreadyRejected &&
-          decision === 'revise' &&
-          ribbonStatus !== 'revise'
-        ) {
-          setState({ ribbonStatus: 'revise' })
-        } else if (
-          !accepted &&
-          !alreadyRejected &&
-          decision !== 'revise' &&
-          approved &&
-          ribbonStatus !== 'scienceOfficerApproved'
-        ) {
-          setState({ ribbonStatus: 'scienceOfficerApproved' })
-        } else if (
-          !accepted &&
-          !alreadyRejected &&
-          decision !== 'revise' &&
-          !approved &&
-          notApproved &&
-          ribbonStatus !== 'scienceOfficerDeclined'
-        ) {
-          setState({ ribbonStatus: 'scienceOfficerDeclined' })
-        } else if (
-          !accepted &&
-          !alreadyRejected &&
-          decision !== 'revise' &&
-          !approved &&
-          !notApproved &&
-          ribbonStatus !== 'scienceOfficerPending'
-        ) {
-          setState({ ribbonStatus: 'scienceOfficerPending' })
-        }
+      {!loading && (
+        <React.Fragment>
+          <PanelInfo editor={editor} scienceOfficer={scienceOfficer} />
 
-        const toggleRejectionWarning = () => {
-          setState({
-            rejectedCheck: !rejectedCheck,
-            ribbonStatus: rejectedCheck ? null : 'rejectionWarning',
-          })
-        }
+          <EditorPanelRibbon type={deriveRibbonStatus()} />
 
-        return (
-          <Wrapper>
-            <Header>Editor Panel</Header>
-
-            {!loading && (
-              <React.Fragment>
-                <PanelInfo editor={editor} scienceOfficer={scienceOfficer} />
-
-                <EditorPanelRibbon type={ribbonStatus} />
-
-                {!scienceOfficerHasDecision &&
-                  !decision && (
-                    <RejectArticle
-                      alreadyRejected={alreadyRejected}
-                      article={article}
-                      checked={rejectedCheck}
-                      update={toggleRejectionWarning}
-                      updateArticle={updateArticle}
-                    />
-                  )}
-
-                {!alreadyRejected &&
-                  !rejectedCheck &&
-                  !decision && (
-                    <ScienceOfficerSection
-                      article={article}
-                      updateArticle={updateArticle}
-                    />
-                  )}
-
-                <ReviewerInfo articleId={article.id} />
-
-                {/* {approved && ( */}
-                <DecisionSection
-                  article={article}
-                  updateArticle={updateArticle}
-                />
-                {/* )} */}
-
-                <Discuss
-                  article={article}
-                  currentUser={currentUser}
-                  updateArticle={updateArticle}
-                />
-              </React.Fragment>
+          {!alreadyRejected &&
+            !decision && (
+              <ScienceOfficerSection
+                article={article}
+                updateArticle={updateArticle}
+              />
             )}
-          </Wrapper>
-        )
-      }}
-    </State>
+
+          <ReviewerInfo articleId={article.id} />
+
+          <DecisionSection article={article} updateArticle={updateArticle} />
+
+          <Discuss
+            article={article}
+            currentUser={currentUser}
+            updateArticle={updateArticle}
+          />
+        </React.Fragment>
+      )}
+    </Wrapper>
   )
 }
 

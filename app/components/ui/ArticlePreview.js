@@ -155,8 +155,8 @@ const ObserveExpression = ({ data }) => {
   const Group = ({ row }) => (
     <ObserveExpressionGroup>
       {row.map(element => (
-        <div>
-          {element[0]}: {element[1]}
+        <div key={element[0]}>
+          {unCamelCase(element[0])}: &nbsp; <em>{element[1]}</em>
         </div>
       ))}
     </ObserveExpressionGroup>
