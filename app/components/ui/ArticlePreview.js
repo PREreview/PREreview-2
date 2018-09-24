@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { isUndefined } from 'lodash'
+import { forIn, isUndefined, keys, pickBy } from 'lodash'
 
 import config from 'config'
 import { H2, H4, H6 } from '@pubsweet/ui'
@@ -113,6 +113,16 @@ const MetadataEditor = styled(Editor)`
   font-family: ${th('fontInterface')};
 `
 
+const ObserveExpressionSection = styled.div`
+  border-top: 2px ${th('borderStyle')} ${th('colorBorder')};
+  padding-top: ${th('gridUnit')};
+`
+
+const ObserveExpressionGroup = styled.div`
+  border-bottom: ${th('borderWidth')} dashed ${th('colorBorder')};
+  margin-bottom: ${th('gridUnit')};
+`
+
 const InlineData = ({ label, value }) => (
   <div>
     <strong>{`${label}: `}</strong>
@@ -120,10 +130,50 @@ const InlineData = ({ label, value }) => (
   </div>
 )
 
-// const ObserveExpression = ({ data }) => {
-//   console.log(data)
-//   return null
-// }
+const ObserveExpression = ({ data }) => {
+  const rows = []
+  const keysOfInterest = [
+    'certainly',
+    'partially',
+    'possibly',
+    'not',
+    'during',
+    'subcellularLocalization',
+  ]
+
+  forIn(data, (v, k) => {
+    if (!Array.isArray(v)) return
+
+    /* eslint-disable array-callback-return */
+    v.map(item => {
+      const picked = pickBy(item, (value, key) => keysOfInterest.includes(key))
+      const row = keys(picked).map(key => [key, picked[key].name || '-'])
+      rows.push(row)
+    })
+  })
+
+  const Group = ({ row }) => (
+    <ObserveExpressionGroup>
+      {row.map(element => (
+        <div>
+          {element[0]}: {element[1]}
+        </div>
+      ))}
+    </ObserveExpressionGroup>
+  )
+
+  return (
+    <ObserveExpressionSection>
+      <div>
+        <strong>Observe Expression</strong>
+      </div>
+
+      {rows.map(r => (
+        <Group row={r} />
+      ))}
+    </ObserveExpressionSection>
+  )
+}
 
 const ArticlePreview = props => {
   const { article } = props
@@ -144,7 +194,7 @@ const ArticlePreview = props => {
   const {
     detectionMethod,
     expressionPattern,
-    // observeExpression,
+    observeExpression,
     species,
   } = geneExpression
 
@@ -224,9 +274,7 @@ const ArticlePreview = props => {
           ))}
         </Section>
 
-        {/* <Section>
-          <ObserveExpression data={observeExpression} />
-        </Section> */}
+        <ObserveExpression data={observeExpression} />
       </Metadata>
     </Wrapper>
   )
