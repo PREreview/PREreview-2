@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { isArray, isPlainObject, isUndefined, isString } from 'lodash'
+import { isUndefined } from 'lodash'
 
 import config from 'config'
 import { H2, H4, H6 } from '@pubsweet/ui'
@@ -10,61 +10,37 @@ import { TextEditor } from 'xpub-edit'
 
 import { unCamelCase } from '../../helpers/generic'
 
-const humanize = authors =>
+const makeAuthorDisplayValues = authors =>
   authors.map((author, i) => {
     if (i === authors.length - 1) return `${author.name}`
     if (i === authors.length - 2) return `${author.name} and `
     return `${author.name}, `
   })
 
-const metadataExtractor = geneExpression => {
+const makeMetadataDisplayValues = geneExpression => {
   const { detectionMethod } = geneExpression
   const { detectionMethodCorrelations } = config
   const correlations = detectionMethodCorrelations[detectionMethod]
-  const extracted = []
 
-  if (!isUndefined(correlations)) {
-    for (let i = 0; i < correlations.length; i += 1) {
-      const key = correlations[i]
-      if (isString(geneExpression[key])) {
-        const value = geneExpression[key] === '' ? '-' : geneExpression[key]
-        extracted.push({
-          label: unCamelCase(key),
-          values: value,
-        })
-      }
-      if (isPlainObject(geneExpression[key])) {
-        if (!isUndefined(geneExpression[key].name)) {
-          const value =
-            geneExpression[key].name === '' ? '-' : geneExpression[key].name
-          extracted.push({
-            label: unCamelCase(key),
-            values: value,
-          })
-        }
-      }
-      if (isArray(geneExpression[key])) {
-        const temp = {
-          label: unCamelCase(key),
-          values: '',
-        }
-        for (let j = 0; j < geneExpression[key].length; j += 1) {
-          if (!isUndefined(geneExpression[key][j].name)) {
-            const value =
-              geneExpression[key][j].name === ''
-                ? '-'
-                : geneExpression[key][j].name
-            if (j === geneExpression[key].length - 1) {
-              temp.values += value
-            } else {
-              temp.values += `${value}, `
-            }
-          }
-        }
-        extracted.push(temp)
-      }
-    }
-  }
+  if (isUndefined(correlations)) return []
+
+  const makeDisplayValue = value =>
+    value.name || (isUndefined(value.name) && value) || '-'
+
+  const extracted = correlations.map((item, i) => {
+    const key = correlations[i]
+    const value = geneExpression[key]
+    const label = unCamelCase(key)
+
+    const displayValue = Array.isArray(value)
+      ? value.map(
+          (v, pos) =>
+            `${makeDisplayValue(v)}${pos === v.length - 1 ? ' ,' : ''}`,
+        )
+      : makeDisplayValue(value)
+
+    return { displayValue, label }
+  })
 
   return extracted
 }
@@ -144,6 +120,11 @@ const InlineData = ({ label, value }) => (
   </div>
 )
 
+// const ObserveExpression = ({ data }) => {
+//   console.log(data)
+//   return null
+// }
+
 const ArticlePreview = props => {
   const { article } = props
   const {
@@ -152,21 +133,25 @@ const ArticlePreview = props => {
     comments,
     dataType,
     funding,
+    geneExpression,
     image,
     laboratory,
     patternDescription,
     suggestedReviewer,
     title,
   } = article
-  const authorNames = humanize(authors)
+
+  const {
+    detectionMethod,
+    expressionPattern,
+    // observeExpression,
+    species,
+  } = geneExpression
+
+  const authorNames = makeAuthorDisplayValues(authors)
   const lab = laboratory.name
   const imageSource = `/uploads/${image.url}`
-
-  const metadata = metadataExtractor(article.geneExpression).map(item => (
-    <Section key={item.label}>
-      <InlineData label={item.label} value={item.values} />
-    </Section>
-  ))
+  const metadata = makeMetadataDisplayValues(geneExpression)
 
   return (
     <Wrapper>
@@ -180,10 +165,6 @@ const ArticlePreview = props => {
 
       <Section>
         <Image alt={image.name} src={imageSource} />
-
-        {/* {image.caption ? (
-          <figcaption>{article.image.caption}</figcaption>
-        ) : null} */}
       </Section>
 
       <Section>
@@ -219,7 +200,33 @@ const ArticlePreview = props => {
         <Section>
           <InlineData label="Datatype" value={unCamelCase(dataType)} />
         </Section>
-        {metadata}
+
+        <Section>
+          <InlineData label="Species" value={species.name} />
+          <InlineData
+            label="Expression Pattern for Gene"
+            value={expressionPattern.name}
+          />
+        </Section>
+
+        <Section>
+          <InlineData
+            label="Detection Method"
+            value={unCamelCase(detectionMethod)}
+          />
+
+          {metadata.map(item => (
+            <InlineData
+              key={item.label}
+              label={item.label}
+              value={item.displayValue}
+            />
+          ))}
+        </Section>
+
+        {/* <Section>
+          <ObserveExpression data={observeExpression} />
+        </Section> */}
       </Metadata>
     </Wrapper>
   )
