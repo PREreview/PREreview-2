@@ -17,10 +17,9 @@ This is the repo for the Micropublications.org project
 |Unit Tests Scripts         |               |&#x2714;   |#7
 |e2e Test Scripts           |               |&#x2714;   |#6
 |Decide on Form Lib         |               |&#x2714;   |#18
-|Set up Dashboard           |&#x2714;       |           |#16
-|Set up Form Submission     |&#x2714;       |           |#17
-|Granttome API extension    |               |           |#20
-|Amigo API extension        |               |           |#21
+|Set up Dashboard           |               |&#x2714;   |#16
+|Set up Form Submission     |               |&#x2714;   |#17
+|Amigo API extension        |               |&#x2714;   |#21
 |Wormbase DB API extension  |               |&#x2714;   |#19
-
-
+|Roles & permissions        |&#x2714;       |           |#19
+|Granttome API extension    |               |           |#20
