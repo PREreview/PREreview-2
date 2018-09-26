@@ -9,11 +9,12 @@ import { th } from '@pubsweet/ui-toolkit'
 import { Radio } from '../formElements'
 import { DecisionForm } from '../form'
 import { Accordion, PanelTextEditor as Editor } from './index'
-import { hasDecision } from '../../helpers/status'
+import { hasDecision, isApprovedByScienceOfficer } from '../../helpers/status'
 
-const makeOptions = theme => [
+const makeOptions = (theme, approved) => [
   {
-    color: theme.colorSuccess,
+    color: approved ? theme.colorSuccess : theme.colorTextPlaceholder,
+    disabled: !approved,
     label: 'Accept',
     value: 'accept',
   },
@@ -46,9 +47,11 @@ const RadioWrapper = styled.div`
 
 const DecisionSection = props => {
   const { article, theme, ...otherProps } = props
-  const options = makeOptions(theme)
   const { status } = article
+
   const decisionExists = hasDecision(status)
+  const approved = isApprovedByScienceOfficer(status)
+  const options = makeOptions(theme, approved)
 
   return (
     <Accordion label="Decision" startExpanded={decisionExists}>
@@ -56,7 +59,6 @@ const DecisionSection = props => {
         <DecisionForm article={article} {...otherProps}>
           {formProps => {
             const { errors, values } = formProps
-            console.log(errors)
 
             return (
               <React.Fragment>
