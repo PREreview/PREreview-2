@@ -45,6 +45,8 @@ const EditorPanel = props => {
     currentUser,
     editor,
     loading,
+    reviewerCounts,
+    reviews,
     scienceOfficer,
     updateArticle,
   } = props
@@ -87,7 +89,11 @@ const EditorPanel = props => {
               />
             )}
 
-          <ReviewerInfo articleId={article.id} />
+          <ReviewerInfo
+            articleId={article.id}
+            reviewerCounts={reviewerCounts}
+            reviews={reviews}
+          />
 
           <DecisionSection article={article} updateArticle={updateArticle} />
 

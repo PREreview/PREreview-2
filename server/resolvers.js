@@ -94,6 +94,29 @@ const userReviewsForArticle = async (_, vars, ctx) => {
   return reviews
 }
 
+const reviewsForArticle = async (_, vars, context) => {
+  const { articleVersionId } = vars
+  const {
+    connectors: { user },
+  } = context
+
+  const reviews = await db.select({
+    articleVersionId,
+    type: 'review',
+  })
+
+  const data = await reviews.map(async review => {
+    const reviewer = await user.fetchOne(review.reviewerId, context)
+
+    return {
+      reviewer,
+      ...review,
+    }
+  })
+
+  return Promise.all(data).then(res => res)
+}
+
 const resolvers = {
   Date: date,
   // TO DO -- deprecated
@@ -277,6 +300,7 @@ const resolvers = {
     async manuscripts() {
       return db.select({ type: 'manuscript' })
     },
+    reviewsForArticle,
     async teamsForArticle(_, { id }) {
       const selector = {
         'object.objectId': id,
