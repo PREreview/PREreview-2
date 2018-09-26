@@ -29,8 +29,8 @@ const transformDecision = decision => {
 }
 
 const validations = yup.object().shape({
-  decision: yup.string().required('You have to make a decision'),
-  decisionLetter: yup.string().required('You have to write a decision letter'),
+  decision: yup.string().required('You need to make a decision'),
+  decisionLetter: yup.string().required('You need to write a decision letter'),
 })
 
 const DecisionForm = props => {
