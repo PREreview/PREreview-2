@@ -3,6 +3,7 @@
 import React from 'react'
 import { adopt } from 'react-adopt'
 import { withRouter } from 'react-router-dom'
+import { get } from 'lodash'
 
 import {
   getArticleForEditor,
@@ -11,7 +12,11 @@ import {
 } from './pieces'
 
 import { withCurrentUser } from '../../userContext'
-import { getEditor, getScienceOfficer } from '../../helpers/teams'
+import {
+  getEditor,
+  getReviewersTeamByType,
+  getScienceOfficer,
+} from '../../helpers/teams'
 
 const mapper = {
   getArticleForEditor: props => getArticleForEditor(props),
@@ -19,15 +24,40 @@ const mapper = {
   updateArticleForEditor,
 }
 
-const mapProps = args => ({
-  article: args.getArticleForEditor.data.manuscript,
-  editor: getEditor(args.getTeamsForArticle.data.teamsForArticle),
-  loading: args.getTeamsForArticle.loading || args.getArticleForEditor.loading,
-  scienceOfficer: getScienceOfficer(
-    args.getTeamsForArticle.data.teamsForArticle,
-  ),
-  updateArticle: args.updateArticleForEditor.updateArticle,
-})
+const mapProps = args => {
+  const teams = get(args.getTeamsForArticle, 'data.teamsForArticle')
+
+  const invited = get(
+    getReviewersTeamByType(teams, 'reviewersInvited'),
+    'members.length',
+  )
+
+  const accepted = get(
+    getReviewersTeamByType(teams, 'reviewersAccepted'),
+    'members.length',
+  )
+
+  const rejected = get(
+    getReviewersTeamByType(teams, 'reviewersRejected'),
+    'members.length',
+  )
+
+  return {
+    article: args.getArticleForEditor.data.manuscript,
+    editor: getEditor(args.getTeamsForArticle.data.teamsForArticle),
+    loading:
+      args.getTeamsForArticle.loading || args.getArticleForEditor.loading,
+    reviewerCounts: {
+      accepted,
+      invited,
+      rejected,
+    },
+    scienceOfficer: getScienceOfficer(
+      args.getTeamsForArticle.data.teamsForArticle,
+    ),
+    updateArticle: args.updateArticleForEditor.updateArticle,
+  }
+}
 
 const Composed = adopt(mapper, mapProps)
 

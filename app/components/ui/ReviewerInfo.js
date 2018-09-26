@@ -24,24 +24,6 @@ const ContentWrapper = styled.div`
   }
 `
 
-const fakeReviewersNumbers = [
-  {
-    amount: 10,
-    id: 'fkjfsjldkjflks',
-    label: 'invited',
-  },
-  {
-    amount: 6,
-    id: 'lkflsajsalkfj',
-    label: 'rejected',
-  },
-  {
-    amount: 3,
-    id: 'lklk;afk;dsk',
-    label: 'accepted',
-  },
-]
-
 const fakeReviewsData = [
   {
     content: '<p>This is almost ok</p>',
@@ -61,7 +43,7 @@ const fakeReviewsData = [
 ]
 
 const ReviewerInfo = props => {
-  const { articleId } = props
+  const { articleId, reviewerCounts } = props
 
   return (
     <Accordion label="Reviews">
@@ -72,7 +54,7 @@ const ReviewerInfo = props => {
           </StyledAction>
         </div>
 
-        <ReviewersNumbers data={fakeReviewersNumbers} />
+        <ReviewersNumbers data={reviewerCounts} />
         <ReviewsPreview data={fakeReviewsData} />
       </ContentWrapper>
     </Accordion>

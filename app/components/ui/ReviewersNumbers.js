@@ -28,17 +28,39 @@ const ReviewersNumbersItem = props => {
   return (
     <ReviewersNumbersItemWrapper>
       <span>{amount}</span>
-      <span>reviewers {label}</span>
+      <span>
+        reviewer
+        {amount === 1 ? '' : 's'} {label}
+      </span>
     </ReviewersNumbersItemWrapper>
   )
 }
 
 const ReviewersNumbers = props => {
   const { data } = props
+
+  const items = [
+    {
+      amount: data.invited,
+      id: 'invited',
+      label: 'invited',
+    },
+    {
+      amount: data.accepted,
+      id: 'accepted',
+      label: 'accepted',
+    },
+    {
+      amount: data.rejected,
+      id: 'rejected',
+      label: 'rejected',
+    },
+  ]
+
   return (
     <div>
       <Header>Reviewer stats</Header>
-      <List component={ReviewersNumbersItem} items={data} />
+      <List component={ReviewersNumbersItem} items={items} />
     </div>
   )
 }
