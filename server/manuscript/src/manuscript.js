@@ -9,34 +9,33 @@ class Manuscript extends BaseModel {
   constructor(properties) {
     super(properties)
     this.type = 'manuscript'
-    // this.owners = this.owners || []
-    // console.log('oy', properties)
-    // const props = {}
-    // if (properties) {
-    //   props.id = properties.id
-    //   props.data = properties
-    // }
-    // if (props.data) {
-    //   if (props.data.id) {
-    //     delete props.data.id
-    //   }
-    //   if (props.data) {
-    //     props.data.type = 'manuscript'
-    //     props.data.owners = props.data.owners || []
-    //   }
-    // }
   }
 
   static get schema() {
     return {
       properties: {
-        data: { type: 'object' },
-        title: { type: 'string' },
+        acknowledgements: { type: ['string', 'null'] },
         authors: {
-          type: 'array',
-          items: { type: 'string', format: 'uuid' },
+          items: { type: 'object' },
+          type: ['array', 'null'],
         },
-        status: { type: 'object' },
+        comments: { type: ['string', 'null'] },
+        communicationHistory: {
+          items: { type: 'object' },
+          type: ['array', 'null'],
+        },
+        data: { type: ['object', 'null'] },
+        dataType: { type: ['string', 'null'] },
+        decisionLetter: { type: ['string', 'null'] },
+        disclaimer: { type: ['boolean', 'null'] },
+        funding: { type: ['string', 'null'] },
+        geneExpression: { type: ['object', 'null'] },
+        image: { type: ['object', 'null'] },
+        laboratory: { type: ['object', 'null'] },
+        patternDescription: { type: ['string', 'null'] },
+        status: { type: ['object', 'null'] },
+        suggestedReviewer: { type: ['object', 'null'] },
+        title: { type: 'string' },
       },
     }
   }

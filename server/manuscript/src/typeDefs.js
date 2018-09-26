@@ -15,8 +15,6 @@ const typeDefs = `
     updateManuscript(data: ManuscriptInput!): Manuscript!
   }
 
-  scalar Date
-
   type DashboardArticles {
     author: [Manuscript]
     editor: [EditorArticle]

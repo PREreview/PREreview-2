@@ -9,6 +9,7 @@ module.exports = {
     db: {
       database: 'wbtest',
     },
+    pool: { min: 0, max: 1, idleTimeoutMillis: 1000 },
     host: 'http://localhost',
     port: 3000,
     secret: 'somesecret',

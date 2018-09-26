@@ -11,10 +11,10 @@
     "micropubs",
     "wormbase"
   ],
-  "workspaces": [],
   "author": "Yannis Barlas",
   "license": "MIT",
   "dependencies": {
+    "@pubsweet/base-model": "^1.0.1",
     "@pubsweet/coko-theme": "^4.0.0",
     "@pubsweet/logger": "^0.2.5",
     "@pubsweet/ui": "^8.6.2",
@@ -131,7 +131,7 @@
     "server": "pubsweet server",
     "server:production": "./scripts/runProductionServer.sh",
     "setupdb": "pubsweet setupdb && npm run seed",
-    "test": "jest",
+    "test": "jest --maxWorkers=1",
     "testcafe": "source ./config/test.env && testcafe chromium e2e/"
   },
   "config": {
@@ -149,6 +149,7 @@
       "!**/coverage/**"
     ],
     "coverageDirectory": "<rootDir>/coverage",
+    "collectCoverage": true,
     "projects": [
       {
         "rootDir": "<rootDir>/app",
@@ -164,7 +165,7 @@
       {
         "rootDir": "<rootDir>/server",
         "displayName": "server",
-        "testRegex": "manuscript/test/.+test.jsx?$",
+        "testRegex": "test/.+test.jsx?$",
         "globals": {
           "window": {}
         }

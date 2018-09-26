@@ -1,14 +1,8 @@
-const db = require('./dbHelpers')
-const clone = require('lodash/clone')
-const cloneDeep = require('lodash/cloneDeep')
 const merge = require('lodash/merge')
 const union = require('lodash/union')
 
-const { GraphQLScalarType } = require('graphql')
-const { Kind } = require('graphql/language')
-
 const Manuscript = require('./manuscript')
-
+const { Team } = require('pubsweet-server')
 // TO DO -- get these from team helpers (import vs require)
 const newStatus = {
   decision: {
@@ -27,32 +21,14 @@ const newStatus = {
   },
 }
 
-const isMember = (team, userId) => team.members.includes(userId)
+const isMember = (team, userId) => team && team.members.includes(userId)
 
 const isUserInGlobalTeams = (globalTeams, userId) =>
   globalTeams.some(team => isMember(team, userId))
 
 // END TO DO
 
-const date = new GraphQLScalarType({
-  description: 'Date custom scalar type',
-  name: 'Date',
-  parseLiteral(ast) {
-    if (ast.kind === Kind.INT) {
-      return new Date(ast.value) // ast value is always in string format
-    }
-    return null
-  },
-  parseValue(value) {
-    return new Date(value) // value from the client
-  },
-  serialize(value) {
-    return value // value sent to the client
-  },
-})
-
 const resolvers = {
-  Date: date,
   // TO DO -- deprecated
   HistoryEntry: {
     user(historyEntry, vars, ctx) {
@@ -68,7 +44,7 @@ const resolvers = {
       return manuscript
     },
     async deleteManuscript(_, { id }) {
-      await db.deleteManuscript(id)
+      await Manuscript.query().deleteById(id)
       return id
     },
     async handleInvitation(_, { action, articleId, currentUserId }, context) {
@@ -81,21 +57,23 @@ const resolvers = {
       let team
 
       if (action === 'accept') {
-        const acceptTeams = await db.select({
-          // object: { objectId: articleId },
-          teamType: 'reviewersAccepted',
-          type: 'team',
-        })
+        let acceptTeams
+        try {
+          acceptTeams = await Team.findByField('teamType', 'reviewersAccepted')
+        } catch (e) {
+          acceptTeams = []
+        }
 
         team = acceptTeams.find(
           t => t.object && t.object.objectId === articleId,
         )
       } else if (action === 'reject') {
-        const rejectTeams = await db.select({
-          // object: { objectId: articleId },
-          teamType: 'reviewersRejected',
-          type: 'team',
-        })
+        let rejectTeams
+        try {
+          rejectTeams = await Team.findByField('teamType', 'reviewersRejected')
+        } catch (e) {
+          rejectTeams = []
+        }
 
         team = rejectTeams.find(
           t => t.object && t.object.objectId === articleId,
@@ -107,23 +85,24 @@ const resolvers = {
       const newMembers = union(team.members, [currentUserId])
       team.members = newMembers
 
-      return context.connectors.team
-        .update(team.id, { members: newMembers }, context)
-        .then(res => res.id)
+      return context.connectors.Team.update(
+        team.id,
+        { members: newMembers },
+        context,
+      ).then(res => res.id)
     },
     async updateManuscript(_, { data }, ctx) {
-      const manuscript = await db.selectId(data.id)
-      merge(manuscript, data)
+      const manuscript = await Manuscript.find(data.id)
 
-      await db.update(db.manuscriptGqlToDb(manuscript), data.id)
-      return manuscript
+      merge(manuscript, data)
+      return manuscript.save()
     },
   },
   Query: {
     async dashboardArticles(_, { currentUserId }, context) {
       const { connectors } = context
-      const articles = await db.select({ type: 'manuscript' })
-      const teams = await db.select({ type: 'team' })
+      const articles = await Manuscript.query()
+      const teams = await Team.all()
       const globalTeams = teams.filter(t => t.global)
       const isGlobal = isUserInGlobalTeams(globalTeams, currentUserId)
 
@@ -131,7 +110,6 @@ const resolvers = {
         author: [],
         editor: [],
         isGlobal,
-        reviewer: [],
       }
 
       articles.forEach(article => {
@@ -147,26 +125,28 @@ const resolvers = {
         }
 
         // Is user an editor or science officer
-        if (isGlobal && article.status.submission.initial) {
-          const editorArticle = clone(article)
-
+        if (isGlobal && article.status && article.status.submission.initial) {
           const editorTeam = articleTeams.find(t => t.teamType === 'editor')
           const assignedEditorId = editorTeam.members[0]
 
           let assignedEditor
           if (assignedEditorId) {
-            assignedEditor = connectors.user.fetchOne(assignedEditorId, context)
+            assignedEditor = connectors.User.fetchOne(assignedEditorId, context)
           }
 
-          editorArticle.assignedEditor = assignedEditor
-          data.editor.push(editorArticle)
+          data.editor.push({ ...article, assignedEditor })
         }
       })
 
       return data
     },
     async globalTeams() {
-      const teams = await db.select({ global: true, type: 'team' })
+      let teams
+      try {
+        teams = await Team.findByField('global', true)
+      } catch (e) {
+        teams = []
+      }
       return teams
     },
     async manuscript(_, { id }) {
@@ -176,11 +156,12 @@ const resolvers = {
       return Manuscript.query()
     },
     async teamsForArticle(_, { id }) {
-      const selector = {
-        'object.objectId': id,
-        type: 'team',
+      let teams
+      try {
+        teams = await Team.findByField('object.objectId', id)
+      } catch (e) {
+        teams = []
       }
-      const teams = await db.select(selector)
       return teams
     },
   },

@@ -4,11 +4,9 @@ const typeDefs = `
   }
 
   extend type Mutation {
-    createReview(input: CreateReviewInput!): ID!
-    updateReview(id: ID!, input: UpdateReviewInput!): ID!
+    createReview(input: CreateReviewInput!): Review!
+    updateReview(id: ID!, input: UpdateReviewInput!): Review!
   }
-
-  scalar Date
 
   type Review {
     articleVersionId: ID
@@ -21,9 +19,9 @@ const typeDefs = `
   }
 
   type ReviewEvents {
-    createdAt: Date
-    submittedAt: Date
-    updatedAt: Date
+    createdAt: String
+    submittedAt: String
+    updatedAt: String
   }
 
   type ReviewStatus {
@@ -50,12 +48,6 @@ const typeDefs = `
 
   extend type DashboardArticles {
     reviewer: [ReviewerArticle]
-  }
-
-  type ReviewerArticle {
-    id: ID
-    reviewerStatus: String
-    title: String
   }
 `
 

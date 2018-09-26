@@ -1,8 +1,5 @@
-const db = require('./dbHelpers')
-const clone = require('lodash/clone')
-
-const { GraphQLScalarType } = require('graphql')
-const { Kind } = require('graphql/language')
+const Review = require('../src/review')
+const { Team } = require('pubsweet-server')
 
 // TO DO -- get these from team helpers (import vs require)
 const newReviewStatus = {
@@ -18,74 +15,43 @@ const reviewSubmittedStatus = {
 const isMember = (team, userId) => team.members.includes(userId)
 // END TO DO
 
-const date = new GraphQLScalarType({
-  description: 'Date custom scalar type',
-  name: 'Date',
-  parseLiteral(ast) {
-    if (ast.kind === Kind.INT) {
-      return new Date(ast.value) // ast value is always in string format
-    }
-    return null
-  },
-  parseValue(value) {
-    return new Date(value) // value from the client
-  },
-  serialize(value) {
-    return value // value sent to the client
-  },
-})
-
 const updateReview = async (_, vars, ctx) => {
   const { id, input } = vars
   const { content, recommendation, submit } = input
 
-  const review = await db.selectId(id)
+  const review = await Review.find(id)
   if (!review) throw new Error(`No review found with id ${id}`)
-  const data = clone(review)
 
-  delete data.id
-  data.type = 'review'
-  data.content = content
-  data.recommendation = recommendation
-  data.events.updatedAt = new Date()
+  review.content = content
+  review.recommendation = recommendation
+  review.events.updatedAt = new Date()
 
   if (submit) {
-    data.events.submittedAt = new Date()
-    data.status = reviewSubmittedStatus
+    review.events.submittedAt = new Date()
+    review.status = reviewSubmittedStatus
   }
-  // merge(data, input)
 
-  return db.update(data, id).then(res => res)
+  return review.save()
 }
 
 const userReviewsForArticle = async (_, vars, ctx) => {
   const { articleVersionId, reviewerId } = vars
 
-  const reviews = await db.select({
-    articleVersionId,
-    reviewerId,
-    type: 'review',
-  })
+  const reviews = await Review.query()
+    .where('articleVersionId', articleVersionId)
+    .andWhere('reviewerId', reviewerId)
 
   return reviews
 }
 
 const resolvers = {
-  Date: date,
-  // TO DO -- deprecated
-  HistoryEntry: {
-    user(historyEntry, vars, ctx) {
-      return ctx.connectors.user.fetchOne(historyEntry.user, ctx)
-    },
-  },
-  Manuscript: {
+  DashboardArticles: {
     reviewer: async (manuscript, args, ctx) => {
-      const teams = await db.select({ type: 'team' })
-      const userReviews = await db.select({
-        reviewerId: currentUserId,
-        type: 'review',
-      })
-      const articles = await db.select({ type: 'manuscript' })
+      const { model: Manuscript } = require('../../manuscript/src') // eslint-disable-line global-require
+
+      const teams = await Team.all()
+      const userReviews = await Review.findByField('reviewerId', ctx.user)
+      const articles = await Manuscript.query()
 
       const reviewer = []
 
@@ -107,8 +73,7 @@ const resolvers = {
           t => t.teamType === 'reviewersRejected',
         )
 
-        if (isMember(invitedReviewersTeam, currentUserId)) {
-          const reviewArticle = clone(article)
+        if (isMember(invitedReviewersTeam, ctx.user)) {
           let status
 
           // Figure out status and attach to article
@@ -119,33 +84,37 @@ const resolvers = {
 
           if (hasSubmittedReviewForArticle) {
             status = 'submitted'
-          } else if (isMember(acceptedReviewersTeam, currentUserId)) {
+          } else if (isMember(acceptedReviewersTeam, ctx.user)) {
             status = 'accepted'
-          } else if (isMember(rejectedReviewersTeam, currentUserId)) {
+          } else if (isMember(rejectedReviewersTeam, ctx.user)) {
             status = 'rejected'
           } else {
             status = 'pendingDecision'
           }
 
-          reviewArticle.reviewerStatus = status
-          reviewer.push(reviewArticle)
+          reviewer.push({ ...article, reviewerStatus: status })
         }
       })
       return reviewer
     },
   },
+  // TO DO -- deprecated
+  HistoryEntry: {
+    user(historyEntry, vars, ctx) {
+      return ctx.connectors.user.fetchOne(historyEntry.user, ctx)
+    },
+  },
   Mutation: {
     async createReview(_, vars, ctx) {
       const { input } = vars
-      const review = clone(input)
+      const review = new Review(input)
 
-      review.type = 'review'
       review.events = {
         createdAt: new Date(),
       }
-      review.status = clone(newReviewStatus)
+      review.status = newReviewStatus
 
-      await db.save(review)
+      await review.save()
       return review
     },
     updateReview,
