@@ -1,59 +1,63 @@
-/* eslint-disable react/prop-types */
+/*
+  DEPRECATED
+*/
 
-import React from 'react'
+// /* eslint-disable react/prop-types */
 
-import { Button } from '@pubsweet/ui'
+// import React from 'react'
 
-import { RejectArticleForm } from '../form'
-import { PanelTextEditor as Editor, RejectCheckbox } from './index'
+// import { Button } from '@pubsweet/ui'
 
-const DecisionLetterForm = props => (
-  <RejectArticleForm {...props}>
-    {formProps => {
-      const { values } = formProps
+// import { RejectArticleForm } from '../form'
+// import { PanelTextEditor as Editor, RejectCheckbox } from './index'
 
-      return (
-        <React.Fragment>
-          <Editor
-            label="Decision Letter"
-            name="decisionLetter"
-            placeholder="Write some comments to the author"
-            required
-            value={values.decisionLetter}
-            {...formProps}
-          />
+// const DecisionLetterForm = props => (
+//   <RejectArticleForm {...props}>
+//     {formProps => {
+//       const { values } = formProps
 
-          <Button primary type="submit">
-            Submit
-          </Button>
-        </React.Fragment>
-      )
-    }}
-  </RejectArticleForm>
-)
+//       return (
+//         <React.Fragment>
+//           <Editor
+//             label="Decision Letter"
+//             name="decisionLetter"
+//             placeholder="Write some comments to the author"
+//             required
+//             value={values.decisionLetter}
+//             {...formProps}
+//           />
 
-const DecisionLetter = ({ value }) => (
-  <Editor label="Decision Letter" readOnly value={value} />
-)
+//           <Button primary type="submit">
+//             Submit
+//           </Button>
+//         </React.Fragment>
+//       )
+//     }}
+//   </RejectArticleForm>
+// )
 
-const RejectArticle = props => {
-  const { alreadyRejected, article, checked, update, updateArticle } = props
-  const isChecked = alreadyRejected || checked
+// const DecisionLetter = ({ value }) => (
+//   <Editor label="Decision Letter" readOnly value={value} />
+// )
 
-  return (
-    <React.Fragment>
-      {!alreadyRejected && (
-        <RejectCheckbox checked={isChecked} onChange={update} />
-      )}
+// const RejectArticle = props => {
+//   const { alreadyRejected, article, checked, update, updateArticle } = props
+//   const isChecked = alreadyRejected || checked
 
-      {checked &&
-        !alreadyRejected && (
-          <DecisionLetterForm article={article} updateArticle={updateArticle} />
-        )}
+//   return (
+//     <React.Fragment>
+//       {!alreadyRejected && (
+//         <RejectCheckbox checked={isChecked} onChange={update} />
+//       )}
 
-      {alreadyRejected && <DecisionLetter value={article.decisionLetter} />}
-    </React.Fragment>
-  )
-}
+//       {checked &&
+//         !alreadyRejected && (
+//           <DecisionLetterForm article={article} updateArticle={updateArticle} />
+//         )}
 
-export default RejectArticle
+//       {alreadyRejected && <DecisionLetter value={article.decisionLetter} />}
+//     </React.Fragment>
+//   )
+// }
+
+// export default RejectArticle
