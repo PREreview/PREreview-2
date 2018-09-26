@@ -24,26 +24,8 @@ const ContentWrapper = styled.div`
   }
 `
 
-const fakeReviewsData = [
-  {
-    content: '<p>This is almost ok</p>',
-    id: 'llalfjdljaslfjlsd',
-    recommendation: 'revise',
-    status: 'pending',
-    username: 'Yannis Barlas',
-  },
-  {
-    content:
-      '<p>Donec at sodales nibh. Nam augue libero, vestibulum ut ante in, consequat dignissim quam. Mauris porta magna a turpis molestie dignissim. Curabitur augue metus, lacinia sit amet quam et, tristique placerat est. Sed blandit fringilla diam, et tristique massa pharetra nec. In consectetur vehicula volutpat. Etiam pretium malesuada ligula, vel congue nibh maximus et. Interdum et malesuada fames ac ante ipsum primis in faucibus. Phasellus finibus, velit in interdum sodales, nisl nisl viverra augue, id tincidunt diam erat non est. Donec volutpat semper fringilla. Integer tellus erat, tempor ac odio ornare, luctus malesuada erat. Morbi a luctus leo. Etiam nibh felis, tempor non viverra nec, maximus non elit. Ut varius eros enim, sed sagittis arcu efficitur quis. In eu leo at odio elementum semper ut quis leo.</p>',
-    id: 'bfjksasdhak',
-    recommendation: 'accept',
-    status: 'submitted',
-    username: 'Alexis Georgantas',
-  },
-]
-
 const ReviewerInfo = props => {
-  const { articleId, reviewerCounts } = props
+  const { articleId, reviewerCounts, reviews } = props
 
   return (
     <Accordion label="Reviews">
@@ -55,7 +37,7 @@ const ReviewerInfo = props => {
         </div>
 
         <ReviewersNumbers data={reviewerCounts} />
-        <ReviewsPreview data={fakeReviewsData} />
+        <ReviewsPreview reviews={reviews} />
       </ContentWrapper>
     </Accordion>
   )

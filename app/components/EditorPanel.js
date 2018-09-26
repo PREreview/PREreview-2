@@ -46,9 +46,11 @@ const EditorPanel = props => {
     editor,
     loading,
     reviewerCounts,
+    reviews,
     scienceOfficer,
     updateArticle,
   } = props
+
   if (loading) return <Loading />
 
   const { status } = article
@@ -90,6 +92,7 @@ const EditorPanel = props => {
           <ReviewerInfo
             articleId={article.id}
             reviewerCounts={reviewerCounts}
+            reviews={reviews}
           />
 
           <DecisionSection article={article} updateArticle={updateArticle} />

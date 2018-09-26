@@ -7,6 +7,7 @@ import { get } from 'lodash'
 
 import {
   getArticleForEditor,
+  getReviewsForArticle,
   getTeamsForArticle,
   updateArticleForEditor,
 } from './pieces'
@@ -20,6 +21,7 @@ import {
 
 const mapper = {
   getArticleForEditor: props => getArticleForEditor(props),
+  getReviewsForArticle: props => getReviewsForArticle(props),
   getTeamsForArticle: props => getTeamsForArticle(props),
   updateArticleForEditor,
 }
@@ -46,12 +48,15 @@ const mapProps = args => {
     article: args.getArticleForEditor.data.manuscript,
     editor: getEditor(args.getTeamsForArticle.data.teamsForArticle),
     loading:
-      args.getTeamsForArticle.loading || args.getArticleForEditor.loading,
+      args.getTeamsForArticle.loading ||
+      args.getArticleForEditor.loading ||
+      args.getReviewsForArticle.loading,
     reviewerCounts: {
       accepted,
       invited,
       rejected,
     },
+    reviews: get(args.getReviewsForArticle, 'data.reviewsForArticle'),
     scienceOfficer: getScienceOfficer(
       args.getTeamsForArticle.data.teamsForArticle,
     ),

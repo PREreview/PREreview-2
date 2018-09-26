@@ -4,6 +4,7 @@ const typeDefs = `
     globalTeams: [Team]
     manuscript(id: ID!): Manuscript!
     manuscripts: [Manuscript]!
+    reviewsForArticle(articleVersionId: ID!): [ReviewForArticle],
     teamsForArticle(id: ID!): [Team]
     userReviewsForArticle(articleVersionId: ID!, reviewerId: ID!): [Review],
     userTeams(id: ID!): [Team]
@@ -27,6 +28,16 @@ const typeDefs = `
     id: ID!
     recommendation: String
     reviewerId: ID
+    status: ReviewStatus
+  }
+
+  type ReviewForArticle {
+    articleVersionId: ID
+    content: String
+    events: ReviewEvents
+    id: ID!
+    recommendation: String
+    reviewer: User
     status: ReviewStatus
   }
 
