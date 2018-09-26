@@ -44,6 +44,7 @@ const EditorPanel = props => {
     article,
     currentUser,
     editor,
+    editorSuggestedReviewers,
     loading,
     reviewerCounts,
     reviews,
@@ -85,6 +86,7 @@ const EditorPanel = props => {
             !decision && (
               <ScienceOfficerSection
                 article={article}
+                editorSuggestedReviewers={editorSuggestedReviewers}
                 updateArticle={updateArticle}
               />
             )}

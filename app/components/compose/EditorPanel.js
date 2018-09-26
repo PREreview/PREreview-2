@@ -44,9 +44,15 @@ const mapProps = args => {
     'members.length',
   )
 
+  const reviewersTeam = get(
+    getReviewersTeamByType(teams, 'reviewers'),
+    'members',
+  )
+
   return {
     article: args.getArticleForEditor.data.manuscript,
     editor: getEditor(args.getTeamsForArticle.data.teamsForArticle),
+    editorSuggestedReviewers: reviewersTeam,
     loading:
       args.getTeamsForArticle.loading ||
       args.getArticleForEditor.loading ||

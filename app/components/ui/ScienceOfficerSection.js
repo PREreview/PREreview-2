@@ -28,17 +28,34 @@ const FormWrapper = styled.div`
   margin-left: calc(${th('gridUnit')} * 3);
 `
 
+const Header = styled.div`
+  font-weight: bold;
+  margin-top: ${th('gridUnit')};
+`
+
 const ScienceOfficerSection = props => {
-  const { theme, ...otherProps } = props
+  const { editorSuggestedReviewers, theme, ...otherProps } = props
   const options = makeOptions(theme)
 
   return (
-    <Accordion label="Science Officer">
+    <Accordion label="Science Officer" startExpanded>
       <FormWrapper>
+        <Header>Reviewers suggested by Editor</Header>
+        <div>
+          {editorSuggestedReviewers.map(
+            (reviewer, i) =>
+              `${reviewer.username}${
+                i === editorSuggestedReviewers.length - 1 ? '' : ', '
+              }`,
+          )}
+        </div>
+
         <ScienceOfficerApprovalForm {...otherProps}>
           {formProps => (
             <React.Fragment>
+              <Header>Approval</Header>
               <Radio inline name="approve" options={options} {...formProps} />
+
               <Button primary type="submit">
                 Submit
               </Button>
