@@ -13,14 +13,15 @@ const permissions = {
     // console.log('object', object)
     // console.log('context', context)
 
-    if (object === 'teams') return true
+    // if (object === 'teams') return true
 
-    if (object.type === 'team') {
-      if (object.teamType === 'author') return true
-      return true
-    }
+    // if (object.type === 'team') {
+    //   if (object.teamType === 'author') return true
+    //   return true
+    // }
 
-    return false
+    // return false
+    return true
   },
   read: (userId, operation, object, context) => {
     // console.log('\nread')
