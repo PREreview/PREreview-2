@@ -46,6 +46,7 @@ const typeDefs = `
     authors: [Author]
     comments: String
     communicationHistory: [HistoryEntry]
+    currentlyWith: ID
     dataType: String
     decisionLetter: String
     disclaimer: Boolean
@@ -65,6 +66,7 @@ const typeDefs = `
     authors: [AuthorInput]
     comments: String
     communicationHistory: [HistoryEntryInput]
+    currentlyWith: ID
     dataType: String
     decisionLetter: String
     disclaimer: Boolean

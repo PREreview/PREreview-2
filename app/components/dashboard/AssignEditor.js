@@ -15,7 +15,15 @@ const mapUsersToOptions = users =>
   users && users.map(user => mapUserToSelect(user))
 
 const AssignEditor = props => {
-  const { allEditors, editor, editorTeamId, loading, updateTeam } = props
+  const {
+    allEditors,
+    articleId,
+    editor,
+    editorTeamId,
+    loading,
+    updateCurrentlyWith,
+    updateTeam,
+  } = props
   if (loading) return null
 
   const options = mapUsersToOptions(allEditors)
@@ -23,7 +31,16 @@ const AssignEditor = props => {
 
   const handleChange = newValue => {
     const input = { members: [newValue.value] }
-    updateTeam({ variables: { id: editorTeamId, input } })
+    updateTeam({ variables: { id: editorTeamId, input } }).then(() => {
+      const editorId = newValue.value
+
+      const data = {
+        currentlyWith: editorId,
+        id: articleId,
+      }
+
+      updateCurrentlyWith({ variables: { data } })
+    })
   }
 
   return (

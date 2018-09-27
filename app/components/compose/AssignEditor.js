@@ -3,11 +3,17 @@
 import React from 'react'
 import { adopt } from 'react-adopt'
 
-import { getGlobalTeams, getTeamsForArticle, updateTeam } from './pieces'
+import {
+  getGlobalTeams,
+  getTeamsForArticle,
+  updateCurrentlyWith,
+  updateTeam,
+} from './pieces'
 
 const mapper = {
   getGlobalTeams,
   getTeams: props => getTeamsForArticle(props),
+  updateCurrentlyWith,
   updateTeam,
 }
 
@@ -35,6 +41,7 @@ const mapProps = args => {
     editor,
     editorTeamId: editorTeamForArticle && editorTeamForArticle.id,
     loading: args.getGlobalTeams.loading || args.getTeams.loading,
+    updateCurrentlyWith: args.updateCurrentlyWith.updateCurrentlyWith,
     updateTeam: args.updateTeam.updateTeam,
   }
 }
@@ -43,7 +50,12 @@ const Composed = adopt(mapper, mapProps)
 
 const ComposedAssignEditor = props => {
   const { render, ...otherProps } = props
-  return <Composed {...otherProps}>{render}</Composed>
+
+  return (
+    <Composed {...otherProps}>
+      {mappedProps => render({ ...mappedProps, ...otherProps })}
+    </Composed>
+  )
 }
 
 export default ComposedAssignEditor

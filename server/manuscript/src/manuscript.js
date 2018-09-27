@@ -24,6 +24,7 @@ class Manuscript extends BaseModel {
           items: { type: 'object' },
           type: ['array', 'null'],
         },
+        currentlyWith: { format: 'uuid', type: ['string', 'null'] },
         data: { type: ['object', 'null'] },
         dataType: { type: ['string', 'null'] },
         decisionLetter: { type: ['string', 'null'] },
