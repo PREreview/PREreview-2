@@ -32,7 +32,7 @@ const resolvers = {
   // TO DO -- deprecated
   HistoryEntry: {
     user(historyEntry, vars, ctx) {
-      return ctx.connectors.user.fetchOne(historyEntry.user, ctx)
+      return ctx.connectors.User.fetchOne(historyEntry.user, ctx)
     },
   },
   Mutation: {
