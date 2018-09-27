@@ -2,7 +2,7 @@ const merge = require('lodash/merge')
 const union = require('lodash/union')
 
 const Manuscript = require('./manuscript')
-const { Team } = require('pubsweet-server')
+const { Team, User } = require('pubsweet-server')
 // TO DO -- get these from team helpers (import vs require)
 const newStatus = {
   decision: {
@@ -23,8 +23,8 @@ const newStatus = {
 
 const isMember = (team, userId) => team && team.members.includes(userId)
 
-const isUserInGlobalTeams = (globalTeams, userId) =>
-  globalTeams.some(team => isMember(team, userId))
+const isUserInGlobalTeams = (globalTeams, user) =>
+  user.admin || globalTeams.some(team => isMember(team, user.id))
 
 // END TO DO
 
@@ -102,9 +102,10 @@ const resolvers = {
     async dashboardArticles(_, { currentUserId }, context) {
       const { connectors } = context
       const articles = await Manuscript.query()
+      const currentUser = await User.find(currentUserId)
       const teams = await Team.all()
       const globalTeams = teams.filter(t => t.global)
-      const isGlobal = isUserInGlobalTeams(globalTeams, currentUserId)
+      const isGlobal = isUserInGlobalTeams(globalTeams, currentUser)
 
       const data = {
         author: [],
