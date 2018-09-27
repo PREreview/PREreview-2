@@ -2,17 +2,52 @@
 
 import React from 'react'
 import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
 
-import { GET_MANUSCRIPT_FOR_EDITOR } from '../../../queries/manuscripts'
+const GET_ARTICLE_FOR_EDITOR = gql`
+  query GetArticleForEditor($id: ID!) {
+    manuscript(id: $id) {
+      communicationHistory {
+        content
+        # id
+        timestamp
+        user {
+          id
+          username
+        }
+      }
+      currentlyWith
+      decisionLetter
+      id
+      status {
+        decision {
+          accepted
+          rejected
+          revise
+        }
+        scienceOfficer {
+          approved
+          pending
+        }
+        submission {
+          initial
+          datatypeSelected
+          full
+        }
+      }
+    }
+  }
+`
 
 const GetArticleForEditorQuery = props => {
   const { articleId: id, render } = props
 
   return (
-    <Query query={GET_MANUSCRIPT_FOR_EDITOR} variables={{ id }}>
+    <Query query={GET_ARTICLE_FOR_EDITOR} variables={{ id }}>
       {render}
     </Query>
   )
 }
 
+export { GET_ARTICLE_FOR_EDITOR }
 export default GetArticleForEditorQuery

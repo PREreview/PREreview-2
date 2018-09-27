@@ -7,9 +7,11 @@ import { get } from 'lodash'
 
 import {
   getArticleForEditor,
+  getGlobalTeams,
   getReviewsForArticle,
   getTeamsForArticle,
   updateArticleForEditor,
+  updateCurrentlyWith,
 } from './pieces'
 
 import { withCurrentUser } from '../../userContext'
@@ -21,9 +23,11 @@ import {
 
 const mapper = {
   getArticleForEditor: props => getArticleForEditor(props),
+  getGlobalTeams,
   getReviewsForArticle: props => getReviewsForArticle(props),
   getTeamsForArticle: props => getTeamsForArticle(props),
   updateArticleForEditor,
+  updateCurrentlyWith,
 }
 
 const mapProps = args => {
@@ -53,9 +57,11 @@ const mapProps = args => {
     article: args.getArticleForEditor.data.manuscript,
     editor: getEditor(args.getTeamsForArticle.data.teamsForArticle),
     editorSuggestedReviewers: reviewersTeam,
+    globalTeams: get(args.getGlobalTeams, 'data.globalTeams'),
     loading:
       args.getTeamsForArticle.loading ||
       args.getArticleForEditor.loading ||
+      args.getGlobalTeams.loading ||
       args.getReviewsForArticle.loading,
     reviewerCounts: {
       accepted,
@@ -67,6 +73,7 @@ const mapProps = args => {
       args.getTeamsForArticle.data.teamsForArticle,
     ),
     updateArticle: args.updateArticleForEditor.updateArticle,
+    updateCurrentlyWith: args.updateCurrentlyWith.updateCurrentlyWith,
   }
 }
 

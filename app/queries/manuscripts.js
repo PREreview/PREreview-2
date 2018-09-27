@@ -165,39 +165,39 @@ const GET_MANUSCRIPT = gql`
   }
 `
 
-const GET_MANUSCRIPT_FOR_EDITOR = gql`
-  query manuscript($id: ID!) {
-    manuscript(id: $id) {
-      communicationHistory {
-        content
-        # id
-        timestamp
-        user {
-          id
-          username
-        }
-      }
-      decisionLetter
-      id
-      status {
-        decision {
-          accepted
-          rejected
-          revise
-        }
-        scienceOfficer {
-          approved
-          pending
-        }
-        submission {
-          initial
-          datatypeSelected
-          full
-        }
-      }
-    }
-  }
-`
+// const GET_MANUSCRIPT_FOR_EDITOR = gql`
+//   query manuscript($id: ID!) {
+//     manuscript(id: $id) {
+//       communicationHistory {
+//         content
+//         # id
+//         timestamp
+//         user {
+//           id
+//           username
+//         }
+//       }
+//       decisionLetter
+//       id
+//       status {
+//         decision {
+//           accepted
+//           rejected
+//           revise
+//         }
+//         scienceOfficer {
+//           approved
+//           pending
+//         }
+//         submission {
+//           initial
+//           datatypeSelected
+//           full
+//         }
+//       }
+//     }
+//   }
+// `
 
 const GET_MANUSCRIPTS = gql`
   query manuscripts {
@@ -224,4 +224,4 @@ const GET_MANUSCRIPTS = gql`
   }
 `
 
-export { GET_MANUSCRIPT, GET_MANUSCRIPT_FOR_EDITOR, GET_MANUSCRIPTS }
+export { GET_MANUSCRIPT, GET_MANUSCRIPTS }

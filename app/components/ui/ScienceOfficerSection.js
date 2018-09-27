@@ -38,7 +38,7 @@ const ScienceOfficerSection = props => {
   const options = makeOptions(theme)
 
   return (
-    <Accordion label="Science Officer" startExpanded>
+    <Accordion label="Science Officer">
       <FormWrapper>
         <Header>Reviewers suggested by Editor</Header>
         <div>

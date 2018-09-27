@@ -3,7 +3,7 @@
 import React from 'react'
 import { Mutation } from 'react-apollo'
 
-import { GET_MANUSCRIPT_FOR_EDITOR } from '../../../queries/manuscripts'
+import { GET_ARTICLE_FOR_EDITOR } from './getArticleForEditor'
 import UPDATE_MANUSCRIPT_FOR_EDITOR from '../../../mutations/updateManuscriptForEditor'
 
 const updateArticleForEditorMutation = ({ articleId, render }) => (
@@ -11,7 +11,7 @@ const updateArticleForEditorMutation = ({ articleId, render }) => (
     mutation={UPDATE_MANUSCRIPT_FOR_EDITOR}
     refetchQueries={[
       {
-        query: GET_MANUSCRIPT_FOR_EDITOR,
+        query: GET_ARTICLE_FOR_EDITOR,
         variables: { id: articleId },
       },
     ]}

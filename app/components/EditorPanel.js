@@ -3,11 +3,12 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { H2 } from '@pubsweet/ui'
+import { Button as UIButton, H2 } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
 
 import ComposedEditorPanel from './compose/EditorPanel'
 import Loading from './Loading'
+import { getGlobalTeamMembersByType } from '../helpers/teams'
 
 import {
   getDecision,
@@ -39,17 +40,64 @@ const Header = styled(H2)`
   color: ${th('colorText')};
 `
 
+const Button = styled(UIButton)`
+  margin-bottom: calc(${th('gridUnit')} * 2);
+`
+
+const SendTo = props => {
+  const {
+    article,
+    currentUser,
+    editor,
+    globalTeams,
+    scienceOfficer,
+    updateCurrentlyWith,
+  } = props
+
+  const editors = getGlobalTeamMembersByType(globalTeams, 'editors')
+  let sendToId, sendToLabel
+
+  if (editors.find(user => user.id === currentUser.id)) {
+    sendToId = scienceOfficer.id
+    sendToLabel = 'science officer'
+  } else if (scienceOfficer.id === currentUser.id) {
+    sendToId = editor.id
+    sendToLabel = 'editor'
+  }
+
+  const sendTo = () => {
+    const data = {
+      currentlyWith: sendToId,
+      id: article.id,
+    }
+
+    updateCurrentlyWith({ variables: { data } })
+  }
+
+  if (article.currentlyWith === sendToId) {
+    return `Sent to ${sendToLabel}`
+  }
+
+  return (
+    <Button onClick={sendTo} primary>
+      Send to {sendToLabel}
+    </Button>
+  )
+}
+
 const EditorPanel = props => {
   const {
     article,
     currentUser,
     editor,
     editorSuggestedReviewers,
+    globalTeams,
     loading,
     reviewerCounts,
     reviews,
     scienceOfficer,
     updateArticle,
+    updateCurrentlyWith,
   } = props
 
   if (loading) return <Loading />
@@ -79,8 +127,16 @@ const EditorPanel = props => {
       {!loading && (
         <React.Fragment>
           <PanelInfo editor={editor} scienceOfficer={scienceOfficer} />
-
           <EditorPanelRibbon type={deriveRibbonStatus()} />
+
+          <SendTo
+            article={article}
+            currentUser={currentUser}
+            editor={editor}
+            globalTeams={globalTeams}
+            scienceOfficer={scienceOfficer}
+            updateCurrentlyWith={updateCurrentlyWith}
+          />
 
           {!alreadyRejected &&
             !decision && (
