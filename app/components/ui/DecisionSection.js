@@ -9,11 +9,12 @@ import { th } from '@pubsweet/ui-toolkit'
 import { Radio } from '../formElements'
 import { DecisionForm } from '../form'
 import { Accordion, PanelTextEditor as Editor } from './index'
-import { hasDecision } from '../../helpers/status'
+import { hasDecision, isApprovedByScienceOfficer } from '../../helpers/status'
 
-const makeOptions = theme => [
+const makeOptions = (theme, approved) => [
   {
-    color: theme.colorSuccess,
+    color: approved ? theme.colorSuccess : theme.colorTextPlaceholder,
+    disabled: !approved,
     label: 'Accept',
     value: 'accept',
   },
@@ -40,32 +41,43 @@ const Message = styled.div`
   text-transform: uppercase;
 `
 
+const RadioWrapper = styled.div`
+  margin-top: calc(${th('gridUnit')} * 2);
+`
+
 const DecisionSection = props => {
   const { article, theme, ...otherProps } = props
-  const options = makeOptions(theme)
   const { status } = article
+
   const decisionExists = hasDecision(status)
+  const approved = isApprovedByScienceOfficer(status)
+  const options = makeOptions(theme, approved)
 
   return (
     <Accordion label="Decision" startExpanded={decisionExists}>
       <FormWrapper>
         <DecisionForm article={article} {...otherProps}>
           {formProps => {
-            const { values } = formProps
+            const { errors, values } = formProps
 
             return (
               <React.Fragment>
                 {decisionExists && <Message>Decision submitted</Message>}
 
-                <Radio
-                  inline
-                  name="decision"
-                  options={options}
-                  readOnly={decisionExists}
-                  {...formProps}
-                />
+                <RadioWrapper>
+                  <Radio
+                    error={errors.decision}
+                    inline
+                    label="Decision"
+                    name="decision"
+                    options={options}
+                    readOnly={decisionExists}
+                    {...formProps}
+                  />
+                </RadioWrapper>
 
                 <Editor
+                  error={errors.decisionLetter}
                   key={decisionExists}
                   label="Decision letter"
                   name="decisionLetter"

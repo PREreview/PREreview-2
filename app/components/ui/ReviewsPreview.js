@@ -8,6 +8,11 @@ import { th } from '@pubsweet/ui-toolkit'
 
 import { PanelSectionHeader, PanelTextEditor, RecommendationDot } from './index'
 
+const Message = styled.div`
+  color: ${th('colorTextPlaceholder')};
+  margin-top: calc(${th('gridUnit')} * 2);
+`
+
 const Editor = styled(PanelTextEditor)`
   div[contenteditable] {
     border: 0;
@@ -33,29 +38,38 @@ const Pending = styled.div`
 `
 
 const Review = props => {
-  const { content, recommendation, status, username } = props
-  const pending = status === 'pending'
+  const { content, recommendation, reviewer, status } = props
 
   return (
     <ReviewWrapper>
       <ReviewHeadWrapper>
-        <RecommendationDot recommendation={pending ? null : recommendation} />
-        {username}
-        {pending && <Pending>pending</Pending>}
+        <RecommendationDot
+          recommendation={status.pending ? null : recommendation}
+        />
+
+        {reviewer.username}
+
+        {status.pending && <Pending>pending</Pending>}
       </ReviewHeadWrapper>
-      {!pending && <Editor readOnly value={content} />}
+
+      {!status.pending && <Editor readOnly value={content} />}
     </ReviewWrapper>
   )
 }
 
 const Reviews = props => {
-  const { data } = props
-  if (!data || !data.length > 0) return null
+  const { reviews } = props
 
   return (
     <div>
       <PanelSectionHeader>Reviewer feedback</PanelSectionHeader>
-      <List component={Review} items={data} />
+
+      {(!reviews || reviews.length === 0) && (
+        <Message>No invited reviewers yet for this article</Message>
+      )}
+
+      {reviews &&
+        reviews.length > 0 && <List component={Review} items={reviews} />}
     </div>
   )
 }

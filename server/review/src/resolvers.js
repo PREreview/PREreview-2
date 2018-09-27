@@ -44,6 +44,25 @@ const userReviewsForArticle = async (_, vars, ctx) => {
   return reviews
 }
 
+const reviewsForArticle = async (_, vars, context) => {
+  const { articleVersionId } = vars
+  const reviews = await Review.findByField('articleVersionId', articleVersionId)
+
+  const data = await reviews.map(async review => {
+    const reviewer = await context.connectors.User.fetchOne(
+      review.reviewerId,
+      context,
+    )
+
+    return {
+      reviewer,
+      ...review,
+    }
+  })
+
+  return Promise.all(data).then(res => res)
+}
+
 const resolvers = {
   DashboardArticles: {
     reviewer: async (manuscript, args, ctx) => {
@@ -97,6 +116,7 @@ const resolvers = {
       })
       return reviewer
     },
+    reviewsForArticle,
   },
   // TO DO -- deprecated
   HistoryEntry: {

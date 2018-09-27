@@ -2,20 +2,19 @@
 
 import React from 'react'
 import { Route } from 'react-router-dom'
-import { withApollo } from 'react-apollo'
 import styled from 'styled-components'
 
 import { Icon } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
 
-import CURRENT_USER from '../queries/currentUser'
+import { withCurrentUser } from '../userContext'
 
 const NotAdminErrorPageWrapper = styled.div`
   align-items: center;
-  justify-content: center;
   display: flex;
   flex-direction: column;
   height: 100%;
+  justify-content: center;
 
   div:last-child {
     margin-bottom: 20%;
@@ -34,15 +33,11 @@ const NotAdminErrorPage = () => (
 )
 
 const AdminRoute = props => {
-  const { client, ...otherProps } = props
+  const { currentUser, ...otherProps } = props
+  const isAdmin = currentUser.admin
 
-  const { currentUser } = client.readQuery({
-    query: CURRENT_USER,
-  })
-
-  if (!currentUser.admin) return <NotAdminErrorPage />
-
+  if (!isAdmin) return <NotAdminErrorPage />
   return <Route {...otherProps} />
 }
 
-export default withApollo(AdminRoute)
+export default withCurrentUser(AdminRoute)

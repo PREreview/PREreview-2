@@ -1,6 +1,7 @@
 const typeDefs = `
   extend type Query {
     userReviewsForArticle(articleVersionId: ID!, reviewerId: ID!): [Review],
+    reviewsForArticle(articleVersionId: ID!): [ReviewForArticle],
   }
 
   extend type Mutation {
@@ -48,6 +49,16 @@ const typeDefs = `
 
   extend type DashboardArticles {
     reviewer: [ReviewerArticle]
+  }
+
+  type ReviewForArticle {
+    articleVersionId: ID
+    content: String
+    events: ReviewEvents
+    id: ID!
+    recommendation: String
+    reviewer: User
+    status: ReviewStatus
   }
 `
 

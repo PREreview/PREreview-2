@@ -85,6 +85,7 @@ const Radio = props => {
           {`${label}${required ? ' *' : ''}`} {error && <Error>{error}</Error>}
         </Label>
       )}
+
       <RadioGroup
         disabled={readOnly}
         onChange={onChange}

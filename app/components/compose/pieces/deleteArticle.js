@@ -5,6 +5,7 @@ import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import { GET_DASHBOARD_ARTICLES } from './getDashboardArticles'
+import { withCurrentUser } from '../../../userContext'
 
 const DELETE_ARTICLE = gql`
   mutation DeleteArticle($id: ID!) {
@@ -13,13 +14,12 @@ const DELETE_ARTICLE = gql`
 `
 
 const DeleteArticleMutation = props => {
-  const { getCurrentUserQuery, render } = props
-  const { id } = getCurrentUserQuery.data.currentUser
+  const { currentUser, render } = props
 
   const refetch = [
     {
       query: GET_DASHBOARD_ARTICLES,
-      variables: { currentUserId: id },
+      variables: { currentUserId: currentUser.id },
     },
   ]
 
@@ -32,4 +32,4 @@ const DeleteArticleMutation = props => {
   )
 }
 
-export default DeleteArticleMutation
+export default withCurrentUser(DeleteArticleMutation)

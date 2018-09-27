@@ -52,6 +52,11 @@ const getReviewerTeams = teams => {
   return teams.filter(t => t.name.match(/^reviewers-/))
 }
 
+const getReviewersTeamByType = (teams, type) => {
+  if (!teams) return null
+  return teams.find(t => t.teamType === type) || null
+}
+
 // Get science officer assigned to article
 const getScienceOfficer = teamsForArticle => {
   const scienceOfficerTeam = getScienceOfficerTeamForArticle(teamsForArticle)
@@ -100,6 +105,7 @@ export {
   getEditorTeamId,
   getRegularUsers,
   getReviewerTeams,
+  getReviewersTeamByType,
   getScienceOfficer,
   getScienceOfficerTeamForArticle,
   getFirstMemberOfTeam,

@@ -149,7 +149,7 @@ const InitialSubmission = props => {
         key={`comments-${props.readOnly}`}
         label="Comments"
         name="comments"
-        placeholder="Provide a description for the pattern"
+        placeholder="Write down some comments"
         value={get(values, 'comments')}
         {...props}
       />

@@ -3,50 +3,80 @@
 import React from 'react'
 import { adopt } from 'react-adopt'
 import { withRouter } from 'react-router-dom'
+import { get } from 'lodash'
 
 import {
   getArticleForEditor,
-  getCurrentUser,
+  getReviewsForArticle,
   getTeamsForArticle,
   updateArticleForEditor,
 } from './pieces'
 
-import { getEditor, getScienceOfficer } from '../../helpers/teams'
+import { withCurrentUser } from '../../userContext'
+import {
+  getEditor,
+  getReviewersTeamByType,
+  getScienceOfficer,
+} from '../../helpers/teams'
 
 const mapper = {
   getArticleForEditor: props => getArticleForEditor(props),
-  getCurrentUser,
+  getReviewsForArticle: props => getReviewsForArticle(props),
   getTeamsForArticle: props => getTeamsForArticle(props),
   updateArticleForEditor,
 }
 
-const mapProps = args => ({
-  article: args.getArticleForEditor.data.manuscript,
-  currentUser: args.getCurrentUser.data.currentUser,
-  editor: getEditor(args.getTeamsForArticle.data.teamsForArticle),
-  loading:
-    args.getCurrentUser.loading ||
-    args.getTeamsForArticle.loading ||
-    args.getArticleForEditor.loading,
-  scienceOfficer: getScienceOfficer(
-    args.getTeamsForArticle.data.teamsForArticle,
-  ),
-  updateArticle: args.updateArticleForEditor.updateArticle,
-})
+const mapProps = args => {
+  const teams = get(args.getTeamsForArticle, 'data.teamsForArticle')
+
+  const invited = get(
+    getReviewersTeamByType(teams, 'reviewersInvited'),
+    'members.length',
+  )
+
+  const accepted = get(
+    getReviewersTeamByType(teams, 'reviewersAccepted'),
+    'members.length',
+  )
+
+  const rejected = get(
+    getReviewersTeamByType(teams, 'reviewersRejected'),
+    'members.length',
+  )
+
+  return {
+    article: args.getArticleForEditor.data.manuscript,
+    editor: getEditor(args.getTeamsForArticle.data.teamsForArticle),
+    loading:
+      args.getTeamsForArticle.loading ||
+      args.getArticleForEditor.loading ||
+      args.getReviewsForArticle.loading,
+    reviewerCounts: {
+      accepted,
+      invited,
+      rejected,
+    },
+    reviews: get(args.getReviewsForArticle, 'data.reviewsForArticle'),
+    scienceOfficer: getScienceOfficer(
+      args.getTeamsForArticle.data.teamsForArticle,
+    ),
+    updateArticle: args.updateArticleForEditor.updateArticle,
+  }
+}
 
 const Composed = adopt(mapper, mapProps)
 
 const ComposedEditorPanel = props => {
-  const { match, render, ...otherProps } = props
+  const { currentUser, match, render, ...otherProps } = props
   const { id: articleId } = match.params
 
   return (
     <Composed articleId={articleId} {...otherProps}>
-      {mappedProps => render({ articleId, ...mappedProps })}
+      {mappedProps => render({ articleId, currentUser, ...mappedProps })}
     </Composed>
   )
 }
 
 // TO DO -- delete withRouter and get article id from getArticle
 
-export default withRouter(ComposedEditorPanel)
+export default withRouter(withCurrentUser(ComposedEditorPanel))
