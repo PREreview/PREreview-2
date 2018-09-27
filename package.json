@@ -17,7 +17,7 @@
     "@pubsweet/base-model": "^1.0.2",
     "@pubsweet/coko-theme": "^4.0.0",
     "@pubsweet/logger": "^0.2.7",
-    "@pubsweet/ui": "^8.6.2",
+    "@pubsweet/ui": "^8.7.0",
     "@pubsweet/ui-toolkit": "1.2.0",
     "app-module-path": "^2.2.0",
     "babel-preset-es2015-native-modules": "^6.9.4",
