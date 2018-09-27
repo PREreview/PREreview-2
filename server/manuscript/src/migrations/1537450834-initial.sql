@@ -17,6 +17,7 @@ CREATE TABLE manuscripts (
     authors JSONB,
     comments TEXT,
     communication_history JSONB,
+    currently_with UUID,
     data_type TEXT,
     decision_letter TEXT,
     disclaimer BOOLEAN,
