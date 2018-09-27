@@ -74,4 +74,5 @@ module.exports = {
     uploads: 'uploads',
   },
   validations: path.join(__dirname, 'validations'),
+  schema: {},
 }

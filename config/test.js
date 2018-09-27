@@ -7,11 +7,9 @@ module.exports = {
   },
   'pubsweet-server': {
     db: {
-      database: 'wb-test',
-      password: 'wb-testpass',
-      port: 5480,
-      user: 'wb-testuser',
+      database: 'wbtest',
     },
+    pool: { min: 0, max: 1, idleTimeoutMillis: 1000 },
     host: 'http://localhost',
     port: 3000,
     secret: 'somesecret',

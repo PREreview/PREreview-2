@@ -4,5 +4,6 @@
   "pubsweet-component-password-reset-backend",
   "pubsweet-component-password-reset-frontend",
   "./app/wbApi",
-  "./server"
+  "./server/manuscript/src",
+  "./server/review/src"
 ]
