@@ -4,7 +4,6 @@ const typeDefs = `
     globalTeams: [Team]
     manuscript(id: ID!): Manuscript!
     manuscripts: [Manuscript]!
-    reviewsForArticle(articleVersionId: ID!): [ReviewForArticle],
     teamsForArticle(id: ID!): [Team]
     userTeams(id: ID!): [Team]
   }
@@ -14,54 +13,6 @@ const typeDefs = `
     deleteManuscript(id: ID!): ID!
     handleInvitation(action: String!, articleId: ID!, currentUserId: ID!): ID!
     updateManuscript(data: ManuscriptInput!): Manuscript!
-<<<<<<< HEAD:server/manuscript/src/typeDefs.js
-=======
-    updateReview(id: ID!, input: UpdateReviewInput!): ID!
-  }
-
-  scalar Date
-
-  type Review {
-    articleVersionId: ID
-    content: String
-    events: ReviewEvents
-    id: ID!
-    recommendation: String
-    reviewerId: ID
-    status: ReviewStatus
-  }
-
-  type ReviewForArticle {
-    articleVersionId: ID
-    content: String
-    events: ReviewEvents
-    id: ID!
-    recommendation: String
-    reviewer: User
-    status: ReviewStatus
-  }
-
-  type ReviewEvents {
-    createdAt: Date
-    submittedAt: Date
-    updatedAt: Date
-  }
-
-  type ReviewStatus {
-    pending: Boolean
-    submitted: Boolean
-  }
-
-  input CreateReviewInput {
-    articleVersionId: ID!
-    reviewerId: ID!
-  }
-
-  input UpdateReviewInput {
-    content: String
-    recommendation: String
-    submit: Boolean
->>>>>>> develop:server/typeDefs.graphql
   }
 
   type DashboardArticles {

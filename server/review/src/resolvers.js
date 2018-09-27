@@ -116,7 +116,6 @@ const resolvers = {
       })
       return reviewer
     },
-    reviewsForArticle,
   },
   // TO DO -- deprecated
   HistoryEntry: {
@@ -140,6 +139,7 @@ const resolvers = {
     updateReview,
   },
   Query: {
+    reviewsForArticle,
     userReviewsForArticle,
   },
 }

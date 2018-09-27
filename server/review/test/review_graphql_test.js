@@ -57,6 +57,42 @@ describe('Review queries', () => {
     expect(body.data.userReviewsForArticle[0].content).toEqual('Review 1')
   })
 
+  it('can get all reviews for an article', async () => {
+    const articleUuid = uuid.v4()
+
+    // 2 reviews for one manuscript
+    await new Review({
+      articleVersionId: articleUuid,
+      content: 'Review 1',
+      reviewerId: user.id,
+    }).save()
+    await new Review({
+      articleVersionId: articleUuid,
+      content: 'Review 2',
+      reviewerId: user.id,
+    }).save()
+
+    // 1 review for the other one
+    await new Review({
+      articleVersionId: uuid.v4(),
+      content: 'Review 3',
+      reviewerId: user.id,
+    }).save()
+
+    const { body } = await api.graphql.query(
+      `query($articleVersionId: ID!) {
+        reviewsForArticle(articleVersionId: $articleVersionId) { content }
+        }`,
+      {
+        articleVersionId: articleUuid,
+      },
+      token,
+    )
+
+    expect(body.data.reviewsForArticle).toHaveLength(2)
+    expect(body.data.reviewsForArticle[0].content).toEqual('Review 1')
+  })
+
   it('can submit a review', async () => {
     const { body } = await api.graphql.query(
       `mutation($input: CreateReviewInput!) {
