@@ -78,6 +78,16 @@ const InitialSubmission = props => {
         {...props}
       />
 
+      <TextField
+        error={get(errors, 'title')}
+        label="Title"
+        name="title"
+        placeholder="this is the title"
+        required
+        value={get(values, 'title')}
+        {...props}
+      />
+
       <Image label="Image" name="image" required {...props} />
 
       <TextEditor
@@ -92,16 +102,6 @@ const InitialSubmission = props => {
         subscript
         superscript
         value={get(values, 'patternDescription')}
-        {...props}
-      />
-
-      <TextField
-        error={get(errors, 'title')}
-        label="Title"
-        name="title"
-        placeholder="this is the title"
-        required
-        value={get(values, 'title')}
         {...props}
       />
 
