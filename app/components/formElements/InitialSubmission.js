@@ -147,7 +147,7 @@ const InitialSubmission = props => {
       <TextEditor
         error={get(props.errors, 'comments')}
         key={`comments-${props.readOnly}`}
-        label="Comments"
+        label="Comments to the editor"
         name="comments"
         placeholder="Write down some comments"
         value={get(values, 'comments')}
