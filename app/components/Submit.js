@@ -7,13 +7,14 @@ import { th } from '@pubsweet/ui-toolkit'
 import Authorize from 'pubsweet-client/src/helpers/AuthorizeWithGraphQL'
 
 import ComposedSubmit from './compose/Submit'
-// import ReviewerPanel from './compose/ReviewerPanel'
+import ReviewerPanel from './compose/ReviewerPanel'
 import EditorPanel from './EditorPanel'
 import SubmitForm from './form/SubmissionForm'
 import Loading from './Loading'
 import SubmissionForm from './SubmissionForm'
 import { ArticlePreview } from './ui'
 import { isFullSubmissionReady } from '../helpers/status'
+import { formValuesToData } from './formElements/helpers'
 
 const SplitScreen = styled.div`
   display: flex;
@@ -38,38 +39,70 @@ const SplitScreen = styled.div`
   }
 `
 
+const FormWrapper = styled.div`
+  height: 100%;
+
+  form {
+    height: 100%;
+  }
+`
+
+const Form = props => {
+  const { article, update, upload } = props
+
+  return (
+    <FormWrapper>
+      <SubmitForm article={article} update={update} upload={upload}>
+        {formProps => {
+          const { values } = formProps
+
+          return (
+            <SplitScreen>
+              <div>
+                <h1>Submit your article</h1>
+                <SubmissionForm article={article} {...formProps} />
+              </div>
+
+              <div>
+                <ArticlePreview article={formValuesToData(values)} />
+              </div>
+            </SplitScreen>
+          )
+        }}
+      </SubmitForm>
+    </FormWrapper>
+  )
+}
+
 const Submit = props => {
   const { article, loading, update, upload } = props
 
   if (loading) return <Loading />
   const { status } = article
+  const full = isFullSubmissionReady(status)
 
-  const theform = (
-    <React.Fragment>
-      <h1>Submit your article</h1>
-      <SubmitForm article={article} update={update} upload={upload}>
-        {formProps => <SubmissionForm article={article} {...formProps} />}
-      </SubmitForm>
-    </React.Fragment>
-  )
+  if (!full) {
+    return <Form article={article} update={update} upload={upload} />
+  }
 
-  const final = isFullSubmissionReady(status) ? (
-    <SplitScreen>
-      <div>
-        <ArticlePreview article={article} />
-      </div>
-      <div>
-        <Authorize operation="isGlobal" unauthorized={null}>
-          <EditorPanel />
-        </Authorize>
-        {/* <ReviewerPanel /> */}
-      </div>
-    </SplitScreen>
-  ) : (
-    <div>{theform}</div>
-  )
+  const isEditor = true
+  const isReviewer = false
 
-  return final
+  if (isEditor || isReviewer) {
+    return (
+      <SplitScreen>
+        <div>
+          <ArticlePreview article={article} />
+        </div>
+        <div>
+          {isEditor && <EditorPanel />}
+          {isReviewer && <ReviewerPanel />}
+        </div>
+      </SplitScreen>
+    )
+  }
+
+  return <ArticlePreview article={article} />
 }
 
 const Composed = () => <ComposedSubmit render={Submit} />

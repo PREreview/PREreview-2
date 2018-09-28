@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { forIn, isUndefined, keys, pickBy } from 'lodash'
+import { forIn, isUndefined, keys, pickBy, sortBy, uniqueId } from 'lodash'
 
 import config from 'config'
 import { H2, H4, H6 } from '@pubsweet/ui'
@@ -9,8 +9,10 @@ import { th } from '@pubsweet/ui-toolkit'
 import { TextEditor } from 'xpub-edit'
 
 import { unCamelCase } from '../../helpers/generic'
+import { isDatatypeSelected } from '../../helpers/status'
 
 const makeAuthorDisplayValues = authors =>
+  authors &&
   authors.map((author, i) => {
     if (i === authors.length - 1) return `${author.name}`
     if (i === authors.length - 2) return `${author.name} and `
@@ -18,6 +20,7 @@ const makeAuthorDisplayValues = authors =>
   })
 
 const makeMetadataDisplayValues = geneExpression => {
+  if (!geneExpression) return []
   const { detectionMethod } = geneExpression
   const { detectionMethodCorrelations } = config
   const correlations = detectionMethodCorrelations[detectionMethod]
@@ -175,8 +178,9 @@ const ObserveExpression = ({ data }) => {
   )
 }
 
-const ArticlePreview = props => {
+const Preview = props => {
   const { article } = props
+
   const {
     authors,
     acknowledgements,
@@ -187,39 +191,51 @@ const ArticlePreview = props => {
     image,
     laboratory,
     patternDescription,
+    status,
     suggestedReviewer,
     title,
   } = article
 
-  const {
-    detectionMethod,
-    expressionPattern,
-    observeExpression,
-    species,
-  } = geneExpression
+  const dataTypeSelected = isDatatypeSelected(status)
 
-  const authorNames = makeAuthorDisplayValues(authors)
-  const lab = laboratory.name
-  const imageSource = `/uploads/${image.url}`
+  let detectionMethod, expressionPattern, observeExpression, species
+  if (geneExpression)
+    ({
+      detectionMethod,
+      expressionPattern,
+      observeExpression,
+      species,
+    } = geneExpression)
+
+  const authorNames = makeAuthorDisplayValues(
+    sortBy(authors, 'submittingAuthor'),
+  )
+  const lab = laboratory && laboratory.name
   const metadata = makeMetadataDisplayValues(geneExpression)
 
-  return (
-    <Wrapper>
-      <PageHeader>Article Preview</PageHeader>
+  const imageSource =
+    image &&
+    image.url &&
+    (image.url.match(/^blob/) ? image.url : `/uploads/${image.url}`)
 
+  return (
+    <React.Fragment>
       <Section>
         <Title>{title}</Title>
         <div>{authorNames}</div>
         <Lab>{lab}</Lab>
       </Section>
 
-      <Section>
-        <Image alt={image.name} src={imageSource} />
-      </Section>
+      {image &&
+        image.url && (
+          <Section>
+            <Image alt={image.name} src={imageSource} />
+          </Section>
+        )}
 
       <Section>
         <SectionHeader>Description:</SectionHeader>
-        <Editor readonly value={patternDescription} />
+        <Editor key={uniqueId()} readonly value={patternDescription} />
       </Section>
 
       <Section>
@@ -237,45 +253,70 @@ const ArticlePreview = props => {
 
         <Section>
           <SectionHeader>Author Comments</SectionHeader>
-          <MetadataEditor readonly value={comments} />
+          <MetadataEditor key={uniqueId()} readonly value={comments} />
         </Section>
 
-        <Section>
-          <InlineData
-            label="Suggested Reviewer"
-            value={suggestedReviewer.name}
-          />
-        </Section>
-
-        <Section>
-          <InlineData label="Datatype" value={unCamelCase(dataType)} />
-        </Section>
-
-        <Section>
-          <InlineData label="Species" value={species.name} />
-          <InlineData
-            label="Expression Pattern for Gene"
-            value={expressionPattern.name}
-          />
-        </Section>
-
-        <Section>
-          <InlineData
-            label="Detection Method"
-            value={unCamelCase(detectionMethod)}
-          />
-
-          {metadata.map(item => (
+        {suggestedReviewer && (
+          <Section>
             <InlineData
-              key={item.label}
-              label={item.label}
-              value={item.displayValue}
+              label="Suggested Reviewer"
+              value={suggestedReviewer.name}
             />
-          ))}
-        </Section>
+          </Section>
+        )}
 
-        <ObserveExpression data={observeExpression} />
+        {dataTypeSelected && (
+          <Section>
+            <InlineData label="Datatype" value={unCamelCase(dataType)} />
+          </Section>
+        )}
+
+        {dataTypeSelected && (
+          <React.Fragment>
+            <Section>
+              {species && <InlineData label="Species" value={species.name} />}
+
+              {expressionPattern && (
+                <InlineData
+                  label="Expression Pattern for Gene"
+                  value={expressionPattern.name}
+                />
+              )}
+            </Section>
+            <Section>
+              {detectionMethod && (
+                <InlineData
+                  label="Detection Method"
+                  value={unCamelCase(detectionMethod)}
+                />
+              )}
+
+              {metadata.map(item => (
+                <InlineData
+                  key={item.label}
+                  label={item.label}
+                  value={item.displayValue}
+                />
+              ))}
+            </Section>
+
+            <ObserveExpression data={observeExpression} />
+          </React.Fragment>
+        )}
       </Metadata>
+    </React.Fragment>
+  )
+}
+
+const ArticlePreview = props => {
+  const { article } = props
+
+  return (
+    <Wrapper>
+      <PageHeader>Article Preview</PageHeader>
+
+      {article && <Preview article={article} />}
+      {!article && 'No data'}
     </Wrapper>
   )
 }
