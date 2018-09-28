@@ -92,6 +92,7 @@ const Credit = props => {
       onBlur={handleBlur}
       onChange={handleChange}
       options={options}
+      placeholder="Author contribution"
       value={currentValues}
     />
   )
