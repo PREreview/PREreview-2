@@ -150,14 +150,14 @@
       "!**/coverage/**"
     ],
     "coverageDirectory": "<rootDir>/coverage",
-    "collectCoverage": true,
+    "collectCoverage": false,
     "projects": [
       {
         "rootDir": "<rootDir>/app",
         "displayName": "app",
         "setupTestFrameworkScriptFile": "<rootDir>/test/setup.js",
         "transformIgnorePatterns": [
-          "./node_modules/(?!@?pubsweet)"
+          "node_modules/(?!@?pubsweet)"
         ],
         "snapshotSerializers": [
           "enzyme-to-json/serializer"
@@ -170,6 +170,10 @@
         "globals": {
           "window": {}
         }
+      },
+      {
+        "displayName": "auth",
+        "testRegex": "test/.+test.jsx?$"
       }
     ]
   }

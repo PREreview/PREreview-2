@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { get, cloneDeep } from 'lodash'
+import AuthorizeWithGraphQL from 'pubsweet-client/src/helpers/AuthorizeWithGraphQL'
 
 import Form from './Form'
 
@@ -47,13 +48,32 @@ const SubmissionForm = props => {
   }
 
   return (
-    <Form
-      enableReinitialize
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-      validationSchema={validations}
-      {...otherProps}
-    />
+    <AuthorizeWithGraphQL
+      object={{
+        current: { ...article, type: 'manuscript' },
+        update: { ...article, type: 'manuscript', dataType: 'changed' },
+      }}
+      operation="update"
+      unauthorized={
+        <Form
+          canChangeDataType={false}
+          enableReinitialize
+          initialValues={initialValues}
+          onSubmit={handleSubmit}
+          validationSchema={validations}
+          {...otherProps}
+        />
+      }
+    >
+      <Form
+        canChangeDataType
+        enableReinitialize
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+        validationSchema={validations}
+        {...otherProps}
+      />
+    </AuthorizeWithGraphQL>
   )
 }
 

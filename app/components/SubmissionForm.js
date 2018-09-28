@@ -4,7 +4,6 @@ import React from 'react'
 import { get } from 'lodash'
 
 import { Button } from '@pubsweet/ui'
-
 import {
   getCurrentStatus,
   isDatatypeSelected,
@@ -55,24 +54,29 @@ const SubmissionForm = props => {
   const initial = isInitialSubmissionReady(status)
   const submitted = isFullSubmissionReady(status)
 
+  const dropdown = (opts = {}) => (
+    <Dropdown
+      error={get(props.errors, 'dataType')}
+      isDisabled={opts.isDisabled}
+      label="Choose a datatype"
+      name="dataType"
+      options={options.dataType}
+      required
+      touched={get(props.touched, 'dataType')}
+      value={options.dataType.find(o => o.value === get(values, 'dataType'))}
+      {...props}
+    />
+  )
+
   return (
     <React.Fragment>
       <InitialSubmission readOnly={readOnly} values={values} {...props} />
 
-      {initial && (
-        <Dropdown
-          error={get(props.errors, 'dataType')}
-          label="Choose a datatype"
-          name="dataType"
-          options={options.dataType}
-          required
-          touched={get(props.touched, 'dataType')}
-          value={options.dataType.find(
-            o => o.value === get(values, 'dataType'),
-          )}
-          {...props}
-        />
-      )}
+      {initial && props.canChangeDataType && dropdown()}
+
+      {datatypeSelected &&
+        !props.canChangeDataType &&
+        dropdown({ isDisabled: true })}
 
       {datatypeSelected &&
         values.dataType === 'geneExpression' && (
