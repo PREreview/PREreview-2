@@ -95,7 +95,7 @@ const InitialSubmission = props => {
         error={get(props.errors, 'patternDescription')}
         italic
         key={`pattern-description-${props.readOnly}`}
-        label="Pattern description"
+        label="Main article text"
         name="patternDescription"
         placeholder="Provide a description for the pattern"
         required
