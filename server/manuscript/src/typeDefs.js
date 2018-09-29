@@ -298,14 +298,6 @@ const typeDefs = `
     not: WBItemInput
     subcellularLocalization: WBItemInput
   }
-
-  extend type Team {
-    global: Boolean
-  }
-
-  extend input TeamInput {
-    global: Boolean
-  }
 `
 
 module.exports = typeDefs
