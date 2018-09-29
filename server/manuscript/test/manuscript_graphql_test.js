@@ -4,6 +4,10 @@ const uuid = require('uuid')
 const pathToComponent = path.resolve(__dirname, '..', 'src')
 process.env.NODE_CONFIG = `{"pubsweet":{"components":["${pathToComponent}"]}}`
 
+// These tests are not testing authorization, authsome
+// returns true for everything
+jest.mock('../../../config/authsome.js', () => () => true)
+
 const { model: Manuscript } = require('../src')
 const { dbCleaner, api } = require('pubsweet-server/test')
 const { User, Team } = require('pubsweet-server')

@@ -31,7 +31,8 @@ const updateReview = async (_, vars, ctx) => {
     review.status = reviewSubmittedStatus
   }
 
-  return review.save()
+  await review.save()
+  return review.id
 }
 
 const userReviewsForArticle = async (_, vars, ctx) => {
@@ -133,8 +134,7 @@ const resolvers = {
       }
       review.status = newReviewStatus
 
-      await review.save()
-      return review
+      return (await review.save()).id
     },
     updateReview,
   },

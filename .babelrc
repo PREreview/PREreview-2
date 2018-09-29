@@ -1,0 +1,6 @@
+{
+    "presets": ["env", "react", "stage-2"],
+    "ignore": [
+        "./server"
+    ]
+  }

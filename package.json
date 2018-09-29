@@ -101,6 +101,7 @@
     "faker": "^4.1.0",
     "file-loader": "^1.1.11",
     "husky": "^0.14.3",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^23.1.0",
     "lint-staged": "^7.2.0",
     "prettier": "^1.13.2",
@@ -150,30 +151,31 @@
       "!**/coverage/**"
     ],
     "coverageDirectory": "<rootDir>/coverage",
-    "collectCoverage": false,
+    "collectCoverage": true,
     "projects": [
       {
         "rootDir": "<rootDir>/app",
         "displayName": "app",
         "setupTestFrameworkScriptFile": "<rootDir>/test/setup.js",
         "transformIgnorePatterns": [
-          "node_modules/(?!@?pubsweet)"
+          "node_modules/(?!(@?pubsweet|xpub-edit))"
         ],
         "snapshotSerializers": [
           "enzyme-to-json/serializer"
-        ]
+        ],
+        "moduleNameMapper": {
+          "\\.s?css$": "identity-obj-proxy"
+        }
       },
       {
         "rootDir": "<rootDir>/server",
         "displayName": "server",
-        "testRegex": "test/.+test.jsx?$",
-        "globals": {
-          "window": {}
-        }
+        "testRegex": "server/test/.+test.jsx?$",
+        "testEnvironment": "node"
       },
       {
         "displayName": "auth",
-        "testRegex": "test/.+test.jsx?$"
+        "testRegex": "(?<!(app|server))/test/.+test.jsx?$"
       }
     ]
   }
