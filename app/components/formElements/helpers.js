@@ -186,7 +186,7 @@ let defaultFormValues = {
   title: '',
 }
 
-if (process.env.REALYANNIS === 'true') {
+if (process.env.NODE_ENV === 'development') {
   defaultFormValues = {
     acknowledgements: '',
     author: {
@@ -210,7 +210,7 @@ if (process.env.REALYANNIS === 'true') {
       },
     ],
     comments: '<p>some comments here</p>',
-    dataType: 'geneExpression',
+    // dataType: 'geneExpression',
     disclaimer: true,
     funding: 'blah',
     geneExpression: {

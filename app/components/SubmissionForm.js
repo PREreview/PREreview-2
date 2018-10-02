@@ -4,6 +4,8 @@ import React from 'react'
 import { get } from 'lodash'
 
 import { Button } from '@pubsweet/ui'
+import Authorize from 'pubsweet-client/src/helpers/AuthorizeWithGraphQL'
+
 import {
   getCurrentStatus,
   isDatatypeSelected,
@@ -12,7 +14,6 @@ import {
 } from '../helpers/status'
 
 import Dropdown from './formElements/Dropdown'
-
 import InitialSubmission from './formElements/InitialSubmission'
 import GeneExpressionForm from './formElements/GeneExpressionForm'
 
@@ -38,7 +39,8 @@ const isReadOnly = status => {
 }
 
 const SubmissionForm = props => {
-  const { values } = props
+  const { article, values } = props
+  // console.log('where is the', article)
   // console.log(props)
   // console.log(values)
   // console.log(values.coAuthors)
@@ -52,7 +54,7 @@ const SubmissionForm = props => {
   const readOnly = isReadOnly(status)
   const datatypeSelected = isDatatypeSelected(status)
   const initial = isInitialSubmissionReady(status)
-  const submitted = isFullSubmissionReady(status)
+  const full = isFullSubmissionReady(status)
 
   const dropdown = (opts = {}) => (
     <Dropdown
@@ -78,12 +80,19 @@ const SubmissionForm = props => {
         !props.canChangeDataType &&
         dropdown({ isDisabled: true })}
 
-      {datatypeSelected &&
+      {/* {datatypeSelected &&
         values.dataType === 'geneExpression' && (
           <GeneExpressionForm readOnly={readOnly} {...props} />
+        )} */}
+
+      {datatypeSelected &&
+        values.dataType === 'geneExpression' && (
+          <Authorize object={article} operation="isAuthor" unauthorized={null}>
+            <GeneExpressionForm readOnly={readOnly} {...props} />
+          </Authorize>
         )}
 
-      {!submitted && (
+      {!full && (
         <Button primary type="submit">
           Submit
         </Button>

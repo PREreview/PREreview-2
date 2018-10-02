@@ -4,6 +4,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { th } from '@pubsweet/ui-toolkit'
+import Authorize from 'pubsweet-client/src/helpers/AuthorizeWithGraphQL'
 
 import ComposedSubmit from './compose/Submit'
 // import ReviewerPanel from './compose/ReviewerPanel'
@@ -47,7 +48,7 @@ const Submit = props => {
     <React.Fragment>
       <h1>Submit your article</h1>
       <SubmitForm article={article} update={update} upload={upload}>
-        {formProps => <SubmissionForm {...formProps} />}
+        {formProps => <SubmissionForm article={article} {...formProps} />}
       </SubmitForm>
     </React.Fragment>
   )
@@ -58,7 +59,9 @@ const Submit = props => {
         <ArticlePreview article={article} />
       </div>
       <div>
-        <EditorPanel />
+        <Authorize operation="isGlobal" unauthorized={null}>
+          <EditorPanel />
+        </Authorize>
         {/* <ReviewerPanel /> */}
       </div>
     </SplitScreen>

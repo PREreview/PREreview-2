@@ -1,3 +1,6 @@
+/* eslint-disable sort-keys */
+
+const get = require('lodash/get')
 const isEqual = require('lodash/isEqual')
 const difference = require('lodash/difference')
 
@@ -31,6 +34,18 @@ const isGlobalTeamMember = async (user, teamTypes, context) => {
   return !!team
 }
 
+const isEditor = (user, context) =>
+  isGlobalTeamMember(user, ['editors'], context)
+
+const isScienceOfficer = (user, context) =>
+  isGlobalTeamMember(user, ['scienceOfficers'], context)
+
+const isGlobal = (user, context) =>
+  isEditor(user, context) || isScienceOfficer(user, context)
+
+const isAuthor = async (user, object, context) =>
+  isTeamMember(user, 'author', object, context)
+
 const updatedProperties = (current, update) => {
   const diff = Object.keys(current).filter(k => {
     if (typeof current[k] === 'string') {
@@ -40,6 +55,7 @@ const updatedProperties = (current, update) => {
   })
   return diff
 }
+
 const arrayContains = (superset, subset) =>
   difference(subset, superset).length === 0
 
@@ -77,13 +93,9 @@ const permissions = {
         ) {
           return isTeamMember(user, 'author', object, context)
         } else if (object.status.submission.initial) {
-          const isAuthor = await isTeamMember(user, 'author', object, context)
-          const isGlobal = await isGlobalTeamMember(
-            user,
-            ['editors', 'scienceOfficers'],
-            context,
-          )
-          return isAuthor || isGlobal
+          const isAuthorMember = await isAuthor(user, object, context)
+          const isGlobalMember = await isGlobal(user, context)
+          return isAuthorMember || isGlobalMember
         }
       }
     }
@@ -121,54 +133,87 @@ const permissions = {
       object.current.type === 'manuscript' &&
       object.update
     ) {
+      const { current, update } = object
+      // console.log(current, update)
+      const initial = get(current, 'status.submission.initial')
+      const full = get(current, 'status.submission.full')
+
+      const changedFields = updatedProperties(current, update)
+
       // Nobody should be able to update the dataType before initial submission
-      if (
-        !object.current.status.submission.full &&
-        !object.current.status.submission.initial &&
-        object.update.dataType !== object.current.dataType
-      ) {
+      if (!full && !initial && update.dataType !== current.dataType) {
         return false
       }
 
-      // After initial submission, editors can change the dataType (and only the data type!)
       // WARNING: Authors should not be in this list, but currently the form submits new data!
+      const editorWhitelist = [
+        'authors',
+        'currentlyWith',
+        'dataType',
+        'decisionLetter',
+        'status',
+      ]
+
+      // Allow editors to change fields in their whitelist
+      // (only after initial submission)
       if (
-        object.current.status.submission.initial &&
-        object.update.dataType !== object.current.dataType &&
-        arrayContains(
-          ['dataType', 'decisionLetter', 'status', 'authors'],
-          updatedProperties(object.current, object.update),
-        )
+        initial &&
+        // update.dataType !== current.dataType &&
+        arrayContains(editorWhitelist, changedFields)
       ) {
-        return isGlobalTeamMember(user, ['editors', 'scienceOfficers'], context)
+        return isGlobal(user, context)
       }
 
       // WARNING: remove status
-      // Whitelist for authors: acknowledgements, authors, comments, disclaimer, funding, geneExpression, image, laboratory, patternDescription, suggestedReviewer, title,
-      if (
-        arrayContains(
-          [
-            'acknowledgements',
-            'authors',
-            'comments',
-            'disclaimer',
-            'funding',
-            'geneExpression',
-            'image',
-            'laboratory',
-            'patternDescription',
-            'suggestedReviewer',
-            'title',
-            'status',
-          ],
-          updatedProperties(object.current, object.update),
-        )
-      ) {
-        return isTeamMember(user, 'author', object.current, context)
+      const authorWhitelist = [
+        'acknowledgements',
+        'authors',
+        'comments',
+        'disclaimer',
+        'funding',
+        'geneExpression',
+        'image',
+        'laboratory',
+        'patternDescription',
+        'suggestedReviewer',
+        'title',
+        'status',
+      ]
+      // console.log(
+      //   arrayContains(authorWhitelist, updatedProperties(current, update)),
+      // )
+      if (arrayContains(authorWhitelist, updatedProperties(current, update))) {
+        return isTeamMember(user, 'author', current, context)
+      }
+
+      // console.log('now?', object)
+    }
+
+    if (object === 'Team') {
+      return true
+    }
+
+    // console.log('nothing', object)
+
+    if (get(object, 'current.type') === 'team') {
+      // Only global users can update the editor team members for an object
+      if (get(object, 'current.teamType') === 'editor') {
+        if (isGlobal(user, context)) return true
       }
     }
 
     return false
+  },
+  isGlobal: async (userId, operation, object, context) => {
+    const user = await context.models.User.find(getId(userId))
+    return isGlobal(user, context)
+  },
+  isAuthor: async (userId, operation, object, context) => {
+    // console.log('is author? !!!!!!!!!!!!!!!!!!!')
+    // console.log(object)
+    const user = await context.models.User.find(getId(userId))
+    // console.log(isAuthor(user, object, context))
+    return isAuthor(user, object, context)
   },
 }
 
