@@ -4,6 +4,7 @@ import React from 'react'
 import { get } from 'lodash'
 
 import { Button } from '@pubsweet/ui'
+import Authorize from 'pubsweet-client/src/helpers/AuthorizeWithGraphQL'
 
 import {
   getCurrentStatus,
@@ -13,7 +14,6 @@ import {
 } from '../helpers/status'
 
 import Dropdown from './formElements/Dropdown'
-
 import InitialSubmission from './formElements/InitialSubmission'
 import GeneExpressionForm from './formElements/GeneExpressionForm'
 
@@ -38,8 +38,46 @@ const isReadOnly = status => {
   return false
 }
 
+const DatatypeSelect = props => {
+  const { article, values } = props
+
+  const disabledSelect = (
+    <Dropdown
+      error={get(props.errors, 'dataType')}
+      isDisabled
+      label="Choose a datatype"
+      name="dataType"
+      options={options.dataType}
+      required
+      touched={get(props.touched, 'dataType')}
+      value={options.dataType.find(o => o.value === get(values, 'dataType'))}
+      {...props}
+    />
+  )
+
+  return (
+    <Authorize
+      object={article}
+      operation="isGlobal"
+      unauthorized={disabledSelect}
+    >
+      <Dropdown
+        error={get(props.errors, 'dataType')}
+        label="Choose a datatype"
+        name="dataType"
+        options={options.dataType}
+        required
+        touched={get(props.touched, 'dataType')}
+        value={options.dataType.find(o => o.value === get(values, 'dataType'))}
+        {...props}
+      />
+    </Authorize>
+  )
+}
+
 const SubmissionForm = props => {
-  const { values } = props
+  const { article, values } = props
+  // console.log('where is the', article)
   // console.log(props)
   // console.log(values)
   // console.log(values.coAuthors)
@@ -53,33 +91,24 @@ const SubmissionForm = props => {
   const readOnly = isReadOnly(status)
   const datatypeSelected = isDatatypeSelected(status)
   const initial = isInitialSubmissionReady(status)
-  const submitted = isFullSubmissionReady(status)
+  const full = isFullSubmissionReady(status)
 
   return (
     <React.Fragment>
       <InitialSubmission readOnly={readOnly} values={values} {...props} />
 
       {initial && (
-        <Dropdown
-          error={get(props.errors, 'dataType')}
-          label="Choose a datatype"
-          name="dataType"
-          options={options.dataType}
-          required
-          touched={get(props.touched, 'dataType')}
-          value={options.dataType.find(
-            o => o.value === get(values, 'dataType'),
-          )}
-          {...props}
-        />
+        <DatatypeSelect article={article} values={values} {...props} />
       )}
 
       {datatypeSelected &&
         values.dataType === 'geneExpression' && (
-          <GeneExpressionForm readOnly={readOnly} {...props} />
+          <Authorize object={article} operation="isAuthor" unauthorized={null}>
+            <GeneExpressionForm readOnly={readOnly} {...props} />
+          </Authorize>
         )}
 
-      {!submitted && (
+      {!full && (
         <Button primary type="submit">
           Submit
         </Button>

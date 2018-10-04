@@ -31,7 +31,6 @@ let defaultFormValues = {
     },
   ],
   comments: '',
-  dataType: '',
   disclaimer: false,
   funding: '',
   geneExpression: {
@@ -211,7 +210,7 @@ if (process.env.NODE_ENV === 'development') {
       },
     ],
     comments: '<p>some comments here</p>',
-    dataType: 'geneExpression',
+    // dataType: 'geneExpression',
     disclaimer: true,
     funding: 'blah',
     geneExpression: {
@@ -454,6 +453,8 @@ const formValuesToData = values => {
       const modAuthor = cloneDeep(item)
       delete modAuthor.id
       delete modAuthor.__typename
+      if (!modAuthor.submittingAuthor) modAuthor.submittingAuthor = null
+      if (!modAuthor.email) modAuthor.email = null
       return modAuthor
     })
   }

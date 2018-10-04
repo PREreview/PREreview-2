@@ -15,4 +15,5 @@ const GetArticleQuery = props => {
   )
 }
 
+export { GET_MANUSCRIPT as GET_ARTICLE }
 export default GetArticleQuery

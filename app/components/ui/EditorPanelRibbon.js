@@ -38,7 +38,7 @@ const options = {
     status: 'error',
   },
   scienceOfficerPending: {
-    message: 'Pending decision by Science Officer',
+    message: 'Pending approval by Science Officer',
   },
 }
 

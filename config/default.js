@@ -15,7 +15,7 @@ const logger = new winston.Logger({
 
 module.exports = {
   authsome: {
-    mode: path.join(__dirname, 'auth.js'),
+    mode: path.join(__dirname, 'authsome.js'),
     teams: {
       author: {
         name: 'Author',

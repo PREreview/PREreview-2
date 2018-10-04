@@ -46,6 +46,7 @@ const Dropdown = props => {
     setFieldValue,
     touched,
     value,
+    isDisabled,
   } = props
 
   // console.log(error)
@@ -62,7 +63,12 @@ const Dropdown = props => {
           {touched && error && <Error>{error}</Error>}
         </Label>
       )}
-      <Select onChange={onChange} options={options} value={value} />
+      <Select
+        isDisabled={isDisabled}
+        onChange={onChange}
+        options={options}
+        value={value}
+      />
     </Wrapper>
   )
 }

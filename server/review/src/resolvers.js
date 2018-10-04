@@ -1,5 +1,6 @@
-const Review = require('../src/review')
 const { Team } = require('pubsweet-server')
+
+const Review = require('./review')
 
 // TO DO -- get these from team helpers (import vs require)
 const newReviewStatus = {
@@ -15,23 +16,25 @@ const reviewSubmittedStatus = {
 const isMember = (team, userId) => team.members.includes(userId)
 // END TO DO
 
-const updateReview = async (_, vars, ctx) => {
+const updateReview = async (_, vars, context) => {
   const { id, input } = vars
   const { content, recommendation, submit } = input
 
-  const review = await Review.find(id)
-  if (!review) throw new Error(`No review found with id ${id}`)
-
-  review.content = content
-  review.recommendation = recommendation
-  review.events.updatedAt = new Date()
-
-  if (submit) {
-    review.events.submittedAt = new Date()
-    review.status = reviewSubmittedStatus
+  const update = {
+    content,
+    events: {
+      updatedAt: new Date(),
+    },
+    recommendation,
   }
 
-  return review.save()
+  if (submit) {
+    update.events.submittedAt = new Date()
+    update.status = reviewSubmittedStatus
+  }
+
+  const review = await context.connectors.Review.update(id, update, context)
+  return review.id
 }
 
 const userReviewsForArticle = async (_, vars, ctx) => {
@@ -133,8 +136,7 @@ const resolvers = {
       }
       review.status = newReviewStatus
 
-      await review.save()
-      return review
+      return (await review.save()).id
     },
     updateReview,
   },

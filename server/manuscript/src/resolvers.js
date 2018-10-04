@@ -1,8 +1,8 @@
+const { Team, User } = require('pubsweet-server')
 const merge = require('lodash/merge')
 const union = require('lodash/union')
 
 const Manuscript = require('./manuscript')
-const { Team, User } = require('pubsweet-server')
 // TO DO -- get these from team helpers (import vs require)
 const newStatus = {
   decision: {
@@ -92,10 +92,9 @@ const resolvers = {
       ).then(res => res.id)
     },
     async updateManuscript(_, { data }, ctx) {
-      const manuscript = await Manuscript.find(data.id)
-
-      merge(manuscript, data)
-      return manuscript.save()
+      const manuscript = await ctx.connectors.Manuscript.fetchOne(data.id, ctx)
+      const update = merge({}, manuscript, data)
+      return ctx.connectors.Manuscript.update(data.id, update, ctx)
     },
   },
   Query: {
@@ -153,8 +152,8 @@ const resolvers = {
     async manuscript(_, { id }) {
       return Manuscript.find(id)
     },
-    async manuscripts() {
-      return Manuscript.query()
+    async manuscripts(_, vars, ctx) {
+      return ctx.connectors.Manuscript.fetchAll(ctx)
     },
     async teamsForArticle(_, { id }) {
       let teams

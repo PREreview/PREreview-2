@@ -2,14 +2,17 @@
 
 import React from 'react'
 // import PropTypes from 'prop-types'
-import { withApollo } from 'react-apollo'
+import { Query, withApollo } from 'react-apollo'
 import { matchPath } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { Action, AppBar } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
+import Authorize from 'pubsweet-client/src/helpers/AuthorizeWithGraphQL'
 
 import { withCurrentUser } from '../userContext'
+import { GET_ARTICLE } from './compose/pieces/getArticle'
+import { isFullSubmissionReady } from '../helpers/status'
 
 const StyledBar = styled(AppBar)`
   flex: initial;
@@ -52,9 +55,23 @@ const navLinks = (location, currentUser) => {
   )
 
   const reviewersLink = (
-    <Action active={isReviewers} to={`/assign-reviewers/${id}`}>
-      Assign Reviewers
-    </Action>
+    <Query query={GET_ARTICLE} variables={{ id }}>
+      {({ data, loading }) => {
+        if (loading) return null
+        const { manuscript: article } = data
+        const { status } = article
+        const full = isFullSubmissionReady(status)
+        if (!full) return null
+
+        return (
+          <Authorize operation="isEditor" unauthorized={null}>
+            <Action active={isReviewers} to={`/assign-reviewers/${id}`}>
+              Assign Reviewers
+            </Action>
+          </Authorize>
+        )
+      }}
+    </Query>
   )
 
   const teamsLink = (

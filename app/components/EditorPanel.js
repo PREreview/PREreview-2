@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import { Button as UIButton, H2 } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
+import Authorize from 'pubsweet-client/src/helpers/AuthorizeWithGraphQL'
 
 import ComposedEditorPanel from './compose/EditorPanel'
 import Loading from './Loading'
@@ -58,12 +59,14 @@ const SendTo = props => {
   let sendToId, sendToLabel
 
   if (editors.find(user => user.id === currentUser.id)) {
-    sendToId = scienceOfficer.id
+    sendToId = scienceOfficer && scienceOfficer.id
     sendToLabel = 'science officer'
   } else if (scienceOfficer.id === currentUser.id) {
-    sendToId = editor.id
+    sendToId = editor && editor.id
     sendToLabel = 'editor'
   }
+
+  if (!sendToId) return null
 
   const sendTo = () => {
     const data = {
@@ -140,11 +143,13 @@ const EditorPanel = props => {
 
           {!alreadyRejected &&
             !decision && (
-              <ScienceOfficerSection
-                article={article}
-                editorSuggestedReviewers={editorSuggestedReviewers}
-                updateArticle={updateArticle}
-              />
+              <Authorize operation="isScienceOfficer" unauthorized={null}>
+                <ScienceOfficerSection
+                  article={article}
+                  editorSuggestedReviewers={editorSuggestedReviewers}
+                  updateArticle={updateArticle}
+                />
+              </Authorize>
             )}
 
           <ReviewerInfo

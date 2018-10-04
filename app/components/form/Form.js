@@ -9,7 +9,11 @@ const FormHelper = props => {
   return (
     <Formik {...other}>
       {formikProps => (
-        <Form>{isFunction(children) ? children(formikProps) : children}</Form>
+        <Form>
+          {isFunction(children)
+            ? children({ ...formikProps, ...other })
+            : children}
+        </Form>
       )}
     </Formik>
   )

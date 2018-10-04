@@ -10,6 +10,10 @@ const pathToManuscript = path.resolve(
 )
 process.env.NODE_CONFIG = `{"pubsweet":{"components":["${pathToComponent}", "${pathToManuscript}"]}}`
 
+// These tests are not testing authorization, authsome
+// returns true for everything
+jest.mock('../../../config/authsome.js', () => () => true)
+
 const Review = require('../src/review')
 const Manuscript = require('../../manuscript/src/manuscript')
 const { dbCleaner, api } = require('pubsweet-server/test')
@@ -96,10 +100,7 @@ describe('Review queries', () => {
   it('can submit a review', async () => {
     const { body } = await api.graphql.query(
       `mutation($input: CreateReviewInput!) {
-        createReview(input: $input) {
-          reviewerId
-          content
-        }
+        createReview(input: $input)
       }`,
       {
         input: {
@@ -110,14 +111,7 @@ describe('Review queries', () => {
       token,
     )
 
-    expect(body).toEqual({
-      data: {
-        createReview: {
-          reviewerId: user.id,
-          content: null,
-        },
-      },
-    })
+    expect(body.data.createReview).toBeDefined()
   })
 
   it('can update a review', async () => {
@@ -130,11 +124,7 @@ describe('Review queries', () => {
 
     const { body } = await api.graphql.query(
       `mutation($id: ID!, $input: UpdateReviewInput!) {
-        updateReview(id: $id, input: $input) {
-          reviewerId
-          content
-          recommendation
-        }
+        updateReview(id: $id, input: $input)
       }`,
       {
         id: review.id,
@@ -149,11 +139,7 @@ describe('Review queries', () => {
 
     expect(body).toEqual({
       data: {
-        updateReview: {
-          reviewerId: user.id,
-          content: 'Great stuff!',
-          recommendation: 'Accept this',
-        },
+        updateReview: review.id,
       },
     })
   })
@@ -353,11 +339,7 @@ describe('Review queries', () => {
       // ... and submitted ...
       await api.graphql.query(
         `mutation($id: ID!, $input: UpdateReviewInput!) {
-          updateReview(id: $id, input: $input) {
-            reviewerId
-            content
-            recommendation
-          }
+          updateReview(id: $id, input: $input)
         }`,
         {
           id: review.id,
