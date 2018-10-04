@@ -453,6 +453,8 @@ const formValuesToData = values => {
       const modAuthor = cloneDeep(item)
       delete modAuthor.id
       delete modAuthor.__typename
+      if (!modAuthor.submittingAuthor) modAuthor.submittingAuthor = null
+      if (!modAuthor.email) modAuthor.email = null
       return modAuthor
     })
   }

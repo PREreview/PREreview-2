@@ -1,8 +1,8 @@
+const { Team, User } = require('pubsweet-server')
 const merge = require('lodash/merge')
 const union = require('lodash/union')
 
 const Manuscript = require('./manuscript')
-const { Team, User } = require('pubsweet-server')
 // TO DO -- get these from team helpers (import vs require)
 const newStatus = {
   decision: {

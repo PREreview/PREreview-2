@@ -13,7 +13,7 @@ import SubmitForm from './form/SubmissionForm'
 import Loading from './Loading'
 import SubmissionForm from './SubmissionForm'
 import { ArticlePreview } from './ui'
-import { isFullSubmissionReady } from '../helpers/status'
+import { isEditableByAuthor, isFullSubmissionReady } from '../helpers/status'
 import { formValuesToData } from './formElements/helpers'
 
 const SplitScreen = styled.div`
@@ -49,6 +49,20 @@ const FormWrapper = styled.div`
 
 const Form = props => {
   const { article, update, upload } = props
+  return (
+    <SubmitForm article={article} update={update} upload={upload}>
+      {formProps => (
+        <div>
+          <h1>Submit your article</h1>
+          <SubmissionForm article={article} {...formProps} />
+        </div>
+      )}
+    </SubmitForm>
+  )
+}
+
+const FormWithPreview = props => {
+  const { article, update, upload } = props
 
   return (
     <FormWrapper>
@@ -80,29 +94,76 @@ const Submit = props => {
   if (loading) return <Loading />
   const { status } = article
   const full = isFullSubmissionReady(status)
+  const editableByAuthor = isEditableByAuthor(status)
+
+  const form = <Form article={article} update={update} upload={upload} />
+  const formWithPreview = (
+    <FormWithPreview article={article} update={update} upload={upload} />
+  )
+  const preview = <ArticlePreview article={article} />
+
+  /*
+    if not full:
+      !iseditable and isglobal, show form
+      editor will select datatype -> show form
+
+      !iseditable and !isglobal
+      author and you cannot edit -> show preview
+
+      iseditable and isglobal
+      initial -> cannot see
+      post-datatype -> show preview
+
+      iseditable and !isglobal
+      author and you can edit -> show form
+  */
 
   if (!full) {
-    return <Form article={article} update={update} upload={upload} />
-  }
+    if (editableByAuthor)
+      return (
+        <Authorize
+          object={article}
+          operation="isGlobal"
+          unauthorized={formWithPreview}
+        >
+          {preview}
+        </Authorize>
+      )
 
-  const isEditor = true
-  const isReviewer = false
-
-  if (isEditor || isReviewer) {
     return (
-      <SplitScreen>
-        <div>
-          <ArticlePreview article={article} />
-        </div>
-        <div>
-          {isEditor && <EditorPanel />}
-          {isReviewer && <ReviewerPanel />}
-        </div>
-      </SplitScreen>
+      <Authorize object={article} operation="isGlobal" unauthorized={preview}>
+        {form}
+      </Authorize>
     )
   }
 
-  return <ArticlePreview article={article} />
+  if (full) {
+    return (
+      <Authorize
+        object={article}
+        operation="isGlobalOrAcceptedReviewer"
+        unauthorized={preview}
+      >
+        <SplitScreen>
+          <div>{preview}</div>
+          <div>
+            <Authorize operation="isGlobal" unauthorized={null}>
+              <EditorPanel />
+            </Authorize>
+            <Authorize
+              object={article}
+              operation="isAcceptedReviewer"
+              unauthorized={null}
+            >
+              <ReviewerPanel />
+            </Authorize>
+          </div>
+        </SplitScreen>
+      </Authorize>
+    )
+  }
+
+  return null
 }
 
 const Composed = () => <ComposedSubmit render={Submit} />

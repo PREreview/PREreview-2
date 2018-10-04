@@ -38,6 +38,43 @@ const isReadOnly = status => {
   return false
 }
 
+const DatatypeSelect = props => {
+  const { article, values } = props
+
+  const disabledSelect = (
+    <Dropdown
+      error={get(props.errors, 'dataType')}
+      isDisabled
+      label="Choose a datatype"
+      name="dataType"
+      options={options.dataType}
+      required
+      touched={get(props.touched, 'dataType')}
+      value={options.dataType.find(o => o.value === get(values, 'dataType'))}
+      {...props}
+    />
+  )
+
+  return (
+    <Authorize
+      object={article}
+      operation="isGlobal"
+      unauthorized={disabledSelect}
+    >
+      <Dropdown
+        error={get(props.errors, 'dataType')}
+        label="Choose a datatype"
+        name="dataType"
+        options={options.dataType}
+        required
+        touched={get(props.touched, 'dataType')}
+        value={options.dataType.find(o => o.value === get(values, 'dataType'))}
+        {...props}
+      />
+    </Authorize>
+  )
+}
+
 const SubmissionForm = props => {
   const { article, values } = props
   // console.log('where is the', article)
@@ -56,34 +93,13 @@ const SubmissionForm = props => {
   const initial = isInitialSubmissionReady(status)
   const full = isFullSubmissionReady(status)
 
-  const dropdown = (opts = {}) => (
-    <Dropdown
-      error={get(props.errors, 'dataType')}
-      isDisabled={opts.isDisabled}
-      label="Choose a datatype"
-      name="dataType"
-      options={options.dataType}
-      required
-      touched={get(props.touched, 'dataType')}
-      value={options.dataType.find(o => o.value === get(values, 'dataType'))}
-      {...props}
-    />
-  )
-
   return (
     <React.Fragment>
       <InitialSubmission readOnly={readOnly} values={values} {...props} />
 
-      {initial && props.canChangeDataType && dropdown()}
-
-      {datatypeSelected &&
-        !props.canChangeDataType &&
-        dropdown({ isDisabled: true })}
-
-      {/* {datatypeSelected &&
-        values.dataType === 'geneExpression' && (
-          <GeneExpressionForm readOnly={readOnly} {...props} />
-        )} */}
+      {initial && (
+        <DatatypeSelect article={article} values={values} {...props} />
+      )}
 
       {datatypeSelected &&
         values.dataType === 'geneExpression' && (
