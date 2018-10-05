@@ -14,7 +14,7 @@ import Loading from './Loading'
 import SubmissionForm from './SubmissionForm'
 import { ArticlePreview } from './ui'
 import { isEditableByAuthor, isFullSubmissionReady } from '../helpers/status'
-import { formValuesToData } from './formElements/helpers'
+// import { formValuesToData } from './formElements/helpers'
 
 const SplitScreen = styled.div`
   display: flex;
@@ -39,13 +39,13 @@ const SplitScreen = styled.div`
   }
 `
 
-const FormWrapper = styled.div`
-  height: 100%;
+// const FormWrapper = styled.div`
+//   height: 100%;
 
-  form {
-    height: 100%;
-  }
-`
+//   form {
+//     height: 100%;
+//   }
+// `
 
 const Form = props => {
   const { article, update, upload } = props
@@ -61,32 +61,32 @@ const Form = props => {
   )
 }
 
-const FormWithPreview = props => {
-  const { article, update, upload } = props
+// const FormWithPreview = props => {
+//   const { article, update, upload } = props
 
-  return (
-    <FormWrapper>
-      <SubmitForm article={article} update={update} upload={upload}>
-        {formProps => {
-          const { values } = formProps
+//   return (
+//     <FormWrapper>
+//       <SubmitForm article={article} update={update} upload={upload}>
+//         {formProps => {
+//           const { values } = formProps
 
-          return (
-            <SplitScreen>
-              <div>
-                <h1>Submit your article</h1>
-                <SubmissionForm article={article} {...formProps} />
-              </div>
+//           return (
+//             <SplitScreen>
+//               <div>
+//                 <h1>Submit your article</h1>
+//                 <SubmissionForm article={article} {...formProps} />
+//               </div>
 
-              <div>
-                <ArticlePreview article={formValuesToData(values)} />
-              </div>
-            </SplitScreen>
-          )
-        }}
-      </SubmitForm>
-    </FormWrapper>
-  )
-}
+//               <div>
+//                 <ArticlePreview article={formValuesToData(values)} />
+//               </div>
+//             </SplitScreen>
+//           )
+//         }}
+//       </SubmitForm>
+//     </FormWrapper>
+//   )
+// }
 
 const Submit = props => {
   const { article, loading, update, upload } = props
@@ -97,9 +97,9 @@ const Submit = props => {
   const editableByAuthor = isEditableByAuthor(status)
 
   const form = <Form article={article} update={update} upload={upload} />
-  const formWithPreview = (
-    <FormWithPreview article={article} update={update} upload={upload} />
-  )
+  // const formWithPreview = (
+  //   <FormWithPreview article={article} update={update} upload={upload} />
+  // )
   const preview = <ArticlePreview article={article} />
 
   /*
@@ -124,7 +124,8 @@ const Submit = props => {
         <Authorize
           object={article}
           operation="isGlobal"
-          unauthorized={formWithPreview}
+          // unauthorized={formWithPreview}
+          unauthorized={form}
         >
           {preview}
         </Authorize>
