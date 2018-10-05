@@ -12,6 +12,11 @@ const GET_DASHBOARD_ARTICLES = gql`
       author {
         id
         status {
+          decision {
+            accepted
+            rejected
+            revise
+          }
           submission {
             datatypeSelected
             initial
