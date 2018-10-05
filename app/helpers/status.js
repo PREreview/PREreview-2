@@ -36,6 +36,7 @@ const getCurrentStatus = status => {
 
   if (isAccepted(status)) return 'Accepted'
   if (isRejected(status)) return 'Rejected'
+  if (isRevise(status)) return 'Under revision'
 
   if (isApprovedByScienceOfficer(status)) return 'Approved by Science Officer'
   if (isNotApprovedByScienceOfficer(status))
@@ -66,6 +67,11 @@ const isAccepted = status => {
 
 const isRejected = status => {
   if (get(status, 'decision.rejected')) return true
+  return false
+}
+
+const isRevise = status => {
+  if (get(status, 'decision.revise')) return true
   return false
 }
 
@@ -215,6 +221,7 @@ export {
   isInitialSubmissionReady,
   isNotApprovedByScienceOfficer,
   isRejected,
+  isRevise,
   setApproved,
   setAccepted,
   setDatatypeSelected,

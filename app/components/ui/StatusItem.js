@@ -8,11 +8,13 @@ import { getCurrentStatus } from '../../helpers/status'
 
 const StatusLabel = styled.span`
   color: ${props => {
-    if (props.decision && props.decision.accepted) {
-      return th('colorSuccess')
-    } else if (props.decision && props.decision.rejected) {
-      return th('colorError')
+    if (props.decision) {
+      const { accepted, rejected, revise } = props.decision
+      if (accepted) return th('colorSuccess')
+      if (rejected) return th('colorError')
+      if (revise) return th('colorWarning')
     }
+
     return th('colorFurniture')
   }};
 
