@@ -265,7 +265,6 @@ const permissions = {
     return isAuthor(user, object, context)
   },
   isEditor: async (userId, operation, object, context) => {
-    console.log('is editor?')
     const user = await context.models.User.find(getId(userId))
     return isEditor(user, context)
   },
