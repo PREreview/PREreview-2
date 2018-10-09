@@ -17,6 +17,10 @@ const GET_DASHBOARD_ARTICLES = gql`
             rejected
             revise
           }
+          reviewers {
+            accepted
+            invited
+          }
           submission {
             datatypeSelected
             initial
@@ -36,6 +40,10 @@ const GET_DASHBOARD_ARTICLES = gql`
             accepted
             rejected
             revise
+          }
+          reviewers {
+            accepted
+            invited
           }
           submission {
             datatypeSelected

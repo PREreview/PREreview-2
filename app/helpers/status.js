@@ -38,6 +38,9 @@ const getCurrentStatus = status => {
   if (isRejected(status)) return 'Rejected'
   if (isRevise(status)) return 'Under revision'
 
+  if (isReviewerAccepted(status)) return 'Reviewer accepted'
+  if (isReviewerInvited(status)) return 'Reviewer invited'
+
   if (isApprovedByScienceOfficer(status)) return 'Approved by Science Officer'
   if (isNotApprovedByScienceOfficer(status))
     return 'Not approved by Science Officer'
@@ -72,6 +75,17 @@ const isRejected = status => {
 
 const isRevise = status => {
   if (get(status, 'decision.revise')) return true
+  return false
+}
+
+/* Reviewers */
+const isReviewerInvited = status => {
+  if (get(status, 'reviewers.invited')) return true
+  return false
+}
+
+const isReviewerAccepted = status => {
+  if (get(status, 'reviewers.accepted')) return true
   return false
 }
 
@@ -221,6 +235,8 @@ export {
   isInitialSubmissionReady,
   isNotApprovedByScienceOfficer,
   isRejected,
+  isReviewerInvited,
+  isReviewerAccepted,
   isRevise,
   setApproved,
   setAccepted,

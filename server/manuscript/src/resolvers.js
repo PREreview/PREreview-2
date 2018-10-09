@@ -1,4 +1,5 @@
 const { Team, User } = require('pubsweet-server')
+const clone = require('lodash/clone')
 const merge = require('lodash/merge')
 const union = require('lodash/union')
 
@@ -113,18 +114,39 @@ const resolvers = {
       }
 
       articles.forEach(article => {
+        const articleCopy = clone(article)
+
         const articleTeams = teams.filter(
-          a => a.object && a.object.objectId === article.id,
+          t => t.object && t.object.objectId === article.id,
         )
 
-        // Is user author of article
-        const authorTeam = articleTeams.find(a => a.teamType === 'author')
+        // Create reviewer stats (in order to derive reviewer status)
+        const invitedTeam = articleTeams.find(
+          t => t.teamType === 'reviewersInvited',
+        )
 
-        if (isMember(authorTeam, currentUserId)) {
-          data.author.push(article)
+        const acceptedTeam = articleTeams.find(
+          t => t.teamType === 'reviewersAccepted',
+        )
+
+        const reviewerStatus = {
+          accepted: acceptedTeam ? acceptedTeam.members.length : 0,
+          invited: invitedTeam ? invitedTeam.members.length : 0,
         }
 
-        // Is user an editor or science officer
+        articleCopy.status = {
+          ...articleCopy.status,
+          reviewers: reviewerStatus,
+        }
+
+        // User is author of article
+        const authorTeam = articleTeams.find(t => t.teamType === 'author')
+
+        if (isMember(authorTeam, currentUserId)) {
+          data.author.push({ ...articleCopy })
+        }
+
+        // User is an editor or science officer
         if (isGlobal && article.status && article.status.submission.initial) {
           const editorTeam = articleTeams.find(t => t.teamType === 'editor')
           const assignedEditorId = editorTeam.members[0]
@@ -134,7 +156,7 @@ const resolvers = {
             assignedEditor = connectors.User.fetchOne(assignedEditorId, context)
           }
 
-          data.editor.push({ ...article, assignedEditor })
+          data.editor.push({ ...articleCopy, assignedEditor })
         }
       })
 

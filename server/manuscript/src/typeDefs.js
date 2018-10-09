@@ -16,9 +16,15 @@ const typeDefs = `
   }
 
   type DashboardArticles {
-    author: [Manuscript]
+    author: [AuthorArticle]
     editor: [EditorArticle]
     isGlobal: Boolean
+  }
+
+  type AuthorArticle {
+    id: ID
+    status: Status
+    title: String
   }
 
   type EditorArticle {
@@ -83,8 +89,14 @@ const typeDefs = `
 
   type Status {
     decision: DecisionStatus
+    reviewers: ReviewerStatus
     scienceOfficer: ScienceOfficerStatus
     submission: SubmissionStatus
+  }
+
+  type ReviewerStatus {
+    accepted: Boolean
+    invited: Boolean
   }
 
   input StatusInput {
