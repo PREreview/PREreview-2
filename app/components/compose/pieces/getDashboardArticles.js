@@ -21,6 +21,10 @@ const GET_DASHBOARD_ARTICLES = gql`
             accepted
             invited
           }
+          scienceOfficer {
+            approved
+            pending
+          }
           submission {
             datatypeSelected
             initial
@@ -44,6 +48,10 @@ const GET_DASHBOARD_ARTICLES = gql`
           reviewers {
             accepted
             invited
+          }
+          scienceOfficer {
+            approved
+            pending
           }
           submission {
             datatypeSelected
