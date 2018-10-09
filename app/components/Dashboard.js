@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { Action as UIAction } from '@pubsweet/ui'
 import {
   AuthorSectionItem,
-  EditorSecionItem,
+  EditorSectionItem,
   ReviewerSectionItem,
   Section,
 } from './ui'
@@ -208,7 +208,7 @@ const Dashboard = props => {
       {isGlobal && (
         <Section
           editors={globalEditorTeam.members}
-          itemComponent={EditorSecionItem}
+          itemComponent={EditorSectionItem}
           items={editorArticles}
           label="Editor Section"
         />
