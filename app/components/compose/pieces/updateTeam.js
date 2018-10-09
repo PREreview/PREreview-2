@@ -5,17 +5,27 @@ import { Mutation } from 'react-apollo'
 
 import GET_TEAMS from '../../../queries/getTeams'
 import UPDATE_TEAM from '../../../mutations/updateTeam'
+import { GET_DASHBOARD_ARTICLES } from './getDashboardArticles'
+import { withCurrentUser } from '../../../userContext'
 
-const refetch = [
-  {
-    query: GET_TEAMS,
-  },
-]
+const updateTeamMutation = ({ currentUser, render }) => {
+  const refetch = [
+    {
+      query: GET_TEAMS,
+    },
+    {
+      query: GET_DASHBOARD_ARTICLES,
+      variables: { currentUserId: currentUser.id },
+    },
+  ]
 
-const updateTeamMutation = ({ render }) => (
-  <Mutation mutation={UPDATE_TEAM} refetchQueries={refetch}>
-    {(updateTeam, updateTeamResult) => render({ updateTeam, updateTeamResult })}
-  </Mutation>
-)
+  return (
+    <Mutation mutation={UPDATE_TEAM} refetchQueries={refetch}>
+      {(updateTeam, updateTeamResult) =>
+        render({ updateTeam, updateTeamResult })
+      }
+    </Mutation>
+  )
+}
 
-export default updateTeamMutation
+export default withCurrentUser(updateTeamMutation)

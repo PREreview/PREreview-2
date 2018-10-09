@@ -6,6 +6,7 @@ import gql from 'graphql-tag'
 
 import { withCurrentUser } from '../../../userContext'
 import { GET_USER_REVIEWS_FOR_ARTICLE } from './getUserReviewsForArticle'
+import { GET_DASHBOARD_ARTICLES } from './getDashboardArticles'
 
 const UPDATE_REVIEW = gql`
   mutation UpdateReview($id: ID!, $input: UpdateReviewInput!) {
@@ -22,6 +23,12 @@ const UpdateReviewMutation = props => {
       variables: {
         articleVersionId,
         reviewerId: currentUser.id,
+      },
+    },
+    {
+      query: GET_DASHBOARD_ARTICLES,
+      variables: {
+        currentUserId: currentUser.id,
       },
     },
   ]
