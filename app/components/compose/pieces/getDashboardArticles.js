@@ -12,6 +12,19 @@ const GET_DASHBOARD_ARTICLES = gql`
       author {
         id
         status {
+          decision {
+            accepted
+            rejected
+            revise
+          }
+          reviewers {
+            accepted
+            invited
+          }
+          scienceOfficer {
+            approved
+            pending
+          }
           submission {
             datatypeSelected
             initial
@@ -27,6 +40,19 @@ const GET_DASHBOARD_ARTICLES = gql`
         }
         id
         status {
+          decision {
+            accepted
+            rejected
+            revise
+          }
+          reviewers {
+            accepted
+            invited
+          }
+          scienceOfficer {
+            approved
+            pending
+          }
           submission {
             datatypeSelected
             initial
