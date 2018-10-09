@@ -23,7 +23,7 @@ const Actions = ({ articleId }) => (
   </ActionGroup>
 )
 
-const EditorSecionItem = props => {
+const EditorSectionItem = props => {
   const { id: articleId } = props
   const ActionsComponent = <Actions articleId={articleId} />
 
@@ -38,4 +38,4 @@ const EditorSecionItem = props => {
   )
 }
 
-export default EditorSecionItem
+export default EditorSectionItem
