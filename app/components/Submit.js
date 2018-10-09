@@ -123,7 +123,7 @@ const Submit = props => {
       return (
         <Authorize
           object={article}
-          operation="isGlobal"
+          operation="isGlobalAndNotAuthor"
           // unauthorized={formWithPreview}
           unauthorized={form}
         >
