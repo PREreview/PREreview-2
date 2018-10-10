@@ -20,6 +20,7 @@ const GET_DASHBOARD_ARTICLES = gql`
           reviewers {
             accepted
             invited
+            submitted
           }
           scienceOfficer {
             approved
@@ -48,6 +49,7 @@ const GET_DASHBOARD_ARTICLES = gql`
           reviewers {
             accepted
             invited
+            submitted
           }
           scienceOfficer {
             approved

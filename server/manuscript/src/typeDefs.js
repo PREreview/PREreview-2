@@ -97,6 +97,7 @@ const typeDefs = `
   type ReviewerStatus {
     accepted: Boolean
     invited: Boolean
+    submitted: Boolean
   }
 
   input StatusInput {
