@@ -9,7 +9,7 @@ import { th } from '@pubsweet/ui-toolkit'
 import { TextEditor } from 'xpub-edit'
 
 import { unCamelCase } from '../../helpers/generic'
-import { isDatatypeSelected } from '../../helpers/status'
+import { isDatatypeSelected, isFullSubmissionReady } from '../../helpers/status'
 
 const makeAuthorDisplayValues = authors =>
   authors &&
@@ -197,6 +197,7 @@ const Preview = props => {
   } = article
 
   const dataTypeSelected = isDatatypeSelected(status)
+  const full = isFullSubmissionReady(status)
 
   let detectionMethod, expressionPattern, observeExpression, species
   if (geneExpression)
@@ -271,38 +272,39 @@ const Preview = props => {
           </Section>
         )}
 
-        {dataTypeSelected && (
-          <React.Fragment>
-            <Section>
-              {species && <InlineData label="Species" value={species.name} />}
+        {dataTypeSelected &&
+          full && (
+            <React.Fragment>
+              <Section>
+                {species && <InlineData label="Species" value={species.name} />}
 
-              {expressionPattern && (
-                <InlineData
-                  label="Expression Pattern for Gene"
-                  value={expressionPattern.name}
-                />
-              )}
-            </Section>
-            <Section>
-              {detectionMethod && (
-                <InlineData
-                  label="Detection Method"
-                  value={unCamelCase(detectionMethod)}
-                />
-              )}
+                {expressionPattern && (
+                  <InlineData
+                    label="Expression Pattern for Gene"
+                    value={expressionPattern.name}
+                  />
+                )}
+              </Section>
+              <Section>
+                {detectionMethod && (
+                  <InlineData
+                    label="Detection Method"
+                    value={unCamelCase(detectionMethod)}
+                  />
+                )}
 
-              {metadata.map(item => (
-                <InlineData
-                  key={item.label}
-                  label={item.label}
-                  value={item.displayValue}
-                />
-              ))}
-            </Section>
+                {metadata.map(item => (
+                  <InlineData
+                    key={item.label}
+                    label={item.label}
+                    value={item.displayValue}
+                  />
+                ))}
+              </Section>
 
-            <ObserveExpression data={observeExpression} />
-          </React.Fragment>
-        )}
+              <ObserveExpression data={observeExpression} />
+            </React.Fragment>
+          )}
       </Metadata>
     </React.Fragment>
   )
