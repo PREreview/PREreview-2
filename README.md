@@ -21,5 +21,5 @@ This is the repo for the Micropublications.org project
 |Set up Form Submission     |               |&#x2714;   |#17
 |Amigo API extension        |               |&#x2714;   |#21
 |Wormbase DB API extension  |               |&#x2714;   |#19
-|Roles & permissions        |&#x2714;       |           |#19
+|Roles & permissions        |               |&#x2714;   |#19
 |Granttome API extension    |               |           |#20
