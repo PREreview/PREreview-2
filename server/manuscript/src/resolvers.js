@@ -4,6 +4,8 @@ const merge = require('lodash/merge')
 const union = require('lodash/union')
 
 const Manuscript = require('./manuscript')
+const Review = require('../../review/src/review')
+
 // TO DO -- get these from team helpers (import vs require)
 const newStatus = {
   decision: {
@@ -20,6 +22,12 @@ const newStatus = {
     full: false,
     initial: false,
   },
+}
+
+const cleanReviewStatus = {
+  accepted: false,
+  invited: false,
+  submitted: false,
 }
 
 const isMember = (team, userId) => team && team.members.includes(userId)
@@ -101,9 +109,12 @@ const resolvers = {
   Query: {
     async dashboardArticles(_, { currentUserId }, context) {
       const { connectors } = context
+
       const articles = await Manuscript.query()
       const currentUser = await User.find(currentUserId)
+      const reviews = await Review.all()
       const teams = await Team.all()
+
       const globalTeams = teams.filter(t => t.global)
       const isGlobal = isUserInGlobalTeams(globalTeams, currentUser)
 
@@ -120,7 +131,7 @@ const resolvers = {
           t => t.object && t.object.objectId === article.id,
         )
 
-        // Create reviewer stats (in order to derive reviewer status)
+        /* Create reviewer status */
         const invitedTeam = articleTeams.find(
           t => t.teamType === 'reviewersInvited',
         )
@@ -129,10 +140,20 @@ const resolvers = {
           t => t.teamType === 'reviewersAccepted',
         )
 
-        const reviewerStatus = {
-          accepted: acceptedTeam ? acceptedTeam.members.length : 0,
-          invited: invitedTeam ? invitedTeam.members.length : 0,
-        }
+        const submittedReview = reviews.find(
+          r => r.articleVersionId === article.id && r.status.submitted,
+        )
+
+        const reviewerStatus = clone(cleanReviewStatus)
+
+        if (invitedTeam && invitedTeam.members.length > 0)
+          reviewerStatus.invited = true
+
+        if (acceptedTeam && acceptedTeam.members.length > 0)
+          reviewerStatus.accepted = true
+
+        if (submittedReview) reviewerStatus.submitted = true
+        /* End create reviewer status */
 
         articleCopy.status = {
           ...articleCopy.status,
