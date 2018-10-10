@@ -3,6 +3,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import Authorize from 'pubsweet-client/src/helpers/AuthorizeWithGraphQL'
 import { Action } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
 
@@ -30,11 +31,13 @@ const ReviewerInfo = props => {
   return (
     <Accordion label="Reviews">
       <ContentWrapper>
-        <div>
-          <StyledAction to={`/assign-reviewers/${articleId}`}>
-            Go to Reviewer Assignment Page
-          </StyledAction>
-        </div>
+        <Authorize operation="isEditor" unauthorize={null}>
+          <div>
+            <StyledAction to={`/assign-reviewers/${articleId}`}>
+              Go to Reviewer Assignment Page
+            </StyledAction>
+          </div>
+        </Authorize>
 
         <ReviewersNumbers data={reviewerCounts} />
         <ReviewsPreview reviews={reviews} />

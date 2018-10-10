@@ -45,6 +45,11 @@ const Button = styled(UIButton)`
   margin-bottom: calc(${th('gridUnit')} * 2);
 `
 
+const Message = styled.div`
+  color: ${th('colorTextPlaceholder')};
+  text-transform: uppercase;
+`
+
 const SendTo = props => {
   const {
     article,
@@ -60,10 +65,10 @@ const SendTo = props => {
 
   if (editors.find(user => user.id === currentUser.id)) {
     sendToId = scienceOfficer && scienceOfficer.id
-    sendToLabel = 'science officer'
-  } else if (scienceOfficer.id === currentUser.id) {
+    sendToLabel = 'Science Officer'
+  } else if (scienceOfficer && scienceOfficer.id === currentUser.id) {
     sendToId = editor && editor.id
-    sendToLabel = 'editor'
+    sendToLabel = 'Editor'
   }
 
   if (!sendToId) return null
@@ -78,7 +83,7 @@ const SendTo = props => {
   }
 
   if (article.currentlyWith === sendToId) {
-    return `Sent to ${sendToLabel}`
+    return <Message>{`With ${sendToLabel}`}</Message>
   }
 
   return (
