@@ -51,6 +51,7 @@ const NewEntry = props => (
             value={values.content}
             {...formProps}
           />
+
           <Button onClick={handleSubmit} primary type="submit">
             Send
           </Button>

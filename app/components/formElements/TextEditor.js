@@ -95,9 +95,11 @@ const TextEditor = props => {
           {touchedThis && error && <Error>{error}</Error>}
         </Label>
       )}
+
       <Editor
         bold={bold || false}
         className={className}
+        debounceDelay={0}
         heading={heading || false}
         italic={italic || false}
         onBlur={handleBlur}
