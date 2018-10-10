@@ -53,7 +53,7 @@ const SubmitButton = props => {
         },
         // Science officer team with first (and only) SO pre-assigned
         {
-          members: [scienceOfficer.id],
+          members: scienceOfficer ? [scienceOfficer.id] : [],
           name: `science-officer-${id}`,
           object: {
             objectId: id,
