@@ -119,6 +119,51 @@ const InitialSubmission = props => {
         {...props}
       />
 
+      <TextEditor
+        bold
+        error={get(props.errors, 'methods')}
+        italic
+        key={`methods-${props.readOnly}`}
+        label="Methods"
+        name="methods"
+        placeholder="Provide the methods used"
+        required
+        subscript
+        superscript
+        value={get(values, 'methods')}
+        {...props}
+      />
+
+      <TextEditor
+        bold
+        error={get(props.errors, 'reagents')}
+        italic
+        key={`reagents-${props.readOnly}`}
+        label="Reagents"
+        name="reagents"
+        placeholder="Provide the reagents"
+        required
+        subscript
+        superscript
+        value={get(values, 'reagents')}
+        {...props}
+      />
+
+      <TextEditor
+        bold
+        error={get(props.errors, 'references')}
+        italic
+        key={`references-${props.readOnly}`}
+        label="References"
+        name="references"
+        placeholder="Provide the references used"
+        required
+        subscript
+        superscript
+        value={get(values, 'references')}
+        {...props}
+      />
+
       <TextField
         error={get(errors, 'acknowledgements')}
         label="Acknowledgements"

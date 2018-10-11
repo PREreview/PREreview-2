@@ -61,7 +61,10 @@ const typeDefs = `
     id: ID!
     image: File
     laboratory: WBItem
+    methods: String
     patternDescription: String
+    reagents: String
+    references: String
     status: Status
     suggestedReviewer: WBPerson
     title: String
@@ -81,7 +84,10 @@ const typeDefs = `
     id: ID!
     image: FileInput
     laboratory: WBItemInput
+    methods: String
     patternDescription: String
+    reagents: String
+    references: String
     status: StatusInput
     suggestedReviewer: WBPersonInput
     title: String
