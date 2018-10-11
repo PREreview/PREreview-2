@@ -1,39 +1,41 @@
-/* eslint-disable react/prop-types */
+/* DEPRECATED */
 
-import React from 'react'
+// /* eslint-disable react/prop-types */
 
-import { setRejected } from '../../helpers/status'
-import { formValuesToData } from '../formElements/helpers'
+// import React from 'react'
 
-import { Form } from './index'
+// import { setRejected } from '../../helpers/status'
+// import { formValuesToData } from '../formElements/helpers'
 
-const initialValues = {
-  decisionLetter: 'Something',
-}
+// import { Form } from './index'
 
-const RejectArticleForm = props => {
-  const { article, updateArticle, ...otherProps } = props
+// const initialValues = {
+//   decisionLetter: 'Something',
+// }
 
-  const handleSubmit = (values, formikBag) => {
-    const { id, status } = article
-    const { decisionLetter } = values
+// const RejectArticleForm = props => {
+//   const { article, updateArticle, ...otherProps } = props
 
-    const data = {
-      decisionLetter,
-      id,
-      status: setRejected(status),
-    }
+//   const handleSubmit = (values, formikBag) => {
+//     const { id, status } = article
+//     const { decisionLetter } = values
 
-    updateArticle({ variables: { data: formValuesToData(data) } })
-  }
+//     const data = {
+//       decisionLetter,
+//       id,
+//       status: setRejected(status),
+//     }
 
-  return (
-    <Form
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-      {...otherProps}
-    />
-  )
-}
+//     updateArticle({ variables: { data: formValuesToData(data) } })
+//   }
 
-export default RejectArticleForm
+//   return (
+//     <Form
+//       initialValues={initialValues}
+//       onSubmit={handleSubmit}
+//       {...otherProps}
+//     />
+//   )
+// }
+
+// export default RejectArticleForm

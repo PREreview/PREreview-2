@@ -15,6 +15,20 @@ import TextEditor from './TextEditor'
 import TextField from './TextField'
 import TextFieldGroup from './TextFieldGroup'
 
+const disclaimerDescription = (
+  <React.Fragment>
+    <p>
+      By submitting your article to microPublication Biology, you and any
+      co-authors agree to the following: I/we declare to the best of my/our
+      knowledge that each reported experiment is reproducible; that the
+      submission has been approved by all authors; that the submission has been
+      approved by the laboratory&#39;s Principal Investigator, and that the
+      results have not been published elsewhere by us. As the author(s) I/we
+      declare no conflict of interest.
+    </p>
+  </React.Fragment>
+)
+
 const InitialSubmission = props => {
   const { errors, handleChange, setFieldValue, values } = props
 
@@ -78,23 +92,6 @@ const InitialSubmission = props => {
         {...props}
       />
 
-      <Image label="Image" name="image" required {...props} />
-
-      <TextEditor
-        bold
-        error={get(props.errors, 'patternDescription')}
-        italic
-        key={`pattern-description-${props.readOnly}`}
-        label="Pattern description"
-        name="patternDescription"
-        placeholder="Provide a description for the pattern"
-        required
-        subscript
-        superscript
-        value={get(values, 'patternDescription')}
-        {...props}
-      />
-
       <TextField
         error={get(errors, 'title')}
         label="Title"
@@ -102,6 +99,23 @@ const InitialSubmission = props => {
         placeholder="this is the title"
         required
         value={get(values, 'title')}
+        {...props}
+      />
+
+      <Image label="Image" name="image" required {...props} />
+
+      <TextEditor
+        bold
+        error={get(props.errors, 'patternDescription')}
+        italic
+        key={`pattern-description-${props.readOnly}`}
+        label="Main article text"
+        name="patternDescription"
+        placeholder="Provide a description for the pattern"
+        required
+        subscript
+        superscript
+        value={get(values, 'patternDescription')}
         {...props}
       />
 
@@ -134,12 +148,13 @@ const InitialSubmission = props => {
       />
 
       <Checkbox
+        checkBoxText="I agree"
         checked={get(values, 'disclaimer')}
+        description={disclaimerDescription}
         label="Disclaimer"
         name="disclaimer"
         onChange={handleChange}
         required
-        text="I agree to the terms of publication"
         value={get(values, 'disclaimer')}
         {...props}
       />
@@ -147,9 +162,8 @@ const InitialSubmission = props => {
       <TextEditor
         error={get(props.errors, 'comments')}
         key={`comments-${props.readOnly}`}
-        label="Comments"
+        label="Comments to the editor"
         name="comments"
-        placeholder="Write down some comments"
         value={get(values, 'comments')}
         {...props}
       />

@@ -4,11 +4,12 @@ import React from 'react'
 import styled from 'styled-components'
 import { get, omit } from 'lodash'
 
+import { Icon as UIIcon } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
 
 import { getWBPerson } from '../../fetch/WBApi'
 import { onAutocompleteChange, onSuggestionSelected } from './helpers'
-import { /* AutoComplete, */ Credit } from './index'
+import { Credit } from './index'
 import AutoComplete from './AutoComplete'
 
 const Wrapper = styled.div`
@@ -36,6 +37,22 @@ const Error = styled.span`
   line-height: ${th('lineHeightBaseSmall')};
   padding-left: ${th('gridUnit')};
 `
+
+const Icon = styled(UIIcon)`
+  svg {
+    stroke: ${th('colorFurniture')};
+  }
+`
+
+const QuestionMark = () => (
+  <a
+    href="https://casrai.org/credit/"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    <Icon>help_circle</Icon>
+  </a>
+)
 
 const AuthorInput = props => {
   const {
@@ -70,6 +87,7 @@ const AuthorInput = props => {
           {touchedThis && err && <Error>{err}</Error>}
         </Label>
       )}
+
       <Wrapper>
         <StyledAutoComplete
           error={get(errors, authorName)}
@@ -94,6 +112,8 @@ const AuthorInput = props => {
           touched={touchedThis}
           values={get(values, creditName)}
         />
+
+        <QuestionMark />
       </Wrapper>
     </React.Fragment>
   )
