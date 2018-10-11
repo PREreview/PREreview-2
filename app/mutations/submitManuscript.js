@@ -147,7 +147,10 @@ const SUBMIT_MANUSCRIPT = gql`
         name
         WBId
       }
+      methods
       patternDescription
+      reagents
+      references
       status {
         decision {
           accepted

@@ -190,7 +190,10 @@ const Preview = props => {
     geneExpression,
     image,
     laboratory,
+    methods,
     patternDescription,
+    reagents,
+    references,
     status,
     suggestedReviewer,
     title,
@@ -237,6 +240,21 @@ const Preview = props => {
       <Section>
         <SectionHeader>Description:</SectionHeader>
         <Editor key={uniqueId()} readonly value={patternDescription} />
+      </Section>
+
+      <Section>
+        <SectionHeader>Methods:</SectionHeader>
+        <Editor key={uniqueId()} readonly value={methods} />
+      </Section>
+
+      <Section>
+        <SectionHeader>Reagents:</SectionHeader>
+        <Editor key={uniqueId()} readonly value={reagents} />
+      </Section>
+
+      <Section>
+        <SectionHeader>References:</SectionHeader>
+        <Editor key={uniqueId()} readonly value={references} />
       </Section>
 
       <Section>
