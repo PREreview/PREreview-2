@@ -149,7 +149,6 @@ const InitialSubmission = props => {
         key={`comments-${props.readOnly}`}
         label="Comments to the editor"
         name="comments"
-        placeholder="Write down some comments"
         value={get(values, 'comments')}
         {...props}
       />
