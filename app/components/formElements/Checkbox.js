@@ -8,9 +8,10 @@ import { th } from '@pubsweet/ui-toolkit'
 
 // TO DO -- extract Labels from TextField
 const Label = styled.label`
+  display: block;
   font-size: ${th('fontSizeBaseSmall')};
   line-height: ${th('lineHeightBaseSmall')};
-  display: block;
+  /* text-transform: uppercase; */
 `
 
 const Check = styled(UICheckBox)`
@@ -53,6 +54,18 @@ const Check = styled(UICheckBox)`
   }
 `
 
+const Description = styled.div`
+  font-size: ${th('fontSizeBaseSmall')};
+  max-width: 600px;
+  text-align: justify;
+  /* text-transform: uppercase; */
+
+  > p {
+    /* margin-bottom: 0; */
+    margin: ${th('gridUnit')} 0 0 0;
+  }
+`
+
 const Wrapper = styled.div`
   margin-bottom: calc(${th('gridUnit')} * 2);
   width: 100%;
@@ -76,8 +89,10 @@ const Error = styled.div`
 
 const Checkbox = props => {
   const {
+    checkBoxText,
     checked,
     className,
+    description,
     errors,
     label,
     name,
@@ -86,7 +101,6 @@ const Checkbox = props => {
     readOnly,
     required,
     value,
-    text,
   } = props
   const error = typeof value !== 'undefined' && errors && errors[name]
 
@@ -94,12 +108,14 @@ const Checkbox = props => {
     <Wrapper>
       {label && <Label>{`${label}${required && ' *'}`}</Label>}
 
+      {description && <Description>{description}</Description>}
+
       <BoxWithError>
         <Check
           checked={checked}
           className={className}
           disabled={readOnly}
-          label={text}
+          label={checkBoxText}
           name={name}
           onBlur={onBlur}
           onChange={onChange}
