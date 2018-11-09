@@ -81,6 +81,8 @@ const getId = objectOrString => {
 const permissions = {
   // eslint-disable-next-line consistent-return
   before: async (userId, operation, object, context) => {
+    if (operation === 'isGlobalAndNotAuthor') return false
+
     const user = await context.models.User.find(userId)
     if (user.admin) return true
   },
@@ -279,7 +281,7 @@ const permissions = {
     const user = await context.models.User.find(getId(userId))
     const global = await isGlobal(user, context)
     const author = await isAuthor(user, object, context)
-    return global && !author
+    return (user.admin || global) && !author
   },
   isGlobalOrAcceptedReviewer: async (userId, operation, object, context) => {
     const user = await context.models.User.find(getId(userId))
