@@ -53,6 +53,7 @@
     "react-dom": "^16.4.0",
     "react-dropzone": "^4.2.12",
     "react-hot-loader": "^4.2.0",
+    "react-modal": "^3.7.1",
     "react-powerplug": "^1.0.0-rc.1",
     "react-router-dom": "^4.3.1",
     "react-select": "^2.0.0",

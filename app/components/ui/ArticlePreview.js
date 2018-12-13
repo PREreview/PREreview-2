@@ -179,7 +179,7 @@ const ObserveExpression = ({ data }) => {
 }
 
 const Preview = props => {
-  const { article } = props
+  const { article, livePreview } = props
 
   const {
     authors,
@@ -284,58 +284,57 @@ const Preview = props => {
           </Section>
         )}
 
-        {dataTypeSelected && (
+        {(dataTypeSelected || (livePreview && dataType)) && (
           <Section>
             <InlineData label="Datatype" value={unCamelCase(dataType)} />
           </Section>
         )}
 
-        {dataTypeSelected &&
-          full && (
-            <React.Fragment>
-              <Section>
-                {species && <InlineData label="Species" value={species.name} />}
+        {((dataTypeSelected && full) || (dataTypeSelected && livePreview)) && (
+          <React.Fragment>
+            <Section>
+              {species && <InlineData label="Species" value={species.name} />}
 
-                {expressionPattern && (
-                  <InlineData
-                    label="Expression Pattern for Gene"
-                    value={expressionPattern.name}
-                  />
-                )}
-              </Section>
-              <Section>
-                {detectionMethod && (
-                  <InlineData
-                    label="Detection Method"
-                    value={unCamelCase(detectionMethod)}
-                  />
-                )}
+              {expressionPattern && (
+                <InlineData
+                  label="Expression Pattern for Gene"
+                  value={expressionPattern.name}
+                />
+              )}
+            </Section>
+            <Section>
+              {detectionMethod && (
+                <InlineData
+                  label="Detection Method"
+                  value={unCamelCase(detectionMethod)}
+                />
+              )}
 
-                {metadata.map(item => (
-                  <InlineData
-                    key={item.label}
-                    label={item.label}
-                    value={item.displayValue}
-                  />
-                ))}
-              </Section>
+              {metadata.map(item => (
+                <InlineData
+                  key={item.label}
+                  label={item.label}
+                  value={item.displayValue}
+                />
+              ))}
+            </Section>
 
-              <ObserveExpression data={observeExpression} />
-            </React.Fragment>
-          )}
+            <ObserveExpression data={observeExpression} />
+          </React.Fragment>
+        )}
       </Metadata>
     </React.Fragment>
   )
 }
 
 const ArticlePreview = props => {
-  const { article } = props
+  const { article, livePreview } = props
 
   return (
     <Wrapper>
-      <PageHeader>Article Preview</PageHeader>
+      {!livePreview && <PageHeader>Article Preview</PageHeader>}
 
-      {article && <Preview article={article} />}
+      {article && <Preview article={article} livePreview={livePreview} />}
       {!article && 'No data'}
     </Wrapper>
   )

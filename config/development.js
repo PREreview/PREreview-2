@@ -28,6 +28,12 @@ module.exports = {
     ),
   },
   'pubsweet-server': {
+    db: {
+      database: 'wb',
+      password: 'pass',
+      port: 5480,
+      user: 'dev',
+    },
     host: 'http://localhost',
     logger,
     port: 3000,
