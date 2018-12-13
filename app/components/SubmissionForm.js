@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { get } from 'lodash'
+import { Toggle } from 'react-powerplug'
 
 import { Button } from '@pubsweet/ui'
 import Authorize from 'pubsweet-client/src/helpers/AuthorizeWithGraphQL'
@@ -13,6 +14,7 @@ import {
   isInitialSubmissionReady,
 } from '../helpers/status'
 
+import { ArticlePreviewModal } from './ui'
 import Dropdown from './formElements/Dropdown'
 import InitialSubmission from './formElements/InitialSubmission'
 import GeneExpressionForm from './formElements/GeneExpressionForm'
@@ -77,15 +79,6 @@ const DatatypeSelect = props => {
 
 const SubmissionForm = props => {
   const { article, values } = props
-  // console.log('where is the', article)
-  // console.log(props)
-  // console.log(values)
-  // console.log(values.coAuthors)
-  // console.log(Array.isArray(values))
-  // console.log(props)
-  // console.log(props.errors)
-  // console.log(props.touched)
-  // console.log(isReadOnly(values.status))
 
   const { status } = values
   const readOnly = isReadOnly(status)
@@ -109,9 +102,23 @@ const SubmissionForm = props => {
         )}
 
       {!full && (
-        <Button primary type="submit">
-          Submit
-        </Button>
+        <React.Fragment>
+          <Toggle initial={false}>
+            {({ on, toggle }) => (
+              <React.Fragment>
+                <Button onClick={toggle}>Preview</Button>
+                <ArticlePreviewModal
+                  isOpen={on}
+                  onRequestClose={toggle}
+                  values={values}
+                />
+              </React.Fragment>
+            )}
+          </Toggle>
+          <Button primary type="submit">
+            Submit
+          </Button>
+        </React.Fragment>
       )}
     </React.Fragment>
   )
