@@ -46,6 +46,11 @@ const getAuthorEmails = async context => {
   return emails
 }
 
+const getCurrentUser = async context => {
+  const { userId } = context
+  return User.find(userId)
+}
+
 const getEditorIds = async context => {
   const globalTeams = await Team.findByField('global', true)
   const editorTeam = globalTeams.find(t => t.teamType === 'editors')
@@ -68,10 +73,7 @@ const getManuscript = async context => {
   return Manuscript.find(manuscriptId)
 }
 
-const getUser = async context => {
-  const { userId } = context
-  return User.find(userId)
-}
+const getUserById = async userId => User.find(userId)
 
 const sendEmail = data => {
   const { content, subject, to } = data
@@ -95,6 +97,33 @@ const toRegularText = text =>
     .replace(/^./, str => str.toUpperCase())
 
 /* End Helpers */
+
+/* 
+  Sends email to user when the "Send to science officer / editor" is clicked
+*/
+
+const currentlyWith = async context => {
+  const manuscript = await getManuscript(context)
+  const currentlyWithId = manuscript.currentlyWith
+  const userToNotify = await getUserById(currentlyWithId)
+  const currentUser = await getCurrentUser(context)
+
+  const content = `
+    <p>
+      Your attention was requested by user ${currentUser.username} on article
+      "${manuscript.title}".
+    </p>
+    ${getArticleLink(manuscript.id)}
+  `
+
+  const data = {
+    content,
+    subject: 'Attention requested',
+    to: userToNotify.email,
+  }
+
+  sendEmail(data)
+}
 
 /* 
   Sends email to authors that a data type has been selected on their article
@@ -128,12 +157,12 @@ const dataTypeSelected = async context => {
 const fullSubmission = async context => {
   const editorEmails = await getEditorEmails(context)
   const manuscript = await getManuscript(context)
-  const user = await getUser(context)
+  const currentUser = await getCurrentUser(context)
 
   const content = `
     <p>
-      User ${user.username} just finished the full submission for article 
-      "${manuscript.title}".
+      User ${currentUser.username} just finished the full submission for
+      article "${manuscript.title}".
     </p>
     ${getArticleLink(manuscript.id)}
   `
@@ -153,11 +182,13 @@ const fullSubmission = async context => {
 const initialSubmission = async context => {
   const editorEmails = await getEditorEmails(context)
   const manuscript = await getManuscript(context)
-  const user = await getUser(context)
+  const currentUser = await getCurrentUser(context)
 
   const content = `
     <p>There has been a new submission!</p>
-    <p>User ${user.username} just submitted article "${manuscript.title}".</p>
+    <p>
+      User ${currentUser.username} just submitted article "${manuscript.title}".
+    </p>
     ${getArticleLink(manuscript.id)}
   `
 
@@ -171,6 +202,7 @@ const initialSubmission = async context => {
 }
 
 const mapper = {
+  currentlyWith,
   dataTypeSelected,
   fullSubmission,
   initialSubmission,

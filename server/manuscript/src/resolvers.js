@@ -133,6 +133,10 @@ const resolvers = {
         notify('fullSubmission', { object: update, userId: ctx.user })
       }
 
+      if (get(manuscript, 'currentlyWith') !== get(data, 'currentlyWith')) {
+        notify('currentlyWith', { object: update, userId: ctx.user })
+      }
+
       // return update
       return updated
     },
