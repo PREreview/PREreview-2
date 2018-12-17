@@ -126,6 +126,13 @@ const resolvers = {
         notify('dataTypeSelected', { object: update, userId: ctx.user })
       }
 
+      if (
+        get(manuscript, 'status.submission.full') === false &&
+        get(data, 'status.submission.full') === true
+      ) {
+        notify('fullSubmission', { object: update, userId: ctx.user })
+      }
+
       // return update
       return updated
     },

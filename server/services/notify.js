@@ -6,6 +6,7 @@ const validNotifications = ['email']
 
 const mapper = {
   dataTypeSelected: ['email'],
+  fullSubmission: ['email'],
   initialSubmission: ['email'],
 }
 
