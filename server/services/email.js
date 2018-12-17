@@ -9,10 +9,16 @@ const Manuscript = require('../manuscript/src/manuscript')
 /* Helpers */
 
 const baseUrl = config.get('pubsweet-server.baseUrl')
-// const dashboardUrl = `${baseUrl}/dashboard`
+const dashboardUrl = `${baseUrl}/dashboard`
+const dashboardLink = `
+  <p>
+    <a href="${dashboardUrl}">
+      View it on your dashboard
+    </a>
+  </p>
+`
 
 const getArticleUrl = articleId => `${baseUrl}/article/${articleId}`
-
 const getArticleLink = articleId => `
   <p>
     <a href="${getArticleUrl(articleId)}">
@@ -97,6 +103,94 @@ const toRegularText = text =>
     .replace(/^./, str => str.toUpperCase())
 
 /* End Helpers */
+
+/* 
+  Sends article acceptance email to author
+*/
+const articleAccepted = async context => {
+  const authorEmails = await getAuthorEmails(context)
+  const manuscript = await getManuscript(context)
+
+  const content = `
+    <p>
+      Your article "${manuscript.title}" has been accepted by the editors!
+    </p>
+    <h4>
+      Decision letter:
+    </h4>
+    <p>
+      ${manuscript.decisionLetter}
+    </p>
+    ${dashboardLink}
+  `
+
+  const data = {
+    content,
+    subject: 'Article accepted',
+    to: authorEmails,
+  }
+
+  sendEmail(data)
+}
+
+/* 
+  Sends article rejection email to author
+*/
+const articleRejected = async context => {
+  const authorEmails = await getAuthorEmails(context)
+  const manuscript = await getManuscript(context)
+
+  const content = `
+    <p>
+      Your article "${manuscript.title}" has been rejected by the editors.
+    </p>
+    <h4>
+      Decision letter:
+    </h4>
+    <p>
+      ${manuscript.decisionLetter}
+    </p>
+    ${dashboardLink}
+  `
+
+  const data = {
+    content,
+    subject: 'Article rejected',
+    to: authorEmails,
+  }
+
+  sendEmail(data)
+}
+
+/* 
+  Sends request for article revision to author
+*/
+const articleRevision = async context => {
+  const authorEmails = await getAuthorEmails(context)
+  const manuscript = await getManuscript(context)
+
+  const content = `
+    <p>
+      The editors have requested revisions for your article 
+      "${manuscript.title}".
+    </p>
+    <h4>
+      Decision letter:
+    </h4>
+    <p>
+      ${manuscript.decisionLetter}
+    </p>
+    ${dashboardLink}
+  `
+
+  const data = {
+    content,
+    subject: 'Article revision requested',
+    to: authorEmails,
+  }
+
+  sendEmail(data)
+}
 
 /* 
   Sends email to user when the "Send to science officer / editor" is clicked
@@ -227,6 +321,9 @@ const scienceOfficerApprovalStatusChange = async context => {
 }
 
 const mapper = {
+  articleAccepted,
+  articleRejected,
+  articleRevision,
   currentlyWith,
   dataTypeSelected,
   fullSubmission,

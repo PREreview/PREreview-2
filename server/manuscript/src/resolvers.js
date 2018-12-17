@@ -1,6 +1,7 @@
 const { Team, User } = require('pubsweet-server')
 const clone = require('lodash/clone')
 const get = require('lodash/get')
+const isEqual = require('lodash/isEqual')
 const merge = require('lodash/merge')
 const union = require('lodash/union')
 
@@ -145,6 +146,22 @@ const resolvers = {
           object: update,
           userId: ctx.user,
         })
+      }
+
+      if (
+        !isEqual(
+          get(manuscript, 'status.decision'),
+          get(update, 'status.decision'),
+        )
+      ) {
+        const notifyContext = { object: update, userId: ctx.user }
+        if (update.status.decision.accepted) {
+          notify('articleAccepted', notifyContext)
+        } else if (update.status.decision.rejected) {
+          notify('articleRejected', notifyContext)
+        } else if (update.status.decision.revise) {
+          notify('articleRevision', notifyContext)
+        }
       }
 
       // return update
