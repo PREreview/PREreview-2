@@ -119,6 +119,14 @@ const resolvers = {
         notify('initialSubmission', { object: update, userId: ctx.user })
       }
 
+      if (
+        get(manuscript, 'dataType') === null &&
+        get(data, 'dataType') !== null
+      ) {
+        notify('dataTypeSelected', { object: update, userId: ctx.user })
+      }
+
+      // return update
       return updated
     },
   },

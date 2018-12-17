@@ -5,6 +5,7 @@ const email = require('./email')
 const validNotifications = ['email']
 
 const mapper = {
+  dataTypeSelected: ['email'],
   initialSubmission: ['email'],
 }
 
