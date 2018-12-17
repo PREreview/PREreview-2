@@ -1,10 +1,12 @@
 const { Team, User } = require('pubsweet-server')
 const clone = require('lodash/clone')
+const get = require('lodash/get')
 const merge = require('lodash/merge')
 const union = require('lodash/union')
 
 const Manuscript = require('./manuscript')
 const Review = require('../../review/src/review')
+const notify = require('../../services/notify')
 
 // TO DO -- get these from team helpers (import vs require)
 const newStatus = {
@@ -103,7 +105,21 @@ const resolvers = {
     async updateManuscript(_, { data }, ctx) {
       const manuscript = await ctx.connectors.Manuscript.fetchOne(data.id, ctx)
       const update = merge({}, manuscript, data)
-      return ctx.connectors.Manuscript.update(data.id, update, ctx)
+
+      const updated = await ctx.connectors.Manuscript.update(
+        data.id,
+        update,
+        ctx,
+      )
+
+      if (
+        get(manuscript, 'status.submission.initial') === false &&
+        get(data, 'status.submission.initial') === true
+      ) {
+        notify('initialSubmission', { object: update, userId: ctx.user })
+      }
+
+      return updated
     },
   },
   Query: {

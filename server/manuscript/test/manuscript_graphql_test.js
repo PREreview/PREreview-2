@@ -83,7 +83,25 @@ describe('Manuscript queries', () => {
   })
 
   it('can update a manuscript', async () => {
-    const manuscript = await new Manuscript({ title: 'Before' }).save()
+    const manuscript = await new Manuscript({
+      status: {
+        decision: {
+          accepted: false,
+          rejected: false,
+          revise: false,
+        },
+        scienceOfficer: {
+          approved: false,
+          pending: false,
+        },
+        submission: {
+          datatypeSelected: false,
+          full: false,
+          initial: false,
+        },
+      },
+      title: 'Before',
+    }).save()
 
     const { body } = await api.graphql.query(
       `mutation($data: ManuscriptInput!) {
@@ -193,12 +211,12 @@ describe('Manuscript queries', () => {
           patternDescription: 'String',
           status: {
             decision: {
-              accepted: true,
+              accepted: false,
               rejected: false,
               revise: false,
             },
             scienceOfficer: {
-              approved: true,
+              approved: false,
               pending: false,
             },
             submission: {
