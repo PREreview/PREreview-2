@@ -51,14 +51,14 @@ const getCurrentUser = async context => {
   return User.find(userId)
 }
 
-const getEditorIds = async context => {
+const getEditorIds = async () => {
   const globalTeams = await Team.findByField('global', true)
   const editorTeam = globalTeams.find(t => t.teamType === 'editors')
   return editorTeam.members
 }
 
-const getEditorEmails = async context => {
-  const editorIds = await getEditorIds(context)
+const getEditorEmails = async () => {
+  const editorIds = await getEditorIds()
 
   const editors = await Promise.all(
     editorIds.map(async memberId => User.find(memberId)),
@@ -155,7 +155,7 @@ const dataTypeSelected = async context => {
 */
 
 const fullSubmission = async context => {
-  const editorEmails = await getEditorEmails(context)
+  const editorEmails = await getEditorEmails()
   const manuscript = await getManuscript(context)
   const currentUser = await getCurrentUser(context)
 
@@ -180,7 +180,7 @@ const fullSubmission = async context => {
   Sends email to editors that a new article has been submitted
 */
 const initialSubmission = async context => {
-  const editorEmails = await getEditorEmails(context)
+  const editorEmails = await getEditorEmails()
   const manuscript = await getManuscript(context)
   const currentUser = await getCurrentUser(context)
 
@@ -201,11 +201,37 @@ const initialSubmission = async context => {
   sendEmail(data)
 }
 
+/* 
+  Sends email to editors when the science officer changes the approval status
+  of an article
+*/
+const scienceOfficerApprovalStatusChange = async context => {
+  const editorEmails = await getEditorEmails()
+  const manuscript = await getManuscript(context)
+
+  const content = `
+    <p>
+      The science officer has changed the approval status of article 
+      ${manuscript.title}.
+    </p>
+    ${getArticleLink(manuscript.id)}
+  `
+
+  const data = {
+    content,
+    subject: 'Approval status change',
+    to: editorEmails,
+  }
+
+  sendEmail(data)
+}
+
 const mapper = {
   currentlyWith,
   dataTypeSelected,
   fullSubmission,
   initialSubmission,
+  scienceOfficerApprovalStatusChange,
 }
 
 const email = async (type, context) => {

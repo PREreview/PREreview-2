@@ -114,27 +114,37 @@ const resolvers = {
 
       if (
         get(manuscript, 'status.submission.initial') === false &&
-        get(data, 'status.submission.initial') === true
+        get(update, 'status.submission.initial') === true
       ) {
         notify('initialSubmission', { object: update, userId: ctx.user })
       }
 
       if (
         get(manuscript, 'dataType') === null &&
-        get(data, 'dataType') !== null
+        get(update, 'dataType') !== null
       ) {
         notify('dataTypeSelected', { object: update, userId: ctx.user })
       }
 
       if (
         get(manuscript, 'status.submission.full') === false &&
-        get(data, 'status.submission.full') === true
+        get(update, 'status.submission.full') === true
       ) {
         notify('fullSubmission', { object: update, userId: ctx.user })
       }
 
-      if (get(manuscript, 'currentlyWith') !== get(data, 'currentlyWith')) {
+      if (get(manuscript, 'currentlyWith') !== get(update, 'currentlyWith')) {
         notify('currentlyWith', { object: update, userId: ctx.user })
+      }
+
+      if (
+        get(manuscript, 'status.scienceOfficer.approved') !==
+        get(update, 'status.scienceOfficer.approved')
+      ) {
+        notify('scienceOfficerApprovalStatusChange', {
+          object: update,
+          userId: ctx.user,
+        })
       }
 
       // return update

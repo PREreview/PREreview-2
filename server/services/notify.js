@@ -9,6 +9,7 @@ const mapper = {
   dataTypeSelected: ['email'],
   fullSubmission: ['email'],
   initialSubmission: ['email'],
+  scienceOfficerApprovalStatusChange: ['email'],
 }
 
 const runType = (type, context) => {
