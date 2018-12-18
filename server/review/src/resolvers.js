@@ -1,6 +1,13 @@
+// const config = require('config')
+const union = require('lodash/union')
+
 const { Team } = require('pubsweet-server')
 
 const Review = require('./review')
+const notify = require('../../services/notify')
+
+// TO DO -- a wrong config get gives me a code 1 with no relevant info
+// const logger = config.get('pubsweet-server.logger')
 
 // TO DO -- get these from team helpers (import vs require)
 const newReviewStatus = {
@@ -15,6 +22,37 @@ const reviewSubmittedStatus = {
 
 const isMember = (team, userId) => team.members.includes(userId)
 // END TO DO
+
+const inviteReviewer = async (_, args, context) => {
+  const { articleId, reviewerId } = args
+
+  const articleTeams = await Team.findByField('object.objectId', articleId)
+  const invitedTeam = articleTeams.find(t => t.teamType === 'reviewersInvited')
+
+  const newMembers = union(invitedTeam.members, [reviewerId])
+  invitedTeam.members = union(invitedTeam.members, [reviewerId])
+
+  // if (invitedTeam.members.includes(reviewerId)) {
+  //   logger.info(`\
+  //     Invite Reviewer:\
+  //     Reviewer ${reviewerId} has already been invited on article ${articleId}\
+  //   `)
+  // } else {
+  await context.connectors.Team.update(
+    invitedTeam.id,
+    { members: newMembers },
+    context,
+  )
+
+  notify('reviewerInvited', {
+    object: { id: articleId },
+    reviewerId,
+    userId: context.user,
+  })
+  // }
+
+  return invitedTeam.id
+}
 
 const updateReview = async (_, vars, context) => {
   const { id, input } = vars
@@ -138,6 +176,7 @@ const resolvers = {
 
       return (await review.save()).id
     },
+    inviteReviewer,
     updateReview,
   },
   Query: {

@@ -2,7 +2,7 @@
 
 import React from 'react'
 import styled from 'styled-components'
-import { clone, union } from 'lodash'
+import { clone } from 'lodash'
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
 
@@ -113,7 +113,14 @@ const LinkWrapper = styled.div`
 `
 
 const ReviewerTable = props => {
-  const { acceptedTeam, data, invitedTeam, rejectedTeam, updateTeam } = props
+  const {
+    acceptedTeam,
+    articleId,
+    data,
+    inviteReviewer,
+    invitedTeam,
+    rejectedTeam,
+  } = props
 
   const rows = data.map(reviewer => {
     const item = clone(reviewer)
@@ -136,16 +143,13 @@ const ReviewerTable = props => {
     return item
   })
 
-  const sendInvitation = reviewer => {
-    const { id } = reviewer
-    const invitedMemberIds = invitedTeam.members.map(member => member.id)
+  const sendInvitation = (aritcleId, reviewer) => {
+    const { id: reviewerId } = reviewer
 
-    updateTeam({
+    inviteReviewer({
       variables: {
-        id: invitedTeam.id,
-        input: {
-          members: union([id], invitedMemberIds),
-        },
+        articleId,
+        reviewerId,
       },
     })
   }
@@ -165,7 +169,11 @@ const ReviewerTable = props => {
         const { original, value } = context
 
         if (value === '-') return value
-        return <Invite onClick={() => sendInvitation(original)}>{value}</Invite>
+        return (
+          <Invite onClick={() => sendInvitation(articleId, original)}>
+            {value}
+          </Invite>
+        )
       },
       Header: 'Action',
     },
@@ -195,6 +203,7 @@ const ReviewerTable = props => {
 const AssignReviewers = props => {
   const {
     articleId,
+    inviteReviewer,
     loading,
     suggested,
     reviewersTeam,
@@ -269,10 +278,11 @@ const AssignReviewers = props => {
       <Section label="Status">
         <ReviewerTable
           acceptedTeam={reviewersAcceptedTeam}
+          articleId={articleId}
           data={reviewers}
           invitedTeam={reviewersInvitedTeam}
+          inviteReviewer={inviteReviewer}
           rejectedTeam={reviewersRejectedTeam}
-          updateTeam={updateTeam}
         />
       </Section>
     </Centered>

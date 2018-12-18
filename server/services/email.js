@@ -295,6 +295,26 @@ const initialSubmission = async context => {
   sendEmail(data)
 }
 
+const reviewerInvited = async context => {
+  const manuscript = await getManuscript(context)
+  const reviewer = await getUserById(context.reviewerId)
+
+  const content = `
+    <p>
+      You have been invited to review article "${manuscript.title}"!
+    </p>
+    ${dashboardLink}
+  `
+
+  const data = {
+    content,
+    subject: 'Review Invitation',
+    to: reviewer.email,
+  }
+
+  sendEmail(data)
+}
+
 /* 
   Sends email to editors when the science officer changes the approval status
   of an article
@@ -328,6 +348,7 @@ const mapper = {
   dataTypeSelected,
   fullSubmission,
   initialSubmission,
+  reviewerInvited,
   scienceOfficerApprovalStatusChange,
 }
 

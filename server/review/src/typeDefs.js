@@ -6,6 +6,7 @@ const typeDefs = `
 
   extend type Mutation {
     createReview(input: CreateReviewInput!): ID!
+    inviteReviewer(articleId: ID!, reviewerId: ID!): ID!
     updateReview(id: ID!, input: UpdateReviewInput!): ID!
   }
 
