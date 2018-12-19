@@ -1,8 +1,16 @@
 const { deferConfig } = require('config/defer')
 const path = require('path')
 const winston = require('winston')
+const mailgun = require('nodemailer-mailgun-transport')
 
 const components = require('./components.json')
+
+const mailTransport = mailgun({
+  auth: {
+    api_key: deferConfig(cfg => cfg.apiKey),
+    domain: deferConfig(cfg => cfg.domain),
+  },
+})
 
 const logger = new winston.Logger({
   transports: [
@@ -49,9 +57,10 @@ module.exports = {
     ],
   },
   mailer: {
-    from: 'nobody@example.com',
+    from: 'noreply@micropulication.org',
+    path: `${__dirname}/mailer`,
     transport: {
-      sendmail: true,
+      mailTransport,
     },
   },
   publicKeys: [
@@ -71,8 +80,9 @@ module.exports = {
     ),
     enableExperimentalGraphql: true,
     logger,
+    tokenExpiresIn: '360 days',
     uploads: 'uploads',
   },
-  validations: path.join(__dirname, 'validations'),
   schema: {},
+  validations: path.join(__dirname, 'validations'),
 }

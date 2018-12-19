@@ -10,6 +10,7 @@ import {
   getGlobalTeams,
   getTeamsForArticle,
   getUsers,
+  inviteReviewer,
   updateTeam,
 } from './pieces'
 
@@ -20,6 +21,7 @@ const mapper = {
   getGlobalTeams,
   getTeamsForArticle: props => getTeamsForArticle(props),
   getUsers,
+  inviteReviewer,
   updateTeam,
 }
 
@@ -34,6 +36,7 @@ const mapProps = args => {
     allReviewerTeams && allReviewerTeams.find(t => t.teamType === type)
 
   return {
+    inviteReviewer: args.inviteReviewer.inviteReviewer,
     loading:
       args.getArticleReviewers.loading ||
       args.getUsers.loading ||

@@ -16,6 +16,7 @@
   "dependencies": {
     "@pubsweet/base-model": "^1.0.2",
     "@pubsweet/coko-theme": "^4.0.0",
+    "@pubsweet/component-send-email": "^0.2.4",
     "@pubsweet/logger": "^0.2.7",
     "@pubsweet/ui": "^8.7.0",
     "@pubsweet/ui-toolkit": "1.2.0",
@@ -37,6 +38,7 @@
     "joi-browser": "^13.0.1",
     "json-loader": "^0.5.7",
     "lodash": "^4.17.10",
+    "nodemailer-mailgun-transport": "^1.4.0",
     "path-to-regexp": "^2.4.0",
     "prop-types": "^15.6.1",
     "pubsweet": "^3.0.5",
@@ -152,7 +154,7 @@
       "!**/coverage/**"
     ],
     "coverageDirectory": "<rootDir>/coverage",
-    "collectCoverage": true,
+    "collectCoverage": false,
     "projects": [
       {
         "rootDir": "<rootDir>/app",
@@ -171,7 +173,7 @@
       {
         "rootDir": "<rootDir>/server",
         "displayName": "server",
-        "testRegex": "server/test/.+test.jsx?$",
+        "testRegex": "server/*/.+test.jsx?$",
         "testEnvironment": "node"
       },
       {

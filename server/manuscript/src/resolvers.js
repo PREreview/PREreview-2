@@ -1,10 +1,13 @@
 const { Team, User } = require('pubsweet-server')
 const clone = require('lodash/clone')
+const get = require('lodash/get')
+const isEqual = require('lodash/isEqual')
 const merge = require('lodash/merge')
 const union = require('lodash/union')
 
 const Manuscript = require('./manuscript')
 const Review = require('../../review/src/review')
+const notify = require('../../services/notify')
 
 // TO DO -- get these from team helpers (import vs require)
 const newStatus = {
@@ -94,16 +97,83 @@ const resolvers = {
       const newMembers = union(team.members, [currentUserId])
       team.members = newMembers
 
-      return context.connectors.Team.update(
+      await context.connectors.Team.update(
         team.id,
         { members: newMembers },
         context,
-      ).then(res => res.id)
+      )
+
+      notify('reviewerInvitationResponse', {
+        action,
+        object: { id: articleId },
+        userId: context.user,
+      })
+
+      return team.id
     },
     async updateManuscript(_, { data }, ctx) {
       const manuscript = await ctx.connectors.Manuscript.fetchOne(data.id, ctx)
       const update = merge({}, manuscript, data)
-      return ctx.connectors.Manuscript.update(data.id, update, ctx)
+
+      const updated = await ctx.connectors.Manuscript.update(
+        data.id,
+        update,
+        ctx,
+      )
+
+      if (
+        get(manuscript, 'status.submission.initial') === false &&
+        get(update, 'status.submission.initial') === true
+      ) {
+        notify('initialSubmission', { object: update, userId: ctx.user })
+      }
+
+      if (
+        get(manuscript, 'dataType') === null &&
+        get(update, 'dataType') !== null
+      ) {
+        notify('dataTypeSelected', { object: update, userId: ctx.user })
+      }
+
+      if (
+        get(manuscript, 'status.submission.full') === false &&
+        get(update, 'status.submission.full') === true
+      ) {
+        notify('fullSubmission', { object: update, userId: ctx.user })
+      }
+
+      if (get(manuscript, 'currentlyWith') !== get(update, 'currentlyWith')) {
+        notify('currentlyWith', { object: update, userId: ctx.user })
+      }
+
+      if (
+        get(manuscript, 'status.scienceOfficer.approved') !==
+        get(update, 'status.scienceOfficer.approved')
+      ) {
+        notify('scienceOfficerApprovalStatusChange', {
+          object: update,
+          userId: ctx.user,
+        })
+      }
+
+      if (
+        !isEqual(
+          get(manuscript, 'status.decision'),
+          get(update, 'status.decision'),
+        )
+      ) {
+        const notifyContext = { object: update, userId: ctx.user }
+        if (update.status.decision.accepted) {
+          notify('articleAccepted', notifyContext)
+        } else if (update.status.decision.rejected) {
+          notify('articleRejected', notifyContext)
+        } else if (update.status.decision.revise) {
+          notify('articleRevision', notifyContext)
+        }
+      }
+
+      // return update
+      return updated
     },
   },
   Query: {
