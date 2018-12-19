@@ -12,6 +12,7 @@ const mapper = {
   dataTypeSelected: ['email'],
   fullSubmission: ['email'],
   initialSubmission: ['email'],
+  reviewerInvitationResponse: ['email'],
   reviewerInvited: ['email'],
   scienceOfficerApprovalStatusChange: ['email'],
 }

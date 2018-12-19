@@ -97,11 +97,19 @@ const resolvers = {
       const newMembers = union(team.members, [currentUserId])
       team.members = newMembers
 
-      return context.connectors.Team.update(
+      await context.connectors.Team.update(
         team.id,
         { members: newMembers },
         context,
-      ).then(res => res.id)
+      )
+
+      notify('reviewerInvitationResponse', {
+        action,
+        object: { id: articleId },
+        userId: context.user,
+      })
+
+      return team.id
     },
     async updateManuscript(_, { data }, ctx) {
       const manuscript = await ctx.connectors.Manuscript.fetchOne(data.id, ctx)

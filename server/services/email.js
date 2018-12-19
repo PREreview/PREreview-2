@@ -295,6 +295,43 @@ const initialSubmission = async context => {
   sendEmail(data)
 }
 
+/* 
+  Sends email to editors when a reviewer has responded to an invitation
+*/
+const reviewerInvitationResponse = async context => {
+  const { action } = context
+
+  if (action !== 'accept' && action !== 'reject')
+    throw new Error(`
+      Reviewer Invitation Response: Invalid action ${action} provided
+    `)
+
+  const editorEmails = await getEditorEmails()
+  const currentUser = await getUserById(context.userId)
+  const manuscript = await getManuscript(context)
+
+  const invitationText = action === 'accept' ? 'accepted' : 'rejected'
+
+  const content = `
+    <p>
+      User ${currentUser.username} has ${invitationText} your invitation
+      to review article "${manuscript.title}"
+    </p>
+    ${getArticleLink(manuscript.id)}
+  `
+
+  const data = {
+    content,
+    subject: `Reviewer invitation ${invitationText}`,
+    to: editorEmails,
+  }
+
+  sendEmail(data)
+}
+
+/* 
+  Send email to reviewer when they are invited to review an article
+*/
 const reviewerInvited = async context => {
   const manuscript = await getManuscript(context)
   const reviewer = await getUserById(context.reviewerId)
@@ -348,6 +385,7 @@ const mapper = {
   dataTypeSelected,
   fullSubmission,
   initialSubmission,
+  reviewerInvitationResponse,
   reviewerInvited,
   scienceOfficerApprovalStatusChange,
 }
