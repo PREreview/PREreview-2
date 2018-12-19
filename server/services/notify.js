@@ -14,6 +14,7 @@ const mapper = {
   initialSubmission: ['email'],
   reviewerInvitationResponse: ['email'],
   reviewerInvited: ['email'],
+  reviewSubmitted: ['email'],
   scienceOfficerApprovalStatusChange: ['email'],
 }
 

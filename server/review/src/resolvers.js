@@ -55,7 +55,7 @@ const inviteReviewer = async (_, args, context) => {
 }
 
 const updateReview = async (_, vars, context) => {
-  const { id, input } = vars
+  const { id: reviewId, input } = vars
   const { content, recommendation, submit } = input
 
   const update = {
@@ -71,8 +71,14 @@ const updateReview = async (_, vars, context) => {
     update.status = reviewSubmittedStatus
   }
 
-  const review = await context.connectors.Review.update(id, update, context)
-  return review.id
+  await context.connectors.Review.update(reviewId, update, context)
+
+  notify('reviewSubmitted', {
+    reviewId,
+    userId: context.user,
+  })
+
+  return reviewId
 }
 
 const userReviewsForArticle = async (_, vars, ctx) => {

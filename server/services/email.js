@@ -5,6 +5,7 @@ const User = require('pubsweet-server/src/models/User')
 const Team = require('pubsweet-server/src/models/Team')
 
 const Manuscript = require('../manuscript/src/manuscript')
+const Review = require('../review/src/review')
 
 /* Helpers */
 
@@ -72,6 +73,11 @@ const getEditorEmails = async () => {
 
   const emails = editors.map(ed => ed.email).join(',')
   return emails
+}
+
+const getReview = async context => {
+  const { reviewId } = context
+  return Review.find(reviewId)
 }
 
 const getManuscript = async context => {
@@ -353,6 +359,32 @@ const reviewerInvited = async context => {
 }
 
 /* 
+  Send email to editors when a review is submitted
+*/
+const reviewSubmitted = async context => {
+  const editorEmails = await getEditorEmails()
+  const review = await getReview(context)
+  const manuscript = await Manuscript.find(review.articleVersionId)
+  const reviewer = await getUserById(context.userId)
+
+  const content = `
+    <p>
+      User ${reviewer.username} just submitted a review for article 
+      "${manuscript.title}"!
+    </p>
+    ${getArticleLink(manuscript.id)}
+  `
+
+  const data = {
+    content,
+    subject: 'Review submitted',
+    to: editorEmails,
+  }
+
+  sendEmail(data)
+}
+
+/* 
   Sends email to editors when the science officer changes the approval status
   of an article
 */
@@ -387,6 +419,7 @@ const mapper = {
   initialSubmission,
   reviewerInvitationResponse,
   reviewerInvited,
+  reviewSubmitted,
   scienceOfficerApprovalStatusChange,
 }
 
