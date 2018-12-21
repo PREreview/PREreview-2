@@ -10,6 +10,7 @@ import {
   getGlobalTeams,
   getReviewsForArticle,
   getTeamsForArticle,
+  manuscriptMetadataUpdate,
   updateArticleForEditor,
   updateCurrentlyWith,
 } from './pieces'
@@ -26,6 +27,7 @@ const mapper = {
   getGlobalTeams,
   getReviewsForArticle: props => getReviewsForArticle(props),
   getTeamsForArticle: props => getTeamsForArticle(props),
+  manuscriptMetadataUpdate,
   updateArticleForEditor,
   updateCurrentlyWith,
 }
@@ -74,6 +76,8 @@ const mapProps = args => {
     ),
     updateArticle: args.updateArticleForEditor.updateArticle,
     updateCurrentlyWith: args.updateCurrentlyWith.updateCurrentlyWith,
+    updateMetadata:
+      args.manuscriptMetadataUpdate.manuscriptMetadataUpdateMutation,
   }
 }
 

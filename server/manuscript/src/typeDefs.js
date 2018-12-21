@@ -12,6 +12,7 @@ const typeDefs = `
     createSubmission: Manuscript!
     deleteManuscript(id: ID!): ID!
     handleInvitation(action: String!, articleId: ID!, currentUserId: ID!): ID!
+    manuscriptMetadataUpdate(manuscriptId: ID!, data: MetadataInput!): ID!
     updateManuscript(data: ManuscriptInput!): Manuscript!
   }
 
@@ -56,6 +57,7 @@ const typeDefs = `
     dataType: String
     decisionLetter: String
     disclaimer: Boolean
+    doi: String
     funding: String
     geneExpression: GeneExpression
     id: ID!
@@ -318,6 +320,10 @@ const typeDefs = `
     id: ID
     not: WBItemInput
     subcellularLocalization: WBItemInput
+  }
+
+  input MetadataInput {
+    doi: String!
   }
 `
 
