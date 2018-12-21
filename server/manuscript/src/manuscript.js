@@ -32,6 +32,7 @@ class Manuscript extends BaseModel {
         funding: { type: ['string', 'null'] },
         geneExpression: { type: ['object', 'null'] },
         image: { type: ['object', 'null'] },
+        imageCaption: { type: ['string', 'null'] },
         laboratory: { type: ['object', 'null'] },
         methods: { type: ['string', 'null'] },
         patternDescription: { type: ['string', 'null'] },

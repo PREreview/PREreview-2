@@ -112,6 +112,13 @@ const Editor = styled(TextEditor)`
   padding: 0;
 `
 
+const CaptionEditor = styled(Editor)`
+  display: flex;
+  font-size: ${th('fontSizeBaseSmall')};
+  justify-content: center;
+  margin: calc(${th('gridUnit')} * 2);
+`
+
 const MetadataEditor = styled(Editor)`
   font-family: ${th('fontInterface')};
 `
@@ -189,6 +196,7 @@ const Preview = props => {
     funding,
     geneExpression,
     image,
+    imageCaption,
     laboratory,
     methods,
     patternDescription,
@@ -234,6 +242,7 @@ const Preview = props => {
         image.url && (
           <Section>
             <Image alt={image.name} src={imageSource} />
+            <CaptionEditor key={uniqueId()} readonly value={imageCaption} />
           </Section>
         )}
 

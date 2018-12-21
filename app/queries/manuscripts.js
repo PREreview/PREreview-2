@@ -135,6 +135,7 @@ const GET_MANUSCRIPT = gql`
         name
         url
       }
+      imageCaption
       laboratory {
         name
         WBId
