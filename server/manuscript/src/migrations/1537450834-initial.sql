@@ -24,6 +24,7 @@ CREATE TABLE manuscripts (
     funding TEXT,
     gene_expression JSONB,
     image JSONB,
+    image_caption TEXT,
     laboratory JSONB,
     methods TEXT,
     pattern_description TEXT,

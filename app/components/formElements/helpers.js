@@ -174,6 +174,7 @@ let defaultFormValues = {
     },
   },
   image: {},
+  imageCaption: '',
   laboratory: {
     name: '',
     WBId: '',
@@ -360,6 +361,7 @@ if (process.env.NODE_ENV === 'development') {
       },
     },
     image: {},
+    imageCaption: '',
     laboratory: {
       name: 'Jean-Claude Labbe',
       WBId: 'UM',

@@ -106,6 +106,21 @@ const InitialSubmission = props => {
 
       <TextEditor
         bold
+        error={get(props.errors, 'imageCaption')}
+        italic
+        key={`iamge-caption-${props.readOnly}`}
+        label="Image caption"
+        name="imageCaption"
+        placeholder="Image caption"
+        required
+        subscript
+        superscript
+        value={get(values, 'imageCaption')}
+        {...props}
+      />
+
+      <TextEditor
+        bold
         error={get(props.errors, 'patternDescription')}
         italic
         key={`pattern-description-${props.readOnly}`}

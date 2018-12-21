@@ -194,6 +194,7 @@ const permissions = {
           'funding',
           'geneExpression',
           'image',
+          'imageCaption',
           'laboratory',
           'methods',
           'patternDescription',

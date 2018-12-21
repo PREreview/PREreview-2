@@ -60,6 +60,7 @@ const typeDefs = `
     geneExpression: GeneExpression
     id: ID!
     image: File
+    imageCaption: String
     laboratory: WBItem
     methods: String
     patternDescription: String
@@ -83,6 +84,7 @@ const typeDefs = `
     geneExpression: GeneExpressionInput
     id: ID!
     image: FileInput
+    imageCaption: String
     laboratory: WBItemInput
     methods: String
     patternDescription: String
