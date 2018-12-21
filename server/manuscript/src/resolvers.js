@@ -40,6 +40,12 @@ const isUserInGlobalTeams = (globalTeams, user) =>
 
 // END TO DO
 
+const manuscriptMetadataUpdate = async (_, { data, manuscriptId }, ctx) => {
+  const { doi } = data
+  await ctx.connectors.Manuscript.update(manuscriptId, { doi }, ctx)
+  return manuscriptId
+}
+
 const resolvers = {
   // TO DO -- deprecated
   HistoryEntry: {
@@ -111,6 +117,7 @@ const resolvers = {
 
       return team.id
     },
+    manuscriptMetadataUpdate,
     async updateManuscript(_, { data }, ctx) {
       const manuscript = await ctx.connectors.Manuscript.fetchOne(data.id, ctx)
       const update = merge({}, manuscript, data)

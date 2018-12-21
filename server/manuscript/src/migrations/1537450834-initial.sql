@@ -21,6 +21,7 @@ CREATE TABLE manuscripts (
     data_type TEXT,
     decision_letter TEXT,
     disclaimer BOOLEAN,
+    doi TEXT,
     funding TEXT,
     gene_expression JSONB,
     image JSONB,

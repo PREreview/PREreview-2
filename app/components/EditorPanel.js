@@ -22,6 +22,7 @@ import {
 import {
   DecisionSection,
   Discuss,
+  EditorPanelMetadata,
   EditorPanelRibbon,
   PanelInfo,
   ReviewerInfo,
@@ -106,6 +107,7 @@ const EditorPanel = props => {
     scienceOfficer,
     updateArticle,
     updateCurrentlyWith,
+    updateMetadata,
   } = props
 
   if (loading) return <Loading />
@@ -156,6 +158,12 @@ const EditorPanel = props => {
                 />
               </Authorize>
             )}
+
+          <EditorPanelMetadata
+            articleId={article.id}
+            doi={article.doi}
+            updateMetadata={updateMetadata}
+          />
 
           <ReviewerInfo
             articleId={article.id}

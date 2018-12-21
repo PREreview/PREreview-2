@@ -18,6 +18,7 @@ const GET_ARTICLE_FOR_EDITOR = gql`
       }
       currentlyWith
       decisionLetter
+      doi
       id
       status {
         decision {

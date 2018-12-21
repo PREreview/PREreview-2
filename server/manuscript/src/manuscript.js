@@ -29,6 +29,7 @@ class Manuscript extends BaseModel {
         dataType: { type: ['string', 'null'] },
         decisionLetter: { type: ['string', 'null'] },
         disclaimer: { type: ['boolean', 'null'] },
+        doi: { type: ['string', 'null'] },
         funding: { type: ['string', 'null'] },
         geneExpression: { type: ['object', 'null'] },
         image: { type: ['object', 'null'] },
