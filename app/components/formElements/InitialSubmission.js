@@ -1,7 +1,10 @@
 /* eslint-disable react/prop-types */
 
 import React from 'react'
+import styled from 'styled-components'
 import { get } from 'lodash'
+
+import { th } from '@pubsweet/ui-toolkit'
 
 import { getWBLaboratory, getWBPerson } from '../../fetch/WBApi'
 
@@ -14,6 +17,12 @@ import Image from './Image'
 import TextEditor from './TextEditor'
 import TextField from './TextField'
 import TextFieldGroup from './TextFieldGroup'
+
+const Info = styled.div`
+  font-size: ${th('fontSizeBaseSmall')};
+  line-height: ${th('lineHeightBaseSmall')};
+  margin-bottom: ${th('gridUnit')};
+`
 
 const disclaimerDescription = (
   <React.Fragment>
@@ -34,6 +43,11 @@ const InitialSubmission = props => {
 
   return (
     <React.Fragment>
+      <Info>
+        Enter author names in the order they will appear in the article:
+        corresponding, first, second, etc.
+      </Info>
+
       <AuthorInput
         label="Name"
         name="author"
