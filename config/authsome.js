@@ -188,6 +188,7 @@ const permissions = {
         // WARNING: remove status
         const authorWhitelist = [
           'acknowledgements',
+          'affiliations',
           'authors',
           'comments',
           'disclaimer',

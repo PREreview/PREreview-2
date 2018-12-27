@@ -161,6 +161,7 @@ const typeDefs = `
   }
 
   type Author {
+    affiliations: String
     credit: [String]
     email: String
     id: ID
@@ -170,6 +171,7 @@ const typeDefs = `
   }
 
   input AuthorInput {
+    affiliations: String
     credit: [String]
     email: String
     id: ID
