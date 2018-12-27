@@ -50,6 +50,7 @@ module.exports = {
       'backboneVector',
       'fusionType',
       'constructComments',
+      'transgeneName',
       'strain',
       'coinjected',
       'injectionConcentration',

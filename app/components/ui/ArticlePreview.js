@@ -1,7 +1,16 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { forIn, isUndefined, keys, pickBy, sortBy, uniqueId } from 'lodash'
+import {
+  clone,
+  filter,
+  forIn,
+  isUndefined,
+  keys,
+  pickBy,
+  sortBy,
+  uniqueId,
+} from 'lodash'
 
 import config from 'config'
 import { H2, H4, H6 } from '@pubsweet/ui'
@@ -10,6 +19,14 @@ import { TextEditor } from 'xpub-edit'
 
 import { unCamelCase } from '../../helpers/generic'
 import { isDatatypeSelected, isFullSubmissionReady } from '../../helpers/status'
+
+const stripHTML = html => {
+  const tmp = document.createElement('DIV')
+  tmp.innerHTML = html
+  return tmp.textContent || tmp.innerText || ''
+}
+
+const isHTMLNotEmpty = html => stripHTML(html).length > 0
 
 const makeAuthorDisplayValues = authors =>
   authors &&
@@ -133,12 +150,23 @@ const ObserveExpressionGroup = styled.div`
   margin-bottom: ${th('gridUnit')};
 `
 
-const InlineData = ({ label, value }) => (
-  <div>
-    <strong>{`${label}: `}</strong>
-    {value}
-  </div>
-)
+const InlineData = ({ label, value }) => {
+  let val = clone(value)
+  const isArray = Array.isArray(value)
+  if (isArray) val = filter(value, item => item !== '-')
+  if (!val || val === '-' || (isArray && val.length === 0)) return null
+
+  return (
+    <div>
+      <strong>{`${label}: `}</strong>
+
+      {isArray &&
+        val.map((v, index) => (index === val.length - 1 ? v : `${v}, `))}
+
+      {!isArray && val}
+    </div>
+  )
+}
 
 const ObserveExpression = ({ data }) => {
   const rows = []
@@ -246,43 +274,57 @@ const Preview = props => {
           </Section>
         )}
 
-      <Section>
-        <SectionHeader>Description:</SectionHeader>
-        <Editor key={uniqueId()} readonly value={patternDescription} />
-      </Section>
+      {isHTMLNotEmpty(patternDescription) && (
+        <Section>
+          <SectionHeader>Description:</SectionHeader>
+          <Editor key={uniqueId()} readonly value={patternDescription} />
+        </Section>
+      )}
 
-      <Section>
-        <SectionHeader>Methods:</SectionHeader>
-        <Editor key={uniqueId()} readonly value={methods} />
-      </Section>
+      {isHTMLNotEmpty(methods) && (
+        <Section>
+          <SectionHeader>Methods:</SectionHeader>
+          <Editor key={uniqueId()} readonly value={methods} />
+        </Section>
+      )}
 
-      <Section>
-        <SectionHeader>Reagents:</SectionHeader>
-        <Editor key={uniqueId()} readonly value={reagents} />
-      </Section>
+      {isHTMLNotEmpty(reagents) && (
+        <Section>
+          <SectionHeader>Reagents:</SectionHeader>
+          <Editor key={uniqueId()} readonly value={reagents} />
+        </Section>
+      )}
 
-      <Section>
-        <SectionHeader>References:</SectionHeader>
-        <Editor key={uniqueId()} readonly value={references} />
-      </Section>
+      {isHTMLNotEmpty(references) && (
+        <Section>
+          <SectionHeader>References:</SectionHeader>
+          <Editor key={uniqueId()} readonly value={references} />
+        </Section>
+      )}
 
-      <Section>
-        <SectionHeader>Acknowledgments</SectionHeader>
-        {acknowledgements}
-      </Section>
+      {acknowledgements && (
+        <Section>
+          <SectionHeader>Acknowledgments:</SectionHeader>
+          {acknowledgements}
+        </Section>
+      )}
 
-      <Section>
-        <SectionHeader>Funding</SectionHeader>
-        {funding}
-      </Section>
+      {funding && (
+        <Section>
+          <SectionHeader>Funding:</SectionHeader>
+          {funding}
+        </Section>
+      )}
 
       <Metadata>
         <MetadataHeader>Metadata</MetadataHeader>
 
-        <Section>
-          <SectionHeader>Author Comments</SectionHeader>
-          <MetadataEditor key={uniqueId()} readonly value={comments} />
-        </Section>
+        {isHTMLNotEmpty(comments) && (
+          <Section>
+            <SectionHeader>Author Comments</SectionHeader>
+            <MetadataEditor key={uniqueId()} readonly value={comments} />
+          </Section>
+        )}
 
         {suggestedReviewer && (
           <Section>
@@ -302,15 +344,18 @@ const Preview = props => {
         {((dataTypeSelected && full) || (dataTypeSelected && livePreview)) && (
           <React.Fragment>
             <Section>
-              {species && <InlineData label="Species" value={species.name} />}
+              {species.name && (
+                <InlineData label="Species" value={species.name} />
+              )}
 
-              {expressionPattern && (
+              {expressionPattern.name && (
                 <InlineData
                   label="Expression Pattern for Gene"
                   value={expressionPattern.name}
                 />
               )}
             </Section>
+
             <Section>
               {detectionMethod && (
                 <InlineData
