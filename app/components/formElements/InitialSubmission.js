@@ -27,13 +27,11 @@ const Info = styled.div`
 const disclaimerDescription = (
   <React.Fragment>
     <p>
-      By submitting your article to microPublication Biology, you and any
-      co-authors agree to the following: I/we declare to the best of my/our
-      knowledge that each reported experiment is reproducible; that the
-      submission has been approved by all authors; that the submission has been
-      approved by the laboratory&#39;s Principal Investigator, and that the
-      results have not been published elsewhere by us. As the author(s) I/we
-      declare no conflict of interest.
+      I/we declare to the best of my/our knowledge that the experiment is
+      reproducible; that the submission has been approved by all authors; that
+      the submission has been approved by the laboratory&#39;s Principal
+      Investigator, and that the results have not been published elsewhere. The
+      author(s) declare no conflict of interest.
     </p>
   </React.Fragment>
 )
