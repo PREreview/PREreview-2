@@ -92,7 +92,7 @@ const GeneExpressionForm = props => {
           )
         }}
         onSuggestionSelected={onSuggestionSelected}
-        placeholder="Please type in expression pattern for the gene"
+        placeholder="Enter gene expressed"
         required
         value={get(values, 'geneExpression.expressionPattern.name')}
         {...props}

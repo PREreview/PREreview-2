@@ -140,7 +140,7 @@ const InitialSubmission = props => {
         key={`pattern-description-${props.readOnly}`}
         label="Main article text"
         name="patternDescription"
-        placeholder="Provide a description for the pattern"
+        placeholder="Enter article text here"
         required
         subscript
         superscript
@@ -195,7 +195,6 @@ const InitialSubmission = props => {
         error={get(errors, 'acknowledgements')}
         label="Acknowledgements"
         name="acknowledgements"
-        placeholder="this is the acknowledgements"
         value={get(values, 'acknowledgements')}
         {...props}
       />
@@ -214,7 +213,7 @@ const InitialSubmission = props => {
           )
         }
         onSuggestionSelected={onSuggestionSelected}
-        placeholder="Please type in the suggested reviewer"
+        placeholder="Please suggest a reviewer"
         value={get(values, 'suggestedReviewer.name')}
         {...props}
       />
