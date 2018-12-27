@@ -11,6 +11,7 @@ import { getWBPerson } from '../../fetch/WBApi'
 import { onAutocompleteChange, onSuggestionSelected } from './helpers'
 import { Credit } from './index'
 import AutoComplete from './AutoComplete'
+import TextField from './TextField'
 
 const Wrapper = styled.div`
   align-items: flex-end;
@@ -44,6 +45,11 @@ const Icon = styled(UIIcon)`
   }
 `
 
+const AffiliationsWrapper = styled.div`
+  display: flex;
+  justify-content: left;
+`
+
 const QuestionMark = () => (
   <a
     href="https://casrai.org/credit/"
@@ -71,6 +77,7 @@ const AuthorInput = props => {
 
   const authorName = `${name}.name`
   const creditName = `${name}.credit`
+  const affiliationsName = `${name}.affiliations`
 
   const err = get(errors, authorName) || get(errors, creditName)
   const touchedThis = get(touched, name)
@@ -80,7 +87,7 @@ const AuthorInput = props => {
   const setTouched = () => setFieldTouched(name, true)
 
   return (
-    <React.Fragment>
+    <div>
       {label && (
         <Label>
           {label} {required && ' *'}{' '}
@@ -115,7 +122,18 @@ const AuthorInput = props => {
 
         <QuestionMark />
       </Wrapper>
-    </React.Fragment>
+
+      <AffiliationsWrapper>
+        <TextField
+          inline
+          label="Affiliations"
+          name={affiliationsName}
+          value={get(values, affiliationsName)}
+          {...autoCompleteProps}
+          placeholder="The author's affiliations" // override placeholder
+        />
+      </AffiliationsWrapper>
+    </div>
   )
 }
 

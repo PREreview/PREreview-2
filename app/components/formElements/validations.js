@@ -25,6 +25,7 @@ const validateWBExists = function(val) {
 const initial = {
   acknowledgements: yup.string(),
   author: yup.object().shape({
+    affiliations: yup.string(),
     credit: yup
       .array()
       .of(yup.string())
@@ -45,6 +46,7 @@ const initial = {
   }),
   coAuthors: yup.array(
     yup.object().shape({
+      affiliations: yup.string(),
       credit: yup
         .array()
         .of(yup.string())

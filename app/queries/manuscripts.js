@@ -5,6 +5,7 @@ const GET_MANUSCRIPT = gql`
     manuscript(id: $id) {
       acknowledgements
       authors {
+        affiliations
         credit
         email
         name

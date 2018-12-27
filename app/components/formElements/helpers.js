@@ -17,6 +17,7 @@ import _, {
 let defaultFormValues = {
   acknowledgements: '',
   author: {
+    affiliations: '',
     credit: [''],
     email: '',
     name: '',
@@ -24,6 +25,7 @@ let defaultFormValues = {
   },
   coAuthors: [
     {
+      affiliations: '',
       credit: [''],
       id: uuid(),
       name: '',
@@ -191,6 +193,7 @@ if (process.env.NODE_ENV === 'development') {
   defaultFormValues = {
     acknowledgements: '',
     author: {
+      affiliations: 'University of Chicago',
       credit: ['software'],
       email: 'john@john.com',
       name: 'John A Bryden',
@@ -198,12 +201,14 @@ if (process.env.NODE_ENV === 'development') {
     },
     coAuthors: [
       {
+        affiliations: 'University of Minnesota',
         credit: ['formalAnalysis'],
         id: uuid(),
         name: 'Yanna Cen',
         WBId: 'WBPerson18694',
       },
       {
+        affiliations: 'University of Virginia',
         credit: ['dataCuration'],
         id: uuid(),
         name: 'Alec Barret',

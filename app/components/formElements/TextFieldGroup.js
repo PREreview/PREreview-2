@@ -56,6 +56,7 @@ const Label = styled.label`
 `
 
 const LineWrapper = styled.div`
+  align-items: flex-start;
   display: flex;
 `
 
