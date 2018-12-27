@@ -100,7 +100,7 @@ const MetadataHeader = styled(H4)`
 `
 
 const Section = styled.section`
-  margin-bottom: ${th('gridUnit')};
+  margin-bottom: calc(${th('gridUnit')} * 3);
   text-align: justify;
 `
 
