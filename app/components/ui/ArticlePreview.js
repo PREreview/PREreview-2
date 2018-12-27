@@ -15,7 +15,7 @@ import {
 import config from 'config'
 import { H2, H4, H6 } from '@pubsweet/ui'
 import { th } from '@pubsweet/ui-toolkit'
-import { TextEditor } from 'xpub-edit'
+import { AbstractEditor } from 'xpub-edit'
 
 import { unCamelCase } from '../../helpers/generic'
 import { isDatatypeSelected, isFullSubmissionReady } from '../../helpers/status'
@@ -120,7 +120,7 @@ const Metadata = styled.div`
   padding: ${th('gridUnit')};
 `
 
-const Editor = styled(TextEditor)`
+const Editor = styled(AbstractEditor)`
   border: 0;
   font-family: ${th('fontReading')};
   font-size: ${th('fontSizeBase')};
