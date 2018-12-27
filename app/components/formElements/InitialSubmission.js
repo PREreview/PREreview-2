@@ -1,7 +1,10 @@
 /* eslint-disable react/prop-types */
 
 import React from 'react'
+import styled from 'styled-components'
 import { get } from 'lodash'
+
+import { th } from '@pubsweet/ui-toolkit'
 
 import { getWBLaboratory, getWBPerson } from '../../fetch/WBApi'
 
@@ -15,16 +18,20 @@ import TextEditor from './TextEditor'
 import TextField from './TextField'
 import TextFieldGroup from './TextFieldGroup'
 
+const Info = styled.div`
+  font-size: ${th('fontSizeBaseSmall')};
+  line-height: ${th('lineHeightBaseSmall')};
+  margin-bottom: ${th('gridUnit')};
+`
+
 const disclaimerDescription = (
   <React.Fragment>
     <p>
-      By submitting your article to microPublication Biology, you and any
-      co-authors agree to the following: I/we declare to the best of my/our
-      knowledge that each reported experiment is reproducible; that the
-      submission has been approved by all authors; that the submission has been
-      approved by the laboratory&#39;s Principal Investigator, and that the
-      results have not been published elsewhere by us. As the author(s) I/we
-      declare no conflict of interest.
+      I/we declare to the best of my/our knowledge that the experiment is
+      reproducible; that the submission has been approved by all authors; that
+      the submission has been approved by the laboratory&#39;s Principal
+      Investigator, and that the results have not been published elsewhere. The
+      author(s) declare no conflict of interest.
     </p>
   </React.Fragment>
 )
@@ -34,6 +41,11 @@ const InitialSubmission = props => {
 
   return (
     <React.Fragment>
+      <Info>
+        Enter author names in the order they will appear in the article:
+        corresponding, first, second, etc.
+      </Info>
+
       <AuthorInput
         label="Name"
         name="author"
@@ -126,7 +138,7 @@ const InitialSubmission = props => {
         key={`pattern-description-${props.readOnly}`}
         label="Main article text"
         name="patternDescription"
-        placeholder="Provide a description for the pattern"
+        placeholder="Enter article text here"
         required
         subscript
         superscript
@@ -142,7 +154,6 @@ const InitialSubmission = props => {
         label="Methods"
         name="methods"
         placeholder="Provide the methods used"
-        required
         subscript
         superscript
         value={get(values, 'methods')}
@@ -157,7 +168,6 @@ const InitialSubmission = props => {
         label="Reagents"
         name="reagents"
         placeholder="Provide the reagents"
-        required
         subscript
         superscript
         value={get(values, 'reagents')}
@@ -183,7 +193,6 @@ const InitialSubmission = props => {
         error={get(errors, 'acknowledgements')}
         label="Acknowledgements"
         name="acknowledgements"
-        placeholder="this is the acknowledgements"
         value={get(values, 'acknowledgements')}
         {...props}
       />
@@ -202,7 +211,7 @@ const InitialSubmission = props => {
           )
         }
         onSuggestionSelected={onSuggestionSelected}
-        placeholder="Please type in the suggested reviewer"
+        placeholder="Please suggest a reviewer"
         value={get(values, 'suggestedReviewer.name')}
         {...props}
       />

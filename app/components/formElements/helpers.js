@@ -176,12 +176,15 @@ let defaultFormValues = {
     },
   },
   image: {},
-  imageCaption: '',
+  imageCaption: '<p></p>',
   laboratory: {
     name: '',
     WBId: '',
   },
+  methods: '<p></p>',
   patternDescription: '<p></p>',
+  reagents: '<p></p>',
+  references: '<p></p>',
   suggestedReviewer: {
     name: '',
     WBId: '',
@@ -366,12 +369,15 @@ if (process.env.NODE_ENV === 'development') {
       },
     },
     image: {},
-    imageCaption: '',
+    imageCaption: '<p></p>',
     laboratory: {
       name: 'Jean-Claude Labbe',
       WBId: 'UM',
     },
+    methods: '<p></p>',
     patternDescription: '<p>Hello there</p>',
+    reagents: '<p></p>',
+    references: '<p></p>',
     suggestedReviewer: {
       name: 'John C Cooper',
       WBId: 'lklajfldjsf',

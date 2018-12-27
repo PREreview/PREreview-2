@@ -77,6 +77,13 @@ const initial = {
   image: yup.object().shape({
     url: yup.string().required('Image is required'),
   }),
+  imageCaption: yup
+    .string()
+    .test(
+      'image-caption-not-empty',
+      'Image caption is required',
+      val => stripHTML(val).length > 0,
+    ),
   laboratory: yup.object().shape({
     name: yup
       .string()
@@ -88,11 +95,20 @@ const initial = {
       ),
     WBId: yup.string(),
   }),
+  methods: yup.string(),
   patternDescription: yup
     .string()
     .test(
       'pattern-description-not-empty',
       'Pattern description is required',
+      val => stripHTML(val).length > 0,
+    ),
+  reagents: yup.string(),
+  references: yup
+    .string()
+    .test(
+      'references-not-empty',
+      'References are required',
       val => stripHTML(val).length > 0,
     ),
   suggestedReviewer: yup.object().shape({
