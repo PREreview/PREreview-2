@@ -156,7 +156,6 @@ const InitialSubmission = props => {
         label="Methods"
         name="methods"
         placeholder="Provide the methods used"
-        required
         subscript
         superscript
         value={get(values, 'methods')}
@@ -171,7 +170,6 @@ const InitialSubmission = props => {
         label="Reagents"
         name="reagents"
         placeholder="Provide the reagents"
-        required
         subscript
         superscript
         value={get(values, 'reagents')}
