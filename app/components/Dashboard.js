@@ -14,6 +14,7 @@ import {
 import ComposedDashboard from './compose/Dashboard'
 import Loading from './Loading'
 import { GET_DASHBOARD_ARTICLES } from './compose/pieces/getDashboardArticles'
+import { CURRENT_USER } from './Private'
 
 const SubmitButton = props => {
   const {
@@ -112,14 +113,27 @@ const SubmitButton = props => {
           Cannot use refetch on create, as the teams will not have been
           created yet, so there is no way see that this article belongs to
           this author.
-        */
-        client.query({
-          fetchPolicy: 'network-only',
-          query: GET_DASHBOARD_ARTICLES,
-          variables: { currentUserId: currentUser.id },
-        })
 
-        history.push(`/article/${id}`)
+          TO DO -- Substitute these queries with subscriptions
+        */
+
+        // Need to get the user to have user.teams updated
+        // All this must go when the authsome mode can stop relying on
+        // the data it gets for user.teams from the cache
+        client
+          .query({
+            fetchPolicy: 'network-only',
+            query: CURRENT_USER,
+          })
+          .then(() => {
+            client.query({
+              fetchPolicy: 'network-only',
+              query: GET_DASHBOARD_ARTICLES,
+              variables: { currentUserId: currentUser.id },
+            })
+
+            history.push(`/article/${id}`)
+          })
       })
     })
   }
