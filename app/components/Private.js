@@ -12,6 +12,9 @@ const CURRENT_USER = gql`
     currentUser {
       admin
       id
+      teams {
+        id
+      }
       username
     }
   }
@@ -59,4 +62,5 @@ Private.propTypes = {
   }).isRequired,
 }
 
+export { CURRENT_USER }
 export default withRouter(Private)
