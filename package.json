@@ -4,7 +4,7 @@
   "description": "Post, Read, and Engage with preprint reviews",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.coko.foundation/micropubs/wormbase"
+    "url": "https://github.com/PREreview/PREreview2"
   },
   "keywords": [
     "prereview",
