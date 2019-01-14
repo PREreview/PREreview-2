@@ -26,7 +26,7 @@ const NavigationBar = ({ data: { currentUser }, location, history }) => {
 
   return (
     <AppBar
-      brand="WormBase"
+      brand="PREreview"
       navLinkComponents={navLinks}
       onLogoutClick={onLogoutClick}
       user={currentUser}
