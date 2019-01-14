@@ -1,18 +1,18 @@
 {
-  "name": "wormbase",
+  "name": "prereview",
   "version": "0.0.0",
-  "description": "Wormbase article submission and review system",
+  "description": "Post, Read, and Engage with preprint reviews",
   "repository": {
     "type": "git",
     "url": "https://gitlab.coko.foundation/micropubs/wormbase"
   },
   "keywords": [
+    "prereview",
     "pubsweet",
-    "micropubs",
-    "wormbase"
+    "literature"
   ],
   "workspaces": [],
-  "author": "Yannis Barlas",
+  "author": "Rik Smith-Unna",
   "license": "MIT",
   "dependencies": {
     "@pubsweet/coko-theme": "^2.0.0",
