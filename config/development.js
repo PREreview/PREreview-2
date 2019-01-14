@@ -7,7 +7,7 @@ module.exports = {
   },
   'pubsweet-server': {
     db: {
-      database: 'wb',
+      database: 'prereview',
       password: 'pass',
       port: 5480,
       user: 'dev',
