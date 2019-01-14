@@ -1,25 +1,14 @@
-# Micropubs - Wormbase
+# PREreview 2.0
 
-This is the repo for the Micropublications.org project
+This is where PREreview 2.0 is being developed.
 
-## Roadmap
+**NOTE: this project is under very active development and is not currently accepting contributions.** Feel free to star/watch the repo and we'll remove this notice once we have processes and documentation in place to allow people to collaborate productively.
 
-|Task                       |In progress    |Done       |Issue Number   |
-|---                        |---            |---        |---            |
-|Set up login/signup        |               |&#x2714;   |#27
-|Docker container for db    |               |&#x2714;   |#3
-|Private routing            |               |&#x2714;   |#2
-|Implement Navbar           |               |&#x2714;   |#14
-|Setup Loaders              |               |&#x2714;   |#28
-|Linting                    |               |&#x2714;   |#8
-|Linting on Commit          |               |&#x2714;   |#24
-|Conventional Commits       |               |&#x2714;   |#11
-|Unit Tests Scripts         |               |&#x2714;   |#7
-|e2e Test Scripts           |               |&#x2714;   |#6
-|Decide on Form Lib         |               |&#x2714;   |#18
-|Set up Dashboard           |               |&#x2714;   |#16
-|Set up Form Submission     |               |&#x2714;   |#17
-|Amigo API extension        |               |&#x2714;   |#21
-|Wormbase DB API extension  |               |&#x2714;   |#19
-|Roles & permissions        |               |&#x2714;   |#19
-|Granttome API extension    |               |           |#20
+## Quick links
+
+- Design
+- Roadmap
+- Project-level issue tracking
+- Development milestones and issue tracker
+- COKO PREreview development mattermost channel
+- Gitter channel
