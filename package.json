@@ -104,6 +104,7 @@
     "precommit": "lint-staged",
     "release": "standard-version",
     "server": "pubsweet server",
+    "start": "pubsweet start",
     "setupdb": "pubsweet setupdb",
     "test": "jest",
     "testcafe": "source ./config/test.env && testcafe chromium e2e/"

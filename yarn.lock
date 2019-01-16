@@ -351,7 +351,15 @@
     joi "^13.1.0"
     lodash "^4.17.4"
 
-"@pubsweet/ui-toolkit@1.0.0", "@pubsweet/ui-toolkit@^1.0.0":
+"@pubsweet/ui-toolkit@1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@pubsweet/ui-toolkit/-/ui-toolkit-1.1.2.tgz#d8edf90716f14102e8bc20b01f39e17c9be9119a"
+  dependencies:
+    color "^3.0.0"
+    lodash "^4.17.4"
+    styled-components "^3.2.5"
+
+"@pubsweet/ui-toolkit@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@pubsweet/ui-toolkit/-/ui-toolkit-1.0.0.tgz#df05b54e7bbfabcb10c7afc2991752e1087d2298"
   dependencies:
@@ -381,9 +389,9 @@
     redux-form "^7.0.3"
     styled-components "^3.2.5"
 
-"@pubsweet/ui@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@pubsweet/ui/-/ui-5.0.0.tgz#3e8765fafa1d73fb9081074f4ed58d4e559f2437"
+"@pubsweet/ui@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@pubsweet/ui/-/ui-7.0.0.tgz#c4a203bce525a505601cd55f7e8e9f7f45d5e1af"
   dependencies:
     babel-jest "^21.2.0"
     classnames "^2.2.5"
