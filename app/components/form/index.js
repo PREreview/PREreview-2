@@ -1,3 +1,4 @@
+export { default as AddReviewerForm } from './AddReviewerForm'
 export { default as AssignReviewersForm } from './AssignReviewersForm'
 export { default as DecisionForm } from './DecisionForm'
 export { default as DiscussForm } from './DiscussForm'

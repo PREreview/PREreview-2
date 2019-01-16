@@ -11,7 +11,8 @@ import { th } from '@pubsweet/ui-toolkit'
 
 import ComposedAssignReviewers from './compose/AssignReviewers'
 import { Select as DefaultSelect } from './ui'
-import { AssignReviewersForm } from './form'
+import { TextField } from './formElements'
+import { AddReviewerForm, AssignReviewersForm } from './form'
 import Loading from './Loading'
 import { isMember } from '../helpers/teams'
 
@@ -56,6 +57,7 @@ const PageHeading = styled(H2)`
 const ContentWrapper = styled.div`
   cursor: default;
   display: flex;
+  flex-direction: column;
   margin-left: ${th('gridUnit')};
 
   form {
@@ -79,6 +81,52 @@ const Tag = styled.span`
   margin: ${th('gridUnit')} 0;
   padding: calc(${th('gridUnit')} / 2);
 `
+
+const InviteSectionWrapper = styled.div`
+  margin: calc(${th('gridUnit')} * 3) 0;
+`
+
+const InviteSection = props => {
+  const { articleId } = props
+
+  return (
+    <InviteSectionWrapper>
+      <Action>Add a reviewer that is not in the system</Action>
+
+      <AddReviewerForm articleId={articleId}>
+        {formProps => {
+          const { errors, values, ...rest } = formProps
+
+          return (
+            <React.Fragment>
+              <TextField
+                error={errors.name}
+                label="Name"
+                name="name"
+                required
+                value={values.name}
+                {...rest}
+              />
+
+              <TextField
+                error={errors.email}
+                label="Email"
+                name="email"
+                required
+                value={values.email}
+                {...rest}
+              />
+
+              <Button primary type="submit">
+                OK
+              </Button>
+            </React.Fragment>
+          )
+        }}
+      </AddReviewerForm>
+    </InviteSectionWrapper>
+  )
+}
 
 const SuggestedReviewer = props => {
   const { name } = props
@@ -264,7 +312,6 @@ const AssignReviewers = props => {
                   options={userOptions}
                   value={values.reviewers}
                 />
-
                 <Button disabled={!dirty} primary type="submit">
                   Save
                 </Button>
@@ -272,6 +319,8 @@ const AssignReviewers = props => {
             )
           }}
         </AssignReviewersForm>
+
+        <InviteSection articleId={articleId} />
       </Section>
 
       <Section label="Status">
