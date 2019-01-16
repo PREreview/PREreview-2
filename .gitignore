@@ -4,6 +4,7 @@ config/*.env
 coverage
 node_modules
 uploads
+logs
 
 npm-debug.log
 package-lock.json

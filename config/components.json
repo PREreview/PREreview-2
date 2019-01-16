@@ -1,6 +1,10 @@
 [
-	"pubsweet-component-login",
-	"pubsweet-component-signup",
-	"pubsweet-component-password-reset-backend",
-	"pubsweet-component-password-reset-frontend"
+  "pubsweet-component-login",
+  "pubsweet-component-signup",
+  "@pubsweet/component-send-email",
+  "pubsweet-component-password-reset-backend",
+  "pubsweet-component-password-reset-frontend",
+  "./app/wbApi",
+  "./server/manuscript/src",
+  "./server/review/src"
 ]

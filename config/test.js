@@ -13,6 +13,11 @@ module.exports = {
       user: 'prereview-testuser',
     },
     host: 'http://localhost',
+    pool: {
+      idleTimeoutMillis: 1000,
+      max: 1,
+      min: 0,
+    },
     port: 3000,
     secret: 'somesecret',
   },

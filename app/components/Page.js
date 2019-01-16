@@ -2,10 +2,11 @@ import styled from 'styled-components'
 import { fadeIn, th } from '@pubsweet/ui-toolkit'
 
 const Page = styled.div`
-  flex: 1;
+  flex: auto;
   font-family: ${th('fontInterface')};
-  padding: ${th('gridUnit')} 15px;
+  height: 100%;
   overflow-y: auto;
+  padding: calc(${th('gridUnit')} * 2);
 
   > div {
     animation: ${fadeIn} 0.5s;
