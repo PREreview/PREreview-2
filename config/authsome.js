@@ -169,6 +169,7 @@ const permissions = {
           'currentlyWith',
           'dataType',
           'decisionLetter',
+          'doi',
           'status',
         ]
 
