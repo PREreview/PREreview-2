@@ -57,6 +57,8 @@ const isInvitedReviewer = (user, object, context) =>
 
 const updatedProperties = (current, update) => {
   const diff = Object.keys(current).filter(k => {
+    if (!update[k]) return false
+
     if (typeof current[k] === 'string') {
       return current[k] !== update[k]
     }
