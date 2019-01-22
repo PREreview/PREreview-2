@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom'
 import { get } from 'lodash'
 
 import {
+  addExternalReviewer,
   getArticleReviewers,
   getGlobalTeams,
   getTeamsForArticle,
@@ -17,6 +18,7 @@ import {
 import { getRegularUsers, getReviewerTeams } from '../../helpers/teams'
 
 const mapper = {
+  addExternalReviewer,
   getArticleReviewers: props => getArticleReviewers(props),
   getGlobalTeams,
   getTeamsForArticle: props => getTeamsForArticle(props),
@@ -36,6 +38,7 @@ const mapProps = args => {
     allReviewerTeams && allReviewerTeams.find(t => t.teamType === type)
 
   return {
+    addExternalReviewer: args.addExternalReviewer.addExternalReviewer,
     inviteReviewer: args.inviteReviewer.inviteReviewer,
     loading:
       args.getArticleReviewers.loading ||

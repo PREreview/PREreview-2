@@ -17,10 +17,20 @@ const validations = yup.object().shape({
 })
 
 const AddReviewerForm = props => {
-  // const { articleId } = props
+  const { addExternalReviewer, articleId } = props
 
   const handleSubmit = (formValues, formikBag) => {
-    // console.log('submit me!', formValues)
+    const { email, name } = formValues
+
+    addExternalReviewer({
+      variables: {
+        input: {
+          articleId,
+          email,
+          name,
+        },
+      },
+    })
   }
 
   return (

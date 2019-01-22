@@ -14,7 +14,6 @@ const MANUSCRIPT_METADATA_UPDATE = gql`
 
 const ManuscriptMetadataUpdateMutation = props => {
   const { articleId, render } = props
-  console.log(props)
 
   const refetchQueries = [
     {

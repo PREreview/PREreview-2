@@ -138,6 +138,13 @@ const permissions = {
       return isUsersReview || global
     }
 
+    if (object === 'ExternalUser') return true
+
+    if (object && object.type === 'externalUser') {
+      const global = await isGlobal(user, context)
+      return global
+    }
+
     return false
   },
   update: async (userId, operation, object, context) => {

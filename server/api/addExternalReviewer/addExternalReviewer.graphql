@@ -1,0 +1,9 @@
+input AddExternalReviewerInput {
+  articleId: ID!
+  email: String!
+  name: String!
+}
+
+extend type Mutation {
+  addExternalReviewer(input: AddExternalReviewerInput!): ID
+}

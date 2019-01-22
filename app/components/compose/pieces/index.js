@@ -1,3 +1,4 @@
+export { default as addExternalReviewer } from './addExternalReviewer'
 export { default as createReview } from './createReview'
 export { default as createSubmission } from './createSubmission'
 export { default as createTeam } from './createTeam'

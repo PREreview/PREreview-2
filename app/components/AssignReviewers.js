@@ -87,13 +87,16 @@ const InviteSectionWrapper = styled.div`
 `
 
 const InviteSection = props => {
-  const { articleId } = props
+  const { addExternalReviewer, articleId } = props
 
   return (
     <InviteSectionWrapper>
       <Action>Add a reviewer that is not in the system</Action>
 
-      <AddReviewerForm articleId={articleId}>
+      <AddReviewerForm
+        addExternalReviewer={addExternalReviewer}
+        articleId={articleId}
+      >
         {formProps => {
           const { errors, values, ...rest } = formProps
 
@@ -250,6 +253,7 @@ const ReviewerTable = props => {
 
 const AssignReviewers = props => {
   const {
+    addExternalReviewer,
     articleId,
     inviteReviewer,
     loading,
@@ -321,7 +325,10 @@ const AssignReviewers = props => {
           }}
         </AssignReviewersForm>
 
-        <InviteSection articleId={articleId} />
+        <InviteSection
+          addExternalReviewer={addExternalReviewer}
+          articleId={articleId}
+        />
       </Section>
 
       <Section label="Status">
