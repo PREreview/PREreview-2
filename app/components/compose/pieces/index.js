@@ -8,6 +8,9 @@ export { default as getArticleForEditor } from './getArticleForEditor'
 export { default as getArticleReviewers } from './getArticleReviewers'
 export { default as getArticles } from './getArticles'
 export { default as getDashboardArticles } from './getDashboardArticles'
+export {
+  default as getExternalTeamsForManuscript,
+} from './getExternalTeamsForManuscript'
 export { default as getGlobalTeams } from './getGlobalTeams'
 export { default as getReviewsForArticle } from './getReviewsForArticle'
 export { default as getTeamsForArticle } from './getTeamsForArticle'

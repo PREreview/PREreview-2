@@ -2,8 +2,21 @@
 
 import React from 'react'
 import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
 
-import GET_TEAMS_FOR_ARTICLE from '../../../queries/teamsForArticle'
+const GET_TEAMS_FOR_ARTICLE = gql`
+  query GetTeamsForArticle($id: ID!) {
+    teamsForArticle(id: $id) {
+      id
+      members {
+        id
+        username
+      }
+      name
+      teamType
+    }
+  }
+`
 
 const getTeamsForArticleQuery = props => {
   const { articleId: id, render } = props

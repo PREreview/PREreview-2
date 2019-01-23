@@ -275,15 +275,6 @@ const resolvers = {
     async manuscripts(_, vars, ctx) {
       return ctx.connectors.Manuscript.fetchAll(ctx)
     },
-    async teamsForArticle(_, { id }) {
-      let teams
-      try {
-        teams = await Team.findByField('object.objectId', id)
-      } catch (e) {
-        teams = []
-      }
-      return teams
-    },
   },
 }
 

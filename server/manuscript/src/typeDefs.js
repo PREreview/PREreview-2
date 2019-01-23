@@ -4,7 +4,6 @@ const typeDefs = `
     globalTeams: [Team]
     manuscript(id: ID!): Manuscript!
     manuscripts: [Manuscript]!
-    teamsForArticle(id: ID!): [Team]
     userTeams(id: ID!): [Team]
   }
 

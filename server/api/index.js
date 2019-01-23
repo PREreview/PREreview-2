@@ -13,6 +13,9 @@ const loadGQLFiles = paths =>
 
 const typeDefinitionPaths = [
   './addExternalReviewer/addExternalReviewer.graphql',
+  './teamsForArticle/teamsForArticle.graphql',
+  './externalTeam/externalTeam.graphql',
+  './externalUser/externalUser.graphql',
 ]
 const typeDefs = loadGQLFiles(typeDefinitionPaths)
 

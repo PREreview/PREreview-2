@@ -1,0 +1,10 @@
+type ExternalTeam {
+  id: ID!
+  manuscriptId: ID!
+  members: [ExternalUser!]!
+  teamType: String!
+}
+
+extend type Query {
+  getExternalTeamsForManuscript(manuscriptId: ID!): [ExternalTeam]
+}

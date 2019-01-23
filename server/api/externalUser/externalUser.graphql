@@ -1,0 +1,5 @@
+type ExternalUser {
+  id: ID!
+  email: String!
+  name: String!
+}

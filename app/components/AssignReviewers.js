@@ -168,12 +168,22 @@ const ReviewerTable = props => {
     acceptedTeam,
     articleId,
     data,
+    externalReviewers,
     inviteReviewer,
     invitedTeam,
     rejectedTeam,
   } = props
 
-  const rows = data.map(reviewer => {
+  const nameToUsername = externalReviewers.members.map(m => {
+    const modified = clone(m)
+    modified.username = modified.name
+    delete modified.name
+    return modified
+  })
+
+  const modifiedData = data.concat(nameToUsername)
+
+  const rows = modifiedData.map(reviewer => {
     const item = clone(reviewer)
     item.status = 'Not invited'
     item.action = 'Invite'
@@ -255,6 +265,7 @@ const AssignReviewers = props => {
   const {
     addExternalReviewer,
     articleId,
+    externalReviewers,
     inviteReviewer,
     loading,
     suggested,
@@ -336,6 +347,7 @@ const AssignReviewers = props => {
           acceptedTeam={reviewersAcceptedTeam}
           articleId={articleId}
           data={reviewers}
+          externalReviewers={externalReviewers}
           invitedTeam={reviewersInvitedTeam}
           inviteReviewer={inviteReviewer}
           rejectedTeam={reviewersRejectedTeam}

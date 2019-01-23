@@ -8,6 +8,7 @@ import { get } from 'lodash'
 import {
   addExternalReviewer,
   getArticleReviewers,
+  getExternalTeamsForManuscript,
   getGlobalTeams,
   getTeamsForArticle,
   getUsers,
@@ -20,6 +21,7 @@ import { getRegularUsers, getReviewerTeams } from '../../helpers/teams'
 const mapper = {
   addExternalReviewer,
   getArticleReviewers: props => getArticleReviewers(props),
+  getExternalTeamsForManuscript,
   getGlobalTeams,
   getTeamsForArticle: props => getTeamsForArticle(props),
   getUsers,
@@ -37,12 +39,22 @@ const mapProps = args => {
   const getTeam = type =>
     allReviewerTeams && allReviewerTeams.find(t => t.teamType === type)
 
+  const externalTeams = get(
+    args.getExternalTeamsForManuscript,
+    'data.getExternalTeamsForManuscript',
+  )
+
+  const externalReviewers =
+    externalTeams && externalTeams.find(t => t.teamType === 'externalReviewers')
+
   return {
     addExternalReviewer: args.addExternalReviewer.addExternalReviewer,
+    externalReviewers,
     inviteReviewer: args.inviteReviewer.inviteReviewer,
     loading:
       args.getArticleReviewers.loading ||
       args.getUsers.loading ||
+      args.getExternalTeamsForManuscript.loading ||
       args.getGlobalTeams.loading ||
       args.getTeamsForArticle.loading,
     reviewersAcceptedTeam: getTeam('reviewersAccepted'),
