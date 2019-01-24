@@ -31,4 +31,5 @@ const getExternalTeamsForManuscriptQuery = props => {
   )
 }
 
-module.exports = getExternalTeamsForManuscriptQuery
+export { GET_EXTERNAL_TEAMS_FOR_MANUSCRIPT }
+export default getExternalTeamsForManuscriptQuery

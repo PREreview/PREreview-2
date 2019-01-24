@@ -11,7 +11,7 @@ import { th } from '@pubsweet/ui-toolkit'
 
 import { Select } from './ui'
 import UPDATE_TEAM from '../mutations/updateTeam'
-import GET_TEAMS from '../queries/getTeams'
+import { GET_TEAMS } from './compose/pieces/getTeams'
 import GET_USERS from '../queries/getUsers'
 
 import Loading from './Loading'

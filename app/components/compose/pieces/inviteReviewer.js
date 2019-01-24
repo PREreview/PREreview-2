@@ -4,7 +4,7 @@ import React from 'react'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
-import GET_TEAMS from '../../../queries/getTeams'
+import { GET_TEAMS } from './getTeams'
 
 const INVITE_REVIEWER = gql`
   mutation InviteReviewer($articleId: ID!, $reviewerId: ID!) {

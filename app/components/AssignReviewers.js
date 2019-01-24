@@ -242,12 +242,12 @@ const ReviewerTable = props => {
 
   return (
     <React.Fragment>
-      {(!data || data.length === 0) && (
+      {(!modifiedData || modifiedData.length === 0) && (
         <EmptyMessage>There are currently no reviewers</EmptyMessage>
       )}
 
-      {data &&
-        data.length > 0 && (
+      {modifiedData &&
+        modifiedData.length > 0 && (
           <Table
             className="-striped -highlight"
             columns={columns}

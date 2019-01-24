@@ -18,4 +18,5 @@ const GET_TEAMS = gql`
   }
 `
 
-export default GET_TEAMS
+/* eslint-disable-next-line import/prefer-default-export */
+export { GET_TEAMS }

@@ -13,6 +13,7 @@ export {
 } from './getExternalTeamsForManuscript'
 export { default as getGlobalTeams } from './getGlobalTeams'
 export { default as getReviewsForArticle } from './getReviewsForArticle'
+export { default as getTeams } from './getTeams'
 export { default as getTeamsForArticle } from './getTeamsForArticle'
 export { default as getUserReviewsForArticle } from './getUserReviewsForArticle'
 export { default as getUsers } from './getUsers'

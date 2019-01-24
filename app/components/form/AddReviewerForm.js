@@ -30,7 +30,7 @@ const AddReviewerForm = props => {
           name,
         },
       },
-    })
+    }).then(() => formikBag.resetForm())
   }
 
   return (

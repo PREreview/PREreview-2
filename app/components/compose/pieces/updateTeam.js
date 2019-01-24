@@ -3,7 +3,7 @@
 import React from 'react'
 import { Mutation } from 'react-apollo'
 
-import GET_TEAMS from '../../../queries/getTeams'
+import { GET_TEAMS } from './getTeams'
 import UPDATE_TEAM from '../../../mutations/updateTeam'
 import { GET_DASHBOARD_ARTICLES } from './getDashboardArticles'
 import { withCurrentUser } from '../../../userContext'
