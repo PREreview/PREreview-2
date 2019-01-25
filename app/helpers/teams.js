@@ -88,6 +88,7 @@ const getOneTeamByType = (teams, type) =>
   teams && teams.find(t => t.teamType === type)
 
 const isMember = (team, userId) => {
+  if (!team || !userId) return false
   const userInTeam = find(team.members, { id: userId })
   return !isUndefined(userInTeam)
 }

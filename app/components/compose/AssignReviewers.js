@@ -49,9 +49,14 @@ const mapProps = args => {
   const externalReviewers =
     externalTeams && externalTeams.find(t => t.teamType === 'externalReviewers')
 
+  const externalReviewersInvited =
+    externalTeams &&
+    externalTeams.find(t => t.teamType === 'externalReviewersInvited')
+
   return {
     addExternalReviewer: args.addExternalReviewer.addExternalReviewer,
     externalReviewers,
+    externalReviewersInvited,
     inviteExternalReviewer: args.inviteExternalReviewer.inviteExternalReviewer,
     inviteReviewer: args.inviteReviewer.inviteReviewer,
     loading:

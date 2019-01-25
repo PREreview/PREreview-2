@@ -169,6 +169,7 @@ const ReviewerTable = props => {
     articleId,
     data,
     externalReviewers,
+    externalReviewersInvited,
     inviteExternalReviewer,
     inviteReviewer,
     invitedTeam,
@@ -190,9 +191,12 @@ const ReviewerTable = props => {
     item.status = 'Not invited'
     item.action = 'Invite'
 
-    if (isMember(invitedTeam, item.id)) {
+    if (
+      isMember(invitedTeam, item.id) ||
+      isMember(externalReviewersInvited, item.id)
+    ) {
       item.status = 'Invited'
-      item.action = 'Re-invite'
+      item.action = 'Re-send invitation'
     }
 
     if (isMember(rejectedTeam, item.id)) {
@@ -277,6 +281,7 @@ const AssignReviewers = props => {
     addExternalReviewer,
     articleId,
     externalReviewers,
+    externalReviewersInvited,
     inviteExternalReviewer,
     inviteReviewer,
     loading,
@@ -360,6 +365,7 @@ const AssignReviewers = props => {
           articleId={articleId}
           data={reviewers}
           externalReviewers={externalReviewers}
+          externalReviewersInvited={externalReviewersInvited}
           invitedTeam={reviewersInvitedTeam}
           inviteExternalReviewer={inviteExternalReviewer}
           inviteReviewer={inviteReviewer}

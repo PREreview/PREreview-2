@@ -26,7 +26,7 @@ const inviteExternalReviewer = async (_, { manuscriptId, reviewerId }, ctx) => {
   await ctx.connectors.ExternalTeam.update(
     externalInvitedReviewersTeam.id,
     {
-      members: union(externalInvitedReviewersTeam.members, reviewerId),
+      members: union(externalInvitedReviewersTeam.members, [reviewerId]),
     },
     ctx,
   )
