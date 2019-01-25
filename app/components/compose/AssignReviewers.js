@@ -12,6 +12,7 @@ import {
   getGlobalTeams,
   getTeamsForArticle,
   getUsers,
+  inviteExternalReviewer,
   inviteReviewer,
   updateTeam,
 } from './pieces'
@@ -25,6 +26,7 @@ const mapper = {
   getGlobalTeams,
   getTeamsForArticle: props => getTeamsForArticle(props),
   getUsers,
+  inviteExternalReviewer,
   inviteReviewer,
   updateTeam,
 }
@@ -50,6 +52,7 @@ const mapProps = args => {
   return {
     addExternalReviewer: args.addExternalReviewer.addExternalReviewer,
     externalReviewers,
+    inviteExternalReviewer: args.inviteExternalReviewer.inviteExternalReviewer,
     inviteReviewer: args.inviteReviewer.inviteReviewer,
     loading:
       args.getArticleReviewers.loading ||

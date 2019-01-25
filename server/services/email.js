@@ -4,6 +4,7 @@ const mailer = require('@pubsweet/component-send-email')
 const User = require('pubsweet-server/src/models/User')
 const Team = require('pubsweet-server/src/models/Team')
 
+const { model: ExternalUser } = require('../models/externalUser')
 const Manuscript = require('../manuscript/src/manuscript')
 const Review = require('../review/src/review')
 
@@ -73,6 +74,13 @@ const getEditorEmails = async () => {
 
   const emails = editors.map(ed => ed.email).join(',')
   return emails
+}
+
+const getExternalUserEmailById = async id => {
+  const externalUser = await ExternalUser.query().findById(id)
+  if (!externalUser)
+    throw new Error(`Email: External User with id ${id} not found`)
+  return externalUser.email
 }
 
 const getReview = async context => {
@@ -409,6 +417,35 @@ const scienceOfficerApprovalStatusChange = async context => {
   sendEmail(data)
 }
 
+/* 
+  Sends email inviting reviewer that is not currently a user in the system
+  to sign up in order to review a manuscript.
+*/
+const sendExternalReviewerInvitation = async context => {
+  const { externalUserId } = context
+  const externalUserEmail = await getExternalUserEmailById(externalUserId)
+  const manuscript = await getManuscript(context)
+
+  const content = `
+    <p>
+      You have been invited to review article "${
+        manuscript.title
+      }" on the Micropublication submission platform.
+    </p>
+    <p>
+      Please <a href="${baseUrl}">sign up</a> to continue.
+    </p>
+  `
+
+  const data = {
+    content,
+    subject: 'Invitation to review',
+    to: externalUserEmail,
+  }
+
+  sendEmail(data)
+}
+
 const mapper = {
   articleAccepted,
   articleRejected,
@@ -421,6 +458,7 @@ const mapper = {
   reviewerInvited,
   reviewSubmitted,
   scienceOfficerApprovalStatusChange,
+  sendExternalReviewerInvitation,
 }
 
 const email = async (type, context) => {

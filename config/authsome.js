@@ -145,6 +145,12 @@ const permissions = {
       return global
     }
 
+    if (object === 'ExternalTeam') return true
+
+    if (object && object.type === 'externalTeam') {
+      return isGlobal(user, context)
+    }
+
     return false
   },
   update: async (userId, operation, object, context) => {
@@ -266,6 +272,12 @@ const permissions = {
       const changedFields = Object.keys(update)
       const updateAllowedByWhitelist = arrayContains(whiteList, changedFields)
       return updateAllowedByWhitelist
+    }
+
+    if (object === 'ExternalTeam') return true
+
+    if (get(object, 'current.type') === 'externalTeam') {
+      return isEditor(user, context)
     }
 
     return false

@@ -16,6 +16,7 @@ const mapper = {
   reviewerInvited: ['email'],
   reviewSubmitted: ['email'],
   scienceOfficerApprovalStatusChange: ['email'],
+  sendExternalReviewerInvitation: ['email'],
 }
 
 const runType = (type, context) => {

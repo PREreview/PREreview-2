@@ -5,6 +5,7 @@ const teamsForArticle = require('./teamsForArticle/teamsForArticle.resolver')
 const {
   ExternalTeam,
   getExternalTeamsForManuscript,
+  inviteExternalReviewer,
 } = require('./externalTeam/externalTeam.resolver')
 
 const resolvers = {
@@ -14,6 +15,7 @@ const resolvers = {
   },
   Mutation: {
     addExternalReviewer,
+    inviteExternalReviewer,
   },
   ExternalTeam,
 }

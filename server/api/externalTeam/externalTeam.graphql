@@ -8,3 +8,7 @@ type ExternalTeam {
 extend type Query {
   getExternalTeamsForManuscript(manuscriptId: ID!): [ExternalTeam]
 }
+
+extend type Mutation {
+  inviteExternalReviewer(manuscriptId: ID!, reviewerId: ID!): ID!
+}
