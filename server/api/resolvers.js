@@ -6,6 +6,7 @@ const {
   ExternalTeam,
   getExternalTeamsForManuscript,
   inviteExternalReviewer,
+  normalizeTeamMembership,
 } = require('./externalTeam/externalTeam.resolver')
 
 const resolvers = {
@@ -16,6 +17,7 @@ const resolvers = {
   Mutation: {
     addExternalReviewer,
     inviteExternalReviewer,
+    normalizeTeamMembership,
   },
   ExternalTeam,
 }

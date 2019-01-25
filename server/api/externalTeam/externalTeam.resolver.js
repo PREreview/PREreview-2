@@ -1,7 +1,9 @@
 const union = require('lodash/union')
 
+const { User } = require('pubsweet-server')
+
 const { model: ExternalTeam } = require('../../models/externalTeam')
-// const { model: ExternalUser } = require('../../models/externalUser')
+const { model: ExternalUser } = require('../../models/externalUser')
 const notify = require('../../services/notify')
 
 const getExternalTeamsForManuscript = async (_, { manuscriptId }, ctx) =>
@@ -39,6 +41,32 @@ const inviteExternalReviewer = async (_, { manuscriptId, reviewerId }, ctx) => {
   return externalInvitedReviewersTeam.id
 }
 
+// Checks if user is part of an external team & moves them to a normal team
+const normalizeTeamMembership = async (_, variables, ctx) => {
+  // console.log('Normalize team membership')
+
+  const { userId } = variables
+  const user = await User.find(userId)
+  // console.log('user', user)
+
+  /* 
+    find corresponding external user
+    see if external user's id exists in any external teams
+    for each external team, find the corresponding normal team
+    add user id to normal teams
+    remove external user
+  */
+
+  const externalUser = await ExternalUser.query().findOne({ email: user.email })
+
+  if (externalUser) {
+    // external team where id in array
+    // how to do this in sql?
+  }
+
+  return user.id
+}
+
 module.exports = {
   ExternalTeam: {
     members(team, vars, ctx) {
@@ -47,4 +75,5 @@ module.exports = {
   },
   getExternalTeamsForManuscript,
   inviteExternalReviewer,
+  normalizeTeamMembership,
 }

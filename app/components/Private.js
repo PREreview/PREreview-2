@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Query } from 'react-apollo'
+import { Query, Mutation } from 'react-apollo'
 import { Redirect, withRouter } from 'react-router-dom'
 import { pick } from 'lodash'
 import gql from 'graphql-tag'
@@ -17,6 +17,18 @@ const CURRENT_USER = gql`
       }
       username
     }
+  }
+`
+/* 
+  This will check whether the user has been saved to a temporary team before
+  they signed up, and will move them to proper teams now that they are a user.
+
+  This shouldn't be here, and will be moved to a "sign-up hook" once such a
+  thing exists.
+*/
+const NORMALIZE_TEAM_MEMBERSHIP = gql`
+  mutation NormalizeTeamMembership($userId: ID!) {
+    normalizeTeamMembership(userId: $userId)
   }
 `
 
@@ -46,9 +58,22 @@ const Private = ({ children, location }) => (
       const currentUser = pick(data.currentUser, ['admin', 'id', 'username'])
 
       return (
-        <CurrentUserProvider value={{ currentUser }}>
-          {children}
-        </CurrentUserProvider>
+        <Mutation
+          mutation={NORMALIZE_TEAM_MEMBERSHIP}
+          variables={{ userId: data.currentUser.id }}
+        >
+          {(normalizeTeamMembership, normalizeTeamMembershipResponse) => {
+            if (!normalizeTeamMembershipResponse.called) {
+              normalizeTeamMembership() // .then(() => console.log('in there')
+            }
+
+            return (
+              <CurrentUserProvider value={{ currentUser }}>
+                {children}
+              </CurrentUserProvider>
+            )
+          }}
+        </Mutation>
       )
     }}
   </Query>
