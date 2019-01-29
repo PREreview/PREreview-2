@@ -245,7 +245,7 @@ const permissions = {
       // Only editors can update the reviewer teams
       const editor = isEditor(user, context)
       const editorAllow = ['reviewers', 'reviewersInvited']
-      if (editorAllow.includes(teamType)) return editor
+      if (editor && editorAllow.includes(teamType)) return true
 
       // Only invited reviewers can alter accepted or rejected teams
       // They can only apply changes that affect themselves and no one else
@@ -257,6 +257,9 @@ const permissions = {
       )
       const reviewerAllow = ['reviewersAccepted', 'reviewersRejected']
       if (reviewerAllow.includes(teamType)) return reviewerInvited
+
+      // Necessary, as any user needs to run the normalize team mutation
+      return true
     }
 
     if (object === 'Review') return true

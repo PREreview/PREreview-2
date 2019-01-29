@@ -6,6 +6,8 @@ import { pick } from 'lodash'
 import gql from 'graphql-tag'
 
 import { CurrentUserProvider } from '../userContext'
+import { GET_TEAMS } from './compose/pieces/getTeams'
+import { GET_DASHBOARD_ARTICLES } from './compose/pieces/getDashboardArticles'
 
 const CURRENT_USER = gql`
   query CurrentUser {
@@ -57,9 +59,17 @@ const Private = ({ children, location }) => (
 
       const currentUser = pick(data.currentUser, ['admin', 'id', 'username'])
 
+      // TO DO -- user ids are always in context, remove them from variables
       return (
         <Mutation
           mutation={NORMALIZE_TEAM_MEMBERSHIP}
+          refetchQueries={[
+            { query: GET_TEAMS },
+            {
+              query: GET_DASHBOARD_ARTICLES,
+              variables: { currentUserId: data.currentUser.id },
+            },
+          ]}
           variables={{ userId: data.currentUser.id }}
         >
           {(normalizeTeamMembership, normalizeTeamMembershipResponse) => {

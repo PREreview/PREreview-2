@@ -1,10 +1,16 @@
 const union = require('lodash/union')
+const without = require('lodash/without')
 
-const { User } = require('pubsweet-server')
+const { Team, User } = require('pubsweet-server')
 
 const { model: ExternalTeam } = require('../../models/externalTeam')
 const { model: ExternalUser } = require('../../models/externalUser')
 const notify = require('../../services/notify')
+
+const externalTeamMapper = {
+  externalReviewers: 'reviewers',
+  externalReviewersInvited: 'reviewersInvited',
+}
 
 const getExternalTeamsForManuscript = async (_, { manuscriptId }, ctx) =>
   ExternalTeam.query().where({ manuscriptId })
@@ -47,21 +53,48 @@ const normalizeTeamMembership = async (_, variables, ctx) => {
 
   const { userId } = variables
   const user = await User.find(userId)
-  // console.log('user', user)
-
-  /* 
-    find corresponding external user
-    see if external user's id exists in any external teams
-    for each external team, find the corresponding normal team
-    add user id to normal teams
-    remove external user
-  */
 
   const externalUser = await ExternalUser.query().findOne({ email: user.email })
 
   if (externalUser) {
-    // external team where id in array
-    // how to do this in sql?
+    const externalTeamsForUser = await ExternalTeam.query().whereJsonSupersetOf(
+      'members',
+      [externalUser.id],
+    )
+
+    const teams = await Team.all()
+
+    const normalizeOneTeamMemership = async externalTeam => {
+      const team = teams.find(
+        t =>
+          !t.global &&
+          t.object.objectId === externalTeam.manuscriptId &&
+          t.teamType === externalTeamMapper[externalTeam.teamType],
+      )
+
+      if (!team) throw new Error('Corresponding team not found!')
+
+      return Promise.all([
+        ctx.connectors.Team.update(
+          team.id,
+          { members: union(team.members, [user.id]) },
+          ctx,
+        ),
+        ExternalTeam.query()
+          .patch({
+            members: without(externalTeam.members, externalUser.id),
+          })
+          .where({
+            id: externalTeam.id,
+          }),
+      ])
+    }
+
+    const normalizeManyTeamMemberships = async externalTeams =>
+      Promise.all(externalTeams.map(t => normalizeOneTeamMemership(t)))
+
+    await normalizeManyTeamMemberships(externalTeamsForUser)
+    await ExternalUser.query().deleteById(externalUser.id)
   }
 
   return user.id

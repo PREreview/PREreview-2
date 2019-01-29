@@ -433,7 +433,8 @@ const sendExternalReviewerInvitation = async context => {
       }" on the Micropublication submission platform.
     </p>
     <p>
-      Please <a href="${baseUrl}">sign up</a> to continue.
+      Please <a href="${baseUrl}/signup">sign up</a> 
+      <strong>with this email</strong> to continue.
     </p>
   `
 

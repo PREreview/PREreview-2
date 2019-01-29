@@ -176,13 +176,15 @@ const ReviewerTable = props => {
     rejectedTeam,
   } = props
 
-  const nameToUsername = externalReviewers.members.map(m => {
-    const modified = clone(m)
-    modified.username = modified.name
-    modified.external = true
-    delete modified.name
-    return modified
-  })
+  const nameToUsername = externalReviewers
+    ? externalReviewers.members.map(m => {
+        const modified = clone(m)
+        modified.username = modified.name
+        modified.external = true
+        delete modified.name
+        return modified
+      })
+    : []
 
   const modifiedData = data.concat(nameToUsername)
 
