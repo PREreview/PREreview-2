@@ -58,7 +58,7 @@ module.exports = {
     ],
   },
   mailer: {
-    from: 'noreply@micropulication.org',
+    from: 'noreply@mg.prereview.org',
     path: `${__dirname}/mailer`,
     transport: {
       mailTransport,

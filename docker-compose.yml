@@ -6,6 +6,6 @@ services:
     ports:
       - ${DB_PORT:-5480}:5432
     environment:
-      - POSTGRES_DB=${DB_NAME:-wb}
+      - POSTGRES_DB=${DB_NAME:-prereview}
       - POSTGRES_USER=${DB_USER:-dev}
       - POSTGRES_PASSWORD=${DB_PASSWORD:-pass}

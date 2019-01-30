@@ -6,5 +6,9 @@
   "pubsweet-component-password-reset-frontend",
   "./app/wbApi",
   "./server/manuscript/src",
-  "./server/review/src"
+  "./server/review/src",
+  "@pubsweet/model-user",
+  "@pubsweet/model-team",
+  "@pubsweet/model-fragment",
+  "@pubsweet/model-collection"
 ]
