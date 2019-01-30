@@ -86,6 +86,7 @@ const EditorPanelMetadata = props => {
             return (
               <MetadataForm
                 articleId={articleId}
+                doi={doi}
                 setState={setState}
                 updateMetadata={updateMetadata}
               >
